@@ -22,6 +22,7 @@ export const fetchSignUp = async (
   userIntroduce: string
 ) => {
   const SignUpUrl = `${import.meta.env.VITE_BASE_URL}/auth/sign-up`;
+  console.log(userHeight, userWeight);
   console.log(formatBirthday(userBirth));
   try {
     const response = await fetch(SignUpUrl, {
