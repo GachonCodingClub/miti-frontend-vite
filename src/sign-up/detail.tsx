@@ -81,7 +81,15 @@ export default function SingUpDetail() {
   const checkOverlap = () => {
     setOverlapNickname(false);
   };
-  const { data } = useQuery(["nickname", userNickName], getNickName);
+
+  interface Data {
+    status: number;
+  }
+
+  const { data }: { data?: Data } = useQuery(
+    ["nickname", userNickName],
+    getNickName
+  );
   // 닉네임 중복확인 버튼
   const onCheckNicknameBtn = () => {
     if (!isCheckNicknameButtonDisabled) {

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { OrangeSmButton } from "./Input";
 import { ArrowbackIcon } from "./Icons";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface ITopBar {
