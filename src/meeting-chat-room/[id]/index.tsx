@@ -44,10 +44,10 @@ import {
 } from "../components/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
-import { userEmailAtom, SnackBarAtom } from "../../atoms";
+import { SnackBarAtom } from "../../atoms";
 import { Dialog } from "../../components/Button";
 import { TopBar } from "../../components/TopBar";
 import { ROUTES } from "../../routes";
@@ -63,6 +63,7 @@ import {
   OrangeCrownIcon,
 } from "../../components/Icons";
 import { useNavigate, useParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 /* Topic URL, GroupID, sender가 모두 작성된 상태에서만 메시지가 보내짐
       Connect -> Subscribe -> Publish -> Disconnect 순으로 작동
@@ -79,14 +80,12 @@ export default function MeetingChatRoom() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // 유저 정보
-  const userEmailState = useRecoilState(userEmailAtom);
-  const userEmail = userEmailState[0];
-
+  const userToken = localStorage.getItem("token");
+  const decoded = jwtDecode(userToken + "");
+  console.log(decoded.sub);
   const getUserProfile = async () => {
     const response = await getApi({ link: `/users/profile/my` });
     const data = await response.json();
-    console.log("데이타", data);
     return data;
   };
 
@@ -97,7 +96,7 @@ export default function MeetingChatRoom() {
     { nickname: string; content: string; timestamp: string }[]
   >([]); // 채팅 메시지 리스트
   const [message, setMessage] = useState(""); // 사용자가 보낼 메시지
-  const [sender, setSender] = useState(userEmail); // 발신자
+  const [sender, setSender] = useState(decoded.sub); // 발신자
   const [groupId, setGroupId] = useState(id); // 그룹 ID
   const [topicUrl, setTopicUrl] = useState(id); // 토픽 URL
   // 미티 웹소켓 주소
@@ -209,7 +208,7 @@ export default function MeetingChatRoom() {
   const handleSubmit = (
     event: { preventDefault: () => void }, // 제출 이벤트
     message: string,
-    sender: string,
+    sender: string | undefined,
     groupId: number | string | unknown
   ) => {
     event.preventDefault();
@@ -458,16 +457,6 @@ export default function MeetingChatRoom() {
                     {/* 김쿵야 */}
                     <MenuUserProfileFrame>
                       <MenuUserNickname>김쿵야</MenuUserNickname>
-                      <MenuUserDetailFrame>
-                        <MenuUserDetailText>24살</MenuUserDetailText>
-                        <MenuUserDetailText>남자</MenuUserDetailText>
-                        <MenuUserDetailText>170cm</MenuUserDetailText>
-                        <MenuUserDetailText>80kg</MenuUserDetailText>
-                      </MenuUserDetailFrame>
-                    </MenuUserProfileFrame>
-                    {/* 차은우 */}
-                    <MenuUserProfileFrame>
-                      <MenuUserNickname>차은우</MenuUserNickname>
                       <MenuUserDetailFrame>
                         <MenuUserDetailText>24살</MenuUserDetailText>
                         <MenuUserDetailText>남자</MenuUserDetailText>
