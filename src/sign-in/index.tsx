@@ -3,8 +3,6 @@ import { LongOrangeBtn } from "../components/Button";
 import { useState } from "react";
 import { Screen } from "../components/Screen";
 import { ROUTES, SIGNUP_ROUTES } from "../routes";
-import { useRecoilState } from "recoil";
-import { userEmailAtom, userPasswordAtom } from "../atoms";
 import { InputElement } from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -74,7 +72,6 @@ export default function LogIn() {
     const inputEmail = e.target.value;
     setLoginEmail(inputEmail);
   };
-  const [, setRecoilEmail] = useRecoilState(userEmailAtom);
 
   // 비밀번호
   const [loginPassword, setLoginPassword] = useState("");
@@ -83,7 +80,6 @@ export default function LogIn() {
     const inputPassword = e.target.value;
     setLoginPassword(inputPassword);
   };
-  const [, setRecoilPassword] = useRecoilState(userPasswordAtom);
 
   // 로그인 버튼
   const onLoginClick = () => {
@@ -114,8 +110,6 @@ export default function LogIn() {
         if (data.accessToken) {
           console.log("로그인", data);
           localStorage.setItem("token", data.accessToken);
-          setRecoilEmail(loginEmail);
-          setRecoilPassword(loginPassword);
           // const myToken = localStorage.getItem("token");
           // 토큰이 있으면 push
           {

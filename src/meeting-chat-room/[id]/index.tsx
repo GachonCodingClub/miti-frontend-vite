@@ -74,6 +74,14 @@ import { jwtDecode } from "jwt-decode";
       그리고 Publish는 그냥 메시지를 서버(/pub/send)로 보내는 함수 
       Disconnect는 제곧내 */
 
+const currentTime = new Date();
+const hours = currentTime.getHours();
+const minutes = currentTime.getMinutes();
+const ampm = hours >= 12 ? "오후" : "오전";
+const formattedHours = (hours % 12).toString().padStart(2, "0");
+const formattedMinutes = minutes.toString().padStart(2, "0");
+const timestamp = `${ampm} ${formattedHours} : ${formattedMinutes}`;
+console.log(timestamp);
 // MeetingChatRoom 함수
 export default function MeetingChatRoom() {
   // url에서 채팅방 id 가져오기
@@ -82,7 +90,7 @@ export default function MeetingChatRoom() {
 
   const userToken = localStorage.getItem("token");
   const decoded = jwtDecode(userToken + "");
-  console.log(decoded.sub);
+
   const getUserProfile = async () => {
     const response = await getApi({ link: `/users/profile/my` });
     const data = await response.json();
@@ -90,6 +98,35 @@ export default function MeetingChatRoom() {
   };
 
   const { data: profile } = useQuery(["profile"], getUserProfile);
+
+  // 기존의 채팅 데이터 가져오기
+  useEffect(() => {
+    const getChatting = async () => {
+      try {
+        const chatResponse = await getApi({ link: `/message/${id}` });
+        const chatData = await chatResponse.json();
+        console.log("기존 채팅 데이터", chatData);
+
+        // 채팅 데이터를 chatList 상태에 설정하여 화면에 표시
+        setChatList(
+          chatData.map(
+            (chat: {
+              nickname: string;
+              content: string;
+              timestamp: string;
+            }) => ({
+              nickname: chat.nickname,
+              content: chat.content,
+              timestamp: timestamp,
+            })
+          )
+        );
+      } catch (error) {
+        console.error("채팅 데이터 불러오기 오류", error);
+      }
+    };
+    getChatting();
+  }, [id]); // 'id'를 의존성으로 포함하여 'id' 매개변수가 변경될 때마다 채팅 가져옴.
 
   // 제네릭으로 타입 명시
   const [chatList, setChatList] = useState<
@@ -148,22 +185,9 @@ export default function MeetingChatRoom() {
     // 이 topicUrl이 방 번호가 되려나?
     // subscribe는 서버에서 해당 토픽으로 메시지가 전달될 때마다 콜백 함수가 실행
     client.current.subscribe(`/sub/${topicUrl}`, (body: { body: string }) => {
-      console.log("여기에 구독했어요 : /sub/" + topicUrl);
-
       /* 서버에서 받은 body 객체에서 body 속성을 추출하고 
         이를 JSON 형태로 파싱하여 채팅 메시지로 사용 */
       const json_body = JSON.parse(body.body);
-
-      // 현재 시간을 가져오기
-      const currentTime = new Date();
-
-      // 시간을 '오후 00시 00분' 형식으로 변환
-      const hours = currentTime.getHours();
-      const minutes = currentTime.getMinutes();
-      const ampm = hours >= 12 ? "오후" : "오전";
-      const formattedHours = (hours % 12).toString().padStart(2, "0");
-      const formattedMinutes = minutes.toString().padStart(2, "0");
-      const timestamp = `${ampm} ${formattedHours} : ${formattedMinutes}`;
 
       // 채팅 메시지 리스트 업데이트
       setChatList((_chat_list) => [
@@ -248,23 +272,6 @@ export default function MeetingChatRoom() {
     setShowRightMenu(true);
   };
 
-  // 원래 채팅 불러오기
-  useEffect(() => {
-    const getChatting = async () => {
-      try {
-        const chatResponse = await getApi({ link: `/message/${id}` });
-        const chatData = await chatResponse.json();
-        console.log("기존 채팅 데이터", chatData);
-        // 채팅 데이터를 상태에 저장하는 로직이 필요하다면 여기에 추가
-      } catch (error) {
-        console.error("Error load chatting data", error);
-      }
-    };
-
-    // 컴포넌트가 마운트될 때 한 번 호출
-    getChatting();
-  }, []);
-
   // 메뉴 세부정보 가져오기
   const getGroup = async () => {
     try {
@@ -308,7 +315,7 @@ export default function MeetingChatRoom() {
   return (
     <>
       <TopBar
-        title="임시 제목"
+        title={`${group?.title}`}
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
         rightIcon={<HamburgerIcon onClick={onClickMenu} />}
       />
@@ -344,14 +351,19 @@ export default function MeetingChatRoom() {
           ))}
         </ChatWindowContainer>
         <div>
-          <label htmlFor="topic-url">Topic URL:</label>
+          <label htmlFor="topic-url" hidden>
+            Topic URL:
+          </label>
           <input
             type="number"
             id="topic-url"
             value={topicUrl}
             onChange={handleTopicChange}
+            hidden
           />
-          <button onClick={() => subscribe()}>Subscribe</button>
+          <button hidden onClick={() => subscribe()}>
+            Subscribe
+          </button>
         </div>
         <form
           onSubmit={(event) => handleSubmit(event, message, sender, groupId)}
@@ -361,12 +373,14 @@ export default function MeetingChatRoom() {
             type="text"
             value={sender}
             onChange={handleChangeSender}
+            hidden
           />
           <input
             placeholder="groupId"
             type="number"
             value={id}
             onChange={handleChangeGroupId}
+            hidden
           />
           <ChattingInputDiv>
             <ChattingInput
