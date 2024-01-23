@@ -15,6 +15,11 @@ export const ChatWindowContainer = styled.div`
   gap: 16px;
   margin: auto;
   width: 100%;
+  overflow-y: auto;
+  padding-right: 10px;
+  padding-bottom: 48px;
+  max-height: 90vh;
+  position: relative;
 `;
 
 // 날짜랑 누구누구 입장/퇴장 프레임
@@ -114,11 +119,13 @@ export const OtherChattingBubble = styled(MyChattingBubble)`
 export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
+
   max-width: 36rem;
   padding: 16px 24px;
   align-items: center;
   position: fixed;
   bottom: 0;
+  background-color: white;
   box-shadow: 0px -4px 8px 0px rgba(0, 0, 0, 0.04);
 `;
 
@@ -143,7 +150,7 @@ export const MenuAnimation = {
     x: 600, // 시작 위치(오른쪽으로 x 600만큼 더 간 위치)
   },
   visible: {
-    x: 0,
+    x: -10,
 
     transition: {
       damping: 20, // 바운스 정도
