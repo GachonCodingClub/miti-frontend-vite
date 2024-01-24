@@ -69,6 +69,7 @@ export const MyChatting = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   gap: 4px;
+  max-width: 66%;
 `;
 
 // 내 채팅 버블
@@ -90,6 +91,7 @@ export const ChattingTime = styled.span`
   font-size: 10px;
   line-height: 12px;
   letter-spacing: -0.1px;
+  white-space: nowrap;
 `;
 
 // 상대 채팅 프레임, 여러 개의 채팅이 한 프레임에 담김
@@ -119,8 +121,7 @@ export const OtherChattingBubble = styled(MyChattingBubble)`
 export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
-
-  max-width: 36rem;
+  max-width: 33rem;
   padding: 16px 24px;
   align-items: center;
   position: fixed;

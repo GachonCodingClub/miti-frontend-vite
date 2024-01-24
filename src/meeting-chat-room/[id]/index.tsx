@@ -16,54 +16,23 @@ import {
   OtherChattingBubble,
   ChattingInputDiv,
   ChattingInput,
-  GrayLine,
-  MenuDateLocationFrame,
-  MenuDateLocationMemberContainer,
-  MenuDateLocationText,
-  MenuDetailAndButtonContainer,
-  MenuDetailAndMemberWrapper,
-  MenuDetailFrame,
-  MenuDetailText,
-  MenuMeetingDesc,
-  MenuMeetingTitle,
-  MenuMeetingTitleAndDescFrame,
-  MenuMemberAndReqButtonWrapper,
-  MenuMemberContainer,
-  MenuMemberFrame,
-  MenuModifyMeetingButton,
-  MenuSmallGrayLine,
-  MenuUserDetailFrame,
-  MenuUserDetailText,
-  MenuUserNickname,
-  MenuUserProfileFrame,
-  ParticipationReqButton,
   RightMenuFrame,
   MenuAnimation,
-  MenuDeleteMeetingAndRunButton,
-  MenuMasterFrame,
 } from "../components/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
-import { useSetRecoilState } from "recoil";
 import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
-import { SnackBarAtom } from "../../atoms";
-import { Dialog } from "../../components/Button";
 import { TopBar } from "../../components/TopBar";
-import { ROUTES } from "../../routes";
 import { Overlay } from "../../sign-up/components/detailComponents";
-import { getDate } from "../../utils";
-import {
-  ArrowbackIcon,
-  HamburgerIcon,
-  SendIcon,
-  DateIcon,
-  LocationIcon,
-  PersonIcon,
-  OrangeCrownIcon,
-} from "../../components/Icons";
+import { ArrowbackIcon, HamburgerIcon, SendIcon } from "../../components/Icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import SideMenu from "../components/sideMenu";
+import { Dialog } from "../../components/Button";
+import { ROUTES } from "../../routes";
+import { useSetRecoilState } from "recoil";
+import { SnackBarAtom } from "../../atoms";
 
 /* Topic URL, GroupID, sender가 모두 작성된 상태에서만 메시지가 보내짐
       Connect -> Subscribe -> Publish -> Disconnect 순으로 작동
@@ -82,15 +51,16 @@ const formattedHours = (hours % 12).toString().padStart(2, "0");
 const formattedMinutes = minutes.toString().padStart(2, "0");
 const timestamp = `${ampm} ${formattedHours} : ${formattedMinutes}`;
 console.log(timestamp);
+
 // MeetingChatRoom 함수
 export default function MeetingChatRoom() {
-  // url에서 채팅방 id 가져오기
   const navigate = useNavigate();
   const { id } = useParams();
 
   const userToken = localStorage.getItem("token");
   const decoded = jwtDecode(userToken + "");
 
+  // 유저 프로필 가져오기
   const getUserProfile = async () => {
     const response = await getApi({ link: `/users/profile/my` });
     const data = await response.json();
@@ -127,6 +97,24 @@ export default function MeetingChatRoom() {
     };
     getChatting();
   }, [id]); // 'id'를 의존성으로 포함하여 'id' 매개변수가 변경될 때마다 채팅 가져옴.
+
+  const getGroup = async () => {
+    try {
+      // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
+      // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
+      const response = await getApi({ link: `/groups/${id}` });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching group data:", error);
+      throw error; // 에러를 상위로 전파
+    }
+  };
+
+  // useQuery 훅을 사용하여 데이터를 가져오는 부분
+  const { data: group } = useQuery(["group", id], getGroup, {
+    enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+  });
 
   // 제네릭으로 타입 명시
   const [chatList, setChatList] = useState<
@@ -272,35 +260,6 @@ export default function MeetingChatRoom() {
     setShowRightMenu(true);
   };
 
-  // 메뉴 세부정보 가져오기
-  const getGroup = async () => {
-    try {
-      // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
-      // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
-      const response = await getApi({ link: `/groups/${id}` });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching group data:", error);
-      throw error; // 에러를 상위로 전파
-    }
-  };
-
-  // useQuery 훅을 사용하여 데이터를 가져오는 부분
-  const { data: group } = useQuery(["group", id], getGroup, {
-    enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
-  });
-  const [date, setDate] = useState("");
-  useEffect(() => {
-    if (group) {
-      setDate(getDate(group.meetDate));
-    }
-  }, [group]);
-
-  // #방장, 미팅 삭제하고 나가기
-  // 다이얼로그
-  const [showMeetingDeleteAndRunDialog, setShowMeetingDeleteAndRunDialog] =
-    useState(false);
   const setRoomDelted = useSetRecoilState(SnackBarAtom);
   const handleDeleteRoom = () => {
     // 방 나가기 버튼 클릭 시 실행되는 함수
@@ -311,6 +270,9 @@ export default function MeetingChatRoom() {
       setRoomDelted(false);
     }, 3000);
   };
+
+  const [showMeetingDeleteAndRunDialog, setShowMeetingDeleteAndRunDialog] =
+    useState(false);
 
   return (
     <>
@@ -396,7 +358,6 @@ export default function MeetingChatRoom() {
           </ChattingInputDiv>
         </form>
 
-        {/* 메뉴 눌렀을 때, 나중에 분리 */}
         {showRightMenu && (
           <>
             <Overlay
@@ -410,109 +371,24 @@ export default function MeetingChatRoom() {
               animate={showRightMenu ? "visible" : "hidden"}
               variants={MenuAnimation}
             >
-              {/* 제목과 설명 */}
-              <MenuMeetingTitleAndDescFrame>
-                <MenuMeetingTitle>{group.title}</MenuMeetingTitle>
-                <MenuMeetingDesc>{group.description}</MenuMeetingDesc>
-              </MenuMeetingTitleAndDescFrame>
-              <GrayLine />
-              <MenuDetailAndMemberWrapper>
-                {/* 미팅 디테일 */}
-                <MenuDetailAndButtonContainer>
-                  <MenuDetailFrame>
-                    <MenuDetailText>세부 정보</MenuDetailText>
-                    <MenuDateLocationMemberContainer>
-                      <MenuDateLocationFrame>
-                        <DateIcon />
-                        <MenuDateLocationText>{date}</MenuDateLocationText>
-                      </MenuDateLocationFrame>
-                      <MenuDateLocationFrame>
-                        <LocationIcon />
-                        <MenuDateLocationText>
-                          {group.meetPlace}
-                        </MenuDateLocationText>
-                      </MenuDateLocationFrame>
-                      <MenuDateLocationFrame>
-                        <PersonIcon />
-                        <MenuDateLocationText>
-                          ?명 / {group.maxUsers}명
-                        </MenuDateLocationText>
-                      </MenuDateLocationFrame>
-                    </MenuDateLocationMemberContainer>
-                  </MenuDetailFrame>
-                  <MenuModifyMeetingButton
-                    onClick={() => {
-                      navigate(`/edit-meeting/${id}`);
-                    }}
-                  >
-                    미팅 수정
-                  </MenuModifyMeetingButton>
-                </MenuDetailAndButtonContainer>
-              </MenuDetailAndMemberWrapper>
-              <MenuSmallGrayLine />
-              {/* 참여자 */}
-              <MenuMemberAndReqButtonWrapper>
-                <MenuMemberContainer>
-                  <MenuDetailText>참여자</MenuDetailText>
-                  <MenuMemberFrame>
-                    {/* 홍당무 */}
-                    <MenuUserProfileFrame>
-                      <MenuMasterFrame>
-                        <MenuUserNickname>홍당무</MenuUserNickname>
-                        <OrangeCrownIcon />
-                      </MenuMasterFrame>
-                      <MenuUserDetailFrame>
-                        <MenuUserDetailText>24살</MenuUserDetailText>
-                        <MenuUserDetailText>남자</MenuUserDetailText>
-                        <MenuUserDetailText>170cm</MenuUserDetailText>
-                        <MenuUserDetailText>80kg</MenuUserDetailText>
-                      </MenuUserDetailFrame>
-                    </MenuUserProfileFrame>
-                    {/* 김쿵야 */}
-                    <MenuUserProfileFrame>
-                      <MenuUserNickname>김쿵야</MenuUserNickname>
-                      <MenuUserDetailFrame>
-                        <MenuUserDetailText>24살</MenuUserDetailText>
-                        <MenuUserDetailText>남자</MenuUserDetailText>
-                        <MenuUserDetailText>170cm</MenuUserDetailText>
-                        <MenuUserDetailText>80kg</MenuUserDetailText>
-                      </MenuUserDetailFrame>
-                    </MenuUserProfileFrame>
-                  </MenuMemberFrame>
-                </MenuMemberContainer>
-                <ParticipationReqButton
-                  onClick={() => {
-                    console.log("참여 요청");
-                  }}
-                >
-                  참여 요청 목록
-                </ParticipationReqButton>
-              </MenuMemberAndReqButtonWrapper>
-              {/* 삭제하고 나가기 */}
-              <MenuDeleteMeetingAndRunButton
-                onClick={() => {
-                  setShowMeetingDeleteAndRunDialog(true);
-                }}
-              >
-                미팅 삭제하고 나가기
-              </MenuDeleteMeetingAndRunButton>
+              <SideMenu dialogProps={setShowMeetingDeleteAndRunDialog} />
             </RightMenuFrame>
-            {showMeetingDeleteAndRunDialog && (
-              <Overlay style={{ zIndex: "40", whiteSpace: "pre-line" }}>
-                <Dialog
-                  title="미팅 삭제하고 나가기"
-                  contents={`그동안 나눈 대화 내용이 삭제돼요. 
-                    삭제한 미팅은 복구할 수 없어요.`}
-                  left="취소"
-                  right="미팅 삭제"
-                  onLeftClick={() => {
-                    setShowMeetingDeleteAndRunDialog(false);
-                  }}
-                  onRightClick={handleDeleteRoom}
-                />
-              </Overlay>
-            )}
           </>
+        )}
+        {showMeetingDeleteAndRunDialog && (
+          <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+            <Dialog
+              title="미팅 삭제하고 나가기"
+              contents={`그동안 나눈 대화 내용이 삭제돼요. 
+                    삭제한 미팅은 복구할 수 없어요.`}
+              left="취소"
+              right="미팅 삭제"
+              onLeftClick={() => {
+                setShowMeetingDeleteAndRunDialog(false);
+              }}
+              onRightClick={handleDeleteRoom}
+            />
+          </Overlay>
         )}
       </MeetingChatRoomScreen>
     </>
