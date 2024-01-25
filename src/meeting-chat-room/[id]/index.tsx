@@ -43,14 +43,17 @@ import { SnackBarAtom } from "../../atoms";
       그리고 Publish는 그냥 메시지를 서버(/pub/send)로 보내는 함수 
       Disconnect는 제곧내 */
 
-const currentTime = new Date();
-const hours = currentTime.getHours();
-const minutes = currentTime.getMinutes();
-const ampm = hours >= 12 ? "오후" : "오전";
-const formattedHours = (hours % 12).toString().padStart(2, "0");
-const formattedMinutes = minutes.toString().padStart(2, "0");
-const timestamp = `${ampm} ${formattedHours} : ${formattedMinutes}`;
-console.log(timestamp);
+const getTimeString = (createdAt: string) => {
+  const createdTime = new Date(createdAt);
+  const hour = createdTime.getHours() + 21;
+  const minute = createdTime.getMinutes();
+  const hourValue = hour % 12 || 12;
+  const minuteValue = minute < 10 ? `0${minute}` : minute;
+  const ampm = hourValue >= 12 ? "오전" : "오후";
+  const timestamp = `${ampm} ${hourValue} : ${minuteValue}분`;
+
+  return timestamp;
+};
 
 // MeetingChatRoom 함수
 export default function MeetingChatRoom() {
@@ -83,11 +86,11 @@ export default function MeetingChatRoom() {
             (chat: {
               nickname: string;
               content: string;
-              timestamp: string;
+              createdAt: string;
             }) => ({
               nickname: chat.nickname,
               content: chat.content,
-              timestamp: timestamp,
+              createdAt: chat.createdAt,
             })
           )
         );
@@ -118,7 +121,11 @@ export default function MeetingChatRoom() {
 
   // 제네릭으로 타입 명시
   const [chatList, setChatList] = useState<
-    { nickname: string; content: string; timestamp: string }[]
+    {
+      createdAt: string;
+      nickname: string;
+      content: string;
+    }[]
   >([]); // 채팅 메시지 리스트
   const [message, setMessage] = useState(""); // 사용자가 보낼 메시지
   const [sender, setSender] = useState(decoded.sub); // 발신자
@@ -170,18 +177,14 @@ export default function MeetingChatRoom() {
     }
 
     // StompJs의 subscribe 메서드를 사용하여 특정 토픽을 구독
-    // 이 topicUrl이 방 번호가 되려나?
     // subscribe는 서버에서 해당 토픽으로 메시지가 전달될 때마다 콜백 함수가 실행
     client.current.subscribe(`/sub/${topicUrl}`, (body: { body: string }) => {
       /* 서버에서 받은 body 객체에서 body 속성을 추출하고 
         이를 JSON 형태로 파싱하여 채팅 메시지로 사용 */
       const json_body = JSON.parse(body.body);
-
+      console.log("바디", body.body);
       // 채팅 메시지 리스트 업데이트
-      setChatList((_chat_list) => [
-        ..._chat_list,
-        { ...json_body, timestamp: timestamp },
-      ]);
+      setChatList((_chat_list) => [..._chat_list, { ...json_body }]);
     });
   };
 
@@ -211,7 +214,6 @@ export default function MeetingChatRoom() {
   // 토픽
   const handleTopicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTopicUrl(event.target.value);
-    console.log("현재 토픽 url은? :", event.target.value);
   };
 
   //
@@ -287,30 +289,68 @@ export default function MeetingChatRoom() {
             <DateText>2023년 12월 2일 토요일</DateText>
             <AlertText>김현중 님이 입장했습니다.</AlertText>
           </DateAlertFrame>
-          {chatList.map((chat, index) => (
-            <ChatWindowFrame key={index}>
-              {chat.nickname === profile.nickname ? (
-                <MyChattingFrame>
-                  <MyChatting>
-                    <ChattingTime>{chat.timestamp}</ChattingTime>
-                    <MyChattingBubble>
-                      <ChattingText>{chat.content}</ChattingText>
-                    </MyChattingBubble>
-                  </MyChatting>
-                </MyChattingFrame>
-              ) : (
-                <OtherChattingFrame>
-                  <OtherUserName>{chat.nickname}</OtherUserName>
-                  <OtherChatting>
-                    <ChattingTime>{chat.timestamp}</ChattingTime>
-                    <OtherChattingBubble>
-                      <ChattingText>{chat.content}</ChattingText>
-                    </OtherChattingBubble>
-                  </OtherChatting>
-                </OtherChattingFrame>
-              )}
-            </ChatWindowFrame>
-          ))}
+          {chatList.map((chat, index) => {
+            let displayTime = true;
+            const timeValue = getTimeString(chat.createdAt);
+            if (index !== chatList.length - 1) {
+              const nextSender = chatList[index + 1].nickname;
+              if (nextSender === chat.nickname) {
+                const nextTimeValue = getTimeString(
+                  chatList[index + 1].createdAt
+                );
+                if (nextTimeValue === timeValue) {
+                  displayTime = false;
+                }
+              }
+            }
+
+            let displayNickname = false;
+            let reduceMargin = false;
+            if (index !== 0) {
+              const prevSender = chatList[index - 1].nickname;
+              if (prevSender !== chat.nickname) displayNickname = true;
+              reduceMargin = true;
+            }
+            return (
+              <ChatWindowFrame key={index}>
+                {chat.nickname === profile.nickname ? (
+                  <MyChattingFrame>
+                    <MyChatting>
+                      {displayTime ? (
+                        <ChattingTime>
+                          {getTimeString(chat.createdAt)}
+                        </ChattingTime>
+                      ) : null}
+                      <MyChattingBubble
+                        style={reduceMargin ? { marginBottom: -10 } : {}}
+                      >
+                        <ChattingText>{chat.content}</ChattingText>
+                      </MyChattingBubble>
+                    </MyChatting>
+                  </MyChattingFrame>
+                ) : (
+                  <OtherChattingFrame>
+                    {displayNickname ? (
+                      <OtherUserName>{chat.nickname}</OtherUserName>
+                    ) : null}
+
+                    <OtherChatting>
+                      {displayTime ? (
+                        <ChattingTime>
+                          {getTimeString(chat.createdAt)}
+                        </ChattingTime>
+                      ) : null}
+                      <OtherChattingBubble
+                        style={reduceMargin ? { marginBottom: -10 } : {}}
+                      >
+                        <ChattingText>{chat.content}</ChattingText>
+                      </OtherChattingBubble>
+                    </OtherChatting>
+                  </OtherChattingFrame>
+                )}
+              </ChatWindowFrame>
+            );
+          })}
         </ChatWindowContainer>
         <div>
           <label htmlFor="topic-url" hidden>
@@ -357,7 +397,7 @@ export default function MeetingChatRoom() {
             </button>
           </ChattingInputDiv>
         </form>
-
+        {/* 사이드 메뉴 */}
         {showRightMenu && (
           <>
             <Overlay
