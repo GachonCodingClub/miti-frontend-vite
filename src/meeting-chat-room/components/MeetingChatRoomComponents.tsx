@@ -103,6 +103,7 @@ export const OtherChattingFrame = styled(MyChattingFrame)`
 export const OtherUserName = styled.span`
   font-size: 14px;
   letter-spacing: -0.224px;
+  margin-top: 10px;
 `;
 
 // 다른 유저 채팅 하나하나
