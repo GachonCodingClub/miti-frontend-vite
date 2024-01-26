@@ -25,9 +25,8 @@ export const ChatWindowContainer = styled.div`
 // 날짜랑 누구누구 입장/퇴장 프레임
 export const DateAlertFrame = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  width: 100%;
+  justify-content: center;
 `;
 
 // 날짜 텍스트
