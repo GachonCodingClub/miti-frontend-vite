@@ -12,6 +12,9 @@ import {
   MyChatting,
   OtherChatting,
 } from "./MeetingChatRoomComponents";
+import { getApi } from "../../api/getApi";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
 
 interface ChatMessage {
   createdAt: string;
@@ -28,6 +31,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   chatList,
   profileNickname,
 }) => {
+  const { id } = useParams();
+
   const getTimeString = (createdAt: string) => {
     const createdTime = new Date(createdAt);
     const hour = createdTime.getHours() + 21;
@@ -49,6 +54,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
   };
 
+  const getPage = async () => {
+    try {
+      const response = await getApi({ link: `/message/${id}/page` });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching group data:", error);
+      throw error;
+    }
+  };
+
+  const { data } = useQuery(["page", id], getPage, {
+    enabled: !!id,
+  });
+
+  console.log(data);
   return (
     <>
       {chatList.map((chat, index) => {
