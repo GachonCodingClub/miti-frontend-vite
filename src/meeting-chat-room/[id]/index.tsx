@@ -87,7 +87,7 @@ export default function MeetingChatRoom() {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error("Error fetching group data:", error);
+      console.error("채팅 데이터 불러오기 오류", error);
       throw error; // 에러를 상위로 전파
     }
   };
@@ -161,7 +161,6 @@ export default function MeetingChatRoom() {
     client.current.deactivate();
   };
 
-  // 입력값이 변경될 때마다 상태를 업데이트 하는 이벤트 핸들러 함수들
   // 채팅 메시지
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
@@ -190,7 +189,6 @@ export default function MeetingChatRoom() {
     setMessage("");
   }; // 제출된 JSON문자열은 서버로 전송됨
 
-  // 컴포넌트가 마운트될 때 한 번만 호출되는 효과 훅
   useEffect(() => {
     connect(); // // 컴포넌트가 마운트될 때 WebSocket 연결
     return () => disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
@@ -201,7 +199,6 @@ export default function MeetingChatRoom() {
 
   const setRoomDelted = useSetRecoilState(SnackBarAtom);
   const handleDeleteRoom = () => {
-    // 방 나가기 버튼 클릭 시 실행되는 함수
     setRoomDelted(true);
     navigate(`${ROUTES.MEETING_LIST}`);
     // 3초 후에 setRoomDelted를 false로 변경
@@ -210,8 +207,7 @@ export default function MeetingChatRoom() {
     }, 3000);
   };
 
-  const [showMeetingDeleteAndRunDialog, setShowMeetingDeleteAndRunDialog] =
-    useState(false);
+  const [showMeetingDeleteDialog, setShowMeetingDeleteDialog] = useState(false);
 
   // 채팅방 들어왔을 때 스크롤 최하단에 위치
   const chatEndRef = useRef<HTMLDivElement | null>(null);
@@ -235,16 +231,12 @@ export default function MeetingChatRoom() {
       <MeetingChatRoomScreen>
         <ChatWindowContainer>
           <ChatWindow chatList={chatList} profileNickname={profile?.nickname} />
-          <div ref={chatEndRef}></div>
+          <div ref={chatEndRef} />
         </ChatWindowContainer>
         <div>
-          <label htmlFor="topic-url" hidden>
-            Topic URL:
-          </label>
+          <label htmlFor="topic-url" hidden />
           <input type="number" id="topic-url" value={id} hidden />
-          <button hidden onClick={() => subscribe()}>
-            Subscribe
-          </button>
+          <button hidden onClick={() => subscribe()} />
         </div>
         <form onSubmit={(event) => handleSubmit(event, message, id)}>
           <input placeholder="groupId" type="number" value={id} hidden />
@@ -254,7 +246,7 @@ export default function MeetingChatRoom() {
               type="text"
               value={message}
               onChange={handleChangeMessage}
-            ></ChattingInput>
+            />
             <button type="submit">
               <SendIcon />
             </button>
@@ -275,11 +267,11 @@ export default function MeetingChatRoom() {
               animate={showRightMenu ? "visible" : "hidden"}
               variants={MenuAnimation}
             >
-              <SideMenu dialogProps={setShowMeetingDeleteAndRunDialog} />
+              <SideMenu dialogProps={setShowMeetingDeleteDialog} />
             </RightMenuFrame>
           </>
         )}
-        {showMeetingDeleteAndRunDialog && (
+        {showMeetingDeleteDialog && (
           <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
             <Dialog
               title="미팅 삭제하고 나가기"
@@ -288,7 +280,7 @@ export default function MeetingChatRoom() {
               left="취소"
               right="미팅 삭제"
               onLeftClick={() => {
-                setShowMeetingDeleteAndRunDialog(false);
+                setShowMeetingDeleteDialog(false);
               }}
               onRightClick={handleDeleteRoom}
             />
