@@ -3,7 +3,7 @@ import {
   ChatWindowContainer,
   DateAlertFrame,
   DateText,
-  AlertText,
+  //AlertText,
   ChatWindowFrame,
   MyChattingFrame,
   MyChatting,
@@ -79,7 +79,6 @@ export default function MeetingChatRoom() {
         const chatResponse = await getApi({ link: `/message/${id}` });
         const chatData = await chatResponse.json();
         console.log("기존 채팅 데이터", chatData);
-
         // 채팅 데이터를 chatList 상태에 설정하여 화면에 표시
         setChatList(
           chatData.map(
@@ -285,10 +284,6 @@ export default function MeetingChatRoom() {
       />
       <MeetingChatRoomScreen>
         <ChatWindowContainer>
-          <DateAlertFrame>
-            <DateText>2023년 12월 2일 토요일</DateText>
-            <AlertText>김현중 님이 입장했습니다.</AlertText>
-          </DateAlertFrame>
           {chatList.map((chat, index) => {
             let displayTime = true;
             const timeValue = getTimeString(chat.createdAt);
@@ -311,10 +306,35 @@ export default function MeetingChatRoom() {
               if (prevSender !== chat.nickname) displayNickname = true;
               reduceMargin = true;
             }
+
+            const getDate = (dateString: string) => {
+              const date = new Date(dateString);
+              const year = date.getFullYear();
+              const month = (date.getMonth() + 1).toString().padStart(2, "0");
+              const day = date.getDate().toString().padStart(2, "0");
+              const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][
+                date.getDay()
+              ];
+              return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
+            };
+
+            let displayDate = false;
+            if (
+              index === 0 ||
+              getDate(chatList[index - 1].createdAt) !== getDate(chat.createdAt)
+            ) {
+              displayDate = true;
+            }
+
             return (
               <ChatWindowFrame key={index}>
                 {chat.nickname === profile.nickname ? (
                   <MyChattingFrame>
+                    <DateAlertFrame>
+                      {displayDate && (
+                        <DateText>{getDate(chat.createdAt)}</DateText>
+                      )}
+                    </DateAlertFrame>
                     <MyChatting>
                       {displayTime ? (
                         <ChattingTime>
@@ -333,7 +353,6 @@ export default function MeetingChatRoom() {
                     {displayNickname ? (
                       <OtherUserName>{chat.nickname}</OtherUserName>
                     ) : null}
-
                     <OtherChatting>
                       {displayTime ? (
                         <ChattingTime>
