@@ -69,6 +69,7 @@ export default function MeetingChatRoom() {
             })
           )
         );
+        scrollToBottom();
       } catch (error) {
         console.error("채팅 데이터 불러오기 오류", error);
       }
@@ -157,9 +158,11 @@ export default function MeetingChatRoom() {
       /* 서버에서 받은 body 객체에서 body 속성을 추출하고 
         이를 JSON 형태로 파싱하여 채팅 메시지로 사용 */
       const json_body = JSON.parse(body.body);
-      console.log("바디", body.body);
       // 채팅 메시지 리스트 업데이트
       setChatList((_chat_list) => [..._chat_list, { ...json_body }]);
+      requestAnimationFrame(() => {
+        scrollToBottom();
+      });
     });
   };
 
@@ -251,6 +254,12 @@ export default function MeetingChatRoom() {
   const [showMeetingDeleteAndRunDialog, setShowMeetingDeleteAndRunDialog] =
     useState(false);
 
+  // 채팅방 들어왔을 때 스크롤 최하단에 위치
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  function scrollToBottom() {
+    chatEndRef.current?.scrollIntoView();
+  }
+
   return (
     <>
       <TopBar
@@ -260,7 +269,8 @@ export default function MeetingChatRoom() {
       />
       <MeetingChatRoomScreen>
         <ChatWindowContainer>
-          <ChatWindow chatList={chatList} profileNickname={profile.nickname} />
+          <ChatWindow chatList={chatList} profileNickname={profile?.nickname} />
+          <div ref={chatEndRef}></div>
         </ChatWindowContainer>
         <div>
           <label htmlFor="topic-url" hidden>
@@ -301,12 +311,12 @@ export default function MeetingChatRoom() {
               value={message}
               onChange={handleChangeMessage}
             ></ChattingInput>
-
             <button type="submit">
               <SendIcon />
             </button>
           </ChattingInputDiv>
         </form>
+
         {/* 사이드 메뉴 */}
         {showRightMenu && (
           <>
