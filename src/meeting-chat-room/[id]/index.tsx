@@ -1,19 +1,6 @@
 import {
   MeetingChatRoomScreen,
   ChatWindowContainer,
-  DateAlertFrame,
-  DateText,
-  //AlertText,
-  ChatWindowFrame,
-  MyChattingFrame,
-  MyChatting,
-  MyChattingBubble,
-  ChattingText,
-  ChattingTime,
-  OtherChattingFrame,
-  OtherUserName,
-  OtherChatting,
-  OtherChattingBubble,
   ChattingInputDiv,
   ChattingInput,
   RightMenuFrame,
@@ -33,6 +20,7 @@ import { Dialog } from "../../components/Button";
 import { ROUTES } from "../../routes";
 import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
+import ChatWindow from "../components/ChatWindow";
 
 /* Topic URL, GroupID, sender가 모두 작성된 상태에서만 메시지가 보내짐
       Connect -> Subscribe -> Publish -> Disconnect 순으로 작동
@@ -42,18 +30,6 @@ import { SnackBarAtom } from "../../atoms";
       topicURL이 유효하면 그 채팅 메시지 리스트를 가져옴 
       그리고 Publish는 그냥 메시지를 서버(/pub/send)로 보내는 함수 
       Disconnect는 제곧내 */
-
-const getTimeString = (createdAt: string) => {
-  const createdTime = new Date(createdAt);
-  const hour = createdTime.getHours() + 21;
-  const minute = createdTime.getMinutes();
-  const hourValue = hour % 12 || 12;
-  const minuteValue = minute < 10 ? `0${minute}` : minute;
-  const ampm = hourValue >= 12 ? "오전" : "오후";
-  const timestamp = `${ampm} ${hourValue} : ${minuteValue}분`;
-
-  return timestamp;
-};
 
 // MeetingChatRoom 함수
 export default function MeetingChatRoom() {
@@ -284,92 +260,7 @@ export default function MeetingChatRoom() {
       />
       <MeetingChatRoomScreen>
         <ChatWindowContainer>
-          {chatList.map((chat, index) => {
-            let displayTime = true;
-            const timeValue = getTimeString(chat.createdAt);
-            if (index !== chatList.length - 1) {
-              const nextSender = chatList[index + 1].nickname;
-              if (nextSender === chat.nickname) {
-                const nextTimeValue = getTimeString(
-                  chatList[index + 1].createdAt
-                );
-                if (nextTimeValue === timeValue) {
-                  displayTime = false;
-                }
-              }
-            }
-
-            let displayNickname = false;
-            let reduceMargin = false;
-            if (index !== 0) {
-              const prevSender = chatList[index - 1].nickname;
-              if (prevSender !== chat.nickname) displayNickname = true;
-              reduceMargin = true;
-            }
-
-            const getDate = (dateString: string) => {
-              const date = new Date(dateString);
-              const year = date.getFullYear();
-              const month = (date.getMonth() + 1).toString().padStart(2, "0");
-              const day = date.getDate().toString().padStart(2, "0");
-              const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][
-                date.getDay()
-              ];
-              return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
-            };
-
-            let displayDate = false;
-            if (
-              index === 0 ||
-              getDate(chatList[index - 1].createdAt) !== getDate(chat.createdAt)
-            ) {
-              displayDate = true;
-            }
-
-            return (
-              <ChatWindowFrame key={index}>
-                {chat.nickname === profile.nickname ? (
-                  <MyChattingFrame>
-                    <DateAlertFrame>
-                      {displayDate && (
-                        <DateText>{getDate(chat.createdAt)}</DateText>
-                      )}
-                    </DateAlertFrame>
-                    <MyChatting>
-                      {displayTime ? (
-                        <ChattingTime>
-                          {getTimeString(chat.createdAt)}
-                        </ChattingTime>
-                      ) : null}
-                      <MyChattingBubble
-                        style={reduceMargin ? { marginBottom: -10 } : {}}
-                      >
-                        <ChattingText>{chat.content}</ChattingText>
-                      </MyChattingBubble>
-                    </MyChatting>
-                  </MyChattingFrame>
-                ) : (
-                  <OtherChattingFrame>
-                    {displayNickname ? (
-                      <OtherUserName>{chat.nickname}</OtherUserName>
-                    ) : null}
-                    <OtherChatting>
-                      {displayTime ? (
-                        <ChattingTime>
-                          {getTimeString(chat.createdAt)}
-                        </ChattingTime>
-                      ) : null}
-                      <OtherChattingBubble
-                        style={reduceMargin ? { marginBottom: -10 } : {}}
-                      >
-                        <ChattingText>{chat.content}</ChattingText>
-                      </OtherChattingBubble>
-                    </OtherChatting>
-                  </OtherChattingFrame>
-                )}
-              </ChatWindowFrame>
-            );
-          })}
+          <ChatWindow chatList={chatList} profileNickname={profile.nickname} />
         </ChatWindowContainer>
         <div>
           <label htmlFor="topic-url" hidden>
