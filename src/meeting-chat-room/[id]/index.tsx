@@ -52,26 +52,32 @@ export default function MeetingChatRoom() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
+  const [pageSize, setPageSize] = useState(20);
+
   // 기존의 채팅 데이터 가져오기
   useEffect(() => {
     const getChatting = async () => {
       try {
-        const chatResponse = await getApi({ link: `/message/${id}` });
+        const chatResponse = await getApi({
+          link: `/message/${id}/page?page=0&&size=${pageSize}`,
+        });
         const chatData = await chatResponse.json();
         console.log("기존 채팅 데이터", chatData);
         // 채팅 데이터를 chatList 상태에 설정하여 화면에 표시
         setChatList(
-          chatData.map(
-            (chat: {
-              nickname: string;
-              content: string;
-              createdAt: string;
-            }) => ({
-              nickname: chat.nickname,
-              content: chat.content,
-              createdAt: chat.createdAt,
-            })
-          )
+          chatData
+            .reverse()
+            .map(
+              (chat: {
+                nickname: string;
+                content: string;
+                createdAt: string;
+              }) => ({
+                nickname: chat.nickname,
+                content: chat.content,
+                createdAt: chat.createdAt,
+              })
+            )
         );
         scrollToBottom();
       } catch (error) {
@@ -79,7 +85,11 @@ export default function MeetingChatRoom() {
       }
     };
     getChatting();
-  }, [id]); // 'id'를 의존성으로 포함하여 'id' 매개변수가 변경될 때마다 채팅 가져옴.
+  }, [id, pageSize]); // 'id'를 의존성으로 포함하여 'id' 매개변수가 변경될 때마다 채팅 가져옴.
+
+  const onAddPageSizeClick = () => {
+    setPageSize((prev) => prev + 20);
+  };
 
   const getGroup = async () => {
     try {
@@ -102,7 +112,6 @@ export default function MeetingChatRoom() {
   // 미티 웹소켓 주소
   const brokerUrl =
     "ws://mitiappserver-env.eba-r2uts3k4.ap-northeast-2.elasticbeanstalk.com/ws/chat/websocket";
-  console.log(brokerUrl);
   // client 객체가 StompJs.Client 타입을 따르도록
   const client = useRef<StompJs.Client>(null!); // WebSocket 클라이언트 객체
   // useRef 초기값을 null이 아님으로 설정
@@ -229,6 +238,7 @@ export default function MeetingChatRoom() {
         }
       />
       <MeetingChatRoomScreen>
+        <button onClick={onAddPageSizeClick}>ㅎㅇ</button>
         <ChatWindowContainer>
           <ChatWindow chatList={chatList} profileNickname={profile?.nickname} />
           <div ref={chatEndRef} />
@@ -252,7 +262,6 @@ export default function MeetingChatRoom() {
             </button>
           </ChattingInputDiv>
         </form>
-
         {/* 사이드 메뉴 */}
         {showRightMenu && (
           <>
