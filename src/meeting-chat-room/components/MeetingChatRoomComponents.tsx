@@ -35,6 +35,7 @@ export const DateText = styled.span`
   font-size: 10px;
   line-height: 12px;
   letter-spacing: -0.1px;
+  padding: 20px 0px;
 `;
 
 // 누구 입장/퇴장 텍스트
