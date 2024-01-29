@@ -52,44 +52,48 @@ export default function MeetingChatRoom() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState<number>(20);
 
   // 기존의 채팅 데이터 가져오기
-  useEffect(() => {
-    const getChatting = async () => {
-      try {
-        const chatResponse = await getApi({
-          link: `/message/${id}/page?page=0&&size=${pageSize}`,
-        });
-        const chatData = await chatResponse.json();
-        console.log("기존 채팅 데이터", chatData);
-        // 채팅 데이터를 chatList 상태에 설정하여 화면에 표시
-        setChatList(
-          chatData
-            .reverse()
-            .map(
-              (chat: {
-                nickname: string;
-                content: string;
-                createdAt: string;
-              }) => ({
-                nickname: chat.nickname,
-                content: chat.content,
-                createdAt: chat.createdAt,
-              })
-            )
+
+  // getChatting 함수에서 채팅 데이터를 처리하는 부분을 수정합니다.
+  const getChatting = async () => {
+    try {
+      const chatResponse = await getApi({
+        link: `/message/${id}/page?page=0&&size=${pageSize}`,
+      });
+      const chatData = await chatResponse.json();
+      const formattedChatData = chatData
+        .reverse()
+        .map(
+          (chat: { nickname: string; content: string; createdAt: string }) => ({
+            nickname: chat.nickname,
+            content: chat.content,
+            createdAt: chat.createdAt,
+          })
         );
-        scrollToBottom();
-      } catch (error) {
-        console.error("채팅 데이터 불러오기 오류", error);
-      }
-    };
+      console.log("채팅 데이터", formattedChatData);
+
+      setChatList(formattedChatData);
+      scrollToBottom();
+    } catch (error) {
+      console.error("채팅 데이터 불러오기 오류", error);
+    }
+  };
+
+  useEffect(() => {
     getChatting();
-  }, [id, pageSize]); // 'id'를 의존성으로 포함하여 'id' 매개변수가 변경될 때마다 채팅 가져옴.
+  }, [id, pageSize]);
 
   const onAddPageSizeClick = () => {
     setPageSize((prev) => prev + 20);
   };
+
+  // 채팅방 들어왔을 때 스크롤 최하단에 위치
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  function scrollToBottom() {
+    chatEndRef.current?.scrollIntoView();
+  }
 
   const getGroup = async () => {
     try {
@@ -218,11 +222,7 @@ export default function MeetingChatRoom() {
 
   const [showMeetingDeleteDialog, setShowMeetingDeleteDialog] = useState(false);
 
-  // 채팅방 들어왔을 때 스크롤 최하단에 위치
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
-  function scrollToBottom() {
-    chatEndRef.current?.scrollIntoView();
-  }
+  // 한무 스크롤
 
   return (
     <>
@@ -238,8 +238,18 @@ export default function MeetingChatRoom() {
         }
       />
       <MeetingChatRoomScreen>
-        <button onClick={onAddPageSizeClick}>ㅎㅇ</button>
+        <button
+          style={{
+            position: "fixed",
+            left: 20,
+            top: 20,
+            background: "red",
+            padding: 20,
+          }}
+          onClick={onAddPageSizeClick}
+        ></button>
         <ChatWindowContainer>
+          <div>여기보면</div>
           <ChatWindow chatList={chatList} profileNickname={profile?.nickname} />
           <div ref={chatEndRef} />
         </ChatWindowContainer>
