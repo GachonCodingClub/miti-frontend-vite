@@ -52,43 +52,6 @@ export default function MeetingChatRoom() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
-  const [pageSize, setPageSize] = useState<number>(20);
-
-  // 기존의 채팅 데이터 가져오기
-
-  // getChatting 함수에서 채팅 데이터를 처리하는 부분을 수정합니다.
-  const getChatting = async () => {
-    try {
-      const chatResponse = await getApi({
-        link: `/message/${id}/page?page=0&&size=${pageSize}`,
-      });
-      const chatData = await chatResponse.json();
-      const formattedChatData = chatData
-        .reverse()
-        .map(
-          (chat: { nickname: string; content: string; createdAt: string }) => ({
-            nickname: chat.nickname,
-            content: chat.content,
-            createdAt: chat.createdAt,
-          })
-        );
-      console.log("채팅 데이터", formattedChatData);
-
-      setChatList(formattedChatData);
-      scrollToBottom();
-    } catch (error) {
-      console.error("채팅 데이터 불러오기 오류", error);
-    }
-  };
-
-  useEffect(() => {
-    getChatting();
-  }, [id, pageSize]);
-
-  const onAddPageSizeClick = () => {
-    setPageSize((prev) => prev + 20);
-  };
-
   // 채팅방 들어왔을 때 스크롤 최하단에 위치
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   function scrollToBottom() {
@@ -221,9 +184,6 @@ export default function MeetingChatRoom() {
   };
 
   const [showMeetingDeleteDialog, setShowMeetingDeleteDialog] = useState(false);
-
-  // 한무 스크롤
-
   return (
     <>
       <TopBar
@@ -238,20 +198,13 @@ export default function MeetingChatRoom() {
         }
       />
       <MeetingChatRoomScreen>
-        <button
-          style={{
-            position: "fixed",
-            left: 20,
-            top: 20,
-            background: "red",
-            padding: 20,
-          }}
-          onClick={onAddPageSizeClick}
-        ></button>
         <ChatWindowContainer>
-          <div>여기보면</div>
-          <ChatWindow chatList={chatList} profileNickname={profile?.nickname} />
-          <div ref={chatEndRef} />
+          <ChatWindow
+            chatList={chatList}
+            setChatList={setChatList}
+            profileNickname={profile?.nickname}
+            id={id}
+          />
         </ChatWindowContainer>
         <div>
           <label htmlFor="topic-url" hidden />

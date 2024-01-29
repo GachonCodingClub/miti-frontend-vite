@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   MyChattingFrame,
   ChattingTime,
@@ -11,7 +11,9 @@ import {
   DateText,
   MyChatting,
   OtherChatting,
+  ChatWindowContainer,
 } from "./MeetingChatRoomComponents";
+import { getApi } from "../../api/getApi";
 
 interface ChatMessage {
   createdAt: string;
@@ -22,12 +24,51 @@ interface ChatMessage {
 interface ChatWindowProps {
   chatList: ChatMessage[];
   profileNickname: string;
+  id: string | undefined;
+  setChatList: React.Dispatch<ChatMessage[]>;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
   chatList,
+  setChatList,
   profileNickname,
+  id,
 }) => {
+  // 기존의 채팅 데이터 가져오기
+  const getChatting = async () => {
+    try {
+      const chatResponse = await getApi({
+        link: `/message/${id}/page?page=0&&size=${pageSize}`,
+      });
+      const chatData = await chatResponse.json();
+      const formattedChatData = chatData
+        .reverse()
+        .map(
+          (chat: { nickname: string; content: string; createdAt: string }) => ({
+            nickname: chat.nickname,
+            content: chat.content,
+            createdAt: chat.createdAt,
+          })
+        );
+      console.log("채팅 데이터", formattedChatData);
+
+      setChatList(formattedChatData);
+      scrollToBottom();
+    } catch (error) {
+      console.error("채팅 데이터 불러오기 오류", error);
+    }
+  };
+  const [pageSize, setPageSize] = useState<number>(20);
+
+  useEffect(() => {
+    getChatting();
+  }, [id, pageSize]);
+
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  function scrollToBottom() {
+    chatEndRef.current?.scrollIntoView();
+  }
+
   const getTimeString = (createdAt: string) => {
     const createdTime = new Date(createdAt);
     const hour = createdTime.getHours() + 21;
@@ -50,7 +91,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   return (
-    <>
+    <ChatWindowContainer>
       {chatList.map((chat, index) => {
         let displayTime = true;
         const timeValue = getTimeString(chat.createdAt);
@@ -120,7 +161,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </React.Fragment>
         );
       })}
-    </>
+      <div ref={chatEndRef} />
+    </ChatWindowContainer>
   );
 };
 
