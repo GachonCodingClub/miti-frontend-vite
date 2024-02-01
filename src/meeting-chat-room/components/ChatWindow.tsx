@@ -34,11 +34,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   profileNickname,
   id,
 }) => {
+  let page = 0;
+  let size = 20;
   // 기존의 채팅 데이터 가져오기
   const getChatting = async () => {
     try {
       const chatResponse = await getApi({
-        link: `/message/${id}/page?page=0&&size=${pageSize}`,
+        link: `/message/${id}/page?page=${page}&&size=${size}`,
       });
       const chatData = await chatResponse.json();
       const formattedChatData = chatData
@@ -58,11 +60,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       console.error("채팅 데이터 불러오기 오류", error);
     }
   };
-  const [pageSize, setPageSize] = useState<number>(20);
 
   useEffect(() => {
     getChatting();
-  }, [id, pageSize]);
+  }, [id, page]);
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   function scrollToBottom() {

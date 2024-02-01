@@ -52,12 +52,6 @@ export default function MeetingChatRoom() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
-  // 채팅방 들어왔을 때 스크롤 최하단에 위치
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
-  function scrollToBottom() {
-    chatEndRef.current?.scrollIntoView();
-  }
-
   const getGroup = async () => {
     try {
       const response = await getApi({ link: `/groups/${id}` });
@@ -124,9 +118,6 @@ export default function MeetingChatRoom() {
       const json_body = JSON.parse(body.body);
       // 채팅 메시지 리스트 업데이트
       setChatList((_chat_list) => [..._chat_list, { ...json_body }]);
-      requestAnimationFrame(() => {
-        scrollToBottom();
-      });
     });
   };
 
@@ -184,6 +175,7 @@ export default function MeetingChatRoom() {
   };
 
   const [showMeetingDeleteDialog, setShowMeetingDeleteDialog] = useState(false);
+
   return (
     <>
       <TopBar
