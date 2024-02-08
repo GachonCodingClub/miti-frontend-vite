@@ -1,4 +1,4 @@
-import { LongOrangeBtn } from "../../components/Button";
+import { DialogOneBtn, LongOrangeBtn } from "../../components/Button";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { getApi } from "../../api/getApi";
@@ -12,7 +12,6 @@ import { TopBar } from "../../components/TopBar";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
 import { IGroup } from "../../model/group";
 import { IParties } from "../../model/party";
-import { ROUTES } from "../../routes";
 import { getDate } from "../../utils";
 import {
   DetailScreen,
@@ -27,12 +26,25 @@ import {
   JoinButtonBox,
 } from "../components/meetingDetail.Components";
 import { useNavigate, useParams } from "react-router-dom";
+import { Overlay } from "../../sign-up/components/detailComponents";
 
 export default function MeetingDetail() {
   useLoginGuard();
   const navigate = useNavigate(); // useNavigate 사용
   const { id } = useParams();
   const [date, setDate] = useState("");
+
+  const [token, setToken] = useState(""); // 추가: 토큰 상태 추가
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  const [showDialog, setShowDialog] = useState(false);
+
   const getGroup = () =>
     getApi({ link: `/groups/${id}` }).then(
       (response) => response.json() as Promise<IGroup>
@@ -40,6 +52,7 @@ export default function MeetingDetail() {
   const { data: group } = useQuery(["group", id], getGroup, {
     enabled: !!id,
   });
+
   const getParties = () =>
     getApi({ link: `/groups/${id}/parties` }).then(
       (response) => response.json() as Promise<IParties>
@@ -47,21 +60,59 @@ export default function MeetingDetail() {
   const { data: parties } = useQuery(["parties", id], getParties, {
     enabled: !!id,
   });
+  console.log(parties);
+
+  const getUserProfile = async () => {
+    const response = await getApi({ link: `/users/profile/my` });
+    const data = await response.json();
+    return data;
+  };
+  const { data: profile } = useQuery(["profile"], getUserProfile);
+  console.log(profile.nickname);
   useEffect(() => {
     if (group) {
       setDate(getDate(group.meetDate));
     }
   }, [group]);
-  const onClick = () => {
-    alert("미팅 참여 신청이 완료되었습니다.");
-    navigate(`${ROUTES.MEETING_LIST}`);
+
+  const onSubmitClick = () => {
+    // navigate(`${ROUTES.MEETING_LIST}`);
+    const PostUrl = `${import.meta.env.VITE_BASE_URL}/party/${id}`;
+    const bodyData = {
+      nicknames: [profile.nickname],
+    };
+    console.log(JSON.stringify(bodyData));
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
+    };
+
+    fetch(PostUrl, {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify(bodyData),
+      headers: headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error(
+            `API 오류: ${response.status} - ${response.statusText}`
+          );
+          return response.json();
+        }
+        setShowDialog(true);
+        return response.json();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
+
   // token을 없앴을 때 문제 없이 로그인 화면으로 가지 않고 에러가 생김
   if (group == null || parties == null) {
-    console.log("a");
     return null;
   }
-  console.log("b");
+
   return (
     <>
       <TopBar
@@ -142,9 +193,22 @@ export default function MeetingDetail() {
             </DetailMember>
           </DetailContents>
           <JoinButtonBox>
-            <LongOrangeBtn text="미팅 참여 신청" onClick={onClick} />
+            <LongOrangeBtn text="미팅 참여 신청" onClick={onSubmitClick} />
           </JoinButtonBox>
         </DetailBox>
+
+        {showDialog && (
+          <Overlay style={{ zIndex: "30" }}>
+            <DialogOneBtn
+              title="참여 신청 완료"
+              contents=""
+              right="닫기"
+              onRightClick={() => {
+                setShowDialog(false);
+              }}
+            />
+          </Overlay>
+        )}
       </DetailScreen>
     </>
   );
