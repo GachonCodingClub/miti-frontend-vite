@@ -142,7 +142,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
         </MenuMemberContainer>
         <ParticipationReqButton
           onClick={() => {
-            console.log("참여 요청");
+            navigate(`/request-list/${id}`);
           }}
         >
           참여 요청 목록

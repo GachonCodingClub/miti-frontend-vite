@@ -99,9 +99,9 @@ const SmOrangeText = styled.span`
   letter-spacing: -0.12px;
 `;
 
-export const SmallOrangeBtn = ({ text }: IBtnText) => {
+export const SmallOrangeBtn = ({ text, onClick }: IBtnText) => {
   return (
-    <SmOrange>
+    <SmOrange onClick={onClick} type="button">
       <SmOrangeText>{text}</SmOrangeText>
     </SmOrange>
   );
@@ -122,9 +122,9 @@ const SmWhiteText = styled(SmOrangeText)`
   color: var(--grey-grey-500, #767170);
 `;
 
-export const SmallWhiteBtn = ({ text }: IBtnText) => {
+export const SmallWhiteBtn = ({ text, onClick }: IBtnText) => {
   return (
-    <SmWhite>
+    <SmWhite onClick={onClick} type="button">
       <SmWhiteText>{text}</SmWhiteText>
     </SmWhite>
   );
