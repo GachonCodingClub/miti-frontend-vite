@@ -68,7 +68,7 @@ export default function MeetingDetail() {
     return data;
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
-  console.log(profile.nickname);
+  console.log(profile?.nickname);
   useEffect(() => {
     if (group) {
       setDate(getDate(group.meetDate));

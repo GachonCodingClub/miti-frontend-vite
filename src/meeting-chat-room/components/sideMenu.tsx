@@ -60,6 +60,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
   const { data: group } = useQuery(["group", id], getGroup, {
     enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
   });
+  console.log(group);
   const [date, setDate] = useState("");
   useEffect(() => {
     if (group) {
@@ -95,7 +96,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
               <MenuDateLocationFrame>
                 <PersonIcon />
                 <MenuDateLocationText>
-                  ?명 / {group.maxUsers}명
+                  {group.nowUsers}명 / {group.maxUsers}명
                 </MenuDateLocationText>
               </MenuDateLocationFrame>
             </MenuDateLocationMemberContainer>

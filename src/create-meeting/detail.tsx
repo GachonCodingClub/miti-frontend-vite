@@ -299,20 +299,39 @@ export default function CreateMeetingDetail() {
       />
       <CreateMeetingDetailScreen>
         <DatePlaceMemberFrame>
-          <MeetingDetailsInputs
-            selecteDate={selecteDate}
-            handleDateChange={handleDateChange}
-            dateError={dateError}
-            inputPlace={inputPlace}
-            onPlaceChange={onPlaceChange}
-            placeError={placeError}
-            inputMember={inputMember}
-            onMemberChange={onMemberChange}
-            memberError={memberError}
-            inputMemberDisabled={inputMemberDisabled}
-            setInputMemberDisabled={setInputMemberDisabled}
-            setMemberCountModi={setMemberCountModi}
-          />
+          {!isUpdate ? (
+            <MeetingDetailsInputs
+              selecteDate={selecteDate}
+              handleDateChange={handleDateChange}
+              dateError={dateError}
+              inputPlace={inputPlace}
+              onPlaceChange={onPlaceChange}
+              placeError={placeError}
+              inputMember={inputMember}
+              onMemberChange={onMemberChange}
+              memberError={memberError}
+              inputMemberDisabled={inputMemberDisabled}
+              setInputMemberDisabled={setInputMemberDisabled}
+              setMemberCountModi={setMemberCountModi}
+            />
+          ) : (
+            <MeetingDetailsInputs
+              selecteDate={selecteDate}
+              handleDateChange={handleDateChange}
+              dateError={dateError}
+              inputPlace={inputPlace}
+              onPlaceChange={onPlaceChange}
+              placeError={placeError}
+              inputMember={inputMember}
+              onMemberChange={() => {}}
+              memberError={"미팅 인원은 수정할 수 없어요"}
+              inputMemberDisabled={true}
+              setInputMemberDisabled={setInputMemberDisabled}
+              setMemberCountModi={() => {
+                setMemberCountModi(false);
+              }}
+            />
+          )}
 
           {memberCountModi && (
             <Overlay style={{ zIndex: "30" }}>
