@@ -28,7 +28,7 @@ export default function MeetingList() {
     try {
       setLoading(true);
       console.log("미팅리스트:", pins);
-      const res = await getApi({ link: `/groups?page=${page}&&size=10` });
+      const res = await getApi({ link: `/groups?page=${page}` });
       const data = await res.json();
       setPins((prev) => [...prev, ...data.content]);
     } catch (error) {
@@ -85,7 +85,16 @@ export default function MeetingList() {
           }}
           style={{ background: "tomato" }}
         >
-          채팅방으로 이동{" "}
+          채팅방으로 이동
+        </button>
+
+        <button
+          onClick={() => {
+            navigate("/meeting-chat-room/213");
+          }}
+          style={{ background: "skyblue" }}
+        >
+          213번 방으로
         </button>
         {/* 미팅 삭제하기를 통해 미팅리스트로 이동했을 경우 */}
         {isRoomDeleted && (

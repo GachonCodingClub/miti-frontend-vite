@@ -30,11 +30,11 @@ import { Overlay } from "../../sign-up/components/detailComponents";
 
 export default function MeetingDetail() {
   useLoginGuard();
-  const navigate = useNavigate(); // useNavigate 사용
+  const navigate = useNavigate();
   const { id } = useParams();
   const [date, setDate] = useState("");
 
-  const [token, setToken] = useState(""); // 추가: 토큰 상태 추가
+  const [token, setToken] = useState(""); // 토큰 상태 추가
   useEffect(() => {
     // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
     const storedToken = localStorage.getItem("token");
@@ -75,17 +75,16 @@ export default function MeetingDetail() {
     }
   }, [group]);
 
+  const bodyData = {
+    nicknames: [],
+  };
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
+  };
+
   const onSubmitClick = () => {
-    // navigate(`${ROUTES.MEETING_LIST}`);
     const PostUrl = `${import.meta.env.VITE_BASE_URL}/party/${id}`;
-    const bodyData = {
-      nicknames: [profile.nickname],
-    };
-    console.log(JSON.stringify(bodyData));
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-    };
 
     fetch(PostUrl, {
       method: "POST",
