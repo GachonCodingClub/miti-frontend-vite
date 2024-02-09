@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   MyChattingFrame,
   ChattingTime,
@@ -34,13 +34,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   profileNickname,
   id,
 }) => {
-  let page = 0;
-  let size = 20;
   // 기존의 채팅 데이터 가져오기
   const getChatting = async () => {
     try {
       const chatResponse = await getApi({
-        link: `/message/${id}/page?page=${page}&&size=${size}`,
+        link: `/message/${id}/page?page=${0}&&size=${10}`,
       });
       const chatData = await chatResponse.json();
       const formattedChatData = chatData
@@ -63,7 +61,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   useEffect(() => {
     getChatting();
-  }, [id, page]);
+  }, [id]);
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   function scrollToBottom() {
@@ -122,9 +120,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           displayDate = true;
         }
 
+        // [MITI] 문자열이 포함되어 있는지 확인
+        const isMITIPresent = chat.content.includes("[MITI]");
+        // [MITI] 문자열이 포함되어 있다면 해당 부분을 제거한 콘텐츠 생성
+        const contentWithoutMITI = chat.content.replace("[MITI]", "");
+
         return (
           <React.Fragment key={index}>
-            {chat.nickname === profileNickname ? (
+            {isMITIPresent ? (
+              <DateAlertFrame>
+                <ChattingText>{contentWithoutMITI}</ChattingText>
+              </DateAlertFrame>
+            ) : chat.nickname === profileNickname ? (
               <MyChattingFrame>
                 <DateAlertFrame>
                   {displayDate && (
