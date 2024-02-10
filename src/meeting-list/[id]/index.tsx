@@ -1,4 +1,8 @@
-import { DialogOneBtn, LongOrangeBtn } from "../../components/Button";
+import {
+  DialogOneBtn,
+  LongOrangeBtn,
+  LongWhiteBtn,
+} from "../../components/Button";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { getApi } from "../../api/getApi";
@@ -27,6 +31,7 @@ import {
 } from "../components/meetingDetail.Components";
 import { useNavigate, useParams } from "react-router-dom";
 import { Overlay } from "../../sign-up/components/detailComponents";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -35,9 +40,11 @@ export default function MeetingDetail() {
   const [date, setDate] = useState("");
 
   const [token, setToken] = useState(""); // 토큰 상태 추가
+  const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
     // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
     const storedToken = localStorage.getItem("token");
+    setDecodedToken(jwtDecode(storedToken + ""));
     if (storedToken) {
       setToken(storedToken);
     }
@@ -60,7 +67,6 @@ export default function MeetingDetail() {
   const { data: parties } = useQuery(["parties", id], getParties, {
     enabled: !!id,
   });
-  console.log(parties);
 
   const getUserProfile = async () => {
     const response = await getApi({ link: `/users/profile/my` });
@@ -68,12 +74,17 @@ export default function MeetingDetail() {
     return data;
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
-  console.log(profile?.nickname);
+
   useEffect(() => {
     if (group) {
       setDate(getDate(group.meetDate));
     }
   }, [group]);
+
+  useEffect(() => {
+    console.log("AcceptedParties", parties);
+    console.log(profile);
+  }, []);
 
   const bodyData = {
     nicknames: [],
@@ -192,7 +203,12 @@ export default function MeetingDetail() {
             </DetailMember>
           </DetailContents>
           <JoinButtonBox>
-            <LongOrangeBtn text="미팅 참여 신청" onClick={onSubmitClick} />
+            {decodedToken?.sub == group?.leaderUserId ||
+            group?.groupStatus == "CLOSE" ? (
+              <LongWhiteBtn text="신청할 수 없어요" onClick={() => {}} />
+            ) : (
+              <LongOrangeBtn text="미팅 참여 신청" onClick={onSubmitClick} />
+            )}
           </JoinButtonBox>
         </DetailBox>
 

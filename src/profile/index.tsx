@@ -99,13 +99,13 @@ export default function Profile() {
               </span>
               <div className="flex gap-2 font-normal text-sm text-gray-500">
                 <span>{profile?.age}살</span>
-                <span>{profile.gender === "MALE" ? "남자" : "여자"}</span>
-                <span>{profile.height}cm</span>
-                <span>{profile.weight}kg</span>
+                <span>{profile?.gender === "MALE" ? "남자" : "여자"}</span>
+                <span>{profile?.height}cm</span>
+                <span>{profile?.weight}kg</span>
               </div>
             </ProfileInfo>
             <span className="font-normal text-xs text-gray-800">
-              {profile.description}
+              {profile?.description}
             </span>
           </ProfileBox>
           {/* 미팅리스트 */}
