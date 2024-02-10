@@ -67,10 +67,10 @@ export default function RequestProfile() {
                 <div>
                   <UserName>{user.userName}</UserName>
                   <UserDetail>
-                    <span>{user.age}살</span>
-                    <span>{user.gender === "MALE" ? "남자" : "여자"}</span>
-                    <span>{user.height}cm</span>
-                    <span>{user.weight}kg</span>
+                    <span>{user?.age}살</span>
+                    <span>{user?.gender === "MALE" ? "남자" : "여자"}</span>
+                    <span>{user?.height}cm</span>
+                    <span>{user?.weight}kg</span>
                   </UserDetail>
                 </div>
                 {/* */}
@@ -95,6 +95,7 @@ export default function RequestProfile() {
                       contents=""
                       onRightClick={() => {
                         setAcceptDialog(false);
+                        navigate(`/meeting-chat-room/${id}`);
                       }}
                       right="닫기"
                     />
@@ -108,6 +109,7 @@ export default function RequestProfile() {
                       contents=""
                       onRightClick={() => {
                         setRejectDialog(false);
+                        navigate(`/meeting-chat-room/${id}`);
                       }}
                       right="닫기"
                     />
