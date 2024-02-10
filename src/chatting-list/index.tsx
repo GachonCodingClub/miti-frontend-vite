@@ -1,8 +1,9 @@
+import { useState } from "react";
+import { useQuery } from "react-query";
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { getApi } from "../api/getApi";
-import { useQuery } from "react-query";
-import { Key, useEffect, useState } from "react";
+import { Key, useEffect } from "react";
 import {
   TitleMemberTimeFrame,
   ChattingFrame,
@@ -17,12 +18,24 @@ import {
   ChatText,
   AlertCircle,
   AlertCount,
+  PageFrame,
+  PrevNextButton,
+  PageNum,
 } from "./components/chattingListComponents";
 
 export default function ChattingList() {
-  const getMyGroups = () =>
-    getApi({ link: "/groups/my" }).then((response) => response.json());
-  const { data } = useQuery(["myGroups"], getMyGroups);
+  const [page, setPage] = useState<number>(0); // 현재 페이지 번호
+  const pageSize = 9; // 페이지당 아이템 수
+  const [totalPages, setTotalPages] = useState<number>(0); // 전체 페이지 수
+
+  const getMyGroups = (page: number, size: number) =>
+    getApi({ link: `/groups/my?page=${page}&size=${size}` }).then((response) =>
+      response.json()
+    );
+
+  const { data } = useQuery(["myGroups", page, pageSize], () =>
+    getMyGroups(page, pageSize)
+  );
 
   const getChat = (groupId: string) =>
     getApi({ link: `/message/${groupId}` }).then((response) => response.json());
@@ -40,8 +53,9 @@ export default function ChattingList() {
           }));
         });
       });
+      setTotalPages(Math.ceil(data.totalElements / pageSize)); // 전체 페이지 수 계산
     }
-  }, [data]);
+  }, [data, pageSize]);
 
   const formatTime = (timeString: string) => {
     const date = new Date(timeString);
@@ -54,6 +68,27 @@ export default function ChattingList() {
       hour12: false,
     });
   };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = 0; i < totalPages; i++) {
+      pageNumbers.push(
+        <PageNum
+          key={i}
+          onClick={() => handlePageChange(i)}
+          isActive={i === page}
+        >
+          {i + 1}
+        </PageNum>
+      );
+    }
+    return pageNumbers;
+  };
+
   return (
     <>
       <TopBar title="채팅" />
@@ -92,6 +127,22 @@ export default function ChattingList() {
           )}
         </ChattingWrapper>
       </ChattingListScreen>
+      {/* 페이징 */}
+      <PageFrame>
+        <PrevNextButton
+          onClick={() => handlePageChange(page - 1)}
+          disabled={page === 0}
+        >
+          이전
+        </PrevNextButton>
+        {renderPageNumbers()}
+        <PrevNextButton
+          onClick={() => handlePageChange(page + 1)}
+          disabled={page === totalPages - 1}
+        >
+          다음
+        </PrevNextButton>
+      </PageFrame>
       <TabBar />
     </>
   );
