@@ -34,6 +34,7 @@ import {
   MenuDeleteMeetingAndRunButton,
 } from "./MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
+import { IParties } from "../../model/party";
 
 interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
@@ -60,13 +61,26 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
   const { data: group } = useQuery(["group", id], getGroup, {
     enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
   });
-  console.log(group);
+
   const [date, setDate] = useState("");
   useEffect(() => {
     if (group) {
       setDate(getDate(group.meetDate));
     }
   }, [group]);
+
+  const getParties = () =>
+    getApi({ link: `/groups/${id}/parties` }).then(
+      (response) => response.json() as Promise<IParties>
+    );
+  const { data: parties } = useQuery(["parties", id], getParties, {
+    enabled: !!id,
+  });
+
+  useEffect(() => {
+    console.log(group);
+    console.log(parties);
+  }, []);
 
   // #방장, 미팅 삭제하고 나가기
   // 다이얼로그
@@ -116,28 +130,40 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
         <MenuMemberContainer>
           <MenuDetailText>참여자</MenuDetailText>
           <MenuMemberFrame>
-            {/* 홍당무 */}
+            {/* 방장님 */}
             <MenuUserProfileFrame>
               <MenuMasterFrame>
                 <MenuUserNickname>홍당무</MenuUserNickname>
                 <OrangeCrownIcon />
               </MenuMasterFrame>
               <MenuUserDetailFrame>
-                <MenuUserDetailText>24살</MenuUserDetailText>
-                <MenuUserDetailText>남자</MenuUserDetailText>
-                <MenuUserDetailText>170cm</MenuUserDetailText>
-                <MenuUserDetailText>80kg</MenuUserDetailText>
+                <div>
+                  <MenuUserDetailText>24살</MenuUserDetailText>
+                  <MenuUserDetailText>남자</MenuUserDetailText>
+                  <MenuUserDetailText>170cm</MenuUserDetailText>
+                  <MenuUserDetailText>80kg</MenuUserDetailText>
+                </div>
               </MenuUserDetailFrame>
             </MenuUserProfileFrame>
-            {/* 김쿵야 */}
+            {/* 일반 참여자 */}
             <MenuUserProfileFrame>
-              <MenuUserNickname>김쿵야</MenuUserNickname>
-              <MenuUserDetailFrame>
-                <MenuUserDetailText>24살</MenuUserDetailText>
-                <MenuUserDetailText>남자</MenuUserDetailText>
-                <MenuUserDetailText>170cm</MenuUserDetailText>
-                <MenuUserDetailText>80kg</MenuUserDetailText>
-              </MenuUserDetailFrame>
+              {parties?.acceptedParties?.map((party) => (
+                <div key={party.partyId}>
+                  {party.users.map((user) => (
+                    <MenuUserDetailFrame key={user.userId}>
+                      <MenuUserNickname>{user.userName}</MenuUserNickname>
+                      <div>
+                        <MenuUserDetailText>{user.age}살</MenuUserDetailText>
+                        <MenuUserDetailText>
+                          {user.gender === "MALE" ? "남자" : "여자"}
+                        </MenuUserDetailText>
+                        <MenuUserDetailText>{user.height}cm</MenuUserDetailText>
+                        <MenuUserDetailText>{user.weight}kg</MenuUserDetailText>
+                      </div>
+                    </MenuUserDetailFrame>
+                  ))}
+                </div>
+              ))}
             </MenuUserProfileFrame>
           </MenuMemberFrame>
         </MenuMemberContainer>

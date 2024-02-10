@@ -339,11 +339,13 @@ export const MenuUserNickname = styled.span`
 export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  flex-direction: column;
 `;
 
 // 유저 디테일 텍스트
-export const MenuUserDetailText = styled(MenuDetailText)``;
+export const MenuUserDetailText = styled(MenuDetailText)`
+  padding-right: 8px;
+`;
 
 // 참여 요청 목록 버튼
 export const ParticipationReqButton = styled(MenuModifyMeetingButton)``;
