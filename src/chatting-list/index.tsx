@@ -1,6 +1,5 @@
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
-import { useNavigate } from "react-router-dom";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
 import { Key, useEffect, useState } from "react";
@@ -21,8 +20,6 @@ import {
 } from "./components/chattingListComponents";
 
 export default function ChattingList() {
-  const navigate = useNavigate();
-
   const getMyGroups = () =>
     getApi({ link: "/groups/my" }).then((response) => response.json());
   const { data } = useQuery(["myGroups"], getMyGroups);
