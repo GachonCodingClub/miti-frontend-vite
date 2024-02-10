@@ -21,6 +21,7 @@ import EditMeeting from "./edit-meeting/[id]";
 import EditMeetingDetail from "./edit-meeting/[id]/detail";
 import RequestList from "./request-list";
 import RequestProfile from "./request-list/[id]";
+import ChattingList from "./chatting-list";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,8 @@ const App = () => {
               <Route path="/meeting-list" element={<MeetingList />} />
               <Route path="/meeting-list/:id" element={<MeetingDetail />} />
               <Route path="/meeting-list/:id/chat" element={<Chat />} />
+              {/* 채팅리스트 */}
+              <Route path="/chat-list" element={<ChattingList />} />
               {/* 프로필 */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/setting" element={<Setting />} />
