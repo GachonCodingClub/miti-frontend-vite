@@ -46,14 +46,11 @@ export const TitleMemberFrame = styled.div`
 export const TitleText = styled.span`
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
-  line-height: 16px;
   letter-spacing: -0.016em;
 `;
 
 export const MemberText = styled.span`
   font-size: 14px;
-  line-height: 16px;
   letter-spacing: -0.016em;
   color: #a7a7a7;
 `;
