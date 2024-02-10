@@ -71,7 +71,7 @@ export default function ChattingList() {
               },
               index: Key
             ) => (
-              <ChattingFrame key={index}>
+              <ChattingFrame key={index} to={`/meeting-chat-room/${group.id}`}>
                 <TitleMemberTimeFrame>
                   <TitleMemberFrame>
                     <TitleText>{group.title}</TitleText>
@@ -83,7 +83,9 @@ export default function ChattingList() {
                 </TitleMemberTimeFrame>
 
                 <ChatAlertFrame>
-                  <ChatText>{lastMessages[group.id]?.content}</ChatText>
+                  <ChatText>
+                    {lastMessages[group.id]?.content.replace("[MITI]", "")}
+                  </ChatText>
                   <AlertCircle>
                     <AlertCount>10</AlertCount>
                   </AlertCircle>

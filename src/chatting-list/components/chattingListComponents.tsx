@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Screen } from "../../components/Screen";
+import { Link } from "react-router-dom";
 
 export interface LastMessages {
   [groupId: string]: {
@@ -20,7 +21,7 @@ export const ChattingWrapper = styled.div`
   padding: 0px;
 `;
 
-export const ChattingFrame = styled.div`
+export const ChattingFrame = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
