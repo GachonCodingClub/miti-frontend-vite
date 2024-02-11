@@ -11,7 +11,6 @@ import MeetingList from "./meeting-list";
 import Profile from "./profile";
 import EditProfile from "./profile/setting/edit";
 import Setting from "./profile/setting";
-import RejectedMeetings from "./profile/setting/rejected";
 import CreateMeeting from "./create-meeting";
 import CreateMeetingDetail from "./create-meeting/detail";
 import MeetingDetail from "./meeting-list/[id]";
@@ -22,6 +21,7 @@ import EditMeetingDetail from "./edit-meeting/[id]/detail";
 import RequestList from "./request-list";
 import RequestProfile from "./request-list/[id]";
 import ChattingList from "./chatting-list";
+import Withdrawal from "./profile/setting/withdrawal";
 
 const queryClient = new QueryClient();
 
@@ -48,7 +48,7 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/setting" element={<Setting />} />
               <Route path="/setting/edit" element={<EditProfile />} />
-              <Route path="/setting/rejected" element={<RejectedMeetings />} />
+              <Route path="/setting/withdrawal" element={<Withdrawal />} />
               {/* 미팅 만들기 */}
               <Route path="/create-meeting" element={<CreateMeeting />} />
               <Route
