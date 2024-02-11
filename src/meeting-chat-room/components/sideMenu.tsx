@@ -32,9 +32,11 @@ import {
   MenuUserDetailText,
   ParticipationReqButton,
   MenuDeleteMeetingAndRunButton,
+  MenuExitMeetingButton,
 } from "./MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
 import { IParties } from "../../model/party";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
@@ -43,6 +45,14 @@ interface ISideMenu {
 export default function SideMenu({ dialogProps }: ISideMenu) {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
+    const storedToken = localStorage.getItem("token");
+    setDecodedToken(jwtDecode(storedToken + ""));
+  }, []);
+
   // 메뉴 세부정보 가져오기
   const getGroup = async () => {
     try {
@@ -78,12 +88,9 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
   });
 
   useEffect(() => {
-    console.log(group);
+    console.log("그룹", group);
     console.log(parties);
   }, []);
-
-  // #방장, 미팅 삭제하고 나가기
-  // 다이얼로그
 
   return (
     <>
@@ -115,13 +122,15 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
               </MenuDateLocationFrame>
             </MenuDateLocationMemberContainer>
           </MenuDetailFrame>
-          <MenuModifyMeetingButton
-            onClick={() => {
-              navigate(`/edit-meeting/${id}`);
-            }}
-          >
-            미팅 수정
-          </MenuModifyMeetingButton>
+          {decodedToken?.sub == group?.leaderUserId ? (
+            <MenuModifyMeetingButton
+              onClick={() => {
+                navigate(`/edit-meeting/${id}`);
+              }}
+            >
+              미팅 수정
+            </MenuModifyMeetingButton>
+          ) : null}
         </MenuDetailAndButtonContainer>
       </MenuDetailAndMemberWrapper>
       <MenuSmallGrayLine />
@@ -167,22 +176,29 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
             </MenuUserProfileFrame>
           </MenuMemberFrame>
         </MenuMemberContainer>
-        <ParticipationReqButton
-          onClick={() => {
-            navigate(`/request-list/${id}`);
-          }}
-        >
-          참여 요청 목록
-        </ParticipationReqButton>
+        {/* 참여 요청 목록 */}
+        {decodedToken?.sub == group?.leaderUserId ? (
+          <ParticipationReqButton
+            onClick={() => {
+              navigate(`/request-list/${id}`);
+            }}
+          >
+            참여 요청 목록
+          </ParticipationReqButton>
+        ) : null}
       </MenuMemberAndReqButtonWrapper>
       {/* 삭제하고 나가기 */}
-      <MenuDeleteMeetingAndRunButton
-        onClick={() => {
-          dialogProps(true);
-        }}
-      >
-        미팅 삭제하고 나가기
-      </MenuDeleteMeetingAndRunButton>
+      {decodedToken?.sub == group?.leaderUserId ? (
+        <MenuDeleteMeetingAndRunButton
+          onClick={() => {
+            dialogProps(true);
+          }}
+        >
+          미팅 삭제하고 나가기
+        </MenuDeleteMeetingAndRunButton>
+      ) : (
+        <MenuExitMeetingButton>미팅 나가기</MenuExitMeetingButton>
+      )}
     </>
   );
 }
