@@ -325,7 +325,7 @@ export const MenuUserProfileFrame = styled.div`
 export const MenuMasterFrame = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 4px;
+  flex-direction: column;
 `;
 
 // 유저 닉네임

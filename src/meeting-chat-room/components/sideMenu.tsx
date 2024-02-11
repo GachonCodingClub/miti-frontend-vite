@@ -100,7 +100,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
   });
 
   useEffect(() => {
-    console.log("그룹", group);
+    console.log("그룹", decodedToken?.sub == group.leaderUserSummaryDto.userId);
     console.log(parties);
   }, []);
 
@@ -138,7 +138,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
               </MenuDateLocationFrame>
             </MenuDateLocationMemberContainer>
           </MenuDetailFrame>
-          {decodedToken?.sub == group?.leaderUserId ? (
+          {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
             <MenuModifyMeetingButton
               onClick={() => {
                 navigate(`/edit-meeting/${id}`);
@@ -156,20 +156,38 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
           <MenuDetailText>참여자</MenuDetailText>
           <MenuMemberFrame>
             {/* 방장님 */}
-            <MenuUserProfileFrame>
-              <MenuMasterFrame>
-                <MenuUserNickname>홍당무</MenuUserNickname>
-                <OrangeCrownIcon />
-              </MenuMasterFrame>
-              <MenuUserDetailFrame>
-                <div>
-                  <MenuUserDetailText>24살</MenuUserDetailText>
-                  <MenuUserDetailText>남자</MenuUserDetailText>
-                  <MenuUserDetailText>170cm</MenuUserDetailText>
-                  <MenuUserDetailText>80kg</MenuUserDetailText>
-                </div>
-              </MenuUserDetailFrame>
-            </MenuUserProfileFrame>
+            {parties?.leaderUserSummaryDto && (
+              <MenuUserProfileFrame>
+                <MenuMasterFrame
+                  onClick={() => {
+                    setSelectedUserProfile(parties?.leaderUserSummaryDto);
+                  }}
+                >
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <MenuUserNickname>
+                      {parties?.leaderUserSummaryDto?.userName}
+                    </MenuUserNickname>
+                    <OrangeCrownIcon />
+                  </div>
+                  <div>
+                    <MenuUserDetailText>
+                      {parties?.leaderUserSummaryDto?.age}살
+                    </MenuUserDetailText>
+                    <MenuUserDetailText>
+                      {parties?.leaderUserSummaryDto?.gender === "MALE"
+                        ? "남자"
+                        : "여자"}
+                    </MenuUserDetailText>
+                    <MenuUserDetailText>
+                      {parties?.leaderUserSummaryDto?.height}cm
+                    </MenuUserDetailText>
+                    <MenuUserDetailText>
+                      {parties?.leaderUserSummaryDto?.weight}kg
+                    </MenuUserDetailText>
+                  </div>
+                </MenuMasterFrame>
+              </MenuUserProfileFrame>
+            )}
             {/* 일반 참여자 */}
             {parties?.acceptedParties?.map((party) => (
               <div key={party.partyId}>
@@ -198,7 +216,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
           </MenuMemberFrame>
         </MenuMemberContainer>
         {/* 참여 요청 목록 */}
-        {decodedToken?.sub == group?.leaderUserId ? (
+        {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
           <ParticipationReqButton
             onClick={() => {
               navigate(`/request-list/${id}`);
@@ -209,7 +227,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
         ) : null}
       </MenuMemberAndReqButtonWrapper>
       {/* 삭제하고 나가기 */}
-      {decodedToken?.sub == group?.leaderUserId ? (
+      {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
         <MenuDeleteMeetingAndRunButton
           onClick={() => {
             dialogProps(true);
@@ -248,7 +266,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
               </DialogContents>
             </div>
             <div>
-              {decodedToken?.sub == group?.leaderUserId ? (
+              {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
                 <DialogBtnFrame>
                   <ProfileLeftButton
                     onClick={() => {

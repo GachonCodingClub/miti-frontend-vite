@@ -84,6 +84,7 @@ export default function MeetingDetail() {
   useEffect(() => {
     console.log("AcceptedParties", parties);
     console.log(profile);
+    console.log("그룹", group);
   }, []);
 
   const bodyData = {
@@ -188,12 +189,12 @@ export default function MeetingDetail() {
                           )}
                         </div>
                         <MemberDetail>
-                          <span>{user.age}살</span>
+                          <span>{user?.age}살</span>
                           <span>
-                            {user.gender === "MALE" ? "남자" : "여자"}
+                            {user?.gender === "MALE" ? "남자" : "여자"}
                           </span>
-                          <span>{user.height}cm</span>
-                          <span>{user.weight}kg</span>
+                          <span>{user?.height}cm</span>
+                          <span>{user?.weight}kg</span>
                         </MemberDetail>
                       </div>
                     ))}
@@ -203,7 +204,7 @@ export default function MeetingDetail() {
             </DetailMember>
           </DetailContents>
           <JoinButtonBox>
-            {decodedToken?.sub == group?.leaderUserId ||
+            {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ||
             group?.groupStatus == "CLOSE" ? (
               <LongWhiteBtn text="신청할 수 없어요" onClick={() => {}} />
             ) : (
