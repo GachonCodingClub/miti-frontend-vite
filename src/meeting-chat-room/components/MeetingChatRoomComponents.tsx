@@ -366,6 +366,7 @@ export const MenuExitMeetingButton = styled(MenuDeleteMeetingAndRunButton)``;
 
 // 사용자 프로필 인터페이스
 export interface IUser {
+  description?: string;
   userId: string;
   userName: string;
   age: number;
