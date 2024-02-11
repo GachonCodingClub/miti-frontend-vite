@@ -3,6 +3,7 @@ export const ROUTES = {
   CHAT_LIST: "/chat-list",
   PROFILE: "/profile",
   SIGN_IN: "/sign-in",
+  CHANGE_PASSWORD: "/sign-in/change-password",
   CREATE_MEETING: "/create-meeting",
 } as const;
 

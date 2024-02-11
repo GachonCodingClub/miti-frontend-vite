@@ -22,6 +22,7 @@ import RequestList from "./request-list";
 import RequestProfile from "./request-list/[id]";
 import ChattingList from "./chatting-list";
 import Withdrawal from "./profile/setting/withdrawal";
+import ChangePassword from "./sign-in/change-password";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,10 @@ const App = () => {
             <Routes>
               {/* 로그인/회원가입 */}
               <Route path="/sign-in" element={<LogIn />} />
+              <Route
+                path="/sign-in/change-password"
+                element={<ChangePassword />}
+              />
               <Route path="/sign-up/agreement" element={<SignUpAgreement />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/sign-up/password" element={<PasswordSetting />} />
