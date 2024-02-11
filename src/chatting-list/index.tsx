@@ -97,7 +97,7 @@ export default function ChattingList() {
       <TopBar title="채팅" />
       <ChattingListScreen>
         <ChattingWrapper>
-          {sortedData.map((group: Group, index: Key) => (
+          {sortedData?.map((group: Group, index: Key) => (
             <ChattingFrame key={index} to={`/meeting-chat-room/${group.id}`}>
               <TitleMemberTimeFrame>
                 <TitleMemberFrame>
