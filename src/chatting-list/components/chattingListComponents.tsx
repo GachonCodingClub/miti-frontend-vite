@@ -8,6 +8,13 @@ export interface LastMessages {
     createdAt: string;
   };
 }
+
+export interface Group {
+  title: string;
+  nowUsers: string;
+  id: number;
+}
+
 export const ChattingListScreen = styled(Screen)`
   padding: 0;
   padding-top: 56px;
@@ -45,7 +52,6 @@ export const TitleMemberFrame = styled.div`
 `;
 
 export const TitleText = styled.span`
-  font-style: normal;
   font-weight: 600;
   letter-spacing: -0.016em;
 `;
@@ -103,6 +109,7 @@ export const PageFrame = styled.div`
   width: 100%;
   background-color: #fff;
   bottom: 64px;
+  padding-top: 8px;
 `;
 
 export const PrevNextButton = styled.button`
