@@ -18,16 +18,12 @@ import {
   ChatText,
   AlertCircle,
   AlertCount,
-  PageFrame,
-  PrevNextButton,
-  PageNum,
   Group,
 } from "./components/chattingListComponents";
 
 export default function ChattingList() {
-  const [page, setPage] = useState<number>(0); // 현재 페이지 번호
-  const pageSize = 9; // 페이지당 아이템 수
-  const [totalPages, setTotalPages] = useState<number>(0); // 전체 페이지 수
+  const page = 0;
+  const pageSize = 99; // 페이지당 아이템 수
 
   const getMyGroups = (page: number, size: number) =>
     getApi({ link: `/groups/my?page=${page}&size=${size}` }).then((response) =>
@@ -54,7 +50,6 @@ export default function ChattingList() {
           }));
         });
       });
-      setTotalPages(Math.ceil(data.totalElements / pageSize)); // 전체 페이지 수 계산
     }
   }, [data, pageSize]);
 
@@ -68,26 +63,6 @@ export default function ChattingList() {
       minute: "2-digit",
       hour12: false,
     });
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const renderPageNumbers = () => {
-    const pageNumbers = [];
-    for (let i = 0; i < totalPages; i++) {
-      pageNumbers.push(
-        <PageNum
-          key={i}
-          onClick={() => handlePageChange(i)}
-          isActive={i === page}
-        >
-          {i + 1}
-        </PageNum>
-      );
-    }
-    return pageNumbers;
   };
 
   const sortedData = data?.content?.sort((a: Group, b: Group) => a.id - b.id);
@@ -121,22 +96,7 @@ export default function ChattingList() {
           ))}
         </ChattingWrapper>
       </ChattingListScreen>
-      {/* 페이징 */}
-      <PageFrame>
-        <PrevNextButton
-          onClick={() => handlePageChange(page - 1)}
-          disabled={page === 0}
-        >
-          이전
-        </PrevNextButton>
-        {renderPageNumbers()}
-        <PrevNextButton
-          onClick={() => handlePageChange(page + 1)}
-          disabled={page === totalPages - 1}
-        >
-          다음
-        </PrevNextButton>
-      </PageFrame>
+
       <TabBar />
     </>
   );
