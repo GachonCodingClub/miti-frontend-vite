@@ -5,6 +5,7 @@ import {
   ChattingInput,
   RightMenuFrame,
   MenuAnimation,
+  IChat,
 } from "../components/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
@@ -30,12 +31,6 @@ import ChatWindow from "../components/ChatWindow";
       topicURL이 유효하면 그 채팅 메시지 리스트를 가져옴 
       그리고 Publish는 그냥 메시지를 서버(/pub/send)로 보내는 함수 
       Disconnect는 제곧내 */
-
-interface IChat {
-  createdAt: string;
-  nickname: string;
-  content: string;
-}
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -164,6 +159,7 @@ export default function MeetingChatRoom() {
   // 메뉴 표시
   const [showRightMenu, setShowRightMenu] = useState(false);
 
+  // 방 삭제하고 나가기
   const setRoomDelted = useSetRecoilState(SnackBarAtom);
   const handleDeleteRoom = () => {
     setRoomDelted(true);
@@ -174,8 +170,33 @@ export default function MeetingChatRoom() {
     }, 3000);
   };
 
-  const [showMeetingDeleteDialog, setShowMeetingDeleteDialog] = useState(false);
+  // 방 나가기
+  const DeleteUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${userToken}`, // 토큰을 헤더에 추가
+  };
 
+  const response = fetch(DeleteUrl, {
+    method: "DELETE",
+    mode: "cors",
+    headers: headers,
+  });
+
+  console.log(response);
+
+  const setRoomExited = useSetRecoilState(SnackBarAtom);
+  const handleExitRoom = () => {
+    setRoomExited(true);
+    navigate(`${ROUTES.MEETING_LIST}`);
+    // 3초 후에 setRoomDelted를 false로 변경
+    setTimeout(() => {
+      setRoomExited(false);
+    }, 3000);
+  };
+
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showExitDialog, setShowExitDialog] = useState(false);
   return (
     <>
       <TopBar
@@ -231,11 +252,14 @@ export default function MeetingChatRoom() {
               animate={showRightMenu ? "visible" : "hidden"}
               variants={MenuAnimation}
             >
-              <SideMenu dialogProps={setShowMeetingDeleteDialog} />
+              <SideMenu
+                dialogProps={setShowDeleteDialog}
+                exitProps={setShowExitDialog}
+              />
             </RightMenuFrame>
           </>
         )}
-        {showMeetingDeleteDialog && (
+        {showDeleteDialog && (
           <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
             <Dialog
               title="미팅 삭제하고 나가기"
@@ -244,9 +268,23 @@ export default function MeetingChatRoom() {
               left="취소"
               right="미팅 삭제"
               onLeftClick={() => {
-                setShowMeetingDeleteDialog(false);
+                setShowDeleteDialog(false);
               }}
               onRightClick={handleDeleteRoom}
+            />
+          </Overlay>
+        )}
+        {showExitDialog && (
+          <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+            <Dialog
+              title="미팅 나가기"
+              contents={`퇴장한 미팅은 다시 참여할 수 없어요.`}
+              left="취소"
+              right="미팅 나가기"
+              onLeftClick={() => {
+                setShowExitDialog(false);
+              }}
+              onRightClick={handleExitRoom}
             />
           </Overlay>
         )}

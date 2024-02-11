@@ -3,6 +3,12 @@ import styled from "styled-components";
 import { Screen } from "../../components/Screen";
 import { DialogLeftBtn } from "../../components/Button";
 
+export interface IChat {
+  createdAt: string;
+  nickname: string;
+  content: string;
+}
+
 export const MeetingChatRoomScreen = styled(Screen)`
   padding-top: 56px;
   padding-bottom: 24px;
