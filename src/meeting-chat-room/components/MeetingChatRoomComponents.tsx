@@ -359,3 +359,6 @@ export const MenuDeleteMeetingAndRunButton = styled.button`
   width: 100%;
   margin: 10% auto;
 `;
+
+// 미팅 나가기
+export const MenuExitMeetingButton = styled(MenuDeleteMeetingAndRunButton)``;
