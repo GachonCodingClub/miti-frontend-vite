@@ -9,7 +9,7 @@ interface ButtonProps {
 const MyOrangeSmButton = styled.button`
   position: absolute;
   right: 0;
-  margin-right: 2px;
+  margin-right: 16px;
   display: inline-flex;
   padding: 4px 8px;
   align-items: flex-start;
