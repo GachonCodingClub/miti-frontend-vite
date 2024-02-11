@@ -83,7 +83,7 @@ export default function MeetingList() {
 
         {/* 미팅 삭제하기를 통해 미팅리스트로 이동했을 경우 */}
         {isRoomDeleted && (
-          <SnackBar text="미팅을 삭제했어요." onClick={() => {}}></SnackBar>
+          <SnackBar text="미팅을 나왔어요." onClick={() => {}}></SnackBar>
         )}
 
         <TabBar />

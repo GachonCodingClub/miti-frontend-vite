@@ -161,7 +161,7 @@ export default function MeetingDetail() {
                 <DetailInfo>
                   <PersonIcon />
                   <span className="font-normal">
-                    {`${group.nowUsers}/${group.maxUsers}`}
+                    {`최대 인원 ${group.maxUsers}명`}
                   </span>
                 </DetailInfo>
               </div>

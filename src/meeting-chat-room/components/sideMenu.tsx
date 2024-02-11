@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
 import {
@@ -52,9 +52,10 @@ import {
 
 interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
+  exitProps: React.Dispatch<boolean>;
 }
 
-export default function SideMenu({ dialogProps }: ISideMenu) {
+export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -133,7 +134,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
               <MenuDateLocationFrame>
                 <PersonIcon />
                 <MenuDateLocationText>
-                  최대 인원 : {group.maxUsers}명
+                  최대 인원 {group.maxUsers}명
                 </MenuDateLocationText>
               </MenuDateLocationFrame>
             </MenuDateLocationMemberContainer>
@@ -236,7 +237,13 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
           미팅 삭제하고 나가기
         </MenuDeleteMeetingAndRunButton>
       ) : (
-        <MenuExitMeetingButton>미팅 나가기</MenuExitMeetingButton>
+        <MenuExitMeetingButton
+          onClick={() => {
+            exitProps(true);
+          }}
+        >
+          미팅 나가기
+        </MenuExitMeetingButton>
       )}
 
       {/* 선택한 유저 프로필 다이얼로그 */}
