@@ -21,6 +21,7 @@ import {
   PageFrame,
   PrevNextButton,
   PageNum,
+  Group,
 } from "./components/chattingListComponents";
 
 export default function ChattingList() {
@@ -89,42 +90,35 @@ export default function ChattingList() {
     return pageNumbers;
   };
 
+  const sortedData = data?.content?.sort((a: Group, b: Group) => a.id - b.id);
+
   return (
     <>
       <TopBar title="채팅" />
       <ChattingListScreen>
         <ChattingWrapper>
-          {data?.content.map(
-            (
-              group: {
-                title: string;
-                nowUsers: string;
-                id: string;
-              },
-              index: Key
-            ) => (
-              <ChattingFrame key={index} to={`/meeting-chat-room/${group.id}`}>
-                <TitleMemberTimeFrame>
-                  <TitleMemberFrame>
-                    <TitleText>{group.title}</TitleText>
-                    <MemberText>{group.nowUsers}</MemberText>
-                  </TitleMemberFrame>
-                  <TimeText>
-                    {formatTime(lastMessages[group.id]?.createdAt)}
-                  </TimeText>
-                </TitleMemberTimeFrame>
+          {sortedData.map((group: Group, index: Key) => (
+            <ChattingFrame key={index} to={`/meeting-chat-room/${group.id}`}>
+              <TitleMemberTimeFrame>
+                <TitleMemberFrame>
+                  <TitleText>{group.title}</TitleText>
+                  <MemberText>{group.nowUsers}</MemberText>
+                </TitleMemberFrame>
+                <TimeText>
+                  {formatTime(lastMessages[group.id]?.createdAt)}
+                </TimeText>
+              </TitleMemberTimeFrame>
 
-                <ChatAlertFrame>
-                  <ChatText>
-                    {lastMessages[group.id]?.content.replace("[MITI]", "")}
-                  </ChatText>
-                  <AlertCircle>
-                    <AlertCount>10</AlertCount>
-                  </AlertCircle>
-                </ChatAlertFrame>
-              </ChattingFrame>
-            )
-          )}
+              <ChatAlertFrame>
+                <ChatText>
+                  {lastMessages[group.id]?.content.replace("[MITI]", "")}
+                </ChatText>
+                <AlertCircle>
+                  <AlertCount>10</AlertCount>
+                </AlertCircle>
+              </ChatAlertFrame>
+            </ChattingFrame>
+          ))}
         </ChattingWrapper>
       </ChattingListScreen>
       {/* 페이징 */}

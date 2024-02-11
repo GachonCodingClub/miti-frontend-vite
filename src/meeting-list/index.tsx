@@ -21,6 +21,7 @@ export default function MeetingList() {
   const navigate = useNavigate(); // useNavigate 사용
   // 무한스크롤 도전
   const [pins, setPins] = useState<IGroup[]>([]);
+  const sortedPins = pins.sort((a, b) => a.id - b.id);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -73,7 +74,7 @@ export default function MeetingList() {
           +
         </CreateMeetingButton>
         <div className="divide-y-[1px]">
-          {pins?.map((meeting, index) => (
+          {sortedPins?.map((meeting, index) => (
             <MeetingBoxComponent meeting={meeting} key={index} />
           ))}
         </div>
