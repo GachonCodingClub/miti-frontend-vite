@@ -10,6 +10,7 @@ import {
   ArrowbackIcon,
   DateIcon,
   LocationIcon,
+  OrangeCrownIcon,
   PersonIcon,
 } from "../../components/Icons";
 import { TopBar } from "../../components/TopBar";
@@ -51,6 +52,7 @@ export default function MeetingDetail() {
   }, []);
 
   const [showDialog, setShowDialog] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
 
   const getGroup = () =>
     getApi({ link: `/groups/${id}` }).then(
@@ -109,6 +111,7 @@ export default function MeetingDetail() {
           console.error(
             `API 오류: ${response.status} - ${response.statusText}`
           );
+          setShowErrorDialog(true);
           return response.json();
         }
         setShowDialog(true);
@@ -165,7 +168,32 @@ export default function MeetingDetail() {
             </DetailInfoBox>
             <div className="w-full h-[1px] bg-[#EBE8E7]" />
             <DetailMember>
-              <span className="text-sm font-normal text-gray-500">참여자</span>
+              <span className="text-sm font-normal text-gray-500 mb-4">
+                참여자
+              </span>
+              <MemberInfo>
+                {parties?.leaderUserSummaryDto && (
+                  <>
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 4 }}
+                    >
+                      {parties?.leaderUserSummaryDto?.userName}
+                      <OrangeCrownIcon />
+                    </div>
+                    <MemberDetail>
+                      <span>{parties?.leaderUserSummaryDto?.age}살</span>
+                      <span>
+                        {parties?.leaderUserSummaryDto?.gender === "MALE"
+                          ? "남자"
+                          : "여자"}
+                      </span>
+                      <span>{parties?.leaderUserSummaryDto?.height}cm</span>
+                      <span>{parties?.leaderUserSummaryDto?.weight}kg</span>
+                    </MemberDetail>
+                  </>
+                )}
+              </MemberInfo>
+
               <MemberInfo>
                 {parties?.acceptedParties?.map((party) => (
                   <div key={party.partyId}>
@@ -173,20 +201,6 @@ export default function MeetingDetail() {
                       <div key={user.userId}>
                         <div className="flex gap-1 items-center">
                           <span>{user.userName}</span>
-                          {user.userId === "1" /* party.leader.userId */ && (
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 20 20"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M9.58397 5.62404C9.78189 5.32717 10.2181 5.32717 10.416 5.62404L13.0308 9.54623C13.1935 9.79022 13.5302 9.8425 13.7592 9.65931L16.4282 7.52413C16.7926 7.2326 17.3223 7.55501 17.2308 8.01262L15.9137 14.5981C15.867 14.8318 15.6618 15 15.4234 15H4.57657C4.33823 15 4.13302 14.8318 4.08628 14.5981L2.76919 8.01262C2.67767 7.55501 3.20742 7.2326 3.57183 7.52413L6.24081 9.65931C6.46979 9.8425 6.80652 9.79022 6.96918 9.54623L9.58397 5.62404Z"
-                                fill="#FF7152"
-                              />
-                            </svg>
-                          )}
                         </div>
                         <MemberDetail>
                           <span>{user?.age}살</span>
@@ -221,6 +235,18 @@ export default function MeetingDetail() {
               right="닫기"
               onRightClick={() => {
                 setShowDialog(false);
+              }}
+            />
+          </Overlay>
+        )}
+        {showErrorDialog && (
+          <Overlay style={{ zIndex: "30" }}>
+            <DialogOneBtn
+              title="신청할 수 없어요"
+              contents="이미 신청한 미팅방일 수 있어요"
+              right="닫기"
+              onRightClick={() => {
+                setShowErrorDialog(false);
               }}
             />
           </Overlay>
