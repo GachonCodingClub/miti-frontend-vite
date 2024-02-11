@@ -61,7 +61,6 @@ export const SelectButtonContainer = styled.div`
 `;
 
 // 여기부터 시트
-
 export const HeightSheet = styled(motion.div)`
   display: flex;
   flex-direction: column;
@@ -70,7 +69,7 @@ export const HeightSheet = styled(motion.div)`
   border: 1px #000000 solid;
   border-radius: 24px 24px 0px 0px;
   background: var(--grey-grey-00, #fff);
-
+  margin-left: -24px;
   z-index: 100;
   position: fixed;
   bottom: 0;
@@ -89,7 +88,6 @@ export const SheetTitleFrame = styled.div`
 
 export const SheetTitle = styled.span`
   color: var(--grey-grey-800, #2f2a28);
-
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;
@@ -98,8 +96,6 @@ export const SheetTitle = styled.span`
 export const SheetXIcon = styled.svg`
   width: 24px;
   height: 24px;
-
-  cursor: pointer;
 `;
 
 export const SheetBodyFrame = styled.div`
@@ -120,8 +116,7 @@ export const SheetElement = styled.div`
   padding: 18px 24px;
   align-items: center;
   flex: 1 0 0;
-
-  background: var(--grey-grey-00, #fff);
+  background: #fff;
 `;
 
 export const SheetText = styled.span`

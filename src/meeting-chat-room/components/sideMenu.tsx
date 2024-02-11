@@ -33,10 +33,22 @@ import {
   ParticipationReqButton,
   MenuDeleteMeetingAndRunButton,
   MenuExitMeetingButton,
+  IUser,
+  ProfileLeftButton,
+  ProfileRightButton,
 } from "./MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
 import { IParties } from "../../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { Overlay } from "../../sign-up/components/detailComponents";
+import {
+  DialogBtnFrame,
+  DialogContainer,
+  DialogContents,
+  DialogLeftText,
+  DialogRightText,
+  DialogTitle,
+} from "../../components/Button";
 
 interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
@@ -91,6 +103,10 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
     console.log("그룹", group);
     console.log(parties);
   }, []);
+
+  const [selectedUserProfile, setSelectedUserProfile] = useState<IUser | null>(
+    null
+  );
 
   return (
     <>
@@ -155,11 +171,16 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
               </MenuUserDetailFrame>
             </MenuUserProfileFrame>
             {/* 일반 참여자 */}
-            <MenuUserProfileFrame>
-              {parties?.acceptedParties?.map((party) => (
-                <div key={party.partyId}>
-                  {party.users.map((user) => (
-                    <MenuUserDetailFrame key={user.userId}>
+            {parties?.acceptedParties?.map((party) => (
+              <div key={party.partyId}>
+                {party.users.map((user) => (
+                  <MenuUserProfileFrame
+                    key={user.userId}
+                    onClick={() => {
+                      setSelectedUserProfile(user);
+                    }}
+                  >
+                    <MenuUserDetailFrame>
                       <MenuUserNickname>{user.userName}</MenuUserNickname>
                       <div>
                         <MenuUserDetailText>{user.age}살</MenuUserDetailText>
@@ -170,10 +191,10 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
                         <MenuUserDetailText>{user.weight}kg</MenuUserDetailText>
                       </div>
                     </MenuUserDetailFrame>
-                  ))}
-                </div>
-              ))}
-            </MenuUserProfileFrame>
+                  </MenuUserProfileFrame>
+                ))}
+              </div>
+            ))}
           </MenuMemberFrame>
         </MenuMemberContainer>
         {/* 참여 요청 목록 */}
@@ -198,6 +219,52 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
         </MenuDeleteMeetingAndRunButton>
       ) : (
         <MenuExitMeetingButton>미팅 나가기</MenuExitMeetingButton>
+      )}
+
+      {/* 선택한 유저 프로필 다이얼로그 */}
+      {selectedUserProfile && (
+        <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+          <DialogContainer>
+            <DialogTitle style={{ padding: 16 }}>
+              {selectedUserProfile?.userName}
+            </DialogTitle>
+            <span>
+              여기에 한 줄 소개 여기에 한 줄 소개 여기에 한 줄 소개 여기에 한 줄
+              소개 여기에 한 줄 소개 여기에 한 줄 소개 여기에 한 줄 소개 여기에
+              한 줄 소개
+            </span>
+            <div style={{ padding: 8 }}>
+              <DialogContents style={{ marginRight: 8 }}>
+                나이: {selectedUserProfile?.age}살
+              </DialogContents>
+              <DialogContents style={{ marginRight: 8 }}>
+                성별: {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}
+              </DialogContents>
+              <DialogContents style={{ marginRight: 8 }}>
+                키: {selectedUserProfile?.height}cm
+              </DialogContents>
+              <DialogContents style={{ marginRight: 8 }}>
+                몸무게: {selectedUserProfile?.weight}kg
+              </DialogContents>
+            </div>
+            <div>
+              {decodedToken?.sub == group?.leaderUserId ? (
+                <DialogBtnFrame>
+                  <ProfileLeftButton
+                    onClick={() => {
+                      setSelectedUserProfile(null);
+                    }}
+                  >
+                    <DialogLeftText>닫기</DialogLeftText>
+                  </ProfileLeftButton>
+                  <ProfileRightButton>
+                    <DialogRightText>강제 퇴장</DialogRightText>
+                  </ProfileRightButton>
+                </DialogBtnFrame>
+              ) : null}
+            </div>
+          </DialogContainer>
+        </Overlay>
       )}
     </>
   );

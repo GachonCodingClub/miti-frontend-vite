@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { Screen } from "../../components/Screen";
+import { DialogLeftBtn } from "../../components/Button";
 
 export const MeetingChatRoomScreen = styled(Screen)`
   padding-top: 56px;
@@ -152,8 +153,7 @@ export const MenuAnimation = {
     x: 600, // 시작 위치(오른쪽으로 x 600만큼 더 간 위치)
   },
   visible: {
-    x: -10,
-
+    x: 0,
     transition: {
       damping: 20, // 바운스 정도
       stiffness: 1000, // 바운스 강도
@@ -340,6 +340,7 @@ export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  cursor: pointer;
 `;
 
 // 유저 디테일 텍스트
@@ -362,3 +363,22 @@ export const MenuDeleteMeetingAndRunButton = styled.button`
 
 // 미팅 나가기
 export const MenuExitMeetingButton = styled(MenuDeleteMeetingAndRunButton)``;
+
+// 사용자 프로필 인터페이스
+export interface IUser {
+  userId: string;
+  userName: string;
+  age: number;
+  gender: "MALE" | "FEMALE";
+  height: string | number;
+  weight: string | number;
+}
+
+export const ProfileLeftButton = styled(DialogLeftBtn)`
+  white-space: nowrap;
+  width: 148px;
+`;
+
+export const ProfileRightButton = styled(ProfileLeftButton)`
+  background: #d05438;
+`;
