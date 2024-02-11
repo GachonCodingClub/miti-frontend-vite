@@ -158,7 +158,9 @@ export default function LogIn() {
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
         <SearchFrame>
           <SearchText to={"/"}>아이디 찾기</SearchText>
-          <SearchText to={"/"}>비밀번호 찾기</SearchText>
+          <SearchText to={`${ROUTES.CHANGE_PASSWORD}`}>
+            비밀번호 찾기
+          </SearchText>
           <SearchText to={`${SIGNUP_ROUTES.AGREEMENTS}`}>회원가입</SearchText>
         </SearchFrame>
       </div>
