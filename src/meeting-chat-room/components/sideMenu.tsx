@@ -133,7 +133,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
               <MenuDateLocationFrame>
                 <PersonIcon />
                 <MenuDateLocationText>
-                  {group.nowUsers}명 / {group.maxUsers}명
+                  최대 인원 : {group.maxUsers}명
                 </MenuDateLocationText>
               </MenuDateLocationFrame>
             </MenuDateLocationMemberContainer>
@@ -246,11 +246,7 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
             <DialogTitle style={{ padding: 16 }}>
               {selectedUserProfile?.userName}
             </DialogTitle>
-            <span>
-              여기에 한 줄 소개 여기에 한 줄 소개 여기에 한 줄 소개 여기에 한 줄
-              소개 여기에 한 줄 소개 여기에 한 줄 소개 여기에 한 줄 소개 여기에
-              한 줄 소개
-            </span>
+            <span>{selectedUserProfile?.description}</span>
             <div style={{ padding: 8 }}>
               <DialogContents style={{ marginRight: 8 }}>
                 나이: {selectedUserProfile?.age}살
@@ -279,7 +275,17 @@ export default function SideMenu({ dialogProps }: ISideMenu) {
                     <DialogRightText>강제 퇴장</DialogRightText>
                   </ProfileRightButton>
                 </DialogBtnFrame>
-              ) : null}
+              ) : (
+                <DialogBtnFrame>
+                  <ProfileLeftButton
+                    onClick={() => {
+                      setSelectedUserProfile(null);
+                    }}
+                  >
+                    <DialogLeftText>닫기</DialogLeftText>
+                  </ProfileLeftButton>
+                </DialogBtnFrame>
+              )}
             </div>
           </DialogContainer>
         </Overlay>
