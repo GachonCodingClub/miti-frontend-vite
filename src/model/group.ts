@@ -37,4 +37,7 @@ export interface IGroup {
   title: string;
   leaderUserId: string;
   groupStatus: string;
+  leaderUserSummaryDto: {
+    userId: string;
+  };
 }
