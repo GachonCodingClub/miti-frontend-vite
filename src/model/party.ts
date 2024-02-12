@@ -8,6 +8,7 @@ export interface IParties {
     }
   ];
   leaderUserSummaryDto: {
+    description: string;
     userName: string;
     age: number;
     gender: string;
