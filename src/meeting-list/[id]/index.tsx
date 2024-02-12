@@ -79,7 +79,7 @@ export default function MeetingDetail() {
 
   useEffect(() => {
     if (group) {
-      setDate(getDate(group.meetDate));
+      setDate(getDate(group?.meetDate));
     }
   }, [group]);
 
@@ -137,10 +137,10 @@ export default function MeetingDetail() {
         <DetailBox>
           <DetailTitle>
             <span className="text-base font-bold text-gray-800">
-              {group.title}
+              {group?.title}
             </span>
             <span className="text-sm font-normal text-gray-500">
-              {group.description}
+              {group?.description}
             </span>
           </DetailTitle>
           <div className="w-full h-2 bg-[#F2F0EF]" />
@@ -156,12 +156,12 @@ export default function MeetingDetail() {
                 </DetailInfo>
                 <DetailInfo>
                   <LocationIcon />
-                  <span className="font-medium">{group.meetPlace}</span>
+                  <span className="font-medium">{group?.meetPlace}</span>
                 </DetailInfo>
                 <DetailInfo>
                   <PersonIcon />
                   <span className="font-normal">
-                    {`최대 인원 ${group.maxUsers}명`}
+                    {`최대 인원 ${group?.maxUsers}명`}
                   </span>
                 </DetailInfo>
               </div>
@@ -180,6 +180,14 @@ export default function MeetingDetail() {
                       {parties?.leaderUserSummaryDto?.userName}
                       <OrangeCrownIcon />
                     </div>
+                    <span
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        fontSize: 14,
+                      }}
+                    >
+                      {parties?.leaderUserSummaryDto?.description}
+                    </span>
                     <MemberDetail>
                       <span>{parties?.leaderUserSummaryDto?.age}살</span>
                       <span>
@@ -198,10 +206,18 @@ export default function MeetingDetail() {
                 {parties?.acceptedParties?.map((party) => (
                   <div key={party.partyId}>
                     {party.users.map((user) => (
-                      <div key={user.userId}>
+                      <div key={user?.userId}>
                         <div className="flex gap-1 items-center">
-                          <span>{user.userName}</span>
+                          <span>{user?.userName}</span>
                         </div>
+                        <span
+                          style={{
+                            whiteSpace: "pre-wrap",
+                            fontSize: 14,
+                          }}
+                        >
+                          {user?.description}
+                        </span>
                         <MemberDetail>
                           <span>{user?.age}살</span>
                           <span>
