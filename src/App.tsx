@@ -22,6 +22,7 @@ import RequestProfile from "./request-list/[id]";
 import ChattingList from "./chatting-list";
 import Withdrawal from "./profile/setting/withdrawal";
 import ChangePassword from "./sign-in/change-password";
+import MITI from ".";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,8 @@ const App = () => {
         <div className="w-full max-w-xl mx-auto">
           <BrowserRouter>
             <Routes>
+              {/* 기본 미티 화면 */}
+              <Route path="/" element={<MITI />} />
               {/* 로그인/회원가입 */}
               <Route path="/sign-in" element={<LogIn />} />
               <Route
