@@ -16,6 +16,7 @@ import {
   UserInfo,
   UserName,
   UserDetail,
+  UserDescription,
 } from "../components/requestListComponents";
 
 export default function RequestProfile() {
@@ -65,7 +66,8 @@ export default function RequestProfile() {
             {party?.users?.map((user, userIndex: number) => (
               <UserInfo key={userIndex}>
                 <div>
-                  <UserName>{user.userName}</UserName>
+                  <UserName>{user?.userName}</UserName>
+                  <UserDescription>{user?.description}</UserDescription>
                   <UserDetail>
                     <span>{user?.age}살</span>
                     <span>{user?.gender === "MALE" ? "남자" : "여자"}</span>
