@@ -208,7 +208,7 @@ export default function MeetingChatRoom() {
     <>
       <TopBar
         title={`${group?.title}`}
-        leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
+        leftIcon={<ArrowbackIcon onClick={() => navigate(`/chat-list`)} />}
         rightIcon={
           <HamburgerIcon
             onClick={() => {
