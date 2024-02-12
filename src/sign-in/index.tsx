@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { LongOrangeBtn } from "../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Screen } from "../components/Screen";
 import { ROUTES, SIGNUP_ROUTES } from "../routes";
 import { InputElement } from "../components/Input";
@@ -110,11 +110,6 @@ export default function LogIn() {
         if (data.accessToken) {
           console.log("로그인", data);
           localStorage.setItem("token", data.accessToken);
-          // const myToken = localStorage.getItem("token");
-          // 토큰이 있으면 push
-          {
-            navigate(`${ROUTES.MEETING_LIST}`);
-          }
         } else {
           alert("아이디 혹은 비밀번호를 확인해주세요.");
         }
@@ -123,6 +118,15 @@ export default function LogIn() {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    const myToken = localStorage.getItem("token");
+    console.log(myToken);
+    // 토큰이 있으면 push
+    {
+      myToken && navigate(`${ROUTES.MEETING_LIST}`);
+    }
+  }, []);
 
   return (
     <Screen>
