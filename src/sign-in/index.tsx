@@ -157,7 +157,6 @@ export default function LogIn() {
 
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
         <SearchFrame>
-          <SearchText to={"/"}>아이디 찾기</SearchText>
           <SearchText to={`${ROUTES.CHANGE_PASSWORD}`}>
             비밀번호 찾기
           </SearchText>
