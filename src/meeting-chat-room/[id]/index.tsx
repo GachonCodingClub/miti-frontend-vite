@@ -45,7 +45,10 @@ export default function MeetingChatRoom() {
     const data = await response.json();
     return data;
   };
-  const { data: profile } = useQuery(["profile"], getUserProfile);
+  const { data: profile, isLoading: profileLoading } = useQuery(
+    ["profile"],
+    getUserProfile
+  );
 
   const getGroup = async () => {
     try {
@@ -57,9 +60,15 @@ export default function MeetingChatRoom() {
       throw error; // 에러를 상위로 전파
     }
   };
-  const { data: group } = useQuery(["group", id], getGroup, {
-    enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
-  });
+  const { data: group, isLoading: groupLoading } = useQuery(
+    ["group", id],
+    getGroup,
+    {
+      enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+    }
+  );
+  // 로딩 상태
+  const loading = profileLoading || groupLoading;
 
   // 제네릭으로 타입 명시
   const [chatList, setChatList] = useState<IChat[]>([]); // 채팅 메시지 리스트
@@ -217,85 +226,91 @@ export default function MeetingChatRoom() {
           />
         }
       />
-      <MeetingChatRoomScreen>
-        <ChatWindowContainer>
-          <ChatWindow
-            chatList={chatList}
-            setChatList={setChatList}
-            profileNickname={profile?.nickname}
-            id={id}
-          />
-        </ChatWindowContainer>
-        <div>
-          <label htmlFor="topic-url" hidden />
-          <input type="number" id="topic-url" value={id} hidden />
-          <button hidden onClick={() => subscribe()} />
-        </div>
-        <form onSubmit={(event) => handleSubmit(event, message, id)}>
-          <input placeholder="groupId" type="number" value={id} hidden />
-          <ChattingInputDiv>
-            <ChattingInput
-              placeholder="메시지 입력"
-              type="text"
-              value={message}
-              onChange={handleChangeMessage}
+      {loading ? (
+        <MeetingChatRoomScreen>
+          <div>로딩중이에요</div>
+        </MeetingChatRoomScreen>
+      ) : (
+        <MeetingChatRoomScreen>
+          <ChatWindowContainer>
+            <ChatWindow
+              chatList={chatList}
+              setChatList={setChatList}
+              profileNickname={profile?.nickname}
+              id={id}
             />
-            <button type="submit">
-              <SendIcon />
-            </button>
-          </ChattingInputDiv>
-        </form>
-        {/* 사이드 메뉴 */}
-        {showRightMenu && (
-          <>
-            <Overlay
-              style={{ zIndex: "30" }}
-              onClick={() => {
-                setShowRightMenu(false);
-              }}
-            />
-            <RightMenuFrame
-              initial="hidden"
-              animate={showRightMenu ? "visible" : "hidden"}
-              variants={MenuAnimation}
-            >
-              <SideMenu
-                dialogProps={setShowDeleteDialog}
-                exitProps={setShowExitDialog}
+          </ChatWindowContainer>
+          <div>
+            <label htmlFor="topic-url" hidden />
+            <input type="number" id="topic-url" value={id} hidden />
+            <button hidden onClick={() => subscribe()} />
+          </div>
+          <form onSubmit={(event) => handleSubmit(event, message, id)}>
+            <input placeholder="groupId" type="number" value={id} hidden />
+            <ChattingInputDiv>
+              <ChattingInput
+                placeholder="메시지 입력"
+                type="text"
+                value={message}
+                onChange={handleChangeMessage}
               />
-            </RightMenuFrame>
-          </>
-        )}
-        {showDeleteDialog && (
-          <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
-            <Dialog
-              title="미팅 삭제하고 나가기"
-              contents={`그동안 나눈 대화 내용이 삭제돼요. 
+              <button type="submit">
+                <SendIcon />
+              </button>
+            </ChattingInputDiv>
+          </form>
+          {/* 사이드 메뉴 */}
+          {showRightMenu && (
+            <>
+              <Overlay
+                style={{ zIndex: "30" }}
+                onClick={() => {
+                  setShowRightMenu(false);
+                }}
+              />
+              <RightMenuFrame
+                initial="hidden"
+                animate={showRightMenu ? "visible" : "hidden"}
+                variants={MenuAnimation}
+              >
+                <SideMenu
+                  dialogProps={setShowDeleteDialog}
+                  exitProps={setShowExitDialog}
+                />
+              </RightMenuFrame>
+            </>
+          )}
+          {showDeleteDialog && (
+            <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+              <Dialog
+                title="미팅 삭제하고 나가기"
+                contents={`그동안 나눈 대화 내용이 삭제돼요. 
                     삭제한 미팅은 복구할 수 없어요.`}
-              left="취소"
-              right="미팅 삭제"
-              onLeftClick={() => {
-                setShowDeleteDialog(false);
-              }}
-              onRightClick={handleDeleteRoom}
-            />
-          </Overlay>
-        )}
-        {showExitDialog && (
-          <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
-            <Dialog
-              title="미팅 나가기"
-              contents={`퇴장한 미팅은 다시 참여할 수 없어요.`}
-              left="취소"
-              right="미팅 나가기"
-              onLeftClick={() => {
-                setShowExitDialog(false);
-              }}
-              onRightClick={handleExitRoom}
-            />
-          </Overlay>
-        )}
-      </MeetingChatRoomScreen>
+                left="취소"
+                right="미팅 삭제"
+                onLeftClick={() => {
+                  setShowDeleteDialog(false);
+                }}
+                onRightClick={handleDeleteRoom}
+              />
+            </Overlay>
+          )}
+          {showExitDialog && (
+            <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+              <Dialog
+                title="미팅 나가기"
+                contents={`퇴장한 미팅은 다시 참여할 수 없어요.`}
+                left="취소"
+                right="미팅 나가기"
+                onLeftClick={() => {
+                  setShowExitDialog(false);
+                }}
+                onRightClick={handleExitRoom}
+              />
+            </Overlay>
+          )}
+        </MeetingChatRoomScreen>
+      )}
     </>
   );
 }

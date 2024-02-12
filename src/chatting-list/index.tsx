@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { getApi } from "../api/getApi";
-import { Key, useEffect } from "react";
+import { Key } from "react";
 import {
   TitleMemberTimeFrame,
   ChattingFrame,
@@ -30,28 +30,29 @@ export default function ChattingList() {
       response.json()
     );
 
-  const { data } = useQuery(["myGroups", page, pageSize], () =>
+  const { data, isLoading } = useQuery(["myGroups", page, pageSize], () =>
     getMyGroups(page, pageSize)
   );
-
-  const getChat = (groupId: string) =>
-    getApi({ link: `/message/${groupId}` }).then((response) => response.json());
 
   const [lastMessages, setLastMessages] = useState<LastMessages>({});
 
   useEffect(() => {
-    if (data?.content) {
+    if (!isLoading && data?.content) {
       data.content.forEach((group: { id: string }) => {
-        getChat(group.id).then((chatData) => {
+        const getChat = async (groupId: string) => {
+          const chatData = await getApi({ link: `/message/${groupId}` }).then(
+            (response) => response.json()
+          );
           const lastMessage = chatData[chatData.length - 1];
           setLastMessages((prevMessages) => ({
             ...prevMessages,
             [group.id]: lastMessage,
           }));
-        });
+        };
+        getChat(group.id);
       });
     }
-  }, [data, pageSize]);
+  }, [data, isLoading, pageSize]);
 
   const formatTime = (timeString: string) => {
     const date = new Date(timeString);
@@ -66,6 +67,20 @@ export default function ChattingList() {
     });
   };
 
+  // 로딩 중일 때 보여줄 UI
+  if (isLoading) {
+    return (
+      <>
+        <TopBar title="채팅" />
+        <ChattingListScreen>
+          <div>로딩중이에요</div>
+        </ChattingListScreen>
+        <TabBar />
+      </>
+    );
+  }
+
+  // 데이터가 로딩된 후에 보여줄 UI
   const sortedData = data?.content?.sort((a: Group, b: Group) => a.id - b.id);
 
   return (
