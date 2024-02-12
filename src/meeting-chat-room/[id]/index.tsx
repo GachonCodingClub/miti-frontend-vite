@@ -160,8 +160,22 @@ export default function MeetingChatRoom() {
   const [showRightMenu, setShowRightMenu] = useState(false);
 
   // 방 삭제하고 나가기
+
+  // (방장) 방 폭파
+  const DeleteUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${userToken}`, // 토큰을 헤더에 추가
+  };
+
   const setRoomDelted = useSetRecoilState(SnackBarAtom);
   const handleDeleteRoom = () => {
+    fetch(DeleteUrl, {
+      method: "DELETE",
+      mode: "cors",
+      headers: headers,
+    });
+
     setRoomDelted(true);
     navigate(`${ROUTES.MEETING_LIST}`);
     // 3초 후에 setRoomDelted를 false로 변경
@@ -169,21 +183,6 @@ export default function MeetingChatRoom() {
       setRoomDelted(false);
     }, 3000);
   };
-
-  // 방 나가기
-  const DeleteUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}`;
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${userToken}`, // 토큰을 헤더에 추가
-  };
-
-  const response = fetch(DeleteUrl, {
-    method: "DELETE",
-    mode: "cors",
-    headers: headers,
-  });
-
-  console.log(response);
 
   const setRoomExited = useSetRecoilState(SnackBarAtom);
   const handleExitRoom = () => {
