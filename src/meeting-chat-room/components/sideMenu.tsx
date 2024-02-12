@@ -35,7 +35,6 @@ import {
   MenuExitMeetingButton,
   IUser,
   ProfileLeftButton,
-  ProfileRightButton,
 } from "./MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
 import { IParties } from "../../model/party";
@@ -46,7 +45,6 @@ import {
   DialogContainer,
   DialogContents,
   DialogLeftText,
-  DialogRightText,
   DialogTitle,
 } from "../../components/Button";
 
@@ -278,9 +276,6 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                   >
                     <DialogLeftText>닫기</DialogLeftText>
                   </ProfileLeftButton>
-                  <ProfileRightButton>
-                    <DialogRightText>강제 퇴장</DialogRightText>
-                  </ProfileRightButton>
                 </DialogBtnFrame>
               ) : (
                 <DialogBtnFrame>
