@@ -29,6 +29,11 @@ export const UserName = styled.div`
   letter-spacing: -2%;
 `;
 
+export const UserDescription = styled.span`
+  font-size: 14px;
+  white-space: pre-wrap;
+`;
+
 export const UserDetail = styled.div`
   display: flex;
   gap: 8px;
