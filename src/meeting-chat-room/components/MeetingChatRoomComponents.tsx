@@ -314,9 +314,7 @@ export const MenuMemberAndReqButtonWrapper = styled.div`
 export const MenuMemberContainer = styled(MenuDetailFrame)``;
 
 // 참여자 프레임
-export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)`
-  gap: 16px;
-`;
+export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
 
 // 유저 프로필 프레임
 export const MenuUserProfileFrame = styled.div`
@@ -346,7 +344,6 @@ export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  cursor: pointer;
 `;
 
 // 유저 디테일 텍스트

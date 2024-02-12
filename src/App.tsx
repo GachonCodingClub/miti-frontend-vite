@@ -18,7 +18,6 @@ import Chat from "./meeting-list/[id]/chat";
 import MeetingChatRoom from "./meeting-chat-room/[id]";
 import EditMeeting from "./edit-meeting/[id]";
 import EditMeetingDetail from "./edit-meeting/[id]/detail";
-import RequestList from "./request-list";
 import RequestProfile from "./request-list/[id]";
 import ChattingList from "./chatting-list";
 import Withdrawal from "./profile/setting/withdrawal";
@@ -72,7 +71,6 @@ const App = () => {
                 element={<EditMeetingDetail />}
               />
               {/* 참여 요청 목록 */}
-              <Route path="/request-list" element={<RequestList />} />
               <Route path="/request-list/:id" element={<RequestProfile />} />
             </Routes>
           </BrowserRouter>
