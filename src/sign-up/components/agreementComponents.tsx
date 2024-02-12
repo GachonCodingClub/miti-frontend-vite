@@ -92,7 +92,7 @@ export const ViewContentsPopUpFrame = styled.div`
 // 팝업창 타이틀
 export const ViewContentsTitle = styled.span`
   color: var(--Grey-grey800, #2f2a28);
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 500;
   padding: 16px;
 `;
@@ -103,6 +103,7 @@ export const ViewContents = styled.div`
   overflow-y: scroll;
   padding: 16px;
   background: #f8f9fb;
+  white-space: pre-line; /* 여기에 추가 */
 `;
 
 // 팝업 닫기 프레임
