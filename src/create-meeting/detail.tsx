@@ -218,7 +218,9 @@ export default function CreateMeetingDetail() {
   const navigate = useNavigate();
   const [showEnrollBar, setShowEnrollBar] = useState(false);
   const onEnrollClick = () => {
-    navigate(ROUTES.MEETING_LIST);
+    {
+      !isUpdate ? navigate(ROUTES.MEETING_LIST) : navigate(ROUTES.CHAT_LIST);
+    }
   };
 
   // 등록 완료 스낵바 표시
