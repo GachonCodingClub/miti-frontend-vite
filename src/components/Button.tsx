@@ -99,9 +99,9 @@ const SmOrangeText = styled.span`
   letter-spacing: -0.12px;
 `;
 
-export const SmallOrangeBtn = ({ text }: IBtnText) => {
+export const SmallOrangeBtn = ({ text, onClick }: IBtnText) => {
   return (
-    <SmOrange>
+    <SmOrange onClick={onClick} type="button">
       <SmOrangeText>{text}</SmOrangeText>
     </SmOrange>
   );
@@ -122,9 +122,9 @@ const SmWhiteText = styled(SmOrangeText)`
   color: var(--grey-grey-500, #767170);
 `;
 
-export const SmallWhiteBtn = ({ text }: IBtnText) => {
+export const SmallWhiteBtn = ({ text, onClick }: IBtnText) => {
   return (
-    <SmWhite>
+    <SmWhite onClick={onClick} type="button">
       <SmWhiteText>{text}</SmWhiteText>
     </SmWhite>
   );
@@ -273,7 +273,7 @@ export const BottomDoubleBtn = ({ left, right }: DoubleBtnText) => {
 
 // 다이얼로그
 
-const DialogContainer = styled.div`
+export const DialogContainer = styled.div`
   z-index: 30;
   position: absolute;
   top: 50%;
@@ -290,7 +290,7 @@ const DialogContainer = styled.div`
   background: var(--grey-scale-coolgrey-00, #fff);
 `;
 
-const DialogTitle = styled.span`
+export const DialogTitle = styled.span`
   align-self: stretch;
 
   color: var(--grey-grey-800, #2f2a28);
@@ -299,7 +299,7 @@ const DialogTitle = styled.span`
   line-height: 20px;
 `;
 
-const DialogContents = styled.span`
+export const DialogContents = styled.span`
   align-self: stretch;
   color: var(--grey-grey-700, #56504f);
   text-align: center;
@@ -307,14 +307,14 @@ const DialogContents = styled.span`
   letter-spacing: -0.224px;
 `;
 
-const DialogBtnFrame = styled.div`
+export const DialogBtnFrame = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 16px;
   align-self: stretch;
 `;
 
-const DialogRightBtn = styled.button`
+export const DialogRightBtn = styled.button`
   display: flex;
   padding: 16px 12px;
   justify-content: center;
@@ -325,7 +325,7 @@ const DialogRightBtn = styled.button`
   background: var(--gd, linear-gradient(91deg, #ffbf7b 0%, #ff7152 100%));
 `;
 
-const DialogRightText = styled.span`
+export const DialogRightText = styled.span`
   color: var(--grey-grey-00, #fff);
   text-align: center;
   font-size: 14px;
@@ -333,12 +333,12 @@ const DialogRightText = styled.span`
   letter-spacing: -0.224px;
 `;
 
-const DialogLeftBtn = styled(DialogRightBtn)`
+export const DialogLeftBtn = styled(DialogRightBtn)`
   border: 1px solid var(--grey-grey-100, #dedbd9);
   background: #fff;
 `;
 
-const DialogLeftText = styled(DialogRightText)`
+export const DialogLeftText = styled(DialogRightText)`
   color: var(--grey-grey-500, #767170);
 `;
 

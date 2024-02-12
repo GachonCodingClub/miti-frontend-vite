@@ -7,6 +7,14 @@ export interface IParties {
       users: IUser[];
     }
   ];
+  leaderUserSummaryDto: {
+    description: string;
+    userName: string;
+    age: number;
+    gender: string;
+    height: string;
+    weight: string;
+  };
   acceptedParties: [
     {
       partyId: number;

@@ -47,13 +47,13 @@ export const DetailInfo = styled.span`
 export const DetailMember = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
 `;
 
 export const MemberInfo = styled(DetailMember)``;
 
 export const MemberDetail = styled.div`
   display: flex;
+  margin-bottom: 16px;
   gap: 8px;
   span {
     font-size: 14px;
