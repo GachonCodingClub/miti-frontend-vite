@@ -40,21 +40,11 @@ export default function EditProfile() {
     }
   }, []);
 
-  // const getUserProfile = async () => {
-  //   try {
-  //     const response = await getApi({ link: `/users/profile/my` });
-  //     const data = await response.json();
-  //     console.log("데이타", data);
-  //     return data;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // };
+  const [editError, setEditError] = useState(false);
 
   const getUserProfile = async () => {
     const response = await getApi({ link: `/users/profile/my` });
     const data = await response.json();
-    console.log("데이타", data);
     return data;
   };
 
@@ -198,7 +188,15 @@ export default function EditProfile() {
       setSubscription(false);
     } else {
       // Fetch
-      fetchProfile(token, userNickName, userIntroduce, userHeight, userWeight)
+      fetchProfile(
+        token,
+        userNickName,
+        userIntroduce,
+        userHeight,
+        userWeight,
+        setSubscription,
+        setEditError
+      )
         .then((success) => setSubscription(success))
         .catch(() => setSubscription(false));
     }
@@ -298,6 +296,19 @@ export default function EditProfile() {
               contents=""
               onRightClick={onSubscriptionClick}
               right="프로필 화면으로 이동"
+            />
+          </Overlay>
+        )}
+
+        {editError && (
+          <Overlay style={{ zIndex: "30" }}>
+            <DialogOneBtn
+              title="프로필 수정 실패"
+              contents="입력한 정보를 확인해주세요."
+              onRightClick={() => {
+                setEditError(false);
+              }}
+              right="닫기"
             />
           </Overlay>
         )}
