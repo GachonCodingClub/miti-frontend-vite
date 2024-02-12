@@ -58,6 +58,7 @@ export default function ChattingList() {
     if (isNaN(date.getTime())) {
       return ""; // 유효하지 않은 날짜인 경우 빈 문자열 반환
     }
+    date.setHours(date.getHours() + 9); // 9시간을 더합니다.
     return date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",

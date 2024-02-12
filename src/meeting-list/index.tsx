@@ -25,10 +25,6 @@ export default function MeetingList() {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const meetingDate = new Date(sortedPins[25]?.meetDate);
-  meetingDate.setHours(meetingDate.getHours() + 9);
-  console.log(meetingDate);
-
   const fetchPins = async (page: number) => {
     try {
       setLoading(true);
