@@ -116,7 +116,7 @@ export default function SignUpAgreement() {
                 checked={checkList.includes("first") ? true : false}
               />
 
-              <CheckText>미티 서비스 이용약관 동의1 (필수)</CheckText>
+              <CheckText>개인정보 수집 및 이용에 대한 동의 (필수)</CheckText>
             </div>
             <ViewContentsButton onClick={() => onOpenPopUp(1)}>
               내용보기
@@ -130,7 +130,7 @@ export default function SignUpAgreement() {
                 onChange={check}
                 checked={checkList.includes("second") ? true : false}
               />
-              <CheckText>미티 서비스 이용약관 동의2 (필수)</CheckText>
+              <CheckText>개인정보의 보호 및 책임 면제 (필수)</CheckText>
             </div>
             <ViewContentsButton onClick={() => onOpenPopUp(2)}>
               내용보기
@@ -144,7 +144,7 @@ export default function SignUpAgreement() {
                 onChange={check}
                 checked={checkList.includes("third") ? true : false}
               />
-              <CheckText>미티 서비스 이용약관 동의3 (필수)</CheckText>
+              <CheckText>개인정보의 제공 및 공유 (필수)</CheckText>
             </div>
             <ViewContentsButton onClick={() => onOpenPopUp(3)}>
               내용보기

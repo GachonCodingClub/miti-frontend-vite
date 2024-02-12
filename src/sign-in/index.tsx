@@ -1,26 +1,10 @@
 import styled from "styled-components";
 import { LongOrangeBtn } from "../components/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Screen } from "../components/Screen";
 import { ROUTES, SIGNUP_ROUTES } from "../routes";
 import { InputElement } from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
-
-/**
- * FE 필요한거
- *
- *
- * - 아이디찾기, 키 몸무게(고려)
- * + 비밀번호 찾기
- *
- *
- * 다른데에서 API쓸 때 붙이기
- *
- * 이건 헤더에
- * Authorization: `Bearer ${token}`,
- * 이건 다른 데에
- * const token = localStorage.getItem("MyToken");
- */
 
 // 미티 로고
 const MITI = styled.div`
@@ -34,7 +18,6 @@ const MITI = styled.div`
   line-height: 24px;
   letter-spacing: -0.48px;
 `;
-
 const LoginFrame = styled.div`
   margin-top: 103px;
   display: flex;
@@ -42,7 +25,6 @@ const LoginFrame = styled.div`
   align-items: flex-start;
   gap: 25px;
 `;
-
 // 아이디 찾기 비밀번호 찾기 회원가입 프레임
 const SearchFrame = styled.div`
   margin-top: 32px;
@@ -50,7 +32,6 @@ const SearchFrame = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
 const SearchText = styled(Link)`
   color: var(--grey-grey-500, #767170);
   text-align: center;
@@ -58,33 +39,24 @@ const SearchText = styled(Link)`
   letter-spacing: -0.224px;
 `;
 
-//
-//
-//
-
 export default function LogIn() {
   // 미팅리스트로 드가기
-  const navigate = useNavigate(); // useNavigate 사용
+  const navigate = useNavigate();
   // 아이디
   const [loginEmail, setLoginEmail] = useState("");
-
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputEmail = e.target.value;
     setLoginEmail(inputEmail);
   };
-
   // 비밀번호
   const [loginPassword, setLoginPassword] = useState("");
-
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputPassword = e.target.value;
     setLoginPassword(inputPassword);
   };
-
   // 로그인 버튼
   const onLoginClick = () => {
     const LoginURL = `${import.meta.env.VITE_BASE_URL}/auth/sign-in`;
-
     fetch(LoginURL, {
       method: "POST",
       mode: "cors",
@@ -110,6 +82,9 @@ export default function LogIn() {
         if (data.accessToken) {
           console.log("로그인", data);
           localStorage.setItem("token", data.accessToken);
+          {
+            navigate(`${ROUTES.MEETING_LIST}`);
+          }
         } else {
           alert("아이디 혹은 비밀번호를 확인해주세요.");
         }
@@ -118,16 +93,6 @@ export default function LogIn() {
         console.error(error);
       });
   };
-
-  useEffect(() => {
-    const myToken = localStorage.getItem("token");
-    console.log(myToken);
-    // 토큰이 있으면 push
-    {
-      myToken && navigate(`${ROUTES.MEETING_LIST}`);
-    }
-  }, []);
-
   return (
     <Screen>
       <MITI>MITI</MITI>
@@ -148,7 +113,6 @@ export default function LogIn() {
             onChange={onPasswordChange}
           />
         </LoginFrame>
-
         <div
           style={{
             width: "100%",
@@ -158,7 +122,6 @@ export default function LogIn() {
           <LongOrangeBtn text="로그인" onClick={onLoginClick} />
         </div>
       </form>
-
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
         <SearchFrame>
           <SearchText to={`${ROUTES.CHANGE_PASSWORD}`}>

@@ -48,7 +48,10 @@ export default function EditProfile() {
     return data;
   };
 
-  const { data: profile } = useQuery(["profile"], getUserProfile);
+  const { data: profile, isLoading: profileLoading } = useQuery(
+    ["profile"],
+    getUserProfile
+  );
 
   // 수정 완료 스낵바
   const [subscription, setSubscription] = useState(false);
@@ -205,114 +208,121 @@ export default function EditProfile() {
   return (
     <>
       <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
-      <DetailSetScreen>
-        <DetailTitle>프로필 수정</DetailTitle>
-        <DetailFrame>
-          {/* 닉네임 수정 */}
-          <MyInputBoxButton
-            placeholder="닉네임 입력"
-            label="닉네임"
-            type="text"
-            value={userNickName}
-            onChange={onSubmitNickName}
-            btnText="중복확인"
-            onClick={onCheckNicknameBtn}
-            disable={isInputDisabled}
-            error={nickNameError}
-          />
-          {/* 닉네임 확인 */}
-          <NickNameCheckModule
-            overlapNickname={overlapNickname}
-            setOverlapNickname={setOverlapNickname}
-            possibleNickname={possibleNickname}
-            setPossibleNickname={setPossibleNickname}
-            isInputDisabled={isInputDisabled}
-            checkOverlap={checkOverlap}
-            checkOverlapPossible={checkOverlapPossible}
-          />
-          <IntroduceFrame>
-            <MyInputBox
-              placeholder="자기소개를 적어주세요."
-              label="한줄소개"
+      {profileLoading ? (
+        <DetailSetScreen>
+          <div>로딩중이에요</div>
+        </DetailSetScreen>
+      ) : (
+        <DetailSetScreen>
+          <DetailTitle>프로필 수정</DetailTitle>
+          <DetailFrame>
+            {/* 닉네임 수정 */}
+            <MyInputBoxButton
+              placeholder="닉네임 입력"
+              label="닉네임"
               type="text"
-              value={userIntroduce}
-              onChange={onSubmitIntroduce}
-              error={introduceError}
+              value={userNickName}
+              onChange={onSubmitNickName}
+              btnText="중복확인"
+              onClick={onCheckNicknameBtn}
+              disable={isInputDisabled}
+              error={nickNameError}
             />
-            {charCount >= 0 && (
-              <CharCount>
-                {charCount} / {MAX_INTRODUCE_LENGTH}
-              </CharCount>
-            )}
-          </IntroduceFrame>
-          {/* 키 */}
-          <MyInputBoxSVG
-            placeholder="키 선택(10단위)"
-            label="키(cm)"
-            type="text"
-            onClick={onSubmitHeight}
-            value={userHeight}
-            onChange={() => {}}
-            error={heightError}
-            svg={<ArrowdropIcon />}
+            {/* 닉네임 확인 */}
+            <NickNameCheckModule
+              overlapNickname={overlapNickname}
+              setOverlapNickname={setOverlapNickname}
+              possibleNickname={possibleNickname}
+              setPossibleNickname={setPossibleNickname}
+              isInputDisabled={isInputDisabled}
+              checkOverlap={checkOverlap}
+              checkOverlapPossible={checkOverlapPossible}
+            />
+            <IntroduceFrame>
+              <MyInputBox
+                placeholder="자기소개를 적어주세요."
+                label="한줄소개"
+                type="text"
+                value={userIntroduce}
+                onChange={onSubmitIntroduce}
+                error={introduceError}
+              />
+              {charCount >= 0 && (
+                <CharCount>
+                  {charCount} / {MAX_INTRODUCE_LENGTH}
+                </CharCount>
+              )}
+            </IntroduceFrame>
+            {/* 키 */}
+            <MyInputBoxSVG
+              placeholder="키 선택(10단위)"
+              label="키(cm)"
+              type="text"
+              onClick={onSubmitHeight}
+              value={userHeight}
+              onChange={() => {}}
+              error={heightError}
+              svg={<ArrowdropIcon />}
+            />
+
+            {/* 몸무게 */}
+            <MyInputBoxSVG
+              placeholder="몸무게 선택(10단위)"
+              label="몸무게(kg)"
+              type="text"
+              onClick={onSubmitWeight}
+              value={userWeight}
+              onChange={() => {}}
+              error={weightError}
+              svg={<ArrowdropIcon />}
+            />
+          </DetailFrame>
+          {/* 키 선택시트 */}
+          <MyHeightWeightSheet
+            show={showHeightSheet}
+            onClose={XButtonClick}
+            onSelected={onHeightSelected}
+            title="키(cm) 선택"
+            rangeStart={120}
+            rangeEnd={130}
+          />
+          {/* 몸무게 선택시트 */}
+          <MyHeightWeightSheet
+            show={showWeightSheet}
+            onClose={XButtonClick}
+            onSelected={onWeightSelected}
+            title="몸무게(kg) 선택"
+            rangeStart={30}
+            rangeEnd={40}
           />
 
-          {/* 몸무게 */}
-          <MyInputBoxSVG
-            placeholder="몸무게 선택(10단위)"
-            label="몸무게(kg)"
-            type="text"
-            onClick={onSubmitWeight}
-            value={userWeight}
-            onChange={() => {}}
-            error={weightError}
-            svg={<ArrowdropIcon />}
-          />
-        </DetailFrame>
-        {/* 키 선택시트 */}
-        <MyHeightWeightSheet
-          show={showHeightSheet}
-          onClose={XButtonClick}
-          onSelected={onHeightSelected}
-          title="키(cm) 선택"
-          rangeStart={120}
-          rangeEnd={130}
-        />
-        {/* 몸무게 선택시트 */}
-        <MyHeightWeightSheet
-          show={showWeightSheet}
-          onClose={XButtonClick}
-          onSelected={onWeightSelected}
-          title="몸무게(kg) 선택"
-          rangeStart={30}
-          rangeEnd={40}
-        />
+          {/* 수정 완료 */}
+          {subscription && (
+            <Overlay style={{ zIndex: "30" }}>
+              <DialogOneBtn
+                title="수정 완료!"
+                contents=""
+                onRightClick={onSubscriptionClick}
+                right="프로필 화면으로 이동"
+              />
+            </Overlay>
+          )}
 
-        {/* 수정 완료 */}
-        {subscription && (
-          <Overlay style={{ zIndex: "30" }}>
-            <DialogOneBtn
-              title="수정 완료!"
-              contents=""
-              onRightClick={onSubscriptionClick}
-              right="프로필 화면으로 이동"
-            />
-          </Overlay>
-        )}
+          {editError && (
+            <Overlay style={{ zIndex: "30" }}>
+              <DialogOneBtn
+                title="프로필 수정 실패"
+                contents="입력한 정보를 확인해주세요."
+                onRightClick={() => {
+                  setEditError(false);
+                }}
+                right="닫기"
+              />
+            </Overlay>
+          )}
+        </DetailSetScreen>
+      )}
 
-        {editError && (
-          <Overlay style={{ zIndex: "30" }}>
-            <DialogOneBtn
-              title="프로필 수정 실패"
-              contents="입력한 정보를 확인해주세요."
-              onRightClick={() => {
-                setEditError(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
-      </DetailSetScreen>
       <FixedButtonBox>
         <LongOrangeBtn text="수정하기" onClick={completeButton} />
       </FixedButtonBox>
