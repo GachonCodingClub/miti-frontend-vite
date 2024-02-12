@@ -184,8 +184,16 @@ export default function MeetingChatRoom() {
     }, 3000);
   };
 
+  const ExitUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}/leave`;
+
   const setRoomExited = useSetRecoilState(SnackBarAtom);
   const handleExitRoom = () => {
+    fetch(ExitUrl, {
+      method: "GET",
+      mode: "cors",
+      headers: headers,
+    });
+
     setRoomExited(true);
     navigate(`${ROUTES.MEETING_LIST}`);
     // 3초 후에 setRoomDelted를 false로 변경
