@@ -23,7 +23,7 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const getMyGroups = () =>
-    getApi({ link: "/groups/my" }).then(
+    getApi({ link: "/groups/my?page=0&&size=99" }).then(
       (response) => response.json() as Promise<IGroups>
     );
   const { data, isLoading } = useQuery(["myGroups"], getMyGroups);
@@ -38,14 +38,17 @@ export default function Profile() {
   const nowTime = new Date().getTime();
 
   const currentGroups = data?.content?.filter((group) => {
-    const groupTime = new Date(group.meetDate).getTime();
+    const groupTime = new Date(group.meetDate).getTime() + 9 * 60 * 60 * 1000;
     return groupTime > nowTime;
   });
+  const sortedCurrentGroups = currentGroups?.sort((a, b) => a.id - b.id);
+
   const pastGroups = data?.content?.filter((group) => {
-    const groupTime = new Date(group.meetDate).getTime();
+    const groupTime = new Date(group.meetDate).getTime() + 9 * 60 * 60 * 1000;
     return groupTime < nowTime;
   });
 
+  const sortedPastGroups = pastGroups?.sort((a, b) => a.id - b.id);
   return (
     !isLoading && (
       <>
@@ -101,10 +104,10 @@ export default function Profile() {
             <MeetingList>
               <div className="divide-x-[1px]">
                 {isMine
-                  ? currentGroups?.map((group, index) => (
+                  ? sortedCurrentGroups?.map((group, index) => (
                       <MeetingBoxComponent meeting={group} key={index} />
                     ))
-                  : pastGroups?.map((group, index) => (
+                  : sortedPastGroups?.map((group, index) => (
                       <MeetingBoxComponent
                         isPast={true}
                         meeting={group}

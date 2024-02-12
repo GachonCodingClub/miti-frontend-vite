@@ -7,7 +7,6 @@ import {
   PersonIcon,
   OrangeCrownIcon,
 } from "../../components/Icons";
-import { getDate } from "../../utils";
 import {
   MenuMeetingTitleAndDescFrame,
   MenuMeetingTitle,
@@ -83,12 +82,15 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
   });
 
-  const [date, setDate] = useState("");
-  useEffect(() => {
-    if (group) {
-      setDate(getDate(group.meetDate));
-    }
-  }, [group]);
+  const meetingDate = new Date(group?.meetDate);
+  meetingDate.setHours(meetingDate.getHours() + 9);
+  const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(meetingDate);
 
   const getParties = () =>
     getApi({ link: `/groups/${id}/parties` }).then(
@@ -123,7 +125,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             <MenuDateLocationMemberContainer>
               <MenuDateLocationFrame>
                 <DateIcon />
-                <MenuDateLocationText>{date}</MenuDateLocationText>
+                <MenuDateLocationText>{formattedDate}</MenuDateLocationText>
               </MenuDateLocationFrame>
               <MenuDateLocationFrame>
                 <LocationIcon />

@@ -17,7 +17,6 @@ import { TopBar } from "../../components/TopBar";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
 import { IGroup } from "../../model/group";
 import { IParties } from "../../model/party";
-import { getDate } from "../../utils";
 import {
   DetailScreen,
   DetailBox,
@@ -38,7 +37,6 @@ export default function MeetingDetail() {
   useLoginGuard();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [date, setDate] = useState("");
 
   const [token, setToken] = useState(""); // 토큰 상태 추가
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
@@ -77,11 +75,18 @@ export default function MeetingDetail() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
-  useEffect(() => {
-    if (group) {
-      setDate(getDate(group?.meetDate));
-    }
-  }, [group]);
+  const meetingDate = group?.meetDate ? new Date(group.meetDate) : null;
+  let formattedDate: string | null = null;
+  if (meetingDate) {
+    meetingDate.setHours(meetingDate.getHours() + 9);
+    formattedDate = new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(meetingDate);
+  }
 
   useEffect(() => {
     console.log("AcceptedParties", parties);
@@ -152,7 +157,7 @@ export default function MeetingDetail() {
               <div className="flex flex-col gap-2">
                 <DetailInfo>
                   <DateIcon />
-                  <span className="font-medium">{date}</span>
+                  <span className="font-medium">{formattedDate}</span>
                 </DetailInfo>
                 <DetailInfo>
                   <LocationIcon />
