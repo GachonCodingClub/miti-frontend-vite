@@ -1,7 +1,5 @@
-import styled from "styled-components";
-import { Screen } from "../components/Screen";
 import { TabBar } from "../components/TabBar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { getApi } from "../api/getApi";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
@@ -10,49 +8,17 @@ import { TopBar } from "../components/TopBar";
 import { SettingIcon } from "../components/Icons";
 import { IGroups } from "../model/group";
 import { useNavigate } from "react-router-dom";
-
-const ProfileScreen = styled(Screen)`
-  padding: 0;
-  padding-top: 56px;
-  padding-bottom: 64px;
-`;
-
-const ProfileBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 0 24px;
-  margin-top: 24px;
-`;
-
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const ProfileMeetings = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 32px;
-`;
-
-const MeetingTabBar = styled.div`
-  display: flex;
-  padding: 0 24px;
-  font-weight: 500;
-  border-bottom: 1px solid #e9e9e9;
-`;
-
-const MeetingList = styled.div``;
+import {
+  ProfileScreen,
+  ProfileBox,
+  ProfileInfo,
+  ProfileMeetings,
+  MeetingTabBar,
+  MeetingList,
+} from "./components/profileStyle";
 
 export default function Profile() {
   const [isMine, setIsMine] = useState(true);
-  const [nowDate, setNowDate] = useState("");
-  useEffect(() => {
-    const date = new Date();
-    setNowDate(date.toString());
-  }, [isMine]);
 
   const navigate = useNavigate();
 
@@ -69,19 +35,17 @@ export default function Profile() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
-  useEffect(() => {
-    console.log(data);
-    console.log(profile);
-  }, []);
+  const nowTime = new Date().getTime();
 
   const currentGroups = data?.content?.filter((group) => {
-    const date = group.meetDate;
-    return date > nowDate;
+    const groupTime = new Date(group.meetDate).getTime();
+    return groupTime > nowTime;
   });
   const pastGroups = data?.content?.filter((group) => {
-    const date = group.meetDate;
-    return date < nowDate;
+    const groupTime = new Date(group.meetDate).getTime();
+    return groupTime < nowTime;
   });
+
   return (
     !isLoading && (
       <>
