@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { Screen } from "../../components/Screen";
+import { DialogLeftBtn } from "../../components/Button";
+
+export interface IChat {
+  createdAt: string;
+  nickname: string;
+  content: string;
+}
 
 export const MeetingChatRoomScreen = styled(Screen)`
   padding-top: 56px;
@@ -15,14 +22,18 @@ export const ChatWindowContainer = styled.div`
   gap: 16px;
   margin: auto;
   width: 100%;
+  overflow-y: auto;
+  padding-right: 10px;
+  padding-bottom: 48px;
+  max-height: 90vh;
+  position: relative;
 `;
 
 // 날짜랑 누구누구 입장/퇴장 프레임
 export const DateAlertFrame = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  width: 100%;
+  justify-content: center;
 `;
 
 // 날짜 텍스트
@@ -31,6 +42,7 @@ export const DateText = styled.span`
   font-size: 10px;
   line-height: 12px;
   letter-spacing: -0.1px;
+  padding: 20px 0px;
 `;
 
 // 누구 입장/퇴장 텍스트
@@ -64,6 +76,7 @@ export const MyChatting = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   gap: 4px;
+  max-width: 66%;
 `;
 
 // 내 채팅 버블
@@ -85,6 +98,7 @@ export const ChattingTime = styled.span`
   font-size: 10px;
   line-height: 12px;
   letter-spacing: -0.1px;
+  white-space: nowrap;
 `;
 
 // 상대 채팅 프레임, 여러 개의 채팅이 한 프레임에 담김
@@ -96,6 +110,7 @@ export const OtherChattingFrame = styled(MyChattingFrame)`
 export const OtherUserName = styled.span`
   font-size: 14px;
   letter-spacing: -0.224px;
+  margin-top: 10px;
 `;
 
 // 다른 유저 채팅 하나하나
@@ -114,11 +129,12 @@ export const OtherChattingBubble = styled(MyChattingBubble)`
 export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
-  max-width: 36rem;
+  max-width: 33rem;
   padding: 16px 24px;
   align-items: center;
   position: fixed;
   bottom: 0;
+  background-color: white;
   box-shadow: 0px -4px 8px 0px rgba(0, 0, 0, 0.04);
 `;
 
@@ -144,7 +160,6 @@ export const MenuAnimation = {
   },
   visible: {
     x: 0,
-
     transition: {
       damping: 20, // 바운스 정도
       stiffness: 1000, // 바운스 강도
@@ -299,9 +314,7 @@ export const MenuMemberAndReqButtonWrapper = styled.div`
 export const MenuMemberContainer = styled(MenuDetailFrame)``;
 
 // 참여자 프레임
-export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)`
-  gap: 16px;
-`;
+export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
 
 // 유저 프로필 프레임
 export const MenuUserProfileFrame = styled.div`
@@ -316,7 +329,7 @@ export const MenuUserProfileFrame = styled.div`
 export const MenuMasterFrame = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 4px;
+  flex-direction: column;
 `;
 
 // 유저 닉네임
@@ -330,11 +343,13 @@ export const MenuUserNickname = styled.span`
 export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  flex-direction: column;
 `;
 
 // 유저 디테일 텍스트
-export const MenuUserDetailText = styled(MenuDetailText)``;
+export const MenuUserDetailText = styled(MenuDetailText)`
+  padding-right: 8px;
+`;
 
 // 참여 요청 목록 버튼
 export const ParticipationReqButton = styled(MenuModifyMeetingButton)``;
@@ -347,4 +362,27 @@ export const MenuDeleteMeetingAndRunButton = styled.button`
   letter-spacing: -0.12px;
   width: 100%;
   margin: 10% auto;
+`;
+
+// 미팅 나가기
+export const MenuExitMeetingButton = styled(MenuDeleteMeetingAndRunButton)``;
+
+// 사용자 프로필 인터페이스
+export interface IUser {
+  description?: string;
+  userId: string;
+  userName: string;
+  age: number;
+  gender: "MALE" | "FEMALE";
+  height: string | number;
+  weight: string | number;
+}
+
+export const ProfileLeftButton = styled(DialogLeftBtn)`
+  white-space: nowrap;
+  width: 148px;
+`;
+
+export const ProfileRightButton = styled(ProfileLeftButton)`
+  background: #d05438;
 `;

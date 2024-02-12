@@ -11,7 +11,6 @@ import MeetingList from "./meeting-list";
 import Profile from "./profile";
 import EditProfile from "./profile/setting/edit";
 import Setting from "./profile/setting";
-import RejectedMeetings from "./profile/setting/rejected";
 import CreateMeeting from "./create-meeting";
 import CreateMeetingDetail from "./create-meeting/detail";
 import MeetingDetail from "./meeting-list/[id]";
@@ -19,8 +18,10 @@ import Chat from "./meeting-list/[id]/chat";
 import MeetingChatRoom from "./meeting-chat-room/[id]";
 import EditMeeting from "./edit-meeting/[id]";
 import EditMeetingDetail from "./edit-meeting/[id]/detail";
-import RequestList from "./request-list";
-import ViewProfile from "./request-list/[id]";
+import RequestProfile from "./request-list/[id]";
+import ChattingList from "./chatting-list";
+import Withdrawal from "./profile/setting/withdrawal";
+import ChangePassword from "./sign-in/change-password";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,10 @@ const App = () => {
             <Routes>
               {/* 로그인/회원가입 */}
               <Route path="/sign-in" element={<LogIn />} />
+              <Route
+                path="/sign-in/change-password"
+                element={<ChangePassword />}
+              />
               <Route path="/sign-up/agreement" element={<SignUpAgreement />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/sign-up/password" element={<PasswordSetting />} />
@@ -41,11 +46,13 @@ const App = () => {
               <Route path="/meeting-list" element={<MeetingList />} />
               <Route path="/meeting-list/:id" element={<MeetingDetail />} />
               <Route path="/meeting-list/:id/chat" element={<Chat />} />
+              {/* 채팅리스트 */}
+              <Route path="/chat-list" element={<ChattingList />} />
               {/* 프로필 */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/setting" element={<Setting />} />
               <Route path="/setting/edit" element={<EditProfile />} />
-              <Route path="/setting/rejected" element={<RejectedMeetings />} />
+              <Route path="/setting/withdrawal" element={<Withdrawal />} />
               {/* 미팅 만들기 */}
               <Route path="/create-meeting" element={<CreateMeeting />} />
               <Route
@@ -64,8 +71,7 @@ const App = () => {
                 element={<EditMeetingDetail />}
               />
               {/* 참여 요청 목록 */}
-              <Route path="/request-list" element={<RequestList />} />
-              <Route path="/request-list/:id" element={<ViewProfile />} />
+              <Route path="/request-list/:id" element={<RequestProfile />} />
             </Routes>
           </BrowserRouter>
         </div>

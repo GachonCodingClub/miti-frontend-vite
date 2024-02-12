@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@stomp/stompjs": "^7.0.0",
+    "@tanstack/react-query": "^5.17.19",
     "autoprefixer": "^10.4.17",
     "framer-motion": "^10.18.0",
     "jwt-decode": "^4.0.0",

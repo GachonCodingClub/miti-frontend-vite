@@ -13,11 +13,6 @@ export const getDate = (fullDate: string) => {
     "0"
   )}분`;
 
-  /* API의 meetDate에 날짜가 ISO8601 이런 형식으로 저장이 됨.
-          이거 때문에 사용자가 선택한 시간과 실제로 저장되는 시간이 차이가 나는데,
-          API를 수정하거나, 아니면 실제로 저장되는 값은 그대로 두고 화면에 보이는
-          시간은 +9시간을 직접 더해서 보여주어야 할 것 같음 */
-
   return `${getYMD[0]}-${getYMD[1]}-${date} (${week[day]}) ${time}`;
 };
 

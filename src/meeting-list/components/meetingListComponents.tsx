@@ -37,3 +37,15 @@ export const PeopleInfo = styled.div`
   align-items: center;
   gap: 4px;
 `;
+
+export const CreateMeetingButton = styled.button`
+  background-color: #ff7152;
+  width: 48px;
+  height: 48px;
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+`;

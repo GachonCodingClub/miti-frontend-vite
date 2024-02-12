@@ -34,7 +34,7 @@ export default function Setting() {
       <SettingScreen>
         <SettingButtonBox>
           <SettingButton to="/setting/edit">기본 프로필 수정</SettingButton>
-          <SettingButton to="/setting/rejected">거절한 미팅</SettingButton>
+          <SettingButton to="/setting/withdrawal">회원 탈퇴하기</SettingButton>
         </SettingButtonBox>
       </SettingScreen>
       <TabBar />

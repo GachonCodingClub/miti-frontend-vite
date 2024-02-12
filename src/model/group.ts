@@ -35,4 +35,9 @@ export interface IGroup {
   meetDate: string;
   meetPlace: string;
   title: string;
+  leaderUserId: string;
+  groupStatus: string;
+  leaderUserSummaryDto: {
+    userId: string;
+  };
 }
