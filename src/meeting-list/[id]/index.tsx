@@ -170,18 +170,11 @@ export default function MeetingDetail() {
               <MemberInfo>
                 {parties?.leaderUserSummaryDto && (
                   <>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 4 }}
-                    >
+                    <div className="flex items-center gap-1">
                       {parties?.leaderUserSummaryDto?.userName}
                       <OrangeCrownIcon />
                     </div>
-                    <span
-                      style={{
-                        whiteSpace: "pre-wrap",
-                        fontSize: 14,
-                      }}
-                    >
+                    <span className="whitespace-pre-wrap text-sm">
                       {parties?.leaderUserSummaryDto?.description}
                     </span>
                     <MemberDetail>

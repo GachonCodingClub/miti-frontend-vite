@@ -1,12 +1,5 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Screen } from "../../components/styles/Screen";
-
-export const MeetingScreen = styled(Screen)`
-  padding: 0;
-  padding-top: 56px;
-  padding-bottom: 64px;
-`;
 
 export const MeetingBox = styled(Link)`
   display: flex;
