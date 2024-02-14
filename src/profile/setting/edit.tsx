@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { fetchProfile } from "../components/fetchProfile";
 import { validateProfile } from "../components/validateProfile";
@@ -27,18 +27,11 @@ import {
   Overlay,
 } from "../../sign-up/components/detailComponents";
 import NickNameCheckModule from "../../sign-up/components/nicknameCheck";
+import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
 
 export default function EditProfile() {
-  const navigate = useNavigate(); // useNavigate 사용
-  // 먼저 jwt토큰 정보
-  const [token, setToken] = useState(""); // 추가: 토큰 상태 추가
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  const navigate = useNavigate();
+  const token = useLocalStorageToken();
 
   const [editError, setEditError] = useState(false);
 
