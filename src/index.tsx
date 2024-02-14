@@ -18,14 +18,7 @@ export default function MITI() {
 
   return (
     <Screen>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
+      <div className="flex justify-center items-center h-screen">
         <img src="/images/MITI.png" alt="MITI" width={95} height={32} />
       </div>
     </Screen>

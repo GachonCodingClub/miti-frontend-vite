@@ -359,7 +359,7 @@ export default function CreateMeetingDetail() {
         {!isUpdate && (
           <AddMemberFrame>
             <AddMemberText>닉네임으로 참여자 추가(선택 입력)</AddMemberText>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <MyInputBoxSVG
                 onClick={() => {}}
                 label=""

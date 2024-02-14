@@ -32,7 +32,7 @@ export const MyHeightWeightSheet = ({
     <>
       {show && (
         <>
-          <Overlay style={{ zIndex: "30" }} />
+          <Overlay className="z-30" />
           <HeightSheet
             initial="hidden"
             animate={show ? "visible" : "hidden"}
