@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { LongOrangeBtn } from "../components/Button";
+import { LongOrangeBtn } from "../components/styles/Button";
 import { useState } from "react";
-import { Screen } from "../components/Screen";
+import { Screen } from "../components/styles/Screen";
 import { ROUTES, SIGNUP_ROUTES } from "../routes";
-import { InputElement } from "../components/Input";
+import { InputElement } from "../components/styles/Input";
 import { Link, useNavigate } from "react-router-dom";
 
 // 미티 로고

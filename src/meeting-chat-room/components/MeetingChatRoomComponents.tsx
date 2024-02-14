@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
-import { DialogLeftBtn } from "../../components/Button";
+import { Screen } from "../../components/styles/Screen";
+import { DialogLeftBtn } from "../../components/styles/Button";
 
 export interface IChat {
   createdAt: string;

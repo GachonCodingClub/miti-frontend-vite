@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
+import { Screen } from "../../components/styles/Screen";
 
 export const MeetingScreen = styled(Screen)`
   padding: 0;

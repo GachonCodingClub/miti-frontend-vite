@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ArrowbackIcon } from "../../components/Icons";
+import { ArrowbackIcon } from "../../components/styles/Icons";
 import { TabBar } from "../../components/TabBar";
 import { TopBar } from "../../components/TopBar";
 import { Link, useNavigate } from "react-router-dom";

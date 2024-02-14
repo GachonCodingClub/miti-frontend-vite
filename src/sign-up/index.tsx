@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Screen } from "../components/Screen";
+import { Screen } from "../components/styles/Screen";
 import {
   DialogOneBtn,
   FixedButtonBox,
   LongOrangeBtn,
-} from "../components/Button";
+} from "../components/styles/Button";
 import { useRecoilState } from "recoil";
 import { Overlay } from "./components/detailComponents";
 import { userEmailAtom } from "../atoms";
 import { MyInputBox, MyInputBoxButton } from "../components/MyInputBox";
 import { ROUTES, SIGNUP_ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 
 const SignUpScreen = styled(Screen)`

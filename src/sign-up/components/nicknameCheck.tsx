@@ -1,6 +1,6 @@
 import React from "react";
 import { Overlay } from "./detailComponents";
-import { DialogOneBtn, Dialog } from "../../components/Button";
+import { DialogOneBtn, Dialog } from "../../components/styles/Button";
 
 interface INicknameCheck {
   overlapNickname: boolean;

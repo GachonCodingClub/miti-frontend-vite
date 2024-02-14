@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
+import { Screen } from "../../components/styles/Screen";
 
 export const ProfileScreen = styled(Screen)`
   padding: 0;

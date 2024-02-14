@@ -1,9 +1,9 @@
-import { CautionMessage } from "../components/Input";
+import { CautionMessage } from "../components/styles/Input";
 import { useState } from "react";
 import {
   LeftSelectButton,
   RightSelectButton,
-} from "../components/SelectButton";
+} from "../components/styles/SelectButton";
 import {
   CharCount,
   DetailFrame,
@@ -19,7 +19,7 @@ import {
   DialogOneBtn,
   FixedButtonBox,
   LongOrangeBtn,
-} from "../components/Button";
+} from "../components/styles/Button";
 import { useRecoilState } from "recoil";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
@@ -29,7 +29,7 @@ import {
   MyInputBoxButton,
   MyInputBoxSVG,
 } from "../components/MyInputBox";
-import { ArrowbackIcon, ArrowdropIcon } from "../components/Icons";
+import { ArrowbackIcon, ArrowdropIcon } from "../components/styles/Icons";
 import { MyHeightWeightSheet } from "./components/HeightWeightSheet";
 import NickNameCheckModule from "./components/nicknameCheck";
 import { ROUTES } from "../routes";

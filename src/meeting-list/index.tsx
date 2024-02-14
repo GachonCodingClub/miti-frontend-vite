@@ -7,7 +7,7 @@ import {
 import { useLoginGuard } from "../hooks/useLoginGuard";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { useRecoilValue } from "recoil";
-import { SnackBar } from "../components/Button";
+import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
 import { SnackBarAtom } from "../atoms";

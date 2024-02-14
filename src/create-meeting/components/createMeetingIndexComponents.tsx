@@ -1,7 +1,4 @@
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
-
-export const CreateMeetingScreen = styled(Screen)``;
 
 export const InputWrapper = styled.div`
   display: inline-flex;

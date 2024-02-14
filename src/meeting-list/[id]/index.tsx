@@ -2,7 +2,7 @@ import {
   DialogOneBtn,
   LongOrangeBtn,
   LongWhiteBtn,
-} from "../../components/Button";
+} from "../../components/styles/Button";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { getApi } from "../../api/getApi";
@@ -12,7 +12,7 @@ import {
   LocationIcon,
   OrangeCrownIcon,
   PersonIcon,
-} from "../../components/Icons";
+} from "../../components/styles/Icons";
 import { TopBar } from "../../components/TopBar";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
 import { IGroup } from "../../model/group";

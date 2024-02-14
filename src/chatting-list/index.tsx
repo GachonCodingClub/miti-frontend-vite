@@ -17,7 +17,7 @@ import {
   AlertCircle,
   IGroup,
 } from "./components/chattingListComponents";
-import { PaddingScreen } from "../components/Screen";
+import { PaddingScreen } from "../components/styles/Screen";
 import ChattingListLayout from "./components/ChattingListLayOut";
 
 export default function ChattingList() {

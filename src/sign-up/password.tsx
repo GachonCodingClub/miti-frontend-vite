@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { useState } from "react";
-import { FixedButtonBox, LongOrangeBtn } from "../components/Button";
+import { FixedButtonBox, LongOrangeBtn } from "../components/styles/Button";
 import {
   PasswordSetScreen,
   TitleFrame,
@@ -12,7 +12,7 @@ import { userPasswordAtom } from "../atoms";
 import { MyInputBox } from "../components/MyInputBox";
 import { SIGNUP_ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 
 export default function PasswordSetting() {

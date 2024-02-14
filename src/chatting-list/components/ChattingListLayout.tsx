@@ -1,7 +1,7 @@
 import React from "react";
 import { TopBar } from "../../components/TopBar";
 import { TabBar } from "../../components/TabBar";
-import { PaddingScreen } from "../../components/Screen";
+import { PaddingScreen } from "../../components/styles/Screen";
 
 interface ChattingListLayoutProps {
   title?: string;

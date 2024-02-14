@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { Dialog, DialogOneBtn, LongOrangeBtn } from "../components/Button";
+import {
+  Dialog,
+  DialogOneBtn,
+  LongOrangeBtn,
+} from "../components/styles/Button";
 import { Overlay } from "../sign-up/components/detailComponents";
 import { MyInputBoxSVG } from "../components/MyInputBox";
 import { TopBar } from "../components/TopBar";
 import { getApi } from "../api/getApi";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { useQuery } from "react-query";
 import { ROUTES } from "../routes";
 import { fetchMeeting } from "./components/fetchMeeting";
