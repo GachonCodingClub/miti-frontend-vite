@@ -8,8 +8,8 @@ import {
   DialogOneBtn,
   FixedButtonBox,
   LongOrangeBtn,
-} from "../../components/Button";
-import { ArrowbackIcon, ArrowdropIcon } from "../../components/Icons";
+} from "../../components/styles/Button";
+import { ArrowbackIcon, ArrowdropIcon } from "../../components/styles/Icons";
 import {
   MyInputBoxButton,
   MyInputBox,

@@ -2,18 +2,18 @@ import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { meetingDescAtom, meetingTitleAtom } from "../atoms";
 import { Overlay } from "../sign-up/components/detailComponents";
-import { DialogOneBtn } from "../components/Button";
+import { DialogOneBtn } from "../components/styles/Button";
 import { MyInputBox } from "../components/MyInputBox";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { TopBarNextButton } from "../components/TopBar";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  CreateMeetingScreen,
   InputWrapper,
   DescriptionArea,
 } from "./components/createMeetingIndexComponents";
+import { Screen } from "../components/styles/Screen";
 
 export default function CreateMeeting() {
   const navigate = useNavigate(); // useNavigate 사용
@@ -133,7 +133,7 @@ export default function CreateMeeting() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
         onRightIconClick={nextButton}
       />
-      <CreateMeetingScreen>
+      <Screen>
         <InputWrapper>
           <MyInputBox
             label="미팅 제목"
@@ -162,7 +162,7 @@ export default function CreateMeeting() {
             </Overlay>
           )}
         </InputWrapper>
-      </CreateMeetingScreen>
+      </Screen>
     </>
   );
 }

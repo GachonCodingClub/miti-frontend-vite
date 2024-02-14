@@ -7,7 +7,7 @@ import {
 } from "../meeting-list/components/meetingListComponents";
 import { IGroup } from "../model/group";
 import { formatDate } from "../utils";
-import { Location1pxIcon, Person1pxIcon } from "./Icons";
+import { Location1pxIcon, Person1pxIcon } from "./styles/Icons";
 
 interface IMeetingBoxComponent {
   meeting: IGroup;

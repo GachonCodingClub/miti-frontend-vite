@@ -10,7 +10,7 @@ import {
   SheetElement,
   SheetText,
 } from "./detailComponents";
-import { XIcon } from "../../components/Icons";
+import { XIcon } from "../../components/styles/Icons";
 
 interface SheetProps {
   show: boolean;

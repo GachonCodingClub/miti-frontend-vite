@@ -5,7 +5,7 @@ import { getApi } from "../api/getApi";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { cls } from "../utils";
 import { TopBar } from "../components/TopBar";
-import { SettingIcon } from "../components/Icons";
+import { SettingIcon } from "../components/styles/Icons";
 import { IGroups } from "../model/group";
 import { useNavigate } from "react-router-dom";
 import {

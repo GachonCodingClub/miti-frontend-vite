@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowbackIcon } from "../../components/Icons";
+import { ArrowbackIcon } from "../../components/styles/Icons";
 import { TopBar } from "../../components/TopBar";
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
+import { Screen } from "../../components/styles/Screen";
 
 export const WithdrawalScreen = styled(Screen)`
   padding: 0;

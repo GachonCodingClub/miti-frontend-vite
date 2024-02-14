@@ -18,10 +18,10 @@ import {
 } from "./components/agreementComponents";
 import { SIGNUP_ROUTES } from "../routes";
 import { Overlay } from "./components/detailComponents";
-import { LongOrangeBtn } from "../components/Button";
+import { LongOrangeBtn } from "../components/styles/Button";
 import agreementData from "../sign-up/components/agreementData.json";
 import { TopBar } from "../components/TopBar";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUpAgreement() {

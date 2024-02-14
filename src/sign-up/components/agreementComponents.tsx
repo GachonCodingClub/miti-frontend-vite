@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
+import { Screen } from "../../components/styles/Screen";
 
 // 전체 스크린
 export const AgreementScreen = styled(Screen)`

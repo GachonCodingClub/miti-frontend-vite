@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { OrangeSmButton } from "./Input";
-import { ArrowbackIcon } from "./Icons";
+import { OrangeSmButton } from "./styles/Input";
+import { ArrowbackIcon } from "./styles/Icons";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 

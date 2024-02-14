@@ -6,7 +6,7 @@ import {
   LocationIcon,
   PersonIcon,
   OrangeCrownIcon,
-} from "../../components/Icons";
+} from "../../components/styles/Icons";
 import {
   MenuMeetingTitleAndDescFrame,
   MenuMeetingTitle,
@@ -45,7 +45,7 @@ import {
   DialogContents,
   DialogLeftText,
   DialogTitle,
-} from "../../components/Button";
+} from "../../components/styles/Button";
 import { formatDate } from "../../utils";
 
 interface ISideMenu {

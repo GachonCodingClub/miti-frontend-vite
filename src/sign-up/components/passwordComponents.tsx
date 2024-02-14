@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
+import { Screen } from "../../components/styles/Screen";
 
 export const PasswordSetScreen = styled(Screen)`
   padding-top: 56px;

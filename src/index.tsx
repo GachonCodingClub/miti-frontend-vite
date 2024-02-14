@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Screen } from "./components/Screen";
+import { Screen } from "./components/styles/Screen";
 import { ROUTES } from "./routes";
 
 export default function MITI() {

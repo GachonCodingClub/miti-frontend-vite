@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
-import { FixedButtonBox } from "../../components/Button";
+import { Screen } from "../../components/styles/Screen";
+import { FixedButtonBox } from "../../components/styles/Button";
 
 export const DetailScreen = styled(Screen)`
   padding: 0;

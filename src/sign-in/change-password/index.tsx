@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { TopBar } from "../../components/TopBar";
-import { Screen } from "../../components/Screen";
-import { ArrowbackIcon } from "../../components/Icons";
+import { Screen } from "../../components/styles/Screen";
+import { ArrowbackIcon } from "../../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SignUpFrame, SignUpTitle } from "../../sign-up";
@@ -11,7 +11,7 @@ import {
   DialogOneBtn,
   FixedButtonBox,
   LongOrangeBtn,
-} from "../../components/Button";
+} from "../../components/styles/Button";
 import { PassWordFrame } from "../../sign-up/components/passwordComponents";
 import { ROUTES } from "../../routes";
 

@@ -13,11 +13,15 @@ import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
 import { TopBar } from "../../components/TopBar";
 import { Overlay } from "../../sign-up/components/detailComponents";
-import { ArrowbackIcon, HamburgerIcon, SendIcon } from "../../components/Icons";
+import {
+  ArrowbackIcon,
+  HamburgerIcon,
+  SendIcon,
+} from "../../components/styles/Icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import SideMenu from "../components/sideMenu";
-import { Dialog } from "../../components/Button";
+import { Dialog } from "../../components/styles/Button";
 import { ROUTES } from "../../routes";
 import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";

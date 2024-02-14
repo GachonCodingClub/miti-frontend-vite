@@ -2,12 +2,12 @@ import { getApi } from "../../api/getApi";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { TopBar } from "../../components/TopBar";
-import { ArrowbackIcon } from "../../components/Icons";
+import { ArrowbackIcon } from "../../components/styles/Icons";
 import {
   DialogOneBtn,
   SmallOrangeBtn,
   SmallWhiteBtn,
-} from "../../components/Button";
+} from "../../components/styles/Button";
 import { useState } from "react";
 import { Overlay } from "../../sign-up/components/detailComponents";
 import {
