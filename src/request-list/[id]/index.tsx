@@ -91,7 +91,7 @@ export default function RequestProfile() {
                   />
                 </div>
                 {acceptDialog && (
-                  <Overlay style={{ zIndex: "30" }}>
+                  <Overlay className="z-30">
                     <DialogOneBtn
                       title={`${user.userName}님을 수락했어요.`}
                       contents=""
@@ -105,7 +105,7 @@ export default function RequestProfile() {
                 )}
 
                 {rejectDialog && (
-                  <Overlay style={{ zIndex: "30" }}>
+                  <Overlay className="z-30">
                     <DialogOneBtn
                       title={`${user.userName}님을 거절했어요.`}
                       contents=""

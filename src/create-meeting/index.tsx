@@ -145,7 +145,7 @@ export default function CreateMeeting() {
             value={inputMeetingDesc}
           />
           {showDialog && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay className="z-30">
               <DialogOneBtn
                 title="글자 수를 확인해 주세요."
                 contents=""

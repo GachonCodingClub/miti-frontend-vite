@@ -242,7 +242,7 @@ export default function ChangePassword() {
             />
           </form>
           {showDialog && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay className="z-30">
               <DialogOneBtn
                 title="인증 메일이 전송되었습니다."
                 contents=""
@@ -299,7 +299,7 @@ export default function ChangePassword() {
             />
           )}
           {completeDialog && !certiError && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay className="z-30">
               <DialogOneBtn
                 title="변경 완료"
                 contents=""

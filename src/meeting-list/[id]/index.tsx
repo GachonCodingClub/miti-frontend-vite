@@ -206,12 +206,7 @@ export default function MeetingDetail() {
                         <div className="flex gap-1 items-center">
                           <span>{user?.userName}</span>
                         </div>
-                        <span
-                          style={{
-                            whiteSpace: "pre-wrap",
-                            fontSize: 14,
-                          }}
-                        >
+                        <span className="text-sm whitespace-pre-wrap">
                           {user?.description}
                         </span>
                         <MemberDetail>
@@ -240,7 +235,7 @@ export default function MeetingDetail() {
         </DetailBox>
 
         {showDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay className="z-30">
             <DialogOneBtn
               title="참여 신청 완료"
               contents=""
@@ -252,7 +247,7 @@ export default function MeetingDetail() {
           </Overlay>
         )}
         {showErrorDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay className="z-30">
             <DialogOneBtn
               title="신청할 수 없어요"
               contents="이미 신청한 미팅방일 수 있어요"
