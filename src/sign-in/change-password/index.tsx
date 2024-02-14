@@ -246,13 +246,7 @@ export default function ChangePassword() {
             </Overlay>
           )}
           {showInputBox && !error && (
-            <form
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginTop: "25px",
-              }}
-            >
+            <form className="flex flex-col mt-[25px]">
               <MyInputBoxButton
                 placeholder="인증 번호 입력"
                 label="인증 번호"

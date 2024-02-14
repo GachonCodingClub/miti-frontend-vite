@@ -128,7 +128,7 @@ export const LocationIcon = () => {
 // 햄버거 아이콘
 export const HamburgerIcon = ({ onClick }: { onClick: () => void }) => {
   return (
-    <div onClick={onClick} style={{ cursor: "pointer" }}>
+    <div onClick={onClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"

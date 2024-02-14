@@ -156,7 +156,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                     setSelectedUserProfile(parties?.leaderUserSummaryDto);
                   }}
                 >
-                  <div style={{ display: "flex", gap: 8 }}>
+                  <div className="flex gap-2">
                     <MenuUserNickname>
                       {parties?.leaderUserSummaryDto?.userName}
                     </MenuUserNickname>
@@ -242,21 +242,21 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       {selectedUserProfile && (
         <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
           <DialogContainer>
-            <DialogTitle style={{ padding: 16 }}>
+            <DialogTitle className="p-4">
               {selectedUserProfile?.userName}
             </DialogTitle>
             <span>{selectedUserProfile?.description}</span>
-            <div style={{ padding: 8 }}>
-              <DialogContents style={{ marginRight: 8 }}>
+            <div className="p-2">
+              <DialogContents className="mr-2">
                 나이: {selectedUserProfile?.age}살
               </DialogContents>
-              <DialogContents style={{ marginRight: 8 }}>
+              <DialogContents className="mr-2">
                 성별: {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}
               </DialogContents>
-              <DialogContents style={{ marginRight: 8 }}>
+              <DialogContents className="mr-2">
                 키: {selectedUserProfile?.height}cm
               </DialogContents>
-              <DialogContents style={{ marginRight: 8 }}>
+              <DialogContents className="mr-2">
                 몸무게: {selectedUserProfile?.weight}kg
               </DialogContents>
             </div>
