@@ -11,13 +11,13 @@ import {
 import { useState } from "react";
 import { Overlay } from "../../sign-up/components/detailComponents";
 import {
-  RequestListScreen,
   RequestBox,
   UserInfo,
   UserName,
   UserDetail,
   UserDescription,
 } from "../components/requestListComponents";
+import { PaddingScreen } from "../../components/styles/Screen";
 
 export default function RequestProfile() {
   const { id } = useParams();
@@ -60,7 +60,7 @@ export default function RequestProfile() {
         title="참여 요청 목록"
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
-      <RequestListScreen>
+      <PaddingScreen>
         {parties?.waitingParties?.map((party, index: number) => (
           <RequestBox key={index}>
             {party?.users?.map((user, userIndex: number) => (
@@ -76,7 +76,7 @@ export default function RequestProfile() {
                   </UserDetail>
                 </div>
                 {/* */}
-                <div style={{ display: "flex", gap: 8 }}>
+                <div className="flex gap-2">
                   <SmallWhiteBtn
                     text="거절"
                     onClick={() => {
@@ -121,7 +121,7 @@ export default function RequestProfile() {
             ))}
           </RequestBox>
         ))}
-      </RequestListScreen>
+      </PaddingScreen>
     </>
   );
 }

@@ -1,11 +1,4 @@
 import styled from "styled-components";
-import { Screen } from "../../components/styles/Screen";
-
-export const RequestListScreen = styled(Screen)`
-  padding: 0;
-  padding-top: 56px;
-  padding-bottom: 64px;
-`;
 
 export const RequestBox = styled.div`
   padding: 16px 24px;
