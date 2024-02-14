@@ -34,7 +34,7 @@ import {
   MenuExitMeetingButton,
   IUser,
   ProfileLeftButton,
-} from "./MeetingChatRoomComponents";
+} from "../styles/MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
 import { IParties } from "../../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
