@@ -356,7 +356,7 @@ export default function SingUpDetail() {
 
         {/* 가입 성공 */}
         {subscription && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay className="z-30">
             <DialogOneBtn
               title="가입 성공!"
               contents=""
