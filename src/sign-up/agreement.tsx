@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GrayLine } from "../meeting-chat-room/components/MeetingChatRoomComponents";
+import { GrayLine } from "../meeting-chat-room/styles/MeetingChatRoomComponents";
 import {
   AgreementScreen,
   AgreementTitle,
