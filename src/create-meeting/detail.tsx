@@ -24,9 +24,9 @@ import {
   AddMemberButton,
   SubmitButtonFrame,
 } from "./styles/createMeetingDetailComponents";
-import { GrayLine } from "../meeting-chat-room/components/MeetingChatRoomComponents";
+import { GrayLine } from "../meeting-chat-room/styles/MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
-import { useLocalStorageToken } from "../components/useLocalStorageToken";
+import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { getHeaders } from "../components/getHeaders";
 
 export default function CreateMeetingDetail() {

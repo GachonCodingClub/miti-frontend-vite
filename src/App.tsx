@@ -14,7 +14,6 @@ import Setting from "./profile/setting";
 import CreateMeeting from "./create-meeting";
 import CreateMeetingDetail from "./create-meeting/detail";
 import MeetingDetail from "./meeting-list/[id]";
-import Chat from "./meeting-list/[id]/chat";
 import MeetingChatRoom from "./meeting-chat-room/[id]";
 import EditMeeting from "./edit-meeting/[id]";
 import EditMeetingDetail from "./edit-meeting/[id]/detail";
@@ -48,7 +47,6 @@ const App = () => {
               {/* 미팅리스트 */}
               <Route path="/meeting-list" element={<MeetingList />} />
               <Route path="/meeting-list/:id" element={<MeetingDetail />} />
-              <Route path="/meeting-list/:id/chat" element={<Chat />} />
               {/* 채팅리스트 */}
               <Route path="/chat-list" element={<ChattingList />} />
               {/* 프로필 */}

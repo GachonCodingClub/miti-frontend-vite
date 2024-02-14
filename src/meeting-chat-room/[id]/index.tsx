@@ -6,7 +6,7 @@ import {
   RightMenuFrame,
   MenuAnimation,
   IChat,
-} from "../components/MeetingChatRoomComponents";
+} from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import { useQuery } from "react-query";
@@ -40,8 +40,8 @@ export default function MeetingChatRoom() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const userToken = localStorage.getItem("token");
-  const decoded = jwtDecode(userToken + "");
+  const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token + "");
 
   // 유저 프로필 가져오기
   const getUserProfile = async () => {
@@ -172,13 +172,12 @@ export default function MeetingChatRoom() {
   // 메뉴 표시
   const [showRightMenu, setShowRightMenu] = useState(false);
 
-  // 방 삭제하고 나가기
-
   // (방장) 방 폭파
   const DeleteUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}`;
+
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${userToken}`, // 토큰을 헤더에 추가
+    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
   };
 
   const setRoomDelted = useSetRecoilState(SnackBarAtom);
