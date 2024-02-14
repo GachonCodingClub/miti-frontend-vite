@@ -84,8 +84,7 @@ export default function SignUpAgreement() {
     setShowPopUp(false);
   };
 
-  // 다음 버튼
-  const navigate = useNavigate(); // useNavigate 사용
+  const navigate = useNavigate();
   const onNextButtonClick = () => {
     navigate(`${SIGNUP_ROUTES.SIGN_UP}`);
   };
@@ -108,7 +107,7 @@ export default function SignUpAgreement() {
         {/* 각각의 체크박스와 내용보기 버튼 */}
         <CheckBoxContainer>
           <EachCheckBoxFrame>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <CheckBox
                 type="checkbox"
                 name="first"
@@ -123,7 +122,7 @@ export default function SignUpAgreement() {
             </ViewContentsButton>
           </EachCheckBoxFrame>
           <EachCheckBoxFrame>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <CheckBox
                 type="checkbox"
                 name="second"
@@ -137,7 +136,7 @@ export default function SignUpAgreement() {
             </ViewContentsButton>
           </EachCheckBoxFrame>
           <EachCheckBoxFrame>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <CheckBox
                 type="checkbox"
                 name="third"
