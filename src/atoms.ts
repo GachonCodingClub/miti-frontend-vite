@@ -16,31 +16,6 @@ export const userNicknameAtom = atom({
   default: "",
 });
 
-export const userIntroduceAtom = atom({
-  key: "Introduce",
-  default: "",
-});
-
-export const userGenderAtom = atom({
-  key: "Gender",
-  default: "",
-});
-
-export const userBirthAtom = atom({
-  key: "Birth",
-  default: "",
-});
-
-export const userHeightAtom = atom({
-  key: "Height",
-  default: "",
-});
-
-export const userWeightAtom = atom({
-  key: "Weight",
-  default: "",
-});
-
 // 미팅 방 부분
 export const meetingTitleAtom = atom({
   key: "MeetingTitle",
