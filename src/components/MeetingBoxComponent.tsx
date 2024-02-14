@@ -6,6 +6,7 @@ import {
   PeopleInfo,
 } from "../meeting-list/components/meetingListComponents";
 import { IGroup } from "../model/group";
+import { formatDate } from "../utils";
 import { Location1pxIcon, Person1pxIcon } from "./Icons";
 
 interface IMeetingBoxComponent {
@@ -17,16 +18,7 @@ export default function MeetingBoxComponent({
   meeting,
   isPast,
 }: IMeetingBoxComponent) {
-  const meetingDate = new Date(meeting?.meetDate);
-  meetingDate.setHours(meetingDate.getHours() + 9);
-
-  const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(meetingDate);
+  const formattedDate = formatDate(meeting?.meetDate);
 
   return (
     <MeetingBox to={`/meeting-list/${meeting.id}`}>

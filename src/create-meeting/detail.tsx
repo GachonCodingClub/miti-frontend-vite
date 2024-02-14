@@ -73,8 +73,6 @@ export default function CreateMeetingDetail() {
 
   // 날짜 모시깽이
   const [selecteDate, setSelecteDate] = useState("");
-  // selecteDate를 ISO 8601 형식으로 변환
-  // 이거 ISO 8601형식으로 변환하니까 선택한 시간과 저장된 시간에 차이가 있음.
   const formattedDate = selecteDate && new Date(selecteDate).toISOString();
 
   // 날짜 변화 handleDateChange함수

@@ -32,6 +32,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { Overlay } from "../../sign-up/components/detailComponents";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { formatDate } from "../../utils";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -75,18 +76,8 @@ export default function MeetingDetail() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
-  const meetingDate = group?.meetDate ? new Date(group.meetDate) : null;
-  let formattedDate: string | null = null;
-  if (meetingDate) {
-    meetingDate.setHours(meetingDate.getHours() + 9);
-    formattedDate = new Intl.DateTimeFormat("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(meetingDate);
-  }
+  const meetingDate = group?.meetDate ? new Date(group?.meetDate) : null;
+  const formattedDate = meetingDate ? formatDate(group?.meetDate) : "";
 
   useEffect(() => {
     console.log("AcceptedParties", parties);
