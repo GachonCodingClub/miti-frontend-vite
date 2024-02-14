@@ -33,8 +33,7 @@ export const SignUpFrame = styled.div`
 `;
 
 export default function SignUp() {
-  //뒤로가기
-  const navigate = useNavigate(); // useNavigate 사용
+  const navigate = useNavigate();
 
   // recoil 사용 부분
   const [, setRecoilEmail] = useRecoilState(userEmailAtom);
@@ -174,7 +173,6 @@ export default function SignUp() {
       <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
       <SignUpScreen>
         <SignUpTitle>대학교 이메일을 입력해 주세요</SignUpTitle>
-
         <SignUpFrame>
           <form>
             <MyInputBoxButton
@@ -215,14 +213,8 @@ export default function SignUp() {
             </Overlay>
           )}
 
-          {showInputBox && !error && !overlapError && (
-            <form
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginTop: "25px",
-              }}
-            >
+          {!overlapError && !error && showInputBox && (
+            <form className="flex flex-col mt-[25px]">
               <MyInputBox
                 placeholder="인증 번호 입력"
                 label="인증 번호"

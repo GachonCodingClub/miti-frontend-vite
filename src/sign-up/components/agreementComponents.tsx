@@ -78,7 +78,7 @@ export const ViewContentsButton = styled.button`
 // 팝업창 프레임
 export const ViewContentsPopUpFrame = styled.div`
   display: flex;
-  width: 500px; /* 흠 */
+  width: 90%;
   padding: 24px 16px 24px 16px;
   flex-direction: column;
   align-items: center;
@@ -86,24 +86,25 @@ export const ViewContentsPopUpFrame = styled.div`
   margin: auto;
   top: 10%;
   border-radius: 12px;
-  background: var(--grey-scale-coolgrey-00, #fff);
+  background: white;
 `;
 
 // 팝업창 타이틀
 export const ViewContentsTitle = styled.span`
   color: var(--Grey-grey800, #2f2a28);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
   padding: 16px;
 `;
 
 // 팝업창 안에 내용 담은 div
 export const ViewContents = styled.div`
-  height: 396px;
+  height: 50vh;
   overflow-y: scroll;
   padding: 16px;
   background: #f8f9fb;
-  white-space: pre-line; /* 여기에 추가 */
+  white-space: pre-line;
+  line-height: 20px;
 `;
 
 // 팝업 닫기 프레임

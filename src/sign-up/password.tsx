@@ -16,18 +16,13 @@ import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 
 export default function PasswordSetting() {
-  const navigate = useNavigate(); // useNavigate 사용
-
-  // inputPassword : 사용자가 지금 폼에 입력
-  // recoilPassword, userPassword = recoil로 저장할 비밀번호
+  const navigate = useNavigate();
 
   // recoil 사용 부분
-  const [recoilPassword, setRecoilPassword] = useRecoilState(userPasswordAtom);
-  console.log(recoilPassword);
+  const [, setRecoilPassword] = useRecoilState(userPasswordAtom);
+
   // 비밀번호 입력
   const inputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 비밀번호 유효성 검사
-
     const newPassword = e.target.value;
     setInputUserPW(newPassword);
   };
@@ -84,7 +79,7 @@ export default function PasswordSetting() {
             영문, 특수문자, 숫자 포함 8자리 이상 입력해 주세요
           </SubTitle>
         </TitleFrame>
-        <form style={{ width: "100%", position: "relative" }}>
+        <form className="w-full relative">
           <PassWordFrame>
             <MyInputBox
               placeholder="비밀번호 입력"
