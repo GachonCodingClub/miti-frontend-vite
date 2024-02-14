@@ -23,25 +23,16 @@ import {
   AddMemberText,
   AddMemberButton,
   SubmitButtonFrame,
-} from "./components/createMeetingDetailComponents";
+} from "./styles/createMeetingDetailComponents";
 import { GrayLine } from "../meeting-chat-room/components/MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
+import { useLocalStorageToken } from "../components/useLocalStorageToken";
+import { getHeaders } from "../components/getHeaders";
 
 export default function CreateMeetingDetail() {
-  const { meetingTitle, meetingDesc, myNickname } = useRecoilStates(); // 리코일에서 가져온 정보
-
-  // 먼저 jwt토큰 정보
-  const [token, setToken] = useState(""); // 추가: 토큰 상태 추가
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-
-  // 수정하기를 눌렀을 때. 이 때에는 id를 받음
-  // 쿼리 매개변수에서 방 ID를 추출
+  // 리코일에서 가져온 정보
+  const { meetingTitle, meetingDesc, myNickname } = useRecoilStates();
+  const token = useLocalStorageToken();
   const { id } = useParams();
 
   // id가 있으면 isUpdate가 true
@@ -50,8 +41,6 @@ export default function CreateMeetingDetail() {
   // 업데이트인 경우 기존 룸 데이터를 가져옴
   const getGroup = async () => {
     try {
-      // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
-      // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
       const response = await getApi({ link: `/groups/${id}` });
       const data = await response.json();
       return data;
@@ -65,7 +54,6 @@ export default function CreateMeetingDetail() {
   const { data: group } = useQuery(
     ["group", id],
     () => {
-      // id가 존재할 때에만 쿼리 실행
       if (id) {
         return getGroup();
       }
@@ -75,7 +63,7 @@ export default function CreateMeetingDetail() {
     }
   );
 
-  // 날짜 모시깽이
+  // 날짜
   const [selecteDate, setSelecteDate] = useState("");
   const formattedDate = selecteDate && new Date(selecteDate).toISOString();
 
@@ -125,7 +113,7 @@ export default function CreateMeetingDetail() {
   // 닉네임으로 참여자 추가(선택 입력)
   const [additionalParticipants, setAdditionalParticipants] = useState<
     string[]
-  >([]); // 타입은 string의 배열, 기본은 빈 배열
+  >([]);
 
   // Dialog 띄우는 부분
   // 존재하지 않는 닉네임일때 Dialog
@@ -161,7 +149,7 @@ export default function CreateMeetingDetail() {
         return; // 닉네임 추가를 중단
       }
 
-      // trim()으로 문자열 앞뒤 공백 제거
+      // trim()으로 문자열 뒤 공백 제거
       const trimmedNickname = inputAdditionalNickname.trim();
 
       // 추가된 닉네임 배열에 빈 문자열이 있는지 확인
@@ -237,10 +225,7 @@ export default function CreateMeetingDetail() {
   };
 
   // 헤더에 Authorization을 추가하여 토큰을 전송
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-  };
+  const headers = getHeaders(token);
 
   // 미팅 등록 또는 수정
   const submitMeeting = async () => {

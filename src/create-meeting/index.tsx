@@ -12,18 +12,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   InputWrapper,
   DescriptionArea,
-} from "./components/createMeetingIndexComponents";
+} from "./styles/createMeetingIndexComponents";
 import { Screen } from "../components/styles/Screen";
 
 export default function CreateMeeting() {
-  const navigate = useNavigate(); // useNavigate 사용
+  const navigate = useNavigate();
+  const { id } = useParams(); // 수정하기를 눌렀을 때. 이 때에는 id를 받음
 
-  // 수정하기를 눌렀을 때. 이 때에는 id를 받음
-  // 쿼리 매개변수에서 방 ID를 추출
-  const { id } = useParams();
-
-  // id가 있으면 isUpdate가 true
-  const isUpdate = !!id;
+  const isUpdate = !!id; // id가 있으면 isUpdate가 true
 
   // 원래 방 정보 가져오기
   const getGroup = async () => {
@@ -44,7 +40,6 @@ export default function CreateMeeting() {
   const { data: group } = useQuery(
     ["group", id],
     () => {
-      // id가 존재할 때에만 쿼리 실행
       if (id) {
         return getGroup();
       }
