@@ -46,6 +46,7 @@ import {
   DialogLeftText,
   DialogTitle,
 } from "../../components/Button";
+import { formatDate } from "../../utils";
 
 interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
@@ -81,16 +82,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { data: group } = useQuery(["group", id], getGroup, {
     enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
   });
-
-  const meetingDate = new Date(group?.meetDate);
-  meetingDate.setHours(meetingDate.getHours() + 9);
-  const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(meetingDate);
+  const formattedDate = formatDate(group?.meetDate);
 
   const getParties = () =>
     getApi({ link: `/groups/${id}/parties` }).then(
