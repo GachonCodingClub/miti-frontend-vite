@@ -12,7 +12,6 @@ interface ITopBar {
   onRightIconClick?: () => void;
 }
 
-// TopBar 사용할 때 Screen 밖에 넣어주세요! padding에 영향 받으면 위치 깨져요. 네
 const Wrapper = styled.div`
   display: flex;
   position: fixed;
@@ -34,7 +33,6 @@ const TopBarText = styled.span`
 `;
 
 const LeftIconWrapper = styled.div``;
-
 const RightIconWrapper = styled.div``;
 
 export const TopBar = ({
@@ -59,10 +57,9 @@ export const TopBar = ({
   );
 };
 
-// 미팅 만들기에만 쓰이는 다음버튼 있는 TopBar
+// 미팅 만들기/수정하기에만 쓰이는 다음버튼 있는 TopBar
 export const TopBarNextButton = ({ title, onRightIconClick }: ITopBar) => {
   const navigate = useNavigate();
-
   return (
     <Wrapper>
       <ArrowbackIcon onClick={() => navigate(-1)} />
