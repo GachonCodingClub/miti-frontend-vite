@@ -6,7 +6,7 @@ import {
   LocationIcon,
   PersonIcon,
   OrangeCrownIcon,
-} from "../../components/Icons";
+} from "../../components/styles/Icons";
 import {
   MenuMeetingTitleAndDescFrame,
   MenuMeetingTitle,
@@ -34,7 +34,7 @@ import {
   MenuExitMeetingButton,
   IUser,
   ProfileLeftButton,
-} from "./MeetingChatRoomComponents";
+} from "../styles/MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
 import { IParties } from "../../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
@@ -45,7 +45,8 @@ import {
   DialogContents,
   DialogLeftText,
   DialogTitle,
-} from "../../components/Button";
+} from "../../components/styles/Button";
+import { formatDate } from "../../utils";
 
 interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
@@ -81,16 +82,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { data: group } = useQuery(["group", id], getGroup, {
     enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
   });
-
-  const meetingDate = new Date(group?.meetDate);
-  meetingDate.setHours(meetingDate.getHours() + 9);
-  const formattedDate = new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(meetingDate);
+  const formattedDate = formatDate(group?.meetDate);
 
   const getParties = () =>
     getApi({ link: `/groups/${id}/parties` }).then(
@@ -164,7 +156,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                     setSelectedUserProfile(parties?.leaderUserSummaryDto);
                   }}
                 >
-                  <div style={{ display: "flex", gap: 8 }}>
+                  <div className="flex gap-2">
                     <MenuUserNickname>
                       {parties?.leaderUserSummaryDto?.userName}
                     </MenuUserNickname>
@@ -250,21 +242,21 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       {selectedUserProfile && (
         <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
           <DialogContainer>
-            <DialogTitle style={{ padding: 16 }}>
+            <DialogTitle className="p-4">
               {selectedUserProfile?.userName}
             </DialogTitle>
             <span>{selectedUserProfile?.description}</span>
-            <div style={{ padding: 8 }}>
-              <DialogContents style={{ marginRight: 8 }}>
+            <div className="p-2">
+              <DialogContents className="mr-2">
                 나이: {selectedUserProfile?.age}살
               </DialogContents>
-              <DialogContents style={{ marginRight: 8 }}>
+              <DialogContents className="mr-2">
                 성별: {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}
               </DialogContents>
-              <DialogContents style={{ marginRight: 8 }}>
+              <DialogContents className="mr-2">
                 키: {selectedUserProfile?.height}cm
               </DialogContents>
-              <DialogContents style={{ marginRight: 8 }}>
+              <DialogContents className="mr-2">
                 몸무게: {selectedUserProfile?.weight}kg
               </DialogContents>
             </div>

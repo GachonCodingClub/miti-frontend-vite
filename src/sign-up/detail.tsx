@@ -1,9 +1,9 @@
-import { CautionMessage } from "../components/Input";
+import { CautionMessage } from "../components/styles/Input";
 import { useState } from "react";
 import {
   LeftSelectButton,
   RightSelectButton,
-} from "../components/SelectButton";
+} from "../components/styles/SelectButton";
 import {
   CharCount,
   DetailFrame,
@@ -19,7 +19,7 @@ import {
   DialogOneBtn,
   FixedButtonBox,
   LongOrangeBtn,
-} from "../components/Button";
+} from "../components/styles/Button";
 import { useRecoilState } from "recoil";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
@@ -29,7 +29,7 @@ import {
   MyInputBoxButton,
   MyInputBoxSVG,
 } from "../components/MyInputBox";
-import { ArrowbackIcon, ArrowdropIcon } from "../components/Icons";
+import { ArrowbackIcon, ArrowdropIcon } from "../components/styles/Icons";
 import { MyHeightWeightSheet } from "./components/HeightWeightSheet";
 import NickNameCheckModule from "./components/nicknameCheck";
 import { ROUTES } from "../routes";
@@ -40,8 +40,7 @@ import { fetchSignUp } from "./components/fetchSignUp";
 import { useNavigate } from "react-router-dom";
 
 export default function SingUpDetail() {
-  const navigate = useNavigate(); // useNavigate 사용
-
+  const navigate = useNavigate();
   // 닉네임
   const [userNickName, setUserNickName] = useState(""); // 입력받은 닉
   const [nickNameError, setNickNameError] = useState(""); // 닉네임 오류
@@ -175,23 +174,14 @@ export default function SingUpDetail() {
   };
 
   // 리코일
-  // const [userEmail] = useRecoilState(userEmailAtom);
   const userEmailState = useRecoilState(userEmailAtom);
   const userEmail = userEmailState[0];
-  // const [userPassword] = useRecoilState(userPasswordAtom);
   const userPasswordState = useRecoilState(userPasswordAtom);
   const userPassword = userPasswordState[0];
-  // const [recoilNickname, setRecoilNickname] = useRecoilState(userNicknameAtom);
-  // const [recoilIntroduce, setRecoilIntroduce] =
-  //   useRecoilState(userIntroduceAtom);
-  // const [recoilGender, setRecoilGender] = useRecoilState(userGenderAtom);
-  // const [recoilBirth, setRecoilBirth] = useRecoilState(userBirthAtom);
-  // const [recoilHeight, setRecoilHeight] = useRecoilState(userHeightAtom);
-  // const [recoilWeight, setRecoilWeight] = useRecoilState(userWeightAtom);
 
   // 가입 완료 스낵바
   const [subscription, setSubscription] = useState(false);
-  // 로그인으로 이동
+
   const onSubscriptionClick = () => {
     navigate(`${ROUTES.SIGN_IN}`);
   };
@@ -356,7 +346,7 @@ export default function SingUpDetail() {
 
         {/* 가입 성공 */}
         {subscription && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="가입 성공!"
               contents=""

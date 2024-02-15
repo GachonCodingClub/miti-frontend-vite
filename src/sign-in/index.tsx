@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { LongOrangeBtn } from "../components/Button";
+import { LongOrangeBtn } from "../components/styles/Button";
 import { useState } from "react";
-import { Screen } from "../components/Screen";
+import { Screen } from "../components/styles/Screen";
 import { ROUTES, SIGNUP_ROUTES } from "../routes";
-import { InputElement } from "../components/Input";
+import { InputElement } from "../components/styles/Input";
 import { Link, useNavigate } from "react-router-dom";
 
 // 미티 로고
@@ -40,20 +40,24 @@ const SearchText = styled(Link)`
 `;
 
 export default function LogIn() {
-  // 미팅리스트로 드가기
   const navigate = useNavigate();
-  // 아이디
+
   const [loginEmail, setLoginEmail] = useState("");
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputEmail = e.target.value;
     setLoginEmail(inputEmail);
   };
-  // 비밀번호
+
   const [loginPassword, setLoginPassword] = useState("");
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputPassword = e.target.value;
     setLoginPassword(inputPassword);
   };
+
+  const bodyData = JSON.stringify({
+    userId: loginEmail,
+    password: loginPassword,
+  });
   // 로그인 버튼
   const onLoginClick = () => {
     const LoginURL = `${import.meta.env.VITE_BASE_URL}/auth/sign-in`;
@@ -63,10 +67,7 @@ export default function LogIn() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        userId: loginEmail,
-        password: loginPassword,
-      }),
+      body: bodyData,
     })
       .then((response) => {
         console.log(response);
@@ -79,9 +80,8 @@ export default function LogIn() {
       })
       .then((data) => {
         console.log(data);
-        if (data.accessToken) {
-          console.log("로그인", data);
-          localStorage.setItem("token", data.accessToken);
+        if (data?.accessToken) {
+          localStorage.setItem("token", data?.accessToken);
           {
             navigate(`${ROUTES.MEETING_LIST}`);
           }
@@ -113,16 +113,11 @@ export default function LogIn() {
             onChange={onPasswordChange}
           />
         </LoginFrame>
-        <div
-          style={{
-            width: "100%",
-            marginTop: "32px",
-          }}
-        >
+        <div className="w-full mt-8">
           <LongOrangeBtn text="로그인" onClick={onLoginClick} />
         </div>
       </form>
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <div className="w-full flex justify-center">
         <SearchFrame>
           <SearchText to={`${ROUTES.CHANGE_PASSWORD}`}>
             비밀번호 찾기

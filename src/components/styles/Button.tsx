@@ -43,7 +43,6 @@ interface IBtnText {
 }
 
 // 기다란 오렌지색 버튼
-
 export const LongOrangeBtn = ({ text, onClick }: IBtnText) => {
   return (
     <LongOrange onClick={onClick} type="button">
@@ -52,12 +51,7 @@ export const LongOrangeBtn = ({ text, onClick }: IBtnText) => {
   );
 };
 
-//
-//
-//
-
 // 기다란 흰색 버튼
-
 const LongWhite = styled(LongOrange)`
   border: 1px solid var(--grey-grey-100, #dedbd9);
   background: #fff;
@@ -74,12 +68,7 @@ export const LongWhiteBtn = ({ text, onClick }: IBtnText) => {
   );
 };
 
-//
-//
-//
-
 // 작은 오렌지 버튼
-
 const SmOrange = styled.button`
   display: inline-flex;
   padding: 12px 16px;
@@ -107,12 +96,7 @@ export const SmallOrangeBtn = ({ text, onClick }: IBtnText) => {
   );
 };
 
-//
-//
-//
-
 // 작은 흰색 버튼
-
 const SmWhite = styled(SmOrange)`
   border: 1px solid var(--grey-grey-100, #dedbd9);
   background: #fff;
@@ -204,75 +188,7 @@ export const BottomOrangeBtn = ({ text }: IBtnText) => {
   );
 };
 
-//
-//
-//
-
-// 바텀 2 버턴
-
-const BotTwoBtnWrapper = styled.div`
-  display: flex;
-  width: 416px;
-  padding: 16px 16px 24px 16px;
-  align-items: flex-start;
-  gap: 10px;
-  background: var(--grey-scale-coolgrey-00, #fff);
-  box-shadow: 0px -2px 4px 0px rgba(18, 22, 26, 0.04);
-`;
-
-const RightOrangeBtn = styled.button`
-  display: flex;
-  padding: 16px 12px;
-  justify-content: center;
-  align-items: center;
-  flex: 1 0 0;
-
-  border-radius: 8px;
-  background: var(--gd, linear-gradient(91deg, #ffbf7b 0%, #ff7152 100%));
-`;
-
-const RightOrangeText = styled.span`
-  color: var(--grey-grey-00, #fff);
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.224px;
-`;
-
-const LeftWhiteBtn = styled(RightOrangeBtn)`
-  border: 1px solid var(--grey-grey-100, #dedbd9);
-  background: #fff;
-`;
-
-const LeftWhiteText = styled(RightOrangeText)`
-  color: var(--grey-grey-500, #767170);
-`;
-
-interface DoubleBtnText {
-  left: string;
-  right: string;
-}
-
-export const BottomDoubleBtn = ({ left, right }: DoubleBtnText) => {
-  return (
-    <BotTwoBtnWrapper>
-      <LeftWhiteBtn>
-        <LeftWhiteText>{left}</LeftWhiteText>
-      </LeftWhiteBtn>
-
-      <RightOrangeBtn>
-        <RightOrangeText>{right}</RightOrangeText>
-      </RightOrangeBtn>
-    </BotTwoBtnWrapper>
-  );
-};
-
-//
-//
-//
-
 // 다이얼로그
-
 export const DialogContainer = styled.div`
   z-index: 30;
   position: absolute;
@@ -395,12 +311,7 @@ export const DialogOneBtn = ({
   );
 };
 
-//
-//
-//
-
 // 스낵바
-
 const SnackBarWrapper = styled.button`
   position: fixed;
   width: 30%;

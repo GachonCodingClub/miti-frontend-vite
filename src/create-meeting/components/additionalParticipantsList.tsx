@@ -3,7 +3,7 @@ import {
   AddMemberContainer,
   DeleteMemberButton,
   AddedNicknameText,
-} from "./createMeetingDetailComponents";
+} from "../styles/createMeetingDetailComponents";
 
 interface IAdditionalParticipantsListProps {
   participants: string[];

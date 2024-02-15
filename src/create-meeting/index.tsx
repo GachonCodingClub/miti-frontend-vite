@@ -2,28 +2,24 @@ import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { meetingDescAtom, meetingTitleAtom } from "../atoms";
 import { Overlay } from "../sign-up/components/detailComponents";
-import { DialogOneBtn } from "../components/Button";
+import { DialogOneBtn } from "../components/styles/Button";
 import { MyInputBox } from "../components/MyInputBox";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { TopBarNextButton } from "../components/TopBar";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  CreateMeetingScreen,
   InputWrapper,
   DescriptionArea,
-} from "./components/createMeetingIndexComponents";
+} from "./styles/createMeetingIndexComponents";
+import { Screen } from "../components/styles/Screen";
 
 export default function CreateMeeting() {
-  const navigate = useNavigate(); // useNavigate 사용
+  const navigate = useNavigate();
+  const { id } = useParams(); // 수정하기를 눌렀을 때. 이 때에는 id를 받음
 
-  // 수정하기를 눌렀을 때. 이 때에는 id를 받음
-  // 쿼리 매개변수에서 방 ID를 추출
-  const { id } = useParams();
-
-  // id가 있으면 isUpdate가 true
-  const isUpdate = !!id;
+  const isUpdate = !!id; // id가 있으면 isUpdate가 true
 
   // 원래 방 정보 가져오기
   const getGroup = async () => {
@@ -44,7 +40,6 @@ export default function CreateMeeting() {
   const { data: group } = useQuery(
     ["group", id],
     () => {
-      // id가 존재할 때에만 쿼리 실행
       if (id) {
         return getGroup();
       }
@@ -133,7 +128,7 @@ export default function CreateMeeting() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
         onRightIconClick={nextButton}
       />
-      <CreateMeetingScreen>
+      <Screen>
         <InputWrapper>
           <MyInputBox
             label="미팅 제목"
@@ -150,7 +145,7 @@ export default function CreateMeeting() {
             value={inputMeetingDesc}
           />
           {showDialog && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay>
               <DialogOneBtn
                 title="글자 수를 확인해 주세요."
                 contents=""
@@ -162,7 +157,7 @@ export default function CreateMeeting() {
             </Overlay>
           )}
         </InputWrapper>
-      </CreateMeetingScreen>
+      </Screen>
     </>
   );
 }

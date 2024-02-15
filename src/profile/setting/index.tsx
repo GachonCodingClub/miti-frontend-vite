@@ -1,30 +1,15 @@
-import styled from "styled-components";
-import { ArrowbackIcon } from "../../components/Icons";
+import { ArrowbackIcon } from "../../components/styles/Icons";
 import { TabBar } from "../../components/TabBar";
 import { TopBar } from "../../components/TopBar";
-import { Link, useNavigate } from "react-router-dom";
-
-const SettingScreen = styled.div`
-  padding: 0 16px;
-  padding-top: 56px;
-`;
-
-const SettingButtonBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 16px;
-  gap: 7px;
-`;
-
-const SettingButton = styled(Link)`
-  padding: 16px 24px;
-  font-weight: 500;
-  color: #000000;
-  text-decoration: none;
-`;
+import { useNavigate } from "react-router-dom";
+import {
+  SettingScreen,
+  SettingButtonBox,
+  SettingButton,
+} from "../styles/settingComponents";
 
 export default function Setting() {
-  const navigate = useNavigate(); // 수정된 부분
+  const navigate = useNavigate();
   return (
     <>
       <TopBar

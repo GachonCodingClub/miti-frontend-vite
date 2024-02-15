@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
+import { Screen } from "../../components/styles/Screen";
 
 export const DetailSetScreen = styled(Screen)`
   padding-top: 56px;
@@ -133,7 +133,7 @@ export const Overlay = styled(motion.div)`
   width: 100vw;
   height: 100vh;
   flex-shrink: 0;
-
+  z-index: 30;
   background: rgba(0, 0, 0, 0.24);
 `;
 

@@ -10,7 +10,7 @@ import {
   SheetElement,
   SheetText,
 } from "./detailComponents";
-import { XIcon } from "../../components/Icons";
+import { XIcon } from "../../components/styles/Icons";
 
 interface SheetProps {
   show: boolean;
@@ -32,7 +32,7 @@ export const MyHeightWeightSheet = ({
     <>
       {show && (
         <>
-          <Overlay style={{ zIndex: "30" }} />
+          <Overlay />
           <HeightSheet
             initial="hidden"
             animate={show ? "visible" : "hidden"}

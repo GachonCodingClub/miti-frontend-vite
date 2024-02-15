@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
-import { DialogLeftBtn } from "../../components/Button";
+import { Screen } from "../../components/styles/Screen";
+import { DialogLeftBtn } from "../../components/styles/Button";
 
 export interface IChat {
   createdAt: string;
@@ -370,10 +370,10 @@ export const MenuExitMeetingButton = styled(MenuDeleteMeetingAndRunButton)``;
 // 사용자 프로필 인터페이스
 export interface IUser {
   description?: string;
-  userId: string;
+  userId?: string;
   userName: string;
   age: number;
-  gender: "MALE" | "FEMALE";
+  gender: "MALE" | "FEMALE" | string;
   height: string | number;
   weight: string | number;
 }
