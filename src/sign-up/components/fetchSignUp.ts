@@ -24,33 +24,35 @@ export const fetchSignUp = async (
   const SignUpUrl = `${import.meta.env.VITE_BASE_URL}/auth/sign-up`;
   console.log(userHeight, userWeight);
   console.log(formatBirthday(userBirth));
+
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  const bodyData = JSON.stringify({
+    nickname: userNickName,
+    gender: userGender,
+    birthDate: formatBirthday(userBirth),
+    height: "A",
+    weight: "B",
+    userId: userEmail,
+    password: userPassword,
+    userName: "A",
+    description: userIntroduce,
+  });
+
   try {
     const response = await fetch(SignUpUrl, {
       method: "POST",
-      body: JSON.stringify({
-        nickname: userNickName,
-        gender: userGender,
-        birthDate: formatBirthday(userBirth),
-        height: "A",
-        weight: "B",
-        userId: userEmail,
-        password: userPassword,
-        userName: "A",
-        description: userIntroduce,
-      }),
+      body: bodyData,
       mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
     });
-    console.log(response);
     if (!response.ok) {
       console.error(`API 오류: ${response.status} - ${response.statusText}`);
       return false;
     }
-
     const data = await response.json();
-    console.log("회원가입", data);
     return data === true;
   } catch (error) {
     console.error(error);
