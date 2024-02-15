@@ -22,6 +22,7 @@ import ChattingList from "./chatting-list";
 import Withdrawal from "./profile/setting/withdrawal";
 import ChangePassword from "./sign-in/change-password";
 import MITI from ".";
+import SearchPage from "./search";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => {
               {/* 미팅리스트 */}
               <Route path="/meeting-list" element={<MeetingList />} />
               <Route path="/meeting-list/:id" element={<MeetingDetail />} />
+              <Route path="/search" element={<SearchPage />} />
               {/* 채팅리스트 */}
               <Route path="/chat-list" element={<ChattingList />} />
               {/* 프로필 */}
