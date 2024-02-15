@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { IGroup } from "../model/group";
 import { PaddingScreen } from "../components/styles/Screen";
+import { SearchIcon } from "../components/styles/Icons";
 
 export default function MeetingList() {
   useLoginGuard();
@@ -62,7 +63,13 @@ export default function MeetingList() {
   }, [loading, pageEnd.current]);
   return (
     <>
-      <TopBar title="모집중인 미팅" />
+      <TopBar
+        title="모집중인 미팅"
+        rightIcon={<SearchIcon />}
+        onRightIconClick={() => {
+          navigate(`/search`);
+        }}
+      />
       <PaddingScreen>
         <CreateMeetingButton
           onClick={() => {
