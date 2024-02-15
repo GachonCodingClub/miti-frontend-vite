@@ -1,6 +1,6 @@
 import React from "react";
 import { MyInputBox, MyInputBoxSVG } from "../../components/MyInputBox";
-import { CheckIcon, ModifyIcon } from "../../components/Icons";
+import { CheckIcon, ModifyIcon } from "../../components/styles/Icons";
 
 interface MeetingDetailsInputsProps {
   selecteDate: string;

@@ -2,22 +2,22 @@ import { getApi } from "../../api/getApi";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { TopBar } from "../../components/TopBar";
-import { ArrowbackIcon } from "../../components/Icons";
+import { ArrowbackIcon } from "../../components/styles/Icons";
 import {
   DialogOneBtn,
   SmallOrangeBtn,
   SmallWhiteBtn,
-} from "../../components/Button";
+} from "../../components/styles/Button";
 import { useState } from "react";
 import { Overlay } from "../../sign-up/components/detailComponents";
 import {
-  RequestListScreen,
   RequestBox,
   UserInfo,
   UserName,
   UserDetail,
   UserDescription,
 } from "../components/requestListComponents";
+import { PaddingScreen } from "../../components/styles/Screen";
 
 export default function RequestProfile() {
   const { id } = useParams();
@@ -60,7 +60,7 @@ export default function RequestProfile() {
         title="참여 요청 목록"
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
-      <RequestListScreen>
+      <PaddingScreen>
         {parties?.waitingParties?.map((party, index: number) => (
           <RequestBox key={index}>
             {party?.users?.map((user, userIndex: number) => (
@@ -76,7 +76,7 @@ export default function RequestProfile() {
                   </UserDetail>
                 </div>
                 {/* */}
-                <div style={{ display: "flex", gap: 8 }}>
+                <div className="flex gap-2">
                   <SmallWhiteBtn
                     text="거절"
                     onClick={() => {
@@ -91,7 +91,7 @@ export default function RequestProfile() {
                   />
                 </div>
                 {acceptDialog && (
-                  <Overlay style={{ zIndex: "30" }}>
+                  <Overlay>
                     <DialogOneBtn
                       title={`${user.userName}님을 수락했어요.`}
                       contents=""
@@ -105,7 +105,7 @@ export default function RequestProfile() {
                 )}
 
                 {rejectDialog && (
-                  <Overlay style={{ zIndex: "30" }}>
+                  <Overlay>
                     <DialogOneBtn
                       title={`${user.userName}님을 거절했어요.`}
                       contents=""
@@ -121,7 +121,7 @@ export default function RequestProfile() {
             ))}
           </RequestBox>
         ))}
-      </RequestListScreen>
+      </PaddingScreen>
     </>
   );
 }

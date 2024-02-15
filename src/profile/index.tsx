@@ -5,17 +5,17 @@ import { getApi } from "../api/getApi";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { cls } from "../utils";
 import { TopBar } from "../components/TopBar";
-import { SettingIcon } from "../components/Icons";
+import { SettingIcon } from "../components/styles/Icons";
 import { IGroups } from "../model/group";
 import { useNavigate } from "react-router-dom";
 import {
-  ProfileScreen,
   ProfileBox,
   ProfileInfo,
   ProfileMeetings,
   MeetingTabBar,
   MeetingList,
-} from "./components/profileStyle";
+} from "./styles/profileStyle";
+import { PaddingScreen } from "../components/styles/Screen";
 
 export default function Profile() {
   const [isMine, setIsMine] = useState(true);
@@ -58,7 +58,7 @@ export default function Profile() {
             <SettingIcon onClick={() => navigate("/profile/setting")} />
           }
         />
-        <ProfileScreen>
+        <PaddingScreen>
           <ProfileBox>
             <ProfileInfo>
               <span className="font-medium text-base text-gray-800">
@@ -117,7 +117,7 @@ export default function Profile() {
               </div>
             </MeetingList>
           </ProfileMeetings>
-        </ProfileScreen>
+        </PaddingScreen>
         <TabBar />
       </>
     )

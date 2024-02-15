@@ -2,7 +2,7 @@ import {
   DialogOneBtn,
   LongOrangeBtn,
   LongWhiteBtn,
-} from "../../components/Button";
+} from "../../components/styles/Button";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { getApi } from "../../api/getApi";
@@ -12,7 +12,7 @@ import {
   LocationIcon,
   OrangeCrownIcon,
   PersonIcon,
-} from "../../components/Icons";
+} from "../../components/styles/Icons";
 import { TopBar } from "../../components/TopBar";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
 import { IGroup } from "../../model/group";
@@ -32,6 +32,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { Overlay } from "../../sign-up/components/detailComponents";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { formatDate } from "../../utils";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -75,18 +76,8 @@ export default function MeetingDetail() {
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
 
-  const meetingDate = group?.meetDate ? new Date(group.meetDate) : null;
-  let formattedDate: string | null = null;
-  if (meetingDate) {
-    meetingDate.setHours(meetingDate.getHours() + 9);
-    formattedDate = new Intl.DateTimeFormat("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(meetingDate);
-  }
+  const meetingDate = group?.meetDate ? new Date(group?.meetDate) : null;
+  const formattedDate = meetingDate ? formatDate(group?.meetDate) : "";
 
   useEffect(() => {
     console.log("AcceptedParties", parties);
@@ -179,18 +170,11 @@ export default function MeetingDetail() {
               <MemberInfo>
                 {parties?.leaderUserSummaryDto && (
                   <>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 4 }}
-                    >
+                    <div className="flex items-center gap-1">
                       {parties?.leaderUserSummaryDto?.userName}
                       <OrangeCrownIcon />
                     </div>
-                    <span
-                      style={{
-                        whiteSpace: "pre-wrap",
-                        fontSize: 14,
-                      }}
-                    >
+                    <span className="whitespace-pre-wrap text-sm">
                       {parties?.leaderUserSummaryDto?.description}
                     </span>
                     <MemberDetail>
@@ -215,12 +199,7 @@ export default function MeetingDetail() {
                         <div className="flex gap-1 items-center">
                           <span>{user?.userName}</span>
                         </div>
-                        <span
-                          style={{
-                            whiteSpace: "pre-wrap",
-                            fontSize: 14,
-                          }}
-                        >
+                        <span className="text-sm whitespace-pre-wrap">
                           {user?.description}
                         </span>
                         <MemberDetail>
@@ -249,7 +228,7 @@ export default function MeetingDetail() {
         </DetailBox>
 
         {showDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="참여 신청 완료"
               contents=""
@@ -261,7 +240,7 @@ export default function MeetingDetail() {
           </Overlay>
         )}
         {showErrorDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="신청할 수 없어요"
               contents="이미 신청한 미팅방일 수 있어요"

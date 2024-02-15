@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
 import { Link } from "react-router-dom";
 
 export interface LastMessages {
@@ -9,18 +8,11 @@ export interface LastMessages {
   };
 }
 
-export interface Group {
+export interface IGroup {
   title: string;
   nowUsers: string;
   id: number;
 }
-
-export const ChattingListScreen = styled(Screen)`
-  padding: 0;
-  padding-top: 56px;
-  padding-bottom: 64px;
-  position: relative;
-`;
 
 export const ChattingWrapper = styled.div`
   display: flex;
@@ -98,29 +90,4 @@ export const AlertCount = styled.span`
   line-height: 12px;
   letter-spacing: -0.01em;
   color: #ffffff;
-`;
-
-// 페이징
-export const PageFrame = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  position: fixed;
-  max-width: 36rem;
-  width: 100%;
-  background-color: #fff;
-  bottom: 64px;
-  padding-top: 8px;
-`;
-
-export const PrevNextButton = styled.button`
-  font-size: 14px;
-  font-weight: 500;
-`;
-
-export const PageNum = styled.button<{ isActive: boolean }>`
-  font-size: 14px;
-  width: 18px;
-  height: 18px;
-  background-color: ${({ isActive }) => (isActive ? "#ececec" : "#ffffff")};
-  border-radius: 100px;
 `;

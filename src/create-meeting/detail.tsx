@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { Dialog, DialogOneBtn, LongOrangeBtn } from "../components/Button";
+import {
+  Dialog,
+  DialogOneBtn,
+  LongOrangeBtn,
+} from "../components/styles/Button";
 import { Overlay } from "../sign-up/components/detailComponents";
 import { MyInputBoxSVG } from "../components/MyInputBox";
 import { TopBar } from "../components/TopBar";
 import { getApi } from "../api/getApi";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { useQuery } from "react-query";
 import { ROUTES } from "../routes";
 import { fetchMeeting } from "./components/fetchMeeting";
@@ -19,25 +23,16 @@ import {
   AddMemberText,
   AddMemberButton,
   SubmitButtonFrame,
-} from "./components/createMeetingDetailComponents";
-import { GrayLine } from "../meeting-chat-room/components/MeetingChatRoomComponents";
+} from "./styles/createMeetingDetailComponents";
+import { GrayLine } from "../meeting-chat-room/styles/MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
+import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
+import { getHeaders } from "../components/getHeaders";
 
 export default function CreateMeetingDetail() {
-  const { meetingTitle, meetingDesc, myNickname } = useRecoilStates(); // 리코일에서 가져온 정보
-
-  // 먼저 jwt토큰 정보
-  const [token, setToken] = useState(""); // 추가: 토큰 상태 추가
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-
-  // 수정하기를 눌렀을 때. 이 때에는 id를 받음
-  // 쿼리 매개변수에서 방 ID를 추출
+  // 리코일에서 가져온 정보
+  const { meetingTitle, meetingDesc, myNickname } = useRecoilStates();
+  const token = useLocalStorageToken();
   const { id } = useParams();
 
   // id가 있으면 isUpdate가 true
@@ -46,8 +41,6 @@ export default function CreateMeetingDetail() {
   // 업데이트인 경우 기존 룸 데이터를 가져옴
   const getGroup = async () => {
     try {
-      // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
-      // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
       const response = await getApi({ link: `/groups/${id}` });
       const data = await response.json();
       return data;
@@ -61,7 +54,6 @@ export default function CreateMeetingDetail() {
   const { data: group } = useQuery(
     ["group", id],
     () => {
-      // id가 존재할 때에만 쿼리 실행
       if (id) {
         return getGroup();
       }
@@ -71,10 +63,8 @@ export default function CreateMeetingDetail() {
     }
   );
 
-  // 날짜 모시깽이
+  // 날짜
   const [selecteDate, setSelecteDate] = useState("");
-  // selecteDate를 ISO 8601 형식으로 변환
-  // 이거 ISO 8601형식으로 변환하니까 선택한 시간과 저장된 시간에 차이가 있음.
   const formattedDate = selecteDate && new Date(selecteDate).toISOString();
 
   // 날짜 변화 handleDateChange함수
@@ -123,7 +113,7 @@ export default function CreateMeetingDetail() {
   // 닉네임으로 참여자 추가(선택 입력)
   const [additionalParticipants, setAdditionalParticipants] = useState<
     string[]
-  >([]); // 타입은 string의 배열, 기본은 빈 배열
+  >([]);
 
   // Dialog 띄우는 부분
   // 존재하지 않는 닉네임일때 Dialog
@@ -159,7 +149,7 @@ export default function CreateMeetingDetail() {
         return; // 닉네임 추가를 중단
       }
 
-      // trim()으로 문자열 앞뒤 공백 제거
+      // trim()으로 문자열 뒤 공백 제거
       const trimmedNickname = inputAdditionalNickname.trim();
 
       // 추가된 닉네임 배열에 빈 문자열이 있는지 확인
@@ -235,10 +225,7 @@ export default function CreateMeetingDetail() {
   };
 
   // 헤더에 Authorization을 추가하여 토큰을 전송
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-  };
+  const headers = getHeaders(token);
 
   // 미팅 등록 또는 수정
   const submitMeeting = async () => {
@@ -336,7 +323,7 @@ export default function CreateMeetingDetail() {
           )}
 
           {memberCountModi && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay>
               <Dialog
                 title="미팅 인원을 수정하시겠습니까?"
                 contents="추가 인원 목록이 삭제됩니다."
@@ -354,7 +341,7 @@ export default function CreateMeetingDetail() {
             </Overlay>
           )}
           {confirmErrorDialog && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay>
               <DialogOneBtn
                 title="먼저 인원을 확정 지어주세요."
                 contents=""
@@ -372,7 +359,7 @@ export default function CreateMeetingDetail() {
         {!isUpdate && (
           <AddMemberFrame>
             <AddMemberText>닉네임으로 참여자 추가(선택 입력)</AddMemberText>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <MyInputBoxSVG
                 onClick={() => {}}
                 label=""
@@ -395,7 +382,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {addMyNicknameDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="본인은 추가할 수 없어요."
               contents=""
@@ -408,7 +395,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {nonExistentDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="존재하지 않는 닉네임이에요."
               contents=""
@@ -421,7 +408,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {cannotAddDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="미팅 인원보다 많이 추가할 수 없어요."
               contents=""
@@ -434,7 +421,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {duplicateOrBlankErrorDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="닉네임을 확인해 주세요."
               contents="중복된 닉네임이나 빈칸이 있어요."
@@ -447,7 +434,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {sameNumberUsersErrorDialog && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="미팅 정원과 참여자의 수가 같아요."
               contents=""
@@ -460,7 +447,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {showEnrollBar && (
-          <Overlay style={{ zIndex: "30" }}>
+          <Overlay>
             <DialogOneBtn
               title="등록 완료"
               contents=""

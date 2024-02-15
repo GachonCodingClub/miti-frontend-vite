@@ -1,3 +1,5 @@
+import { getHeaders } from "../../components/getHeaders";
+
 export const fetchProfile = async (
   token: string,
   userNickName: string,
@@ -15,11 +17,7 @@ export const fetchProfile = async (
     description: userIntroduce,
   };
   console.log(userHeight, userWeight);
-  // 헤더에 Authorization을 추가하여 토큰을 전송
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-  };
+  const headers = getHeaders(token);
 
   try {
     const response = await fetch(SignUpUrl, {

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { TopBar } from "../../components/TopBar";
-import { Screen } from "../../components/Screen";
-import { ArrowbackIcon } from "../../components/Icons";
+import { Screen } from "../../components/styles/Screen";
+import { ArrowbackIcon } from "../../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SignUpFrame, SignUpTitle } from "../../sign-up";
 import { MyInputBox, MyInputBoxButton } from "../../components/MyInputBox";
 import { Overlay } from "../../sign-up/components/detailComponents";
@@ -11,9 +11,11 @@ import {
   DialogOneBtn,
   FixedButtonBox,
   LongOrangeBtn,
-} from "../../components/Button";
+} from "../../components/styles/Button";
 import { PassWordFrame } from "../../sign-up/components/passwordComponents";
 import { ROUTES } from "../../routes";
+import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
+import { getHeaders } from "../../components/getHeaders";
 
 export const ChangePWScreen = styled(Screen)`
   padding: 0;
@@ -21,14 +23,7 @@ export const ChangePWScreen = styled(Screen)`
 `;
 
 export default function ChangePassword() {
-  const [token, setToken] = useState(""); // 추가: 토큰 상태 추가
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  const token = useLocalStorageToken();
 
   const navigate = useNavigate();
 
@@ -174,11 +169,7 @@ export default function ChangePassword() {
       newPassword: veriUserPW,
       certificationNumber: certiNum,
     };
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-    };
-
+    const headers = getHeaders(token);
     try {
       const response = await fetch(AuthUrl, {
         method: "PATCH",
@@ -242,7 +233,7 @@ export default function ChangePassword() {
             />
           </form>
           {showDialog && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay>
               <DialogOneBtn
                 title="인증 메일이 전송되었습니다."
                 contents=""
@@ -255,13 +246,7 @@ export default function ChangePassword() {
             </Overlay>
           )}
           {showInputBox && !error && (
-            <form
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginTop: "25px",
-              }}
-            >
+            <form className="flex flex-col mt-[25px]">
               <MyInputBoxButton
                 placeholder="인증 번호 입력"
                 label="인증 번호"
@@ -299,7 +284,7 @@ export default function ChangePassword() {
             />
           )}
           {completeDialog && !certiError && (
-            <Overlay style={{ zIndex: "30" }}>
+            <Overlay>
               <DialogOneBtn
                 title="변경 완료"
                 contents=""

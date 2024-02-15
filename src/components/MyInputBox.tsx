@@ -1,5 +1,5 @@
 import React from "react";
-import { InputBoxBtn, InputBoxWithSVG, InputElement } from "./Input";
+import { InputBoxBtn, InputBoxWithSVG, InputElement } from "./styles/Input";
 
 // 기본 인풋박스
 interface IInputProps {

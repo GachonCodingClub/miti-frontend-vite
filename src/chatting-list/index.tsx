@@ -3,11 +3,9 @@ import { useQuery } from "react-query";
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { getApi } from "../api/getApi";
-import { Key } from "react";
 import {
   TitleMemberTimeFrame,
   ChattingFrame,
-  ChattingListScreen,
   ChattingWrapper,
   LastMessages,
   TitleMemberFrame,
@@ -17,28 +15,25 @@ import {
   ChatAlertFrame,
   ChatText,
   AlertCircle,
-  AlertCount,
-  Group,
+  IGroup,
 } from "./components/chattingListComponents";
+import { PaddingScreen } from "../components/styles/Screen";
+import ChattingListLayout from "./components/ChattingListLayOut";
 
 export default function ChattingList() {
-  const page = 0;
-  const pageSize = 99; // 페이지당 아이템 수
-
-  const getMyGroups = (page: number, size: number) =>
-    getApi({ link: `/groups/my?page=${page}&size=${size}` }).then((response) =>
+  const getMyGroups = () =>
+    getApi({ link: `/groups/my?page=0&size=99` }).then((response) =>
       response.json()
     );
-
-  const { data, isLoading } = useQuery(["myGroups", page, pageSize], () =>
-    getMyGroups(page, pageSize)
+  const { data, isLoading, error } = useQuery(["myGroups"], () =>
+    getMyGroups()
   );
 
   const [lastMessages, setLastMessages] = useState<LastMessages>({});
 
   useEffect(() => {
     if (!isLoading && data?.content) {
-      data.content.forEach((group: { id: string }) => {
+      data?.content.forEach((group: { id: string }) => {
         const getChat = async (groupId: string) => {
           const chatData = await getApi({ link: `/message/${groupId}` }).then(
             (response) => response.json()
@@ -52,14 +47,14 @@ export default function ChattingList() {
         getChat(group.id);
       });
     }
-  }, [data, isLoading, pageSize]);
+  }, [data, isLoading]);
 
   const formatTime = (timeString: string) => {
     const date = new Date(timeString);
     if (isNaN(date.getTime())) {
       return ""; // 유효하지 않은 날짜인 경우 빈 문자열 반환
     }
-    date.setHours(date.getHours() + 9); // 9시간을 더합니다.
+    date.setHours(date.getHours() + 9);
     return date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
@@ -67,51 +62,51 @@ export default function ChattingList() {
     });
   };
 
-  // 로딩 중일 때 보여줄 UI
-  if (isLoading) {
+  if (error) {
     return (
-      <>
-        <TopBar title="채팅" />
-        <ChattingListScreen>
-          <div>로딩중이에요</div>
-        </ChattingListScreen>
-        <TabBar />
-      </>
+      <ChattingListLayout title="채팅">
+        <div>에러가 발생했어요</div>
+      </ChattingListLayout>
     );
   }
 
-  // 데이터가 로딩된 후에 보여줄 UI
-  const sortedData = data?.content?.sort((a: Group, b: Group) => a.id - b.id);
+  if (isLoading) {
+    return (
+      <ChattingListLayout title="채팅">
+        <div>로딩중이에요</div>
+      </ChattingListLayout>
+    );
+  }
 
+  const sortedData = data?.content?.sort((a: IGroup, b: IGroup) => a.id - b.id);
   return (
     <>
       <TopBar title="채팅" />
-      <ChattingListScreen>
+      <PaddingScreen>
         <ChattingWrapper>
-          {sortedData?.map((group: Group, index: Key) => (
-            <ChattingFrame key={index} to={`/meeting-chat-room/${group.id}`}>
+          {sortedData?.map((group: IGroup, index: number) => (
+            <ChattingFrame key={index} to={`/meeting-chat-room/${group?.id}`}>
               <TitleMemberTimeFrame>
                 <TitleMemberFrame>
-                  <TitleText>{group.title}</TitleText>
-                  <MemberText>{group.nowUsers}</MemberText>
+                  <TitleText>{group?.title}</TitleText>
+                  <MemberText>{group?.nowUsers}</MemberText>
                 </TitleMemberFrame>
                 <TimeText>
-                  {formatTime(lastMessages[group.id]?.createdAt)}
+                  {formatTime(lastMessages[group?.id]?.createdAt)}
                 </TimeText>
               </TitleMemberTimeFrame>
 
+              {/* 알림이 있을 경우 표시 */}
               <ChatAlertFrame>
                 <ChatText>
-                  {lastMessages[group.id]?.content.replace("[MITI]", "")}
+                  {lastMessages[group?.id]?.content.replace("[MITI]", "")}
                 </ChatText>
-                <AlertCircle>
-                  <AlertCount>10</AlertCount>
-                </AlertCircle>
+                <AlertCircle></AlertCircle>
               </ChatAlertFrame>
             </ChattingFrame>
           ))}
         </ChattingWrapper>
-      </ChattingListScreen>
+      </PaddingScreen>
 
       <TabBar />
     </>

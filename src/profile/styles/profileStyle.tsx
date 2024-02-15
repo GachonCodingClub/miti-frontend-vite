@@ -1,11 +1,4 @@
 import styled from "styled-components";
-import { Screen } from "../../components/Screen";
-
-export const ProfileScreen = styled(Screen)`
-  padding: 0;
-  padding-top: 56px;
-  padding-bottom: 64px;
-`;
 
 export const ProfileBox = styled.div`
   display: flex;

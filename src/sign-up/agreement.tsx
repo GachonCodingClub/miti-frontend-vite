@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GrayLine } from "../meeting-chat-room/components/MeetingChatRoomComponents";
+import { GrayLine } from "../meeting-chat-room/styles/MeetingChatRoomComponents";
 import {
   AgreementScreen,
   AgreementTitle,
@@ -18,10 +18,10 @@ import {
 } from "./components/agreementComponents";
 import { SIGNUP_ROUTES } from "../routes";
 import { Overlay } from "./components/detailComponents";
-import { LongOrangeBtn } from "../components/Button";
+import { LongOrangeBtn } from "../components/styles/Button";
 import agreementData from "../sign-up/components/agreementData.json";
 import { TopBar } from "../components/TopBar";
-import { ArrowbackIcon } from "../components/Icons";
+import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUpAgreement() {
@@ -84,8 +84,7 @@ export default function SignUpAgreement() {
     setShowPopUp(false);
   };
 
-  // 다음 버튼
-  const navigate = useNavigate(); // useNavigate 사용
+  const navigate = useNavigate();
   const onNextButtonClick = () => {
     navigate(`${SIGNUP_ROUTES.SIGN_UP}`);
   };
@@ -108,7 +107,7 @@ export default function SignUpAgreement() {
         {/* 각각의 체크박스와 내용보기 버튼 */}
         <CheckBoxContainer>
           <EachCheckBoxFrame>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <CheckBox
                 type="checkbox"
                 name="first"
@@ -123,7 +122,7 @@ export default function SignUpAgreement() {
             </ViewContentsButton>
           </EachCheckBoxFrame>
           <EachCheckBoxFrame>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <CheckBox
                 type="checkbox"
                 name="second"
@@ -137,7 +136,7 @@ export default function SignUpAgreement() {
             </ViewContentsButton>
           </EachCheckBoxFrame>
           <EachCheckBoxFrame>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="flex items-center">
               <CheckBox
                 type="checkbox"
                 name="third"
@@ -154,7 +153,7 @@ export default function SignUpAgreement() {
       </AgreementScreen>
       {/* 약관 내용 팝업 */}
       {showPopUp && (
-        <Overlay style={{ zIndex: "30" }}>
+        <Overlay>
           <ViewContentsPopUpFrame>
             <ViewContentsTitle>
               {getAgreementDataById(selectedAgreementId)?.title}
