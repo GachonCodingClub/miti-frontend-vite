@@ -228,7 +228,7 @@ export default function MeetingDetail() {
         </DetailBox>
 
         {showDialog && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="참여 신청 완료"
               contents=""
@@ -240,7 +240,7 @@ export default function MeetingDetail() {
           </Overlay>
         )}
         {showErrorDialog && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="신청할 수 없어요"
               contents="이미 신청한 미팅방일 수 있어요"

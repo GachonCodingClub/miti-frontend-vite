@@ -233,7 +233,7 @@ export default function ChangePassword() {
             />
           </form>
           {showDialog && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="인증 메일이 전송되었습니다."
                 contents=""
@@ -284,7 +284,7 @@ export default function ChangePassword() {
             />
           )}
           {completeDialog && !certiError && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="변경 완료"
                 contents=""

@@ -323,7 +323,7 @@ export default function CreateMeetingDetail() {
           )}
 
           {memberCountModi && (
-            <Overlay className="z-30">
+            <Overlay>
               <Dialog
                 title="미팅 인원을 수정하시겠습니까?"
                 contents="추가 인원 목록이 삭제됩니다."
@@ -341,7 +341,7 @@ export default function CreateMeetingDetail() {
             </Overlay>
           )}
           {confirmErrorDialog && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="먼저 인원을 확정 지어주세요."
                 contents=""
@@ -382,7 +382,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {addMyNicknameDialog && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="본인은 추가할 수 없어요."
               contents=""
@@ -395,7 +395,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {nonExistentDialog && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="존재하지 않는 닉네임이에요."
               contents=""
@@ -408,7 +408,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {cannotAddDialog && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="미팅 인원보다 많이 추가할 수 없어요."
               contents=""
@@ -421,7 +421,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {duplicateOrBlankErrorDialog && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="닉네임을 확인해 주세요."
               contents="중복된 닉네임이나 빈칸이 있어요."
@@ -434,7 +434,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {sameNumberUsersErrorDialog && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="미팅 정원과 참여자의 수가 같아요."
               contents=""
@@ -447,7 +447,7 @@ export default function CreateMeetingDetail() {
         )}
 
         {showEnrollBar && (
-          <Overlay className="z-30">
+          <Overlay>
             <DialogOneBtn
               title="등록 완료"
               contents=""

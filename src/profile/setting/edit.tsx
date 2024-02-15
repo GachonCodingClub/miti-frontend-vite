@@ -291,7 +291,7 @@ export default function EditProfile() {
 
           {/* 수정 완료 */}
           {subscription && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="수정 완료!"
                 contents=""
@@ -302,7 +302,7 @@ export default function EditProfile() {
           )}
 
           {editError && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="프로필 수정 실패"
                 contents="입력한 정보를 확인해주세요."

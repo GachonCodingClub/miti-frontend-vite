@@ -133,7 +133,7 @@ export const Overlay = styled(motion.div)`
   width: 100vw;
   height: 100vh;
   flex-shrink: 0;
-
+  z-index: 30;
   background: rgba(0, 0, 0, 0.24);
 `;
 

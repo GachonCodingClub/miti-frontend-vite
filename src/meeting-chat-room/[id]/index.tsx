@@ -266,7 +266,6 @@ export default function MeetingChatRoom() {
           {showRightMenu && (
             <>
               <Overlay
-                className="z-30"
                 onClick={() => {
                   setShowRightMenu(false);
                 }}
