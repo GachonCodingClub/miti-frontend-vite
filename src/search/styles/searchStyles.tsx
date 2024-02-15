@@ -2,10 +2,12 @@ import styled from "styled-components";
 
 export const SearchBox = styled.div`
   display: flex;
+  position: fixed;
   justify-content: center;
   align-items: center;
   width: 100%;
   padding: 8px 24px;
+  background-color: white;
 `;
 
 export const SearchInput = styled.input`
