@@ -188,7 +188,7 @@ export default function SignUp() {
             />
           </form>
           {overlapError && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="이미 가입된 이메일입니다."
                 contents=""
@@ -200,7 +200,7 @@ export default function SignUp() {
             </Overlay>
           )}
           {showDialog && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="인증 메일이 전송되었습니다."
                 contents=""

@@ -145,7 +145,7 @@ export default function CreateMeeting() {
             value={inputMeetingDesc}
           />
           {showDialog && (
-            <Overlay className="z-30">
+            <Overlay>
               <DialogOneBtn
                 title="글자 수를 확인해 주세요."
                 contents=""

@@ -153,7 +153,7 @@ export default function SignUpAgreement() {
       </AgreementScreen>
       {/* 약관 내용 팝업 */}
       {showPopUp && (
-        <Overlay className="z-30">
+        <Overlay>
           <ViewContentsPopUpFrame>
             <ViewContentsTitle>
               {getAgreementDataById(selectedAgreementId)?.title}
