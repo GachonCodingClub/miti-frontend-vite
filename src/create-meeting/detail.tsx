@@ -4,7 +4,7 @@ import {
   DialogOneBtn,
   LongOrangeBtn,
 } from "../components/styles/Button";
-import { Overlay } from "../sign-up/components/detailComponents";
+import { Overlay } from "../sign-up/styles/detailComponents";
 import { MyInputBoxSVG } from "../components/MyInputBox";
 import { TopBar } from "../components/TopBar";
 import { getApi } from "../api/getApi";

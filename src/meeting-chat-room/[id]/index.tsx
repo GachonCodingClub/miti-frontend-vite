@@ -12,7 +12,7 @@ import * as StompJs from "@stomp/stompjs";
 import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
 import { TopBar } from "../../components/TopBar";
-import { Overlay } from "../../sign-up/components/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import {
   ArrowbackIcon,
   HamburgerIcon,

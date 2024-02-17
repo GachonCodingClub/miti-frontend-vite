@@ -25,7 +25,7 @@ import {
   IntroduceFrame,
   CharCount,
   Overlay,
-} from "../../sign-up/components/detailComponents";
+} from "../../sign-up/styles/detailComponents";
 import NickNameCheckModule from "../../sign-up/components/nicknameCheck";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
 

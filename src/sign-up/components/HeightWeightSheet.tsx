@@ -9,7 +9,7 @@ import {
   SheetBodyRow,
   SheetElement,
   SheetText,
-} from "./detailComponents";
+} from "../styles/detailComponents";
 import { XIcon } from "../../components/styles/Icons";
 
 interface SheetProps {

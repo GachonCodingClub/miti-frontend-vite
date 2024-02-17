@@ -7,7 +7,7 @@ import {
   Title,
   SubTitle,
   PassWordFrame,
-} from "./components/passwordComponents";
+} from "./styles/passwordComponents";
 import { userPasswordAtom } from "../atoms";
 import { MyInputBox } from "../components/MyInputBox";
 import { SIGNUP_ROUTES } from "../routes";
