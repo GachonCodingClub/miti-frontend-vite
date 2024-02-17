@@ -26,6 +26,7 @@ import { ROUTES } from "../../routes";
 import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
 import ChatWindow from "../components/ChatWindow";
+import { getHeaders } from "../../components/getHeaders";
 
 /* Topic URL, GroupID, sender가 모두 작성된 상태에서만 메시지가 보내짐
       Connect -> Subscribe -> Publish -> Disconnect 순으로 작동
@@ -175,10 +176,7 @@ export default function MeetingChatRoom() {
   // (방장) 방 폭파
   const DeleteUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}`;
 
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-  };
+  const headers = getHeaders(token);
 
   const setRoomDelted = useSetRecoilState(SnackBarAtom);
   const handleDeleteRoom = () => {
