@@ -6,6 +6,7 @@ export const SearchBox = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  max-width: 36rem;
   padding: 8px 24px;
   background-color: white;
 `;

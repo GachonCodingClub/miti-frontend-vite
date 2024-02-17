@@ -211,7 +211,7 @@ export default function EditProfile() {
           <DetailFrame>
             {/* 닉네임 수정 */}
             <MyInputBoxButton
-              placeholder="닉네임 입력"
+              placeholder="닉네임 입력(최대 8글자)"
               label="닉네임"
               type="text"
               value={userNickName}
@@ -220,6 +220,7 @@ export default function EditProfile() {
               onClick={onCheckNicknameBtn}
               disable={isInputDisabled}
               error={nickNameError}
+              maxLength={8}
             />
             {/* 닉네임 확인 */}
             <NickNameCheckModule

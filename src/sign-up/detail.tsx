@@ -236,7 +236,7 @@ export default function SingUpDetail() {
         <DetailFrame>
           {/* 닉네임 */}
           <MyInputBoxButton
-            placeholder="닉네임 입력"
+            placeholder="닉네임 입력(최대 8글자)"
             label="닉네임"
             type="text"
             value={userNickName}
@@ -245,6 +245,7 @@ export default function SingUpDetail() {
             onClick={onCheckNicknameBtn}
             disable={isInputDisabled}
             error={nickNameError}
+            maxLength={8}
           />
           {/* 닉네임 확인 */}
           <NickNameCheckModule

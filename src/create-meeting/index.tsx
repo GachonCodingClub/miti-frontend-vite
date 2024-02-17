@@ -137,12 +137,14 @@ export default function CreateMeeting() {
             value={inputMeetingTitle}
             onChange={onMeetingTitleChange}
             error={meetingTitleError}
+            maxLength={16}
           />
 
           <DescriptionArea
             placeholder="미팅 설명"
             onChange={onMeetingDescChange}
             value={inputMeetingDesc}
+            maxLength={30}
           />
           {showDialog && (
             <Overlay>
