@@ -250,7 +250,7 @@ export default function MeetingChatRoom() {
             <input placeholder="groupId" type="number" value={id} hidden />
             <ChattingInputDiv>
               <ChattingInput
-                placeholder="메시지 입력"
+                placeholder="메시지 입력(최대 255글자)"
                 type="text"
                 value={message}
                 onChange={handleChangeMessage}
