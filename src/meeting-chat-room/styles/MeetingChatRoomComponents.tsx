@@ -76,7 +76,7 @@ export const MyChatting = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   gap: 4px;
-  max-width: 66%;
+  width: 66%;
 `;
 
 // 내 채팅 버블

@@ -18,7 +18,7 @@ import {
   IGroup,
 } from "./components/chattingListComponents";
 import { PaddingScreen } from "../components/styles/Screen";
-import ChattingListLayout from "./components/ChattingListLayOut";
+import ChattingListLayout from "./components/ChattingListLayout";
 
 export default function ChattingList() {
   const getMyGroups = () =>
