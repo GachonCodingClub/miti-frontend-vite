@@ -6,6 +6,8 @@ import {
   SettingScreen,
   SettingButtonBox,
   SettingButton,
+  LogoutButton,
+  LogoutFrame,
 } from "../styles/settingComponents";
 
 export default function Setting() {
@@ -22,6 +24,16 @@ export default function Setting() {
           <SettingButton to="/setting/withdrawal">회원 탈퇴하기</SettingButton>
         </SettingButtonBox>
       </SettingScreen>
+      <LogoutFrame>
+        <LogoutButton
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/");
+          }}
+        >
+          로그아웃
+        </LogoutButton>
+      </LogoutFrame>
       <TabBar />
     </>
   );
