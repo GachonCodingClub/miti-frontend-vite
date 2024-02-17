@@ -14,7 +14,7 @@ import {
   SelectBtnFrame,
   SelectBtnText,
   SelectButtonContainer,
-} from "./components/detailComponents";
+} from "./styles/detailComponents";
 import {
   DialogOneBtn,
   FixedButtonBox,

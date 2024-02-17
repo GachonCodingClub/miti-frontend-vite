@@ -9,7 +9,7 @@ import {
   SmallWhiteBtn,
 } from "../../components/styles/Button";
 import { useState } from "react";
-import { Overlay } from "../../sign-up/components/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import {
   RequestBox,
   UserInfo,

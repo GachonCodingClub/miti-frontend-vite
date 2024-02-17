@@ -38,7 +38,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { IParties } from "../../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
-import { Overlay } from "../../sign-up/components/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import {
   DialogBtnFrame,
   DialogContainer,

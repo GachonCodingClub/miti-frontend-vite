@@ -30,7 +30,7 @@ import {
   JoinButtonBox,
 } from "../components/meetingDetail.Components";
 import { useNavigate, useParams } from "react-router-dom";
-import { Overlay } from "../../sign-up/components/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { formatDate } from "../../utils";
 import { getHeaders } from "../../components/getHeaders";
