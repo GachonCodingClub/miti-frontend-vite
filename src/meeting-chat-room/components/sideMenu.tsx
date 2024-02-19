@@ -171,12 +171,6 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                         ? "남자"
                         : "여자"}
                     </MenuUserDetailText>
-                    <MenuUserDetailText>
-                      {parties?.leaderUserSummaryDto?.height}cm
-                    </MenuUserDetailText>
-                    <MenuUserDetailText>
-                      {parties?.leaderUserSummaryDto?.weight}kg
-                    </MenuUserDetailText>
                   </div>
                 </MenuMasterFrame>
               </MenuUserProfileFrame>
@@ -198,8 +192,6 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                         <MenuUserDetailText>
                           {user.gender === "MALE" ? "남자" : "여자"}
                         </MenuUserDetailText>
-                        <MenuUserDetailText>{user.height}cm</MenuUserDetailText>
-                        <MenuUserDetailText>{user.weight}kg</MenuUserDetailText>
                       </div>
                     </MenuUserDetailFrame>
                   </MenuUserProfileFrame>
@@ -245,8 +237,8 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             <DialogTitle className="p-4">
               {selectedUserProfile?.userName}
             </DialogTitle>
-            <span>{selectedUserProfile?.description}</span>
-            <div className="p-2">
+            <DialogContents>{selectedUserProfile?.description}</DialogContents>
+            <div className="p-2 flex flex-col">
               <DialogContents className="mr-2">
                 나이: {selectedUserProfile?.age}살
               </DialogContents>

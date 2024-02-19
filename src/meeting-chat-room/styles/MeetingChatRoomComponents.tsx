@@ -131,7 +131,7 @@ export const OtherChattingBubble = styled(MyChattingBubble)`
 export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
-  max-width: 33rem;
+  max-width: 36rem;
   padding: 16px 24px;
   align-items: center;
   position: fixed;
@@ -178,7 +178,7 @@ export const RightMenuFrame = styled(motion.div)`
   right: 0;
   z-index: 31;
   background: #fff;
-  position: absolute;
+  position: fixed;
   overflow: hidden;
 `;
 
