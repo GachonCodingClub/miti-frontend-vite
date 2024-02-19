@@ -14,7 +14,6 @@ import {
   TimeText,
   ChatAlertFrame,
   ChatText,
-  AlertCircle,
   IGroup,
 } from "./components/chattingListComponents";
 import { PaddingScreen } from "../components/styles/Screen";
@@ -101,13 +100,11 @@ export default function ChattingList() {
                 <ChatText>
                   {lastMessages[group?.id]?.content.replace("[MITI]", "")}
                 </ChatText>
-                <AlertCircle></AlertCircle>
               </ChatAlertFrame>
             </ChattingFrame>
           ))}
         </ChattingWrapper>
       </PaddingScreen>
-
       <TabBar />
     </>
   );

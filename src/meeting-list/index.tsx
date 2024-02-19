@@ -20,7 +20,7 @@ export default function MeetingList() {
   const navigate = useNavigate(); // useNavigate 사용
   // 무한스크롤 도전
   const [meetings, setMeetings] = useState<IGroup[]>([]);
-  const sortedMeetings = meetings.sort((a, b) => a.id - b.id);
+
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +28,7 @@ export default function MeetingList() {
     try {
       setLoading(true);
       console.log("미팅리스트:", meetings);
-      const res = await getApi({ link: `/groups?page=${page}` });
+      const res = await getApi({ link: `/groups?page=${page}&sort=meetDate` });
       const data = await res.json();
       setMeetings((prev) => [...prev, ...data.content]);
     } catch (error) {
@@ -79,7 +79,7 @@ export default function MeetingList() {
           +
         </CreateMeetingButton>
         <div className="divide-y-[1px]">
-          {sortedMeetings?.map((meeting, index) => (
+          {meetings?.map((meeting, index) => (
             <MeetingBoxComponent meeting={meeting} key={index} />
           ))}
         </div>

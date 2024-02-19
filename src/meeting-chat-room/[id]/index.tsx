@@ -83,8 +83,7 @@ export default function MeetingChatRoom() {
   const [message, setMessage] = useState(""); // 사용자가 보낼 메시지
 
   // 미티 웹소켓 주소
-  const brokerUrl =
-    "ws://mitiappserver-env.eba-r2uts3k4.ap-northeast-2.elasticbeanstalk.com/ws/chat/websocket";
+  const brokerUrl = "wss://dev-miti-server.dockerfile.site/ws/chat/websocket";
   // client 객체가 StompJs.Client 타입을 따르도록
   const client = useRef<StompJs.Client>(null!); // WebSocket 클라이언트 객체
   // useRef 초기값을 null이 아님으로 설정
