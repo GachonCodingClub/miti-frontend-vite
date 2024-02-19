@@ -222,30 +222,26 @@ export default function MeetingChatRoom() {
 
   // 무한스크롤
   const [page, setPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+
   // 기존의 채팅 데이터 가져오기
-  const getChatting = async (page: number) => {
+  const getChatting = async () => {
     try {
-      setIsLoading(true);
       const chatResponse = await getApi({
         link: `/message/${id}/page?page=${page}`,
       });
       const chatData = await chatResponse.json();
-      console.log("불러온 채팅 데이터:", chatData);
+      console.log("불러온 채팅 :", chatData);
       // const formattedChatData = chatData.reverse();
       // console.log("채팅 데이터", formattedChatData);
 
       setChatList((prev) => [...prev, ...chatData]);
     } catch (error) {
       console.error("채팅 데이터 불러오기 오류", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getChatting(page);
-    console.log(page);
+    getChatting();
   }, [page]);
 
   const loadMore = () => {
@@ -255,24 +251,24 @@ export default function MeetingChatRoom() {
   const pageStart = useRef(null);
 
   useEffect(() => {
-    if (isLoading && pageStart.current) {
+    if (pageStart.current) {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0]?.isIntersecting) {
-            loadMore();
             console.log("로드 몰", page);
+            loadMore();
           }
         },
         { threshold: 1 }
       );
       observer.observe(pageStart.current);
     }
-  }, [isLoading]);
+  }, []);
 
   return (
     <>
       <TopBar
-        title={loading || isLoading ? `로딩중...` : `${group?.title}`}
+        title={loading ? `로딩중...` : `${group?.title}`}
         leftIcon={<ArrowbackIcon onClick={() => navigate(`/chat-list`)} />}
         rightIcon={
           <HamburgerIcon
@@ -321,7 +317,7 @@ export default function MeetingChatRoom() {
 
               // 날짜를 표시할지 여부를 결정하는 변수 초기화
               let displayDate = true;
-              // 현재 채팅이 첫 번째인 경우 또는 이전 채팅의 날짜가 현재 채팅의 날짜와 다른 경우
+              // 현재 채팅이 첫 번째인 경우 또는 다음 채팅의 날짜가 현재 채팅의 날짜와 다른 경우
               if (
                 index === 0 ||
                 getDate(chatList[index + 1]?.createdAt) ===
@@ -384,8 +380,7 @@ export default function MeetingChatRoom() {
               );
             })}
 
-            <div ref={pageStart}></div>
-            <div ref={chatEndRef} />
+            <div ref={pageStart}>마지막</div>
           </ChatWindowContainer>
           <div>
             <label htmlFor="topic-url" hidden />
