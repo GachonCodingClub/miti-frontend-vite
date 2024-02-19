@@ -33,8 +33,8 @@ export const fetchSignUp = async (
     nickname: userNickName,
     gender: userGender,
     birthDate: formatBirthday(userBirth),
-    height: "A",
-    weight: "B",
+    height: userHeight,
+    weight: userWeight,
     userId: userEmail,
     password: userPassword,
     userName: "A",
@@ -53,6 +53,7 @@ export const fetchSignUp = async (
       return false;
     }
     const data = await response.json();
+    console.log(data);
     return data === true;
   } catch (error) {
     console.error(error);

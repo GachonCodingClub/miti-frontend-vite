@@ -21,13 +21,27 @@ interface SheetProps {
   rangeEnd: number;
 }
 
-export const MyHeightWeightSheet = ({
+export const MyHeightSheet = ({
   show,
   onClose,
   onSelected,
   title,
   rangeStart,
 }: SheetProps) => {
+  const getOptionValue = (value: number): string => {
+    if (value >= 120 && value <= 129) return "A";
+    if (value >= 130 && value <= 139) return "B";
+    if (value >= 140 && value <= 149) return "C";
+    if (value >= 150 && value <= 159) return "D";
+    if (value >= 160 && value <= 169) return "E";
+    if (value >= 170 && value <= 179) return "F";
+    if (value >= 180 && value <= 189) return "G";
+    if (value >= 190 && value <= 199) return "H";
+    if (value >= 200 && value <= 209) return "I";
+    if (value >= 210 && value <= 219) return "J";
+    return "HIDDEN";
+  };
+
   return (
     <>
       {show && (
@@ -57,14 +71,14 @@ export const MyHeightWeightSheet = ({
                         <SheetElement>
                           <SheetText
                             onClick={() =>
-                              onSelected(`${leftValue} ~ ${leftValue + 9}`)
+                              onSelected(getOptionValue(leftValue))
                             }
                           >
                             {`${leftValue} ~ ${leftValue + 9}`}
                           </SheetText>
                           <SheetText
                             onClick={() =>
-                              onSelected(`${rightValue} ~ ${rightValue + 9}`)
+                              onSelected(getOptionValue(rightValue))
                             }
                           >
                             {`${rightValue} ~ ${rightValue + 9}`}
@@ -76,7 +90,7 @@ export const MyHeightWeightSheet = ({
                     return (
                       <SheetBodyRow key="private">
                         <SheetElement>
-                          <SheetText onClick={() => onSelected("비공개")}>
+                          <SheetText onClick={() => onSelected("HIDDEN")}>
                             비공개
                           </SheetText>
                         </SheetElement>

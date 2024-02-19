@@ -30,7 +30,7 @@ import {
   MyInputBoxSVG,
 } from "../components/MyInputBox";
 import { ArrowbackIcon, ArrowdropIcon } from "../components/styles/Icons";
-import { MyHeightWeightSheet } from "./components/HeightWeightSheet";
+
 import NickNameCheckModule from "./components/nicknameCheck";
 import { ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
@@ -38,6 +38,8 @@ import React from "react";
 import { validateProfile } from "./components/validateProfile";
 import { fetchSignUp } from "./components/fetchSignUp";
 import { useNavigate } from "react-router-dom";
+import { MyHeightSheet } from "./components/HeightSheet";
+import { MyWeightSheet } from "./components/WeightSheet";
 
 export default function SingUpDetail() {
   const navigate = useNavigate();
@@ -327,7 +329,7 @@ export default function SingUpDetail() {
         </DetailFrame>
 
         {/* 키 선택시트 */}
-        <MyHeightWeightSheet
+        <MyHeightSheet
           show={showHeightSheet}
           onClose={XButtonClick}
           onSelected={onHeightSelected}
@@ -336,7 +338,7 @@ export default function SingUpDetail() {
           rangeEnd={130}
         />
         {/* 몸무게 선택시트 */}
-        <MyHeightWeightSheet
+        <MyWeightSheet
           show={showWeightSheet}
           onClose={XButtonClick}
           onSelected={onWeightSelected}
