@@ -1,5 +1,4 @@
 import {
-  MeetingChatRoomScreen,
   ChatWindowContainer,
   ChattingInputDiv,
   ChattingInput,
@@ -39,6 +38,7 @@ import { getDate, getTimeString } from "../components/getTimeDate";
 import React from "react";
 import { getHeaders } from "../../components/getHeaders";
 import { Overlay } from "../../sign-up/styles/detailComponents";
+import { PaddingScreen } from "../../components/styles/Screen";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -278,11 +278,11 @@ export default function MeetingChatRoom() {
         }
       />
       {loading ? (
-        <MeetingChatRoomScreen>
+        <PaddingScreen>
           <div>로딩중이에요</div>
-        </MeetingChatRoomScreen>
+        </PaddingScreen>
       ) : (
-        <MeetingChatRoomScreen>
+        <PaddingScreen>
           <ChatWindowContainer>
             {chatList.map((chat, index) => {
               let displayTime = true;
@@ -449,7 +449,7 @@ export default function MeetingChatRoom() {
               />
             </Overlay>
           )}
-        </MeetingChatRoomScreen>
+        </PaddingScreen>
       )}
     </>
   );
