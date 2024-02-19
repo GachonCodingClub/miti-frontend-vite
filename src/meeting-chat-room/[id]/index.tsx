@@ -224,7 +224,7 @@ export default function MeetingChatRoom() {
   const [page, setPage] = useState(0);
 
   // 기존의 채팅 데이터 가져오기
-  const getChatting = async () => {
+  const getChatting = async (page: number) => {
     try {
       const chatResponse = await getApi({
         link: `/message/${id}/page?page=${page}`,
@@ -241,7 +241,7 @@ export default function MeetingChatRoom() {
   };
 
   useEffect(() => {
-    getChatting();
+    getChatting(page);
   }, [page]);
 
   const loadMore = () => {
