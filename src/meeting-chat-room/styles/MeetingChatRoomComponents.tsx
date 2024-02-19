@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { Screen } from "../../components/styles/Screen";
+
 import { DialogLeftBtn } from "../../components/styles/Button";
 
 export interface IChat {
@@ -8,11 +8,6 @@ export interface IChat {
   nickname: string;
   content: string;
 }
-
-export const MeetingChatRoomScreen = styled(Screen)`
-  padding-top: 56px;
-  padding-bottom: 24px;
-`;
 
 // 채팅창 전체(채팅내용, 날짜, 입장/퇴장 다 담음)
 export const ChatWindowContainer = styled.div`
@@ -23,6 +18,7 @@ export const ChatWindowContainer = styled.div`
   margin: auto;
   width: 100%;
   overflow-y: auto;
+  padding-left: 10px;
   padding-right: 10px;
   padding-top: 48px;
   max-height: 90vh;
