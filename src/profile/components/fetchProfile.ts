@@ -6,7 +6,7 @@ export const fetchProfile = async (
   userIntroduce: string,
   userHeight: string,
   userWeight: string,
-  _setSubscription: React.Dispatch<boolean>,
+  setSubscription: React.Dispatch<boolean>,
   setEditError: React.Dispatch<boolean>
 ) => {
   const SignUpUrl = `${import.meta.env.VITE_BASE_URL}/users/profile/my`;
@@ -38,7 +38,7 @@ export const fetchProfile = async (
     }
 
     const data = await response.json();
-    console.log("프로필 수정", data);
+    setSubscription(true);
     return data === true;
   } catch (error) {
     console.error(error);

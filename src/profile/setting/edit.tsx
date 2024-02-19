@@ -126,7 +126,7 @@ export default function EditProfile() {
   };
 
   // 키(cm)
-  const [userHeight, setUserHeight] = useState(profile?.height);
+  const [userHeight, setUserHeight] = useState("");
   const [heightError, setHeightError] = useState("");
   const [showHeightSheet, setShowHeightSheet] = useState(false);
 
@@ -141,7 +141,7 @@ export default function EditProfile() {
   };
 
   // 몸무게(kg)
-  const [userWeight, setUserWeight] = useState(profile?.weight);
+  const [userWeight, setUserWeight] = useState("");
   const [weightError, setWeightError] = useState("");
   const [showWeightSheet, setShowWeightSheet] = useState(false);
 
@@ -194,7 +194,7 @@ export default function EditProfile() {
         setSubscription,
         setEditError
       )
-        .then((success) => setSubscription(success))
+        .then(() => setSubscription(true))
         .catch(() => setSubscription(false));
     }
   };
@@ -307,7 +307,7 @@ export default function EditProfile() {
             <Overlay>
               <DialogOneBtn
                 title="프로필 수정 실패"
-                contents="입력한 정보를 확인해주세요."
+                contents="닉네임을 확인해주세요."
                 onRightClick={() => {
                   setEditError(false);
                 }}
