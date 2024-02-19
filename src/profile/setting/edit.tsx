@@ -17,7 +17,6 @@ import {
 } from "../../components/MyInputBox";
 import { TopBar } from "../../components/TopBar";
 import { ROUTES } from "../../routes";
-import { MyHeightWeightSheet } from "../../sign-up/components/HeightWeightSheet";
 import {
   DetailSetScreen,
   DetailTitle,
@@ -28,6 +27,8 @@ import {
 } from "../../sign-up/styles/detailComponents";
 import NickNameCheckModule from "../../sign-up/components/nicknameCheck";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
+import { MyHeightSheet } from "../../sign-up/components/HeightSheet";
+import { MyWeightSheet } from "../../sign-up/components/WeightSheet";
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -272,7 +273,7 @@ export default function EditProfile() {
             />
           </DetailFrame>
           {/* 키 선택시트 */}
-          <MyHeightWeightSheet
+          <MyHeightSheet
             show={showHeightSheet}
             onClose={XButtonClick}
             onSelected={onHeightSelected}
@@ -281,7 +282,7 @@ export default function EditProfile() {
             rangeEnd={130}
           />
           {/* 몸무게 선택시트 */}
-          <MyHeightWeightSheet
+          <MyWeightSheet
             show={showWeightSheet}
             onClose={XButtonClick}
             onSelected={onWeightSelected}
