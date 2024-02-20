@@ -128,7 +128,7 @@ export default function MeetingChatRoom() {
         이를 JSON 형태로 파싱하여 채팅 메시지로 사용 */
       const json_body = JSON.parse(body.body);
       // 채팅 메시지 리스트 업데이트
-      setChatList((_chat_list) => [{ ...json_body }, ..._chat_list]);
+      setChatList((_chat_list) => [..._chat_list, { ...json_body }]);
     });
   };
 
@@ -220,48 +220,26 @@ export default function MeetingChatRoom() {
   }
 
   // 무한스크롤
-  const [page, setPage] = useState(0);
 
   // 기존의 채팅 데이터 가져오기
-  const getChatting = async (page: number) => {
+  const getChatting = async () => {
     try {
       const chatResponse = await getApi({
-        link: `/message/${id}/page?page=${page}`,
+        link: `/message/${id}/page?size=999`,
       });
       const chatData = await chatResponse.json();
-      console.log("불러온 채팅 :", chatData);
-      // const formattedChatData = chatData.reverse();
-      // console.log("채팅 데이터", formattedChatData);
 
-      setChatList((prev) => [...prev, ...chatData]);
+      const formattedChatData = chatData.reverse();
+      console.log("채팅 데이터", formattedChatData);
+
+      setChatList((prev) => [...formattedChatData, ...prev]);
     } catch (error) {
       console.error("채팅 데이터 불러오기 오류", error);
     }
   };
 
   useEffect(() => {
-    getChatting(page);
-  }, [page]);
-
-  const loadMore = () => {
-    setPage((prev) => prev + 1);
-  };
-  // 페이지 엔드 리퍼런스를 useRef(null)로 초기화
-  const pageStart = useRef(null);
-
-  useEffect(() => {
-    if (pageStart.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0]?.isIntersecting) {
-            console.log("로드 몰", page);
-            loadMore();
-          }
-        },
-        { threshold: 1 }
-      );
-      observer.observe(pageStart.current);
-    }
+    getChatting();
   }, []);
 
   return (
@@ -287,6 +265,7 @@ export default function MeetingChatRoom() {
             {chatList.map((chat, index) => {
               let displayTime = true;
               const timeValue = getTimeString(chat.createdAt);
+
               // 현재 채팅이 리스트의 첫번째 채팅이 아닌 경우
               if (index !== 0) {
                 const prevSender = chatList[index - 1].nickname; // 이전 채팅의 보낸 사람을 가져옴
@@ -378,8 +357,6 @@ export default function MeetingChatRoom() {
                 </React.Fragment>
               );
             })}
-
-            <div ref={pageStart}>마지막</div>
           </ChatWindowContainer>
           <div>
             <label htmlFor="topic-url" hidden />
@@ -396,7 +373,11 @@ export default function MeetingChatRoom() {
                 onChange={handleChangeMessage}
               />
               <button type="submit">
-                <SendIcon />
+                {message.trim() === "" ? (
+                  <SendIcon active={false} />
+                ) : (
+                  <SendIcon active={true} />
+                )}
               </button>
             </ChattingInputDiv>
           </form>

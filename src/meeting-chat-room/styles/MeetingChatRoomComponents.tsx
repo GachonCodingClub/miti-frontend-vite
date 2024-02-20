@@ -23,7 +23,6 @@ export const ChatWindowContainer = styled.div`
   padding-top: 48px;
   max-height: 90vh;
   position: relative;
-  transform: scaleY(-1);
 `;
 
 // 날짜랑 누구누구 입장/퇴장 프레임
@@ -31,7 +30,6 @@ export const DateAlertFrame = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  transform: scaleY(-1);
 `;
 
 // 날짜 텍스트
@@ -41,7 +39,6 @@ export const DateText = styled.span`
   line-height: 12px;
   letter-spacing: -0.1px;
   padding: 20px 0px;
-  transform: scaleY(-1);
 `;
 
 // 누구 입장/퇴장 텍스트
@@ -49,7 +46,6 @@ export const AlertText = styled(DateText)`
   font-size: 12px;
   line-height: 14px;
   letter-spacing: -0.12px;
-  transform: scale(-1);
 `;
 
 // 채팅 내용 프레임
@@ -59,7 +55,6 @@ export const ChatWindowFrame = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
-  transform: scale(-1);
 `;
 
 // 내 채팅 프레임, 여러 개의 채팅이 한 프레임에 담김
@@ -69,7 +64,6 @@ export const MyChattingFrame = styled.div`
   align-items: flex-end;
   gap: 4px;
   align-self: stretch;
-  transform: scaleY(-1);
 `;
 
 // 내 채팅 하나 하나
