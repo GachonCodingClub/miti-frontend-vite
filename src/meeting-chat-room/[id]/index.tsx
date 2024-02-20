@@ -5,17 +5,6 @@ import {
   RightMenuFrame,
   MenuAnimation,
   IChat,
-  ChattingText,
-  ChattingTime,
-  DateAlertFrame,
-  DateText,
-  MyChatting,
-  MyChattingBubble,
-  MyChattingFrame,
-  OtherChatting,
-  OtherChattingBubble,
-  OtherChattingFrame,
-  OtherUserName,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
@@ -34,11 +23,11 @@ import { Dialog } from "../../components/styles/Button";
 import { ROUTES } from "../../routes";
 import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
-import { getDate, getTimeString } from "../components/getTimeDate";
 import React from "react";
 import { getHeaders } from "../../components/getHeaders";
 import { Overlay } from "../../sign-up/styles/detailComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
+import ChatWindow from "../components/ChatWindow";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -219,29 +208,6 @@ export default function MeetingChatRoom() {
     chatEndRef.current?.scrollIntoView();
   }
 
-  // 무한스크롤
-
-  // 기존의 채팅 데이터 가져오기
-  const getChatting = async () => {
-    try {
-      const chatResponse = await getApi({
-        link: `/message/${id}/page?size=999`,
-      });
-      const chatData = await chatResponse.json();
-
-      const formattedChatData = chatData.reverse();
-      console.log("채팅 데이터", formattedChatData);
-
-      setChatList((prev) => [...formattedChatData, ...prev]);
-    } catch (error) {
-      console.error("채팅 데이터 불러오기 오류", error);
-    }
-  };
-
-  useEffect(() => {
-    getChatting();
-  }, []);
-
   return (
     <>
       <TopBar
@@ -262,89 +228,12 @@ export default function MeetingChatRoom() {
       ) : (
         <PaddingScreen>
           <ChatWindowContainer>
-            {chatList.map((chat, index) => {
-              let displayTime = true;
-              const timeValue = getTimeString(chat.createdAt);
-              if (index !== chatList.length - 1) {
-                const nextSender = chatList[index + 1].nickname;
-                if (nextSender === chat.nickname) {
-                  const nextTimeValue = getTimeString(
-                    chatList[index + 1].createdAt
-                  );
-                  if (nextTimeValue === timeValue) {
-                    displayTime = false;
-                  }
-                }
-              }
-              let displayNickname = false;
-              let reduceMargin = false;
-              if (index !== 0) {
-                const prevSender = chatList[index - 1].nickname;
-                if (prevSender !== chat.nickname) displayNickname = true;
-                reduceMargin = true;
-              }
-              let displayDate = false;
-              if (
-                index === 0 ||
-                getDate(chatList[index - 1].createdAt) !==
-                  getDate(chat.createdAt)
-              ) {
-                displayDate = true;
-              }
-
-              // [MITI] 문자열이 포함되어 있는지 확인
-              const isMITIPresent = chat.content?.includes("[MITI]");
-              // [MITI] 문자열이 포함되어 있다면 해당 부분을 제거한 콘텐츠 생성
-              const contentWithoutMITI = chat.content?.replace("[MITI]", "");
-
-              return (
-                <React.Fragment key={index}>
-                  {isMITIPresent ? (
-                    <DateAlertFrame>
-                      <ChattingText>{contentWithoutMITI}</ChattingText>
-                    </DateAlertFrame>
-                  ) : chat.nickname === profile?.nickname ? (
-                    <MyChattingFrame>
-                      <DateAlertFrame>
-                        {displayDate && (
-                          <DateText>{getDate(chat.createdAt)}</DateText>
-                        )}
-                      </DateAlertFrame>
-                      <MyChatting>
-                        {displayTime && (
-                          <ChattingTime>
-                            {getTimeString(chat.createdAt)}
-                          </ChattingTime>
-                        )}
-                        <MyChattingBubble
-                          style={reduceMargin ? { marginBottom: -10 } : {}}
-                        >
-                          <ChattingText>{chat.content}</ChattingText>
-                        </MyChattingBubble>
-                      </MyChatting>
-                    </MyChattingFrame>
-                  ) : (
-                    <OtherChattingFrame>
-                      {displayNickname ? (
-                        <OtherUserName>{chat.nickname}</OtherUserName>
-                      ) : null}
-                      <OtherChatting>
-                        {displayTime ? (
-                          <ChattingTime>
-                            {getTimeString(chat.createdAt)}
-                          </ChattingTime>
-                        ) : null}
-                        <OtherChattingBubble
-                          style={reduceMargin ? { marginBottom: -10 } : {}}
-                        >
-                          <ChattingText>{chat.content}</ChattingText>
-                        </OtherChattingBubble>
-                      </OtherChatting>
-                    </OtherChattingFrame>
-                  )}
-                </React.Fragment>
-              );
-            })}
+            <ChatWindow
+              chatList={chatList}
+              setChatList={setChatList}
+              profileNickname={profile?.nickname}
+              id={id}
+            />
           </ChatWindowContainer>
           <div>
             <label htmlFor="topic-url" hidden />

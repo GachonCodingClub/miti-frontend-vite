@@ -11,7 +11,6 @@ import {
   DateText,
   MyChatting,
   OtherChatting,
-  ChatWindowContainer,
 } from "../styles/MeetingChatRoomComponents";
 import { getApi } from "../../api/getApi";
 import { getDate, getTimeString } from "./getTimeDate";
@@ -39,7 +38,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const getChatting = async () => {
     try {
       const chatResponse = await getApi({
-        link: `/message/${id}/page?page=${0}&&size=${10}`,
+        link: `/message/${id}/page?page=${0}&&size=${999}`,
       });
       const chatData = await chatResponse.json();
       const formattedChatData = chatData
@@ -70,7 +69,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   }
 
   return (
-    <ChatWindowContainer>
+    <>
       {chatList.map((chat, index) => {
         let displayTime = true;
         const timeValue = getTimeString(chat.createdAt);
@@ -150,7 +149,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         );
       })}
       <div ref={chatEndRef} />
-    </ChatWindowContainer>
+    </>
   );
 };
 
