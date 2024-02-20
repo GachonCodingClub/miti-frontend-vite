@@ -1,66 +1,75 @@
-import { TabBar } from "../components/TabBar";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getApi } from "../api/getApi";
-import { CreateMeetingButton } from "./components/meetingListComponents";
+import { IGroup } from "../model/group";
+import { SearchIcon } from "../components/styles/Icons";
+import { TopBar } from "../components/TopBar";
 import { useLoginGuard } from "../hooks/useLoginGuard";
+import {
+  CreateMeetingButton,
+  MeetingListScreen,
+  PageFrame,
+  PageNum,
+  PrevNextButton,
+} from "./components/meetingListComponents";
+import { TabBar } from "../components/TabBar";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
-import { useRecoilValue } from "recoil";
 import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
-import { TopBar } from "../components/TopBar";
+import { useRecoilValue } from "recoil";
 import { SnackBarAtom } from "../atoms";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { IGroup } from "../model/group";
-import { PaddingScreen } from "../components/styles/Screen";
-import { SearchIcon } from "../components/styles/Icons";
 
 export default function MeetingList() {
   useLoginGuard();
   const isRoomDeleted = useRecoilValue(SnackBarAtom);
-  const navigate = useNavigate(); // useNavigate 사용
-  // 무한스크롤 도전
+  const navigate = useNavigate();
+
   const [meetings, setMeetings] = useState<IGroup[]>([]);
-
-  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  const fetchMeetings = async (page: number) => {
-    try {
-      setLoading(true);
-      console.log("미팅리스트:", meetings);
-      const res = await getApi({ link: `/groups?page=${page}&sort=meetDate` });
-      const data = await res.json();
-      setMeetings((prev) => [...prev, ...data.content]);
-    } catch (error) {
-      console.error("Error fetching meetings:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [page, setPage] = useState<number>(() => {
+    const storedPage = sessionStorage.getItem("currentPage");
+    return storedPage ? parseInt(storedPage, 10) : 0; // 저장된 페이지 없으면 0부터 시작
+  });
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    fetchMeetings(page);
+    const fetchMeetings = async () => {
+      try {
+        setLoading(true);
+        const res = await getApi({
+          link: `/groups?page=${page}&size=7&sort=meetDate`,
+        });
+        const data = await res.json();
+        setMeetings(data.content);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error("미팅 불러오기 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMeetings();
+    sessionStorage.setItem("currentPage", page.toString());
   }, [page]);
 
-  const loadMore = () => {
-    setPage((prev) => prev + 1);
+  const loadPage = (pageNumber: number) => {
+    setPage(pageNumber);
   };
-  // 페이지 엔드 리퍼런스를 useRef(null)로 초기화
-  const pageEnd = useRef(null);
 
-  useEffect(() => {
-    if (loading && pageEnd.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0]?.isIntersecting) {
-            loadMore();
-          }
-        },
-        { threshold: 1 }
-      );
-      observer.observe(pageEnd.current);
-    }
-  }, [loading, pageEnd.current]);
+  const renderPageNumbers = () => {
+    // totalPages 만큼의 배열을 생성하고, 각 요소에 페이지 번호 부여
+    return [...Array(totalPages).keys()].map((pageNumber) => (
+      <PageNum
+        key={pageNumber}
+        isActive={pageNumber === page}
+        onClick={() => loadPage(pageNumber)}
+      >
+        {pageNumber + 1}
+      </PageNum>
+    ));
+  };
+
   return (
     <>
       <TopBar
@@ -70,7 +79,7 @@ export default function MeetingList() {
           navigate(`/search`);
         }}
       />
-      <PaddingScreen>
+      <MeetingListScreen>
         <CreateMeetingButton
           onClick={() => {
             navigate(`${ROUTES.CREATE_MEETING}`);
@@ -83,15 +92,29 @@ export default function MeetingList() {
             <MeetingBoxComponent meeting={meeting} key={index} />
           ))}
         </div>
-        <div ref={pageEnd} />
         {loading && <div>로딩중...</div>}
-
         {/* 미팅 삭제하기를 통해 미팅리스트로 이동했을 경우 */}
         {isRoomDeleted && (
           <SnackBar text="미팅을 나왔어요." onClick={() => {}} />
         )}
+        {/* 페이징 버튼 */}
+        <PageFrame>
+          <PrevNextButton
+            onClick={() => loadPage(page - 1)}
+            disabled={page === 0}
+          >
+            이전
+          </PrevNextButton>
+          {renderPageNumbers()}
+          <PrevNextButton
+            onClick={() => loadPage(page + 1)}
+            disabled={page === totalPages - 1}
+          >
+            다음
+          </PrevNextButton>
+        </PageFrame>
         <TabBar />
-      </PaddingScreen>
+      </MeetingListScreen>
     </>
   );
 }
