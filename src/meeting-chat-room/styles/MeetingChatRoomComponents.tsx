@@ -18,9 +18,7 @@ export const ChatWindowContainer = styled.div`
   margin: auto;
   width: 100%;
   overflow-y: auto;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 48px;
+  padding: 48px 10px 10px 10px;
   max-height: 90vh;
   position: relative;
 `;
