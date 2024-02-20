@@ -15,9 +15,9 @@ import {
   ViewContentsTitle,
   ViewContents,
   ClosePopUpButtonFrame,
-} from "./components/agreementComponents";
+} from "./styles/agreementComponents";
 import { SIGNUP_ROUTES } from "../routes";
-import { Overlay } from "./components/detailComponents";
+import { Overlay } from "./styles/detailComponents";
 import { LongOrangeBtn } from "../components/styles/Button";
 import agreementData from "../sign-up/components/agreementData.json";
 import { TopBar } from "../components/TopBar";

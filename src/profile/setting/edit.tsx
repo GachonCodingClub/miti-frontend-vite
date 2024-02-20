@@ -17,7 +17,6 @@ import {
 } from "../../components/MyInputBox";
 import { TopBar } from "../../components/TopBar";
 import { ROUTES } from "../../routes";
-import { MyHeightWeightSheet } from "../../sign-up/components/HeightWeightSheet";
 import {
   DetailSetScreen,
   DetailTitle,
@@ -25,9 +24,11 @@ import {
   IntroduceFrame,
   CharCount,
   Overlay,
-} from "../../sign-up/components/detailComponents";
+} from "../../sign-up/styles/detailComponents";
 import NickNameCheckModule from "../../sign-up/components/nicknameCheck";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
+import { MyHeightSheet } from "../../sign-up/components/HeightSheet";
+import { MyWeightSheet } from "../../sign-up/components/WeightSheet";
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -125,7 +126,7 @@ export default function EditProfile() {
   };
 
   // 키(cm)
-  const [userHeight, setUserHeight] = useState(profile?.height);
+  const [userHeight, setUserHeight] = useState("");
   const [heightError, setHeightError] = useState("");
   const [showHeightSheet, setShowHeightSheet] = useState(false);
 
@@ -140,7 +141,7 @@ export default function EditProfile() {
   };
 
   // 몸무게(kg)
-  const [userWeight, setUserWeight] = useState(profile?.weight);
+  const [userWeight, setUserWeight] = useState("");
   const [weightError, setWeightError] = useState("");
   const [showWeightSheet, setShowWeightSheet] = useState(false);
 
@@ -193,7 +194,7 @@ export default function EditProfile() {
         setSubscription,
         setEditError
       )
-        .then((success) => setSubscription(success))
+        .then(() => setSubscription(true))
         .catch(() => setSubscription(false));
     }
   };
@@ -211,7 +212,7 @@ export default function EditProfile() {
           <DetailFrame>
             {/* 닉네임 수정 */}
             <MyInputBoxButton
-              placeholder="닉네임 입력"
+              placeholder="닉네임 입력(최대 8글자)"
               label="닉네임"
               type="text"
               value={userNickName}
@@ -220,6 +221,7 @@ export default function EditProfile() {
               onClick={onCheckNicknameBtn}
               disable={isInputDisabled}
               error={nickNameError}
+              maxLength={8}
             />
             {/* 닉네임 확인 */}
             <NickNameCheckModule
@@ -271,7 +273,7 @@ export default function EditProfile() {
             />
           </DetailFrame>
           {/* 키 선택시트 */}
-          <MyHeightWeightSheet
+          <MyHeightSheet
             show={showHeightSheet}
             onClose={XButtonClick}
             onSelected={onHeightSelected}
@@ -280,7 +282,7 @@ export default function EditProfile() {
             rangeEnd={130}
           />
           {/* 몸무게 선택시트 */}
-          <MyHeightWeightSheet
+          <MyWeightSheet
             show={showWeightSheet}
             onClose={XButtonClick}
             onSelected={onWeightSelected}
@@ -305,7 +307,7 @@ export default function EditProfile() {
             <Overlay>
               <DialogOneBtn
                 title="프로필 수정 실패"
-                contents="입력한 정보를 확인해주세요."
+                contents="닉네임을 확인해주세요."
                 onRightClick={() => {
                   setEditError(false);
                 }}

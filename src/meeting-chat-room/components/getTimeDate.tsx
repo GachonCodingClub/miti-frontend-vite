@@ -1,17 +1,25 @@
 export const getTimeString = (createdAt: string) => {
   const createdTime = new Date(createdAt);
-  const hour = createdTime.getHours() + 21;
+  let hour = createdTime.getHours() + 9;
+  hour = hour >= 24 ? hour - 24 : hour;
+
   const minute = createdTime.getMinutes();
-  const hourValue = hour % 12 || 12;
+  let hourValue = hour || 12; // hour가 0인 경우 12로 설정
   const minuteValue = minute < 10 ? `0${minute}` : minute;
-  const ampm = hourValue >= 12 ? "오전" : "오후";
-  const timestamp = `${ampm} ${hourValue} : ${minuteValue}분`;
+  let ampm = "오전";
+
+  if (hour >= 12) {
+    ampm = "오후";
+    hourValue = hourValue !== 12 ? hourValue - 12 : hourValue;
+  }
+  const timestamp = `${ampm} ${hourValue} : ${minuteValue}`;
 
   return timestamp;
 };
 
 export const getDate = (dateString: string) => {
   const date = new Date(dateString);
+  date.setHours(date.getHours() + 9);
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");

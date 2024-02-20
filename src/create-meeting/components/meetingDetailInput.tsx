@@ -48,6 +48,7 @@ const MeetingDetailsInputs: React.FC<MeetingDetailsInputsProps> = ({
       value={inputPlace}
       onChange={onPlaceChange}
       error={placeError}
+      maxLength={16}
     />
 
     <MyInputBoxSVG

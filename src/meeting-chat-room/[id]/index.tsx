@@ -1,18 +1,27 @@
 import {
-  MeetingChatRoomScreen,
   ChatWindowContainer,
   ChattingInputDiv,
   ChattingInput,
   RightMenuFrame,
   MenuAnimation,
   IChat,
+  ChattingText,
+  ChattingTime,
+  DateAlertFrame,
+  DateText,
+  MyChatting,
+  MyChattingBubble,
+  MyChattingFrame,
+  OtherChatting,
+  OtherChattingBubble,
+  OtherChattingFrame,
+  OtherUserName,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
 import { TopBar } from "../../components/TopBar";
-import { Overlay } from "../../sign-up/components/detailComponents";
 import {
   ArrowbackIcon,
   HamburgerIcon,
@@ -25,16 +34,11 @@ import { Dialog } from "../../components/styles/Button";
 import { ROUTES } from "../../routes";
 import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
-import ChatWindow from "../components/ChatWindow";
-
-/* Topic URL, GroupID, sender가 모두 작성된 상태에서만 메시지가 보내짐
-      Connect -> Subscribe -> Publish -> Disconnect 순으로 작동
-      Connect는 brokerUrl이 제대로 설정되어 있으면 알아서 작동함
-      Connect가 제대로 작동하면 connect()함수 안에서 subscribe() 실행
-      Subscribe에 topicURL을 줌. 이거는 아마 방 id로 주면 될 듯 함 
-      topicURL이 유효하면 그 채팅 메시지 리스트를 가져옴 
-      그리고 Publish는 그냥 메시지를 서버(/pub/send)로 보내는 함수 
-      Disconnect는 제곧내 */
+import { getDate, getTimeString } from "../components/getTimeDate";
+import React from "react";
+import { getHeaders } from "../../components/getHeaders";
+import { Overlay } from "../../sign-up/styles/detailComponents";
+import { PaddingScreen } from "../../components/styles/Screen";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -42,6 +46,7 @@ export default function MeetingChatRoom() {
 
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token + "");
+  const headers = getHeaders(token);
 
   // 유저 프로필 가져오기
   const getUserProfile = async () => {
@@ -61,26 +66,24 @@ export default function MeetingChatRoom() {
       return data;
     } catch (error) {
       console.error("채팅 데이터 불러오기 오류", error);
-      throw error; // 에러를 상위로 전파
+      throw error;
     }
   };
   const { data: group, isLoading: groupLoading } = useQuery(
     ["group", id],
     getGroup,
     {
-      enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+      enabled: !!id,
     }
   );
   // 로딩 상태
   const loading = profileLoading || groupLoading;
 
-  // 제네릭으로 타입 명시
   const [chatList, setChatList] = useState<IChat[]>([]); // 채팅 메시지 리스트
   const [message, setMessage] = useState(""); // 사용자가 보낼 메시지
 
   // 미티 웹소켓 주소
-  const brokerUrl =
-    "ws://mitiappserver-env.eba-r2uts3k4.ap-northeast-2.elasticbeanstalk.com/ws/chat/websocket";
+  const brokerUrl = "wss://dev-miti-server.dockerfile.site/ws/chat/websocket";
   // client 객체가 StompJs.Client 타입을 따르도록
   const client = useRef<StompJs.Client>(null!); // WebSocket 클라이언트 객체
   // useRef 초기값을 null이 아님으로 설정
@@ -137,8 +140,8 @@ export default function MeetingChatRoom() {
   };
 
   // 채팅 메시지
-  const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value);
+  const handleChangeMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
   };
 
   // 폼 제출 이벤트 핸들러 함수
@@ -162,6 +165,7 @@ export default function MeetingChatRoom() {
       })
     );
     setMessage("");
+    scrollToBottom();
   }; // 제출된 JSON문자열은 서버로 전송됨
 
   useEffect(() => {
@@ -175,11 +179,6 @@ export default function MeetingChatRoom() {
   // (방장) 방 폭파
   const DeleteUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}`;
 
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-  };
-
   const setRoomDelted = useSetRecoilState(SnackBarAtom);
   const handleDeleteRoom = () => {
     fetch(DeleteUrl, {
@@ -190,7 +189,6 @@ export default function MeetingChatRoom() {
 
     setRoomDelted(true);
     navigate(`${ROUTES.MEETING_LIST}`);
-    // 3초 후에 setRoomDelted를 false로 변경
     setTimeout(() => {
       setRoomDelted(false);
     }, 3000);
@@ -208,7 +206,6 @@ export default function MeetingChatRoom() {
 
     setRoomExited(true);
     navigate(`${ROUTES.MEETING_LIST}`);
-    // 3초 후에 setRoomDelted를 false로 변경
     setTimeout(() => {
       setRoomExited(false);
     }, 3000);
@@ -216,10 +213,39 @@ export default function MeetingChatRoom() {
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
+
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  function scrollToBottom() {
+    chatEndRef.current?.scrollIntoView();
+  }
+
+  // 무한스크롤
+
+  // 기존의 채팅 데이터 가져오기
+  const getChatting = async () => {
+    try {
+      const chatResponse = await getApi({
+        link: `/message/${id}/page?size=999`,
+      });
+      const chatData = await chatResponse.json();
+
+      const formattedChatData = chatData.reverse();
+      console.log("채팅 데이터", formattedChatData);
+
+      setChatList((prev) => [...formattedChatData, ...prev]);
+    } catch (error) {
+      console.error("채팅 데이터 불러오기 오류", error);
+    }
+  };
+
+  useEffect(() => {
+    getChatting();
+  }, []);
+
   return (
     <>
       <TopBar
-        title={`${group?.title}`}
+        title={loading ? `로딩중...` : `${group?.title}`}
         leftIcon={<ArrowbackIcon onClick={() => navigate(`/chat-list`)} />}
         rightIcon={
           <HamburgerIcon
@@ -230,18 +256,107 @@ export default function MeetingChatRoom() {
         }
       />
       {loading ? (
-        <MeetingChatRoomScreen>
+        <PaddingScreen>
           <div>로딩중이에요</div>
-        </MeetingChatRoomScreen>
+        </PaddingScreen>
       ) : (
-        <MeetingChatRoomScreen>
+        <PaddingScreen>
           <ChatWindowContainer>
-            <ChatWindow
-              chatList={chatList}
-              setChatList={setChatList}
-              profileNickname={profile?.nickname}
-              id={id}
-            />
+            {chatList.map((chat, index) => {
+              let displayTime = true;
+              const timeValue = getTimeString(chat.createdAt);
+
+              // 현재 채팅이 리스트의 첫번째 채팅이 아닌 경우
+              if (index !== 0) {
+                const prevSender = chatList[index - 1].nickname; // 이전 채팅의 보낸 사람을 가져옴
+                // 이전 채팅의 보낸 사람이 현재 채팅의 보낸 사람과 동일한 경우
+                if (prevSender === chat.nickname) {
+                  const nextTimeValue = getTimeString(
+                    chatList[index - 1].createdAt
+                  ); // 이전 채팅의 생성 시간을 가져옴
+                  // 이전 채팅의 생성 시간이 현재 채팅의 생성 시간과 동일한 경우
+                  if (nextTimeValue === timeValue) {
+                    displayTime = false;
+                  }
+                }
+              }
+
+              let displayNickname = true;
+              let reduceMargin = false;
+              // 현재 채팅이 마지막이 아닌 경우
+              if (index !== chatList.length - 1) {
+                const nextSender = chatList[index + 1].nickname; // 다음 채팅의 보낸 사람을 가져옴
+                // 다음 채팅의 보낸 사람이 현재 채팅의 보낸 사람과 다른 경우
+                if (nextSender === chat.nickname) {
+                  displayNickname = false;
+                }
+                reduceMargin = true;
+              }
+
+              // 날짜를 표시할지 여부를 결정하는 변수 초기화
+              let displayDate = true;
+              // 현재 채팅이 첫 번째인 경우 또는 다음 채팅의 날짜가 현재 채팅의 날짜와 다른 경우
+              if (
+                index === 0 ||
+                getDate(chatList[index + 1]?.createdAt) ===
+                  getDate(chat?.createdAt)
+              ) {
+                displayDate = false; // 날짜를 표시함
+              }
+
+              // [MITI] 문자열이 포함되어 있는지 확인
+              const isMITIPresent = chat.content?.includes("[MITI]");
+              // [MITI] 문자열이 포함되어 있다면 해당 부분을 제거한 콘텐츠 생성
+              const contentWithoutMITI = chat.content?.replace("[MITI]", "");
+
+              return (
+                <React.Fragment key={index}>
+                  {isMITIPresent ? (
+                    <DateAlertFrame>
+                      <ChattingText>{contentWithoutMITI}</ChattingText>
+                    </DateAlertFrame>
+                  ) : chat.nickname === profile?.nickname ? (
+                    <MyChattingFrame>
+                      <DateAlertFrame>
+                        {displayDate && (
+                          <DateText>{getDate(chat.createdAt)}</DateText>
+                        )}
+                      </DateAlertFrame>
+                      <MyChatting>
+                        {displayTime && (
+                          <ChattingTime>
+                            {getTimeString(chat.createdAt)}
+                          </ChattingTime>
+                        )}
+                        <MyChattingBubble
+                          style={reduceMargin ? { marginBottom: -10 } : {}}
+                        >
+                          <ChattingText>{chat.content}</ChattingText>
+                        </MyChattingBubble>
+                      </MyChatting>
+                    </MyChattingFrame>
+                  ) : (
+                    <OtherChattingFrame>
+                      {displayNickname ? (
+                        <OtherUserName>{chat.nickname}</OtherUserName>
+                      ) : null}
+                      <OtherChatting>
+                        {displayTime ? (
+                          <ChattingTime>
+                            {getTimeString(chat.createdAt)}
+                          </ChattingTime>
+                        ) : null}
+                        <OtherChattingBubble
+                          style={reduceMargin ? { marginBottom: -10 } : {}}
+                        >
+                          <ChattingText>{chat.content}</ChattingText>
+                        </OtherChattingBubble>
+                      </OtherChatting>
+                    </OtherChattingFrame>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </ChatWindowContainer>
           <div>
             <label htmlFor="topic-url" hidden />
@@ -258,7 +373,11 @@ export default function MeetingChatRoom() {
                 onChange={handleChangeMessage}
               />
               <button type="submit">
-                <SendIcon />
+                {message.trim() === "" ? (
+                  <SendIcon active={false} />
+                ) : (
+                  <SendIcon active={true} />
+                )}
               </button>
             </ChattingInputDiv>
           </form>
@@ -311,7 +430,7 @@ export default function MeetingChatRoom() {
               />
             </Overlay>
           )}
-        </MeetingChatRoomScreen>
+        </PaddingScreen>
       )}
     </>
   );

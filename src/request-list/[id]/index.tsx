@@ -9,7 +9,7 @@ import {
   SmallWhiteBtn,
 } from "../../components/styles/Button";
 import { useState } from "react";
-import { Overlay } from "../../sign-up/components/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import {
   RequestBox,
   UserInfo,
@@ -18,6 +18,21 @@ import {
   UserDescription,
 } from "../components/requestListComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
+
+interface IUser {
+  userId: string;
+  userName: string;
+  description: string;
+  age: number;
+  gender: "MALE" | "FEMALE";
+  height: number;
+  weight: number;
+}
+
+interface IParty {
+  partyId: string;
+  users: IUser[];
+}
 
 export default function RequestProfile() {
   const { id } = useParams();
@@ -61,7 +76,7 @@ export default function RequestProfile() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <PaddingScreen>
-        {parties?.waitingParties?.map((party, index: number) => (
+        {parties?.waitingParties?.map((party: IParty, index: number) => (
           <RequestBox key={index}>
             {party?.users?.map((user, userIndex: number) => (
               <UserInfo key={userIndex}>

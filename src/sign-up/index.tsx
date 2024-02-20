@@ -7,7 +7,7 @@ import {
   LongOrangeBtn,
 } from "../components/styles/Button";
 import { useRecoilState } from "recoil";
-import { Overlay } from "./components/detailComponents";
+import { Overlay } from "./styles/detailComponents";
 import { userEmailAtom } from "../atoms";
 import { MyInputBox, MyInputBoxButton } from "../components/MyInputBox";
 import { ROUTES, SIGNUP_ROUTES } from "../routes";

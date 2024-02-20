@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { meetingDescAtom, meetingTitleAtom } from "../atoms";
-import { Overlay } from "../sign-up/components/detailComponents";
+import { Overlay } from "../sign-up/styles/detailComponents";
 import { DialogOneBtn } from "../components/styles/Button";
 import { MyInputBox } from "../components/MyInputBox";
 import { getApi } from "../api/getApi";
@@ -137,12 +137,14 @@ export default function CreateMeeting() {
             value={inputMeetingTitle}
             onChange={onMeetingTitleChange}
             error={meetingTitleError}
+            maxLength={16}
           />
 
           <DescriptionArea
             placeholder="미팅 설명"
             onChange={onMeetingDescChange}
             value={inputMeetingDesc}
+            maxLength={30}
           />
           {showDialog && (
             <Overlay>

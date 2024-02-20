@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SignUpFrame, SignUpTitle } from "../../sign-up";
 import { MyInputBox, MyInputBoxButton } from "../../components/MyInputBox";
-import { Overlay } from "../../sign-up/components/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import {
   DialogOneBtn,
   FixedButtonBox,
   LongOrangeBtn,
 } from "../../components/styles/Button";
-import { PassWordFrame } from "../../sign-up/components/passwordComponents";
+import { PassWordFrame } from "../../sign-up/styles/passwordComponents";
 import { ROUTES } from "../../routes";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
 import { getHeaders } from "../../components/getHeaders";

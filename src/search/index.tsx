@@ -93,7 +93,7 @@ export default function SearchPage() {
           </form>
         )}
 
-        <ul className="divide-y-[1px]">
+        <ul className="divide-y-[1px] pt-14">
           {searchResults.map((meeting, index) => (
             <MeetingBoxComponent meeting={meeting} key={index} />
           ))}
