@@ -69,7 +69,14 @@ export default function CreateMeetingDetail() {
 
   // 날짜 변화 handleDateChange함수
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelecteDate(e.target.value);
+    const selectedDate = e.target.value;
+    const currentDate = new Date().toISOString().split("T")[0]; // 현재 날짜
+    if (selectedDate < currentDate) {
+      setDateError("날짜는 오늘 이후여야 합니다.");
+    } else {
+      setDateError(""); // 오류가 없을 경우 메시지를 초기화
+    }
+    setSelecteDate(selectedDate);
   };
   const [dateError, setDateError] = useState(""); // 날짜 오류 메시지
 
