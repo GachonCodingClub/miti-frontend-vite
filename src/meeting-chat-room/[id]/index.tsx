@@ -265,43 +265,31 @@ export default function MeetingChatRoom() {
             {chatList.map((chat, index) => {
               let displayTime = true;
               const timeValue = getTimeString(chat.createdAt);
-
-              // 현재 채팅이 리스트의 첫번째 채팅이 아닌 경우
-              if (index !== 0) {
-                const prevSender = chatList[index - 1].nickname; // 이전 채팅의 보낸 사람을 가져옴
-                // 이전 채팅의 보낸 사람이 현재 채팅의 보낸 사람과 동일한 경우
-                if (prevSender === chat.nickname) {
+              if (index !== chatList.length - 1) {
+                const nextSender = chatList[index + 1].nickname;
+                if (nextSender === chat.nickname) {
                   const nextTimeValue = getTimeString(
-                    chatList[index - 1].createdAt
-                  ); // 이전 채팅의 생성 시간을 가져옴
-                  // 이전 채팅의 생성 시간이 현재 채팅의 생성 시간과 동일한 경우
+                    chatList[index + 1].createdAt
+                  );
                   if (nextTimeValue === timeValue) {
                     displayTime = false;
                   }
                 }
               }
-
-              let displayNickname = true;
+              let displayNickname = false;
               let reduceMargin = false;
-              // 현재 채팅이 마지막이 아닌 경우
-              if (index !== chatList.length - 1) {
-                const nextSender = chatList[index + 1].nickname; // 다음 채팅의 보낸 사람을 가져옴
-                // 다음 채팅의 보낸 사람이 현재 채팅의 보낸 사람과 다른 경우
-                if (nextSender === chat.nickname) {
-                  displayNickname = false;
-                }
+              if (index !== 0) {
+                const prevSender = chatList[index - 1].nickname;
+                if (prevSender !== chat.nickname) displayNickname = true;
                 reduceMargin = true;
               }
-
-              // 날짜를 표시할지 여부를 결정하는 변수 초기화
-              let displayDate = true;
-              // 현재 채팅이 첫 번째인 경우 또는 다음 채팅의 날짜가 현재 채팅의 날짜와 다른 경우
+              let displayDate = false;
               if (
                 index === 0 ||
-                getDate(chatList[index + 1]?.createdAt) ===
-                  getDate(chat?.createdAt)
+                getDate(chatList[index - 1].createdAt) !==
+                  getDate(chat.createdAt)
               ) {
-                displayDate = false; // 날짜를 표시함
+                displayDate = true;
               }
 
               // [MITI] 문자열이 포함되어 있는지 확인
