@@ -10,6 +10,7 @@ interface IInputProps {
   placeholder: string;
   type: string;
   disable?: boolean;
+  maxLength?: number;
 }
 
 export const MyInputBox = ({
@@ -19,6 +20,7 @@ export const MyInputBox = ({
   error,
   placeholder,
   type,
+  maxLength,
 }: IInputProps) => {
   return (
     <InputElement
@@ -28,6 +30,7 @@ export const MyInputBox = ({
       value={value}
       onChange={onChange}
       caution={error}
+      maxLength={maxLength}
     />
   );
 };
@@ -36,7 +39,6 @@ export const MyInputBox = ({
 interface IInputButtonProps extends IInputProps {
   btnText: string;
   onClick: () => void;
-  disable?: boolean;
 }
 
 export const MyInputBoxButton = ({
@@ -49,6 +51,7 @@ export const MyInputBoxButton = ({
   btnText,
   onClick,
   disable,
+  maxLength,
 }: IInputButtonProps) => {
   return (
     <InputBoxBtn
@@ -61,6 +64,7 @@ export const MyInputBoxButton = ({
       onClick={onClick}
       caution={error}
       disable={disable}
+      maxLength={maxLength}
     />
   );
 };
@@ -68,7 +72,7 @@ export const MyInputBoxButton = ({
 // 옆에 SVG 있는거
 interface IInputSVGProps extends IInputProps {
   onClick: () => void;
-  svg?: React.ReactNode; // 추가: SVG를 props로 받음
+  svg?: React.ReactNode;
   disable?: boolean;
   pattern?: string;
 }

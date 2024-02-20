@@ -14,11 +14,10 @@ import {
   TimeText,
   ChatAlertFrame,
   ChatText,
-  AlertCircle,
   IGroup,
 } from "./components/chattingListComponents";
 import { PaddingScreen } from "../components/styles/Screen";
-import ChattingListLayout from "./components/ChattingListLayOut";
+import ChattingListLayout from "./components/ChattingListLayout";
 
 export default function ChattingList() {
   const getMyGroups = () =>
@@ -101,13 +100,11 @@ export default function ChattingList() {
                 <ChatText>
                   {lastMessages[group?.id]?.content.replace("[MITI]", "")}
                 </ChatText>
-                <AlertCircle></AlertCircle>
               </ChatAlertFrame>
             </ChattingFrame>
           ))}
         </ChattingWrapper>
       </PaddingScreen>
-
       <TabBar />
     </>
   );

@@ -73,12 +73,13 @@ export const ViewContentsButton = styled.button`
   color: var(--Grey-grey500, #767170);
   font-weight: 500;
   line-height: 20px;
+  white-space: nowrap;
 `;
 
 // 팝업창 프레임
 export const ViewContentsPopUpFrame = styled.div`
   display: flex;
-  width: 90%;
+  max-width: 36rem;
   padding: 24px 16px 24px 16px;
   flex-direction: column;
   align-items: center;

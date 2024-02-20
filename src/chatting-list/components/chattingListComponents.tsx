@@ -79,8 +79,8 @@ export const AlertCircle = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 14px;
   height: 14px;
+  min-width: 14px;
   background: #ff7152;
   border-radius: 100px;
 `;

@@ -1,12 +1,12 @@
 import React from "react";
-import { Overlay } from "./detailComponents";
+import { Overlay } from "../styles/detailComponents";
 import { DialogOneBtn, Dialog } from "../../components/styles/Button";
 
 interface INicknameCheck {
   overlapNickname: boolean;
-  setOverlapNickname: React.Dispatch<React.SetStateAction<boolean>>;
+  setOverlapNickname: React.Dispatch<boolean>;
   possibleNickname: boolean;
-  setPossibleNickname: React.Dispatch<React.SetStateAction<boolean>>;
+  setPossibleNickname: React.Dispatch<boolean>;
   isInputDisabled: boolean;
   checkOverlap: () => void;
   checkOverlapPossible: () => void;

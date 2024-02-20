@@ -12,8 +12,8 @@ export const fetchProfile = async (
   const SignUpUrl = `${import.meta.env.VITE_BASE_URL}/users/profile/my`;
   const bodyData = {
     nickname: userNickName,
-    height: "A", // 임시
-    weight: "B",
+    height: userHeight,
+    weight: userWeight,
     description: userIntroduce,
   };
   console.log(userHeight, userWeight);
@@ -38,7 +38,7 @@ export const fetchProfile = async (
     }
 
     const data = await response.json();
-    console.log("프로필 수정", data);
+    setSubscription(true);
     return data === true;
   } catch (error) {
     console.error(error);

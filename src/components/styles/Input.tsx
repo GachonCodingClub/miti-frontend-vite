@@ -92,6 +92,7 @@ interface InputElementProps {
   label?: string;
   error?: boolean;
   caution?: string;
+  maxLength?: number;
 }
 
 export const InputElement = ({
@@ -101,6 +102,7 @@ export const InputElement = ({
   onChange,
   label,
   caution,
+  maxLength,
 }: InputElementProps) => {
   const hasCaution = !!caution;
   return (
@@ -112,6 +114,7 @@ export const InputElement = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          maxLength={maxLength}
         />
       </StyledContainer>
       {hasCaution && <CautionMessage>{caution}</CautionMessage>}
@@ -148,6 +151,7 @@ export const InputBoxBtn = ({
   onChange,
   caution,
   disable,
+  maxLength,
 }: IFirstInputBtn) => {
   const hasLabel = !!label;
   const hasCaution = !!caution;
@@ -162,6 +166,7 @@ export const InputBoxBtn = ({
           value={value}
           onChange={onChange}
           disabled={disable}
+          maxLength={maxLength}
         />
         <OrangeSmButton onClick={onClick} text={btnText} />
       </InputBoxBtnContainer>

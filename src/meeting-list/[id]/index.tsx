@@ -30,9 +30,10 @@ import {
   JoinButtonBox,
 } from "../components/meetingDetail.Components";
 import { useNavigate, useParams } from "react-router-dom";
-import { Overlay } from "../../sign-up/components/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { formatDate } from "../../utils";
+import { getHeaders } from "../../components/getHeaders";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -88,10 +89,7 @@ export default function MeetingDetail() {
   const bodyData = {
     nicknames: [],
   };
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-  };
+  const headers = getHeaders(token);
 
   const onSubmitClick = () => {
     const PostUrl = `${import.meta.env.VITE_BASE_URL}/party/${id}`;

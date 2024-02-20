@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { Screen } from "../../components/styles/Screen";
+
 import { DialogLeftBtn } from "../../components/styles/Button";
 
 export interface IChat {
@@ -8,11 +8,6 @@ export interface IChat {
   nickname: string;
   content: string;
 }
-
-export const MeetingChatRoomScreen = styled(Screen)`
-  padding-top: 56px;
-  padding-bottom: 24px;
-`;
 
 // 채팅창 전체(채팅내용, 날짜, 입장/퇴장 다 담음)
 export const ChatWindowContainer = styled.div`
@@ -23,8 +18,9 @@ export const ChatWindowContainer = styled.div`
   margin: auto;
   width: 100%;
   overflow-y: auto;
+  padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 48px;
+  padding-top: 48px;
   max-height: 90vh;
   position: relative;
 `;
@@ -76,7 +72,7 @@ export const MyChatting = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   gap: 4px;
-  max-width: 66%;
+  width: 66%;
 `;
 
 // 내 채팅 버블
@@ -129,7 +125,7 @@ export const OtherChattingBubble = styled(MyChattingBubble)`
 export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
-  max-width: 33rem;
+  max-width: 36rem;
   padding: 16px 24px;
   align-items: center;
   position: fixed;
@@ -176,7 +172,7 @@ export const RightMenuFrame = styled(motion.div)`
   right: 0;
   z-index: 31;
   background: #fff;
-  position: absolute;
+  position: fixed;
   overflow: hidden;
 `;
 
