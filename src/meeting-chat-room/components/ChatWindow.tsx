@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   MyChattingFrame,
   ChattingTime,
@@ -12,6 +12,7 @@ import {
   MyChatting,
   OtherChatting,
   ChatWindowContainer,
+  ScrollToBottomButton,
 } from "../styles/MeetingChatRoomComponents";
 import { getApi } from "../../api/getApi";
 import { getDate, getTimeString } from "./getTimeDate";
@@ -26,7 +27,7 @@ interface ChatWindowProps {
   chatList: ChatMessage[];
   profileNickname: string;
   id: string | undefined;
-  setChatList: React.Dispatch<ChatMessage[]>;
+  setChatList: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
 }
 
 interface ChatDisplayOptions {
@@ -92,7 +93,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   id,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true); // 새로운 페이지가 더 있는지 여부를 관리
+  const [hasMore, setHasMore] = useState(true);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [page, setPage] = useState(0);
@@ -118,13 +119,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     if (pageNum === 0) {
       setChatList(formattedChatData);
       // 페이지 초기 로딩 시 최하단으로 스크롤
-      setTimeout(
-        () => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }),
-        100
-      );
+      setTimeout(() => chatEndRef.current?.scrollIntoView(), 100);
     } else {
       const previousScrollHeight = chatContainerRef.current?.scrollHeight ?? 0;
-      setChatList((prevChats) => [...formattedChatData, ...prevChats]);
+      setChatList((prevChats: ChatMessage[]) => {
+        return [...formattedChatData, ...prevChats];
+      });
       requestAnimationFrame(() => {
         const currentScrollHeight = chatContainerRef.current?.scrollHeight ?? 0;
         chatContainerRef.current?.scrollTo(
@@ -154,13 +154,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     return () => chatContainer?.removeEventListener("scroll", handleScroll);
   }, [loading, hasMore]);
 
-  // 채팅 목록이 업데이트되어도 페이지 처음 로드 시에만 최하단으로 스크롤되도록 조정
-  // useEffect(() => {
-  //   if (chatContainer && chatList.length > 0 && page === 0) {
-  //     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  // }, [chatList, page]);
+  // 하단 스크롤 버튼
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
+  const handleScroll = useCallback(() => {
+    if (!chatContainerRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    // 스크롤이 일정 거리 이상 올라갔는지 확인
+    if (scrollHeight - scrollTop > clientHeight * 1.5) {
+      setShowScrollButton(true);
+    } else {
+      setShowScrollButton(false);
+    }
+  }, []);
+
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView();
+  };
+
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    chatContainer?.addEventListener("scroll", handleScroll);
+    return () => chatContainer?.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
   return (
     <ChatWindowContainer ref={chatContainerRef}>
       {chatList.map((chat, index) => {
@@ -213,10 +230,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 </OtherChatting>
               </OtherChattingFrame>
             )}
+            {showScrollButton && (
+              <ScrollToBottomButton onClick={scrollToBottom}>
+                ↓
+              </ScrollToBottomButton>
+            )}
           </React.Fragment>
         );
       })}
-      <div ref={chatEndRef} />
+      <div id="chatEnd" ref={chatEndRef} />
     </ChatWindowContainer>
   );
 };
