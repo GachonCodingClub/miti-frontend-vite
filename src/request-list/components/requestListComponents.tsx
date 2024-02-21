@@ -6,6 +6,8 @@ export const RequestBox = styled.div`
   justify-content: space-between;
   align-items: center;
   border-color: #f2f0ef;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 `;
 
 export const UserInfo = styled.div`
@@ -14,6 +16,7 @@ export const UserInfo = styled.div`
   width: 100%;
   align-items: center;
   justify-content: space-between;
+  padding-top: 8px;
 `;
 
 export const UserName = styled.div`

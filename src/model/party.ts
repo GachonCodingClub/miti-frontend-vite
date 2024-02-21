@@ -9,11 +9,12 @@ export interface IParties {
   ];
   leaderUserSummaryDto: {
     description: string;
-    userName: string;
+    userName?: string;
     age: number;
     gender: string;
     height: string;
     weight: string;
+    nickname: string;
   };
   acceptedParties: [
     {
