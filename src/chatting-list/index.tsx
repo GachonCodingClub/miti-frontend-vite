@@ -34,9 +34,9 @@ export default function ChattingList() {
     if (!isLoading && data?.content) {
       data?.content.forEach((group: { id: string }) => {
         const getChat = async (groupId: string) => {
-          const chatData = await getApi({ link: `/message/${groupId}` }).then(
-            (response) => response.json()
-          );
+          const chatData = await getApi({
+            link: `/message/${groupId}/page?page=0&size=1`,
+          }).then((response) => response.json());
           const lastMessage = chatData[chatData.length - 1];
           setLastMessages((prevMessages) => ({
             ...prevMessages,
