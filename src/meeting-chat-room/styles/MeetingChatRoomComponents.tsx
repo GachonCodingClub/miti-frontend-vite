@@ -2,12 +2,18 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 import { DialogLeftBtn } from "../../components/styles/Button";
+import { Screen } from "../../components/styles/Screen";
 
 export interface IChat {
   createdAt: string;
   nickname: string;
   content: string;
 }
+
+export const MeetingChatRoomScreen = styled(Screen)`
+  padding-top: 56px;
+  padding-bottom: 24px;
+`;
 
 // 채팅창 전체(채팅내용, 날짜, 입장/퇴장 다 담음)
 export const ChatWindowContainer = styled.div`
@@ -18,7 +24,7 @@ export const ChatWindowContainer = styled.div`
   margin: auto;
   width: 100%;
   overflow-y: auto;
-  padding: 48px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
   max-height: 90vh;
   position: relative;
 `;
@@ -143,7 +149,18 @@ export const ChattingInput = styled.input`
   }
 `;
 
-//
+export const ScrollToBottomButton = styled.button`
+  position: fixed;
+  right: 20px;
+  bottom: 70px;
+  padding: 10px 10px;
+  background-color: rgba(206, 206, 206, 0.1);
+
+  color: white;
+  border: none;
+  border-radius: 50%;
+  z-index: 30;
+`;
 
 // 여기 부터 오른쪽 메뉴
 
@@ -308,7 +325,9 @@ export const MenuMemberAndReqButtonWrapper = styled.div`
 export const MenuMemberContainer = styled(MenuDetailFrame)``;
 
 // 참여자 프레임
-export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
+export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)`
+  overflow-y: auto;
+`;
 
 // 유저 프로필 프레임
 export const MenuUserProfileFrame = styled.div`
@@ -338,6 +357,7 @@ export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  padding-bottom: 16px;
 `;
 
 // 유저 디테일 텍스트
@@ -365,7 +385,8 @@ export const MenuExitMeetingButton = styled(MenuDeleteMeetingAndRunButton)``;
 export interface IUser {
   description?: string;
   userId?: string;
-  userName: string;
+  username?: string;
+  nickname: string;
   age: number;
   gender: "MALE" | "FEMALE" | string;
   height: string | number;

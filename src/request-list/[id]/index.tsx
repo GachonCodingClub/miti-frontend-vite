@@ -18,10 +18,16 @@ import {
   UserDescription,
 } from "../components/requestListComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
+import { GrayLine } from "../../meeting-chat-room/styles/MeetingChatRoomComponents";
 
-interface IUser {
-  userId: string;
-  userName: string;
+interface Party {
+  partyId: string;
+  users: User[];
+}
+
+// User 인터페이스
+interface User {
+  nickname: string;
   description: string;
   age: number;
   gender: "MALE" | "FEMALE";
@@ -29,9 +35,8 @@ interface IUser {
   weight: number;
 }
 
-interface IParty {
-  partyId: string;
-  users: IUser[];
+interface DialogStates {
+  [key: string]: boolean;
 }
 
 export default function RequestProfile() {
@@ -46,29 +51,32 @@ export default function RequestProfile() {
     enabled: !!id,
   });
 
-  const getAccept = (partyId: string) =>
-    getApi({ link: `/groups/${id}/parties/${partyId}/accept` }).then(
-      (response) => response.json()
-    );
+  // 각 파티별로 수락/거절 상태를 관리하는 객체
+  const [dialogStates, setDialogStates] = useState<DialogStates>({});
 
-  const getReject = (partyId: string) =>
-    getApi({ link: `/groups/${id}/parties/${partyId}/reject` }).then(
-      (response) => response.json()
-    );
+  // 수락/거절 상태 설정 함수
+  const setDialogState = (
+    partyId: string,
+    type: "accept" | "reject",
+    value: boolean
+  ) => {
+    setDialogStates((prev) => ({ ...prev, [`${partyId}-${type}`]: value }));
+  };
 
-  const [acceptDialog, setAcceptDialog] = useState(false);
-  const [rejectDialog, setRejectDialog] = useState(false);
-
-  // 수락 클릭
+  // 수락 클릭 핸들러
   const onAcceptClick = (partyId: string) => {
-    getAccept(partyId);
-    setAcceptDialog(true);
+    getApi({ link: `/groups/${id}/parties/${partyId}/accept` }).then(() => {
+      setDialogState(partyId, "accept", true);
+    });
   };
-  // 거절 클릭
+
+  // 거절 클릭 핸들러
   const onRejectClick = (partyId: string) => {
-    getReject(partyId);
-    setRejectDialog(true);
+    getApi({ link: `/groups/${id}/parties/${partyId}/reject` }).then(() => {
+      setDialogState(partyId, "reject", true);
+    });
   };
+
   return (
     <>
       <TopBar
@@ -76,12 +84,13 @@ export default function RequestProfile() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <PaddingScreen>
-        {parties?.waitingParties?.map((party: IParty, index: number) => (
-          <RequestBox key={index}>
-            {party?.users?.map((user, userIndex: number) => (
-              <UserInfo key={userIndex}>
+        {parties?.waitingParties?.map((party: Party) => (
+          <RequestBox key={party.partyId}>
+            <GrayLine />
+            {party.users.map((user, index) => (
+              <UserInfo key={index}>
                 <div>
-                  <UserName>{user?.userName}</UserName>
+                  <UserName>{user?.nickname}</UserName>
                   <UserDescription>{user?.description}</UserDescription>
                   <UserDetail>
                     <span>{user?.age}살</span>
@@ -90,50 +99,48 @@ export default function RequestProfile() {
                     <span>{user?.weight}kg</span>
                   </UserDetail>
                 </div>
-                {/* */}
-                <div className="flex gap-2">
-                  <SmallWhiteBtn
-                    text="거절"
-                    onClick={() => {
-                      onRejectClick(party.partyId);
-                    }}
-                  />
-                  <SmallOrangeBtn
-                    text="수락"
-                    onClick={() => {
-                      onAcceptClick(party.partyId);
-                    }}
-                  />
-                </div>
-                {acceptDialog && (
+
+                {/* Dialog 조건부 렌더링 */}
+                {dialogStates[`${party.partyId}-accept`] && (
                   <Overlay>
                     <DialogOneBtn
-                      title={`${user.userName}님을 수락했어요.`}
+                      title={`${user.nickname}님의 그룹을 수락했어요.`}
                       contents=""
-                      onRightClick={() => {
-                        setAcceptDialog(false);
-                        navigate(`/meeting-chat-room/${id}`);
-                      }}
+                      onRightClick={() =>
+                        setDialogState(party.partyId, "accept", false)
+                      }
                       right="닫기"
                     />
                   </Overlay>
                 )}
-
-                {rejectDialog && (
+                {dialogStates[`${party.partyId}-reject`] && (
                   <Overlay>
                     <DialogOneBtn
-                      title={`${user.userName}님을 거절했어요.`}
+                      title={`${user.nickname}님의 그룹을 거절했어요.`}
                       contents=""
-                      onRightClick={() => {
-                        setRejectDialog(false);
-                        navigate(`/meeting-chat-room/${id}`);
-                      }}
+                      onRightClick={() =>
+                        setDialogState(party.partyId, "reject", false)
+                      }
                       right="닫기"
                     />
                   </Overlay>
                 )}
               </UserInfo>
             ))}
+            <div className="flex gap-2">
+              <SmallWhiteBtn
+                text="거절"
+                onClick={() => {
+                  onRejectClick(party.partyId);
+                }}
+              />
+              <SmallOrangeBtn
+                text="수락"
+                onClick={() => {
+                  onAcceptClick(party.partyId);
+                }}
+              />
+            </div>
           </RequestBox>
         ))}
       </PaddingScreen>

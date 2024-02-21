@@ -27,6 +27,7 @@ export const AddMemberFrame = styled.div`
 export const AddMemberContainer = styled.div`
   display: flex;
   align-items: center;
+  background-color: #f5f5f5;
 `;
 
 // 추가 멤버 삭제 버튼
@@ -61,6 +62,7 @@ export const SubmitButtonFrame = styled.div`
   display: flex;
   width: 100%;
   padding: 32px 16px 24px 16px;
+
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
