@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { GrayLine } from "../meeting-chat-room/styles/MeetingChatRoomComponents";
 import {
   AgreementScreen,
   AgreementTitle,
@@ -23,6 +22,7 @@ import agreementData from "../sign-up/components/agreementData.json";
 import { TopBar } from "../components/TopBar";
 import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
+import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 
 export default function SignUpAgreement() {
   // 해당 checkBox가 가지고 있는 name을 넣어주기 위한 string배열 state
