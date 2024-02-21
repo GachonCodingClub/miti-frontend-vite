@@ -18,7 +18,7 @@ import {
   UserDescription,
 } from "../components/requestListComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
-import { GrayLine } from "../../meeting-chat-room/styles/MeetingChatRoomComponents";
+import { GrayLine } from "../../meeting-chat-room/styles/SideMenuComponents";
 
 interface Party {
   partyId: string;
