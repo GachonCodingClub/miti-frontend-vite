@@ -1,8 +1,6 @@
 import {
   ChattingInputDiv,
   ChattingInput,
-  RightMenuFrame,
-  MenuAnimation,
   IChat,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
@@ -27,6 +25,7 @@ import { getHeaders } from "../../components/getHeaders";
 import { Overlay } from "../../sign-up/styles/detailComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
 import ChatWindow from "../components/ChatWindow";
+import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();

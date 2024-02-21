@@ -24,10 +24,10 @@ import {
   AddMemberButton,
   SubmitButtonFrame,
 } from "./styles/createMeetingDetailComponents";
-import { GrayLine } from "../meeting-chat-room/styles/MeetingChatRoomComponents";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { getHeaders } from "../components/getHeaders";
+import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 
 export default function CreateMeetingDetail() {
   // 리코일에서 가져온 정보
