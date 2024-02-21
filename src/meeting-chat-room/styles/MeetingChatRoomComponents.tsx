@@ -149,7 +149,18 @@ export const ChattingInput = styled.input`
   }
 `;
 
-//
+export const ScrollToBottomButton = styled.button`
+  position: fixed;
+  right: 20px;
+  bottom: 70px;
+  padding: 10px 10px;
+  background-color: rgba(206, 206, 206, 0.1);
+
+  color: white;
+  border: none;
+  border-radius: 50%;
+  z-index: 30;
+`;
 
 // 여기 부터 오른쪽 메뉴
 

@@ -1,5 +1,4 @@
 import {
-  ChatWindowContainer,
   ChattingInputDiv,
   ChattingInput,
   RightMenuFrame,
@@ -101,6 +100,12 @@ export default function MeetingChatRoom() {
       destination: "/pub/send", // 메시지를 보낼 때에는 여기로
       body: chat, // 메시지 내용
     });
+
+    scrollToBottom();
+  };
+  const scrollToBottom = () => {
+    // ChatWindow 컴포넌트에 ref를 추가하고, 해당 ref를 사용하여 스크롤 이동
+    document.getElementById("chatEnd")?.scrollIntoView();
   };
 
   // Subscribe
@@ -154,7 +159,6 @@ export default function MeetingChatRoom() {
       })
     );
     setMessage("");
-    scrollToBottom();
   }; // 제출된 JSON문자열은 서버로 전송됨
 
   useEffect(() => {
@@ -202,11 +206,6 @@ export default function MeetingChatRoom() {
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
-
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
-  function scrollToBottom() {
-    chatEndRef.current?.scrollIntoView();
-  }
 
   return (
     <>
