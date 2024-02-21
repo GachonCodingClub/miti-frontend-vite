@@ -272,7 +272,7 @@ export default function MeetingDetail() {
                     {party.users.map((user) => (
                       <div key={user?.userId}>
                         <div className="flex gap-1 items-center">
-                          <span>{user?.userName}</span>
+                          <span>{user?.nickname}</span>
                         </div>
                         <span className="text-sm whitespace-pre-wrap">
                           {user?.description}
