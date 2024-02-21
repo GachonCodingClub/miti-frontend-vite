@@ -246,7 +246,7 @@ export default function MeetingDetail() {
                 {parties?.leaderUserSummaryDto && (
                   <>
                     <div className="flex items-center gap-1">
-                      {parties?.leaderUserSummaryDto?.userName}
+                      {parties?.leaderUserSummaryDto?.nickname}
                       <OrangeCrownIcon />
                     </div>
                     <span className="whitespace-pre-wrap text-sm">

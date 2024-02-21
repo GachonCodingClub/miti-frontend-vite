@@ -158,7 +158,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                 >
                   <div className="flex gap-2">
                     <MenuUserNickname>
-                      {parties?.leaderUserSummaryDto?.userName}
+                      {parties?.leaderUserSummaryDto?.nickname}
                     </MenuUserNickname>
                     <OrangeCrownIcon />
                   </div>
@@ -186,7 +186,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                     }}
                   >
                     <MenuUserDetailFrame>
-                      <MenuUserNickname>{user.userName}</MenuUserNickname>
+                      <MenuUserNickname>{user.nickname}</MenuUserNickname>
                       <div>
                         <MenuUserDetailText>{user.age}살</MenuUserDetailText>
                         <MenuUserDetailText>
@@ -235,7 +235,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
         <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
           <DialogContainer>
             <DialogTitle className="p-4">
-              {selectedUserProfile?.userName}
+              {selectedUserProfile?.nickname}
             </DialogTitle>
             <DialogContents>{selectedUserProfile?.description}</DialogContents>
             <div className="p-2 flex flex-col">

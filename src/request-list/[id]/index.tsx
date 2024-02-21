@@ -28,6 +28,7 @@ interface IUser {
   gender: "MALE" | "FEMALE";
   height: number;
   weight: number;
+  nickname: string;
 }
 
 interface IParty {
@@ -83,7 +84,7 @@ export default function RequestProfile() {
             {party?.users?.map((user, userIndex: number) => (
               <UserInfo key={userIndex}>
                 <div>
-                  <UserName>{user?.userName}</UserName>
+                  <UserName>{user?.nickname}</UserName>
                   <UserDescription>{user?.description}</UserDescription>
                   <UserDetail>
                     <span>{user?.age}살</span>
@@ -96,7 +97,7 @@ export default function RequestProfile() {
                 {acceptDialog && (
                   <Overlay>
                     <DialogOneBtn
-                      title={`${user.userName}님을 수락했어요.`}
+                      title={`${user.nickname}님을 수락했어요.`}
                       contents=""
                       onRightClick={() => {
                         setAcceptDialog(false);
