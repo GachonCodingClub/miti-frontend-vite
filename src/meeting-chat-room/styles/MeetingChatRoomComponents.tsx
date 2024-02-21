@@ -382,7 +382,8 @@ export const MenuExitMeetingButton = styled(MenuDeleteMeetingAndRunButton)``;
 export interface IUser {
   description?: string;
   userId?: string;
-  userName: string;
+  username?: string;
+  nickname: string;
   age: number;
   gender: "MALE" | "FEMALE" | string;
   height: string | number;

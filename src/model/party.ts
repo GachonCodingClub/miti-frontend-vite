@@ -14,6 +14,7 @@ export interface IParties {
     gender: string;
     height: string;
     weight: string;
+    nickname: string;
   };
   acceptedParties: [
     {
