@@ -111,7 +111,7 @@ export default function RequestProfile() {
                 {rejectDialog && (
                   <Overlay>
                     <DialogOneBtn
-                      title={`${user.userName}님을 거절했어요.`}
+                      title={`${user?.nickname}님을 거절했어요.`}
                       contents=""
                       onRightClick={() => {
                         setRejectDialog(false);
