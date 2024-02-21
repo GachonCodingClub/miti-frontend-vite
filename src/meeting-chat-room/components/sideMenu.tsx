@@ -7,7 +7,22 @@ import {
   PersonIcon,
   OrangeCrownIcon,
 } from "../../components/styles/Icons";
+
+import { useNavigate, useParams } from "react-router-dom";
+import { IParties } from "../../model/party";
+import { JwtPayload, jwtDecode } from "jwt-decode";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import {
+  DialogBtnFrame,
+  DialogContainer,
+  DialogContents,
+  DialogLeftText,
+  DialogRightText,
+  DialogTitle,
+} from "../../components/styles/Button";
+import { formatDate } from "../../utils";
+import {
+  IUser,
   MenuMeetingTitleAndDescFrame,
   MenuMeetingTitle,
   MenuMeetingDesc,
@@ -27,28 +42,14 @@ import {
   MenuUserProfileFrame,
   MenuMasterFrame,
   MenuUserNickname,
-  MenuUserDetailFrame,
   MenuUserDetailText,
+  MenuUserDetailFrame,
   ParticipationReqButton,
   MenuDeleteMeetingAndRunButton,
   MenuExitMeetingButton,
-  IUser,
   ProfileLeftButton,
   ProfileRightButton,
-} from "../styles/MeetingChatRoomComponents";
-import { useNavigate, useParams } from "react-router-dom";
-import { IParties } from "../../model/party";
-import { JwtPayload, jwtDecode } from "jwt-decode";
-import { Overlay } from "../../sign-up/styles/detailComponents";
-import {
-  DialogBtnFrame,
-  DialogContainer,
-  DialogContents,
-  DialogLeftText,
-  DialogRightText,
-  DialogTitle,
-} from "../../components/styles/Button";
-import { formatDate } from "../../utils";
+} from "../styles/SideMenuComponents";
 
 interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
@@ -264,6 +265,13 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                   >
                     <DialogLeftText>닫기</DialogLeftText>
                   </ProfileLeftButton>
+                  <ProfileRightButton
+                    onClick={() => {
+                      console.log("신고");
+                    }}
+                  >
+                    <DialogRightText>신고하기</DialogRightText>
+                  </ProfileRightButton>
                 </DialogBtnFrame>
               ) : (
                 <DialogBtnFrame>
