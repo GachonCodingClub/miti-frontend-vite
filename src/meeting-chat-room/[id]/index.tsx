@@ -227,14 +227,14 @@ export default function MeetingChatRoom() {
         </PaddingScreen>
       ) : (
         <PaddingScreen>
-          <ChatWindowContainer>
+          <>
             <ChatWindow
               chatList={chatList}
               setChatList={setChatList}
               profileNickname={profile?.nickname}
               id={id}
             />
-          </ChatWindowContainer>
+          </>
           <div>
             <label htmlFor="topic-url" hidden />
             <input type="number" id="topic-url" value={id} hidden />
