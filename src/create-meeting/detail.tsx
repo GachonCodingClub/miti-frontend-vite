@@ -31,7 +31,7 @@ import { getHeaders } from "../components/getHeaders";
 
 export default function CreateMeetingDetail() {
   // 리코일에서 가져온 정보
-  const { meetingTitle, meetingDesc, myNickname } = useRecoilStates();
+  const { meetingTitle, meetingDesc } = useRecoilStates();
   const token = useLocalStorageToken();
   const { id } = useParams();
 
@@ -49,6 +49,13 @@ export default function CreateMeetingDetail() {
       throw error; // 에러를 상위로 전파
     }
   };
+
+  const getUserProfile = async () => {
+    const response = await getApi({ link: `/users/profile/my` });
+    const data = await response.json();
+    return data;
+  };
+  const { data: profile } = useQuery(["profile"], getUserProfile);
 
   // useQuery 훅을 사용하여 데이터를 가져오는 부분
   const { data: group } = useQuery(
@@ -181,7 +188,7 @@ export default function CreateMeetingDetail() {
         }
 
         // 닉네임이 myNickname과 같은지 확인
-        if (trimmedNickname === myNickname) {
+        if (trimmedNickname === profile.nickname) {
           setAddMyNicknameDialog(true); // 본인 닉네임 추가 못하게 막기
           return;
         }

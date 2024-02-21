@@ -18,6 +18,7 @@ import {
   UserDescription,
 } from "../components/requestListComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
+import { GrayLine } from "../../meeting-chat-room/styles/MeetingChatRoomComponents";
 
 interface IUser {
   userId: string;
@@ -78,6 +79,7 @@ export default function RequestProfile() {
       <PaddingScreen>
         {parties?.waitingParties?.map((party: IParty, index: number) => (
           <RequestBox key={index}>
+            <GrayLine />
             {party?.users?.map((user, userIndex: number) => (
               <UserInfo key={userIndex}>
                 <div>
@@ -90,21 +92,7 @@ export default function RequestProfile() {
                     <span>{user?.weight}kg</span>
                   </UserDetail>
                 </div>
-                {/* */}
-                <div className="flex gap-2">
-                  <SmallWhiteBtn
-                    text="거절"
-                    onClick={() => {
-                      onRejectClick(party.partyId);
-                    }}
-                  />
-                  <SmallOrangeBtn
-                    text="수락"
-                    onClick={() => {
-                      onAcceptClick(party.partyId);
-                    }}
-                  />
-                </div>
+
                 {acceptDialog && (
                   <Overlay>
                     <DialogOneBtn
@@ -134,6 +122,20 @@ export default function RequestProfile() {
                 )}
               </UserInfo>
             ))}
+            <div className="flex gap-2">
+              <SmallWhiteBtn
+                text="거절"
+                onClick={() => {
+                  onRejectClick(party.partyId);
+                }}
+              />
+              <SmallOrangeBtn
+                text="수락"
+                onClick={() => {
+                  onAcceptClick(party.partyId);
+                }}
+              />
+            </div>
           </RequestBox>
         ))}
       </PaddingScreen>
