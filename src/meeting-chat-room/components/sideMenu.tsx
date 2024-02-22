@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
 import {
@@ -49,12 +49,8 @@ import {
   MenuExitMeetingButton,
   ProfileLeftButton,
   ProfileRightButton,
+  ISideMenu,
 } from "../styles/SideMenuComponents";
-
-interface ISideMenu {
-  dialogProps: React.Dispatch<boolean>;
-  exitProps: React.Dispatch<boolean>;
-}
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
@@ -62,28 +58,27 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
 
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
     const storedToken = localStorage.getItem("token");
     setDecodedToken(jwtDecode(storedToken + ""));
   }, []);
 
-  // 메뉴 세부정보 가져오기
   const getGroup = async () => {
     try {
-      // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
-      // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
       const response = await getApi({ link: `/groups/${id}` });
       const data = await response.json();
       return data;
     } catch (error) {
       console.error("Error fetching group data:", error);
-      throw error; // 에러를 상위로 전파
+      throw error;
     }
   };
 
-  // useQuery 훅을 사용하여 데이터를 가져오는 부분
-  const { data: group } = useQuery(["group", id], getGroup, {
-    enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+  const {
+    data: group,
+    isError: isGroupError,
+    isLoading: isLoadingGroup,
+  } = useQuery(["group", id], getGroup, {
+    enabled: !!id,
   });
   const formattedDate = formatDate(group?.meetDate);
 
@@ -91,7 +86,11 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     getApi({ link: `/groups/${id}/parties` }).then(
       (response) => response.json() as Promise<IParties>
     );
-  const { data: parties } = useQuery(["parties", id], getParties, {
+  const {
+    data: parties,
+    isLoading: isLoadingParties,
+    isError: isPartiesError,
+  } = useQuery(["parties", id], getParties, {
     enabled: !!id,
   });
 
@@ -100,16 +99,30 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     console.log(parties);
   }, []);
 
+  const isGroupLeader =
+    decodedToken?.sub === group?.leaderUserSummaryDto?.userId;
   const [selectedUserProfile, setSelectedUserProfile] = useState<IUser | null>(
     null
   );
+
+  if (isLoadingGroup || isLoadingParties) {
+    return <div>로딩중이에요...</div>;
+  }
+
+  if (isGroupError || isPartiesError) {
+    return (
+      <div>
+        데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요.
+      </div>
+    );
+  }
 
   return (
     <>
       {/* 제목과 설명 */}
       <MenuMeetingTitleAndDescFrame>
-        <MenuMeetingTitle>{group.title}</MenuMeetingTitle>
-        <MenuMeetingDesc>{group.description}</MenuMeetingDesc>
+        <MenuMeetingTitle>{group?.title}</MenuMeetingTitle>
+        <MenuMeetingDesc>{group?.description}</MenuMeetingDesc>
       </MenuMeetingTitleAndDescFrame>
       <GrayLine />
       <MenuDetailAndMemberWrapper>
@@ -124,17 +137,17 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
               </MenuDateLocationFrame>
               <MenuDateLocationFrame>
                 <LocationIcon />
-                <MenuDateLocationText>{group.meetPlace}</MenuDateLocationText>
+                <MenuDateLocationText>{group?.meetPlace}</MenuDateLocationText>
               </MenuDateLocationFrame>
               <MenuDateLocationFrame>
                 <PersonIcon />
                 <MenuDateLocationText>
-                  최대 인원 {group.maxUsers}명
+                  최대 인원 {group?.maxUsers}명
                 </MenuDateLocationText>
               </MenuDateLocationFrame>
             </MenuDateLocationMemberContainer>
           </MenuDetailFrame>
-          {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
+          {isGroupLeader && (
             <MenuModifyMeetingButton
               onClick={() => {
                 navigate(`/edit-meeting/${id}`);
@@ -142,7 +155,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             >
               미팅 수정
             </MenuModifyMeetingButton>
-          ) : null}
+          )}
         </MenuDetailAndButtonContainer>
       </MenuDetailAndMemberWrapper>
       <MenuSmallGrayLine />
@@ -181,19 +194,19 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             {/* 일반 참여자 */}
             {parties?.acceptedParties?.map((party) => (
               <div key={party.partyId}>
-                {party.users.map((user) => (
+                {party?.users.map((user) => (
                   <MenuUserProfileFrame
-                    key={user.userId}
+                    key={user?.userId}
                     onClick={() => {
                       setSelectedUserProfile(user);
                     }}
                   >
                     <MenuUserDetailFrame>
-                      <MenuUserNickname>{user.nickname}</MenuUserNickname>
+                      <MenuUserNickname>{user?.nickname}</MenuUserNickname>
                       <div>
-                        <MenuUserDetailText>{user.age}살</MenuUserDetailText>
+                        <MenuUserDetailText>{user?.age}살</MenuUserDetailText>
                         <MenuUserDetailText>
-                          {user.gender === "MALE" ? "남자" : "여자"}
+                          {user?.gender === "MALE" ? "남자" : "여자"}
                         </MenuUserDetailText>
                       </div>
                     </MenuUserDetailFrame>
@@ -203,19 +216,31 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             ))}
           </MenuMemberFrame>
         </MenuMemberContainer>
+
         {/* 참여 요청 목록 */}
-        {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
+        {isGroupLeader && (
           <ParticipationReqButton
             onClick={() => {
               navigate(`/request-list/${id}`);
             }}
           >
             참여 요청 목록
+            {isLoadingParties ? (
+              <div>로딩중이에요...</div>
+            ) : (
+              parties &&
+              parties.waitingParties &&
+              parties.waitingParties.length > 0 && (
+                <>
+                  <div className="absolute w-4 h-4 rounded-full -top-1 -right-1 bg-[#FF7152]" />
+                </>
+              )
+            )}
           </ParticipationReqButton>
-        ) : null}
+        )}
       </MenuMemberAndReqButtonWrapper>
       {/* 삭제하고 나가기 */}
-      {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
+      {isGroupLeader ? (
         <MenuDeleteMeetingAndRunButton
           onClick={() => {
             dialogProps(true);
@@ -256,41 +281,22 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
               </DialogContents>
             </div>
             <div>
-              {decodedToken?.sub == group?.leaderUserSummaryDto?.userId ? (
-                <DialogBtnFrame>
-                  <ProfileLeftButton
-                    onClick={() => {
-                      setSelectedUserProfile(null);
-                    }}
-                  >
-                    <DialogLeftText>닫기</DialogLeftText>
-                  </ProfileLeftButton>
-                  <ProfileRightButton
-                    onClick={() => {
-                      console.log("신고");
-                    }}
-                  >
-                    <DialogRightText>신고하기</DialogRightText>
-                  </ProfileRightButton>
-                </DialogBtnFrame>
-              ) : (
-                <DialogBtnFrame>
-                  <ProfileLeftButton
-                    onClick={() => {
-                      setSelectedUserProfile(null);
-                    }}
-                  >
-                    <DialogLeftText>닫기</DialogLeftText>
-                  </ProfileLeftButton>
-                  <ProfileRightButton
-                    onClick={() => {
-                      console.log("신고");
-                    }}
-                  >
-                    <DialogRightText>신고하기</DialogRightText>
-                  </ProfileRightButton>
-                </DialogBtnFrame>
-              )}
+              <DialogBtnFrame>
+                <ProfileLeftButton
+                  onClick={() => {
+                    setSelectedUserProfile(null);
+                  }}
+                >
+                  <DialogLeftText>닫기</DialogLeftText>
+                </ProfileLeftButton>
+                <ProfileRightButton
+                  onClick={() => {
+                    console.log("신고");
+                  }}
+                >
+                  <DialogRightText>신고하기</DialogRightText>
+                </ProfileRightButton>
+              </DialogBtnFrame>
             </div>
           </DialogContainer>
         </Overlay>

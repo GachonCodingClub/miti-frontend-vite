@@ -23,7 +23,6 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 export default function Profile() {
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
     const storedToken = localStorage.getItem("token");
     setDecodedToken(jwtDecode(storedToken + ""));
   }, []);
@@ -49,13 +48,13 @@ export default function Profile() {
     getApi({ link: `/groups/${selectedId}/parties` }).then(
       (response) => response.json() as Promise<IParties>
     );
-  const { data: parties, isLoading: isLoadingParties } = useQuery(
-    ["parties", selectedId],
-    getParties,
-    {
-      enabled: !!selectedId,
-    }
-  );
+  const {
+    data: parties,
+    isLoading: isLoadingParties,
+    isError: isPartiesError,
+  } = useQuery(["parties", selectedId], getParties, {
+    enabled: !!selectedId,
+  });
 
   useEffect(() => {
     console.log("미팅 데이터", data);
@@ -64,18 +63,18 @@ export default function Profile() {
     if (selectedId) {
       console.log("선택된", parties?.waitingParties);
     }
-  }, [data, profile, parties, selectedId]);
+  }, []);
 
   const nowTime = new Date().getTime();
 
   const currentGroups = data?.content?.filter((group) => {
-    const groupTime = new Date(group.meetDate).getTime() + 9 * 60 * 60 * 1000;
+    const groupTime = new Date(group?.meetDate).getTime() + 9 * 60 * 60 * 1000;
     return groupTime > nowTime;
   });
   const sortedCurrentGroups = currentGroups?.sort((a, b) => a.id - b.id);
 
   const pastGroups = data?.content?.filter((group) => {
-    const groupTime = new Date(group.meetDate).getTime() + 9 * 60 * 60 * 1000;
+    const groupTime = new Date(group?.meetDate).getTime() + 9 * 60 * 60 * 1000;
     return groupTime < nowTime;
   });
 
@@ -94,6 +93,15 @@ export default function Profile() {
     }
   };
 
+  const isLeader = decodedToken?.sub === parties?.leaderUserSummaryDto?.userId;
+
+  if (isPartiesError) {
+    return (
+      <div>
+        데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요.
+      </div>
+    );
+  }
   return (
     !isLoading && (
       <>
@@ -157,8 +165,7 @@ export default function Profile() {
                       />
                       {showButton && selectedId === group?.id && (
                         <HideFrame>
-                          {decodedToken?.sub ==
-                            parties?.leaderUserSummaryDto?.userId && (
+                          {isLeader && (
                             <>
                               <SmallWhiteBtn
                                 text="미팅 수정"
@@ -180,9 +187,7 @@ export default function Profile() {
                                   parties &&
                                   parties.waitingParties &&
                                   parties.waitingParties.length > 0 && (
-                                    <>
-                                      <div className="absolute w-3 h-3 rounded-full -top-0.5 -right-0.5 bg-[#FF7152]" />
-                                    </>
+                                    <div className="absolute w-3 h-3 rounded-full -top-0.5 -right-0.5 bg-[#FF7152]" />
                                   )
                                 )}
                               </div>
@@ -208,8 +213,7 @@ export default function Profile() {
                       />
                       {showButton && selectedId === group?.id && (
                         <HideFrame>
-                          {decodedToken?.sub ==
-                            parties?.leaderUserSummaryDto?.userId && (
+                          {isLeader && (
                             <>
                               <SmallWhiteBtn
                                 text="미팅 수정"

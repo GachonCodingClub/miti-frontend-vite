@@ -2,6 +2,11 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import { DialogLeftBtn } from "../../components/styles/Button";
 
+export interface ISideMenu {
+  dialogProps: React.Dispatch<boolean>;
+  exitProps: React.Dispatch<boolean>;
+}
+
 // 오른쪽 메뉴 나오는 애니메이션
 export const MenuAnimation = {
   hidden: {
@@ -44,7 +49,6 @@ export const MenuMeetingTitleAndDescFrame = styled.div`
 export const MenuMeetingTitle = styled.span`
   align-self: stretch;
   color: var(--Grey-grey800, #2f2a28);
-
   font-weight: 700;
   line-height: 20px;
 `;
@@ -114,7 +118,6 @@ export const MenuDateLocationFrame = styled.div`
 
 // 날짜 장소 인원 텍스트
 export const MenuDateLocationText = styled.span`
-  flex: 1 0 0;
   color: var(--Grey-grey800, #2f2a28);
 
   font-weight: 500;
@@ -126,7 +129,6 @@ export const MenuModifyMeetingButton = styled.button`
   display: flex;
   padding: 16px 12px;
   justify-content: center;
-  align-items: center;
   align-self: stretch;
   border-radius: 8px;
   border: 1px solid var(--Grey-grey100, #dedbd9);
@@ -154,18 +156,19 @@ export const MenuMemberAndReqButtonWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 32px;
-  align-self: stretch;
   width: 80%;
   margin: auto;
+  max-height: 25%;
 `;
 
 // 참여자 컨테이너
-export const MenuMemberContainer = styled(MenuDetailFrame)``;
+export const MenuMemberContainer = styled(MenuDetailFrame)`
+  overflow-y: scroll;
+  width: 100%;
+`;
 
 // 참여자 프레임
-export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)`
-  overflow-y: auto;
-`;
+export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
 
 // 유저 프로필 프레임
 export const MenuUserProfileFrame = styled.div`
@@ -204,7 +207,9 @@ export const MenuUserDetailText = styled(MenuDetailText)`
 `;
 
 // 참여 요청 목록 버튼
-export const ParticipationReqButton = styled(MenuModifyMeetingButton)``;
+export const ParticipationReqButton = styled(MenuModifyMeetingButton)`
+  position: relative;
+`;
 
 // 미팅 삭제하고 나가기
 export const MenuDeleteMeetingAndRunButton = styled.button`
