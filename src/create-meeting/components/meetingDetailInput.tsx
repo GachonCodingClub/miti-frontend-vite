@@ -13,8 +13,8 @@ interface MeetingDetailsInputsProps {
   onMemberChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   memberError: string;
   inputMemberDisabled: boolean;
-  setInputMemberDisabled: React.Dispatch<boolean>;
-  setMemberCountModi: React.Dispatch<boolean>;
+  setInputDisabled: React.Dispatch<boolean>;
+  setModiSVG: React.Dispatch<boolean>;
 }
 
 const MeetingDetailsInputs: React.FC<MeetingDetailsInputsProps> = ({
@@ -28,8 +28,8 @@ const MeetingDetailsInputs: React.FC<MeetingDetailsInputsProps> = ({
   onMemberChange,
   memberError,
   inputMemberDisabled,
-  setInputMemberDisabled,
-  setMemberCountModi,
+  setInputDisabled,
+  setModiSVG,
 }) => (
   <>
     <MyInputBox
@@ -58,10 +58,10 @@ const MeetingDetailsInputs: React.FC<MeetingDetailsInputsProps> = ({
       pattern="[0-9]*" // 숫자만 허용
       onClick={() => {
         if (inputMemberDisabled === false) {
-          setInputMemberDisabled(true);
+          setInputDisabled(true);
         } else {
-          setInputMemberDisabled(false);
-          setMemberCountModi(true);
+          setInputDisabled(false);
+          setModiSVG(true);
         }
       }}
       value={inputMember}
