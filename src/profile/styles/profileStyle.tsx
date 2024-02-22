@@ -27,4 +27,10 @@ export const MeetingTabBar = styled.div`
   border-bottom: 1px solid #e9e9e9;
 `;
 
-export const MeetingList = styled.div``;
+export const HideFrame = styled.div`
+  background-color: #eeeeee;
+  padding: 8px;
+  gap: 16px;
+  display: flex;
+  justify-content: end;
+`;

@@ -1,5 +1,5 @@
 import { TabBar } from "../components/TabBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getApi } from "../api/getApi";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
@@ -13,17 +13,27 @@ import {
   ProfileInfo,
   ProfileMeetings,
   MeetingTabBar,
-  MeetingList,
+  HideFrame,
 } from "./styles/profileStyle";
 import { PaddingScreen } from "../components/styles/Screen";
+import { SmallWhiteBtn } from "../components/styles/Button";
+import { IParties } from "../model/party";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 export default function Profile() {
-  const [isMine, setIsMine] = useState(true);
+  const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
+    const storedToken = localStorage.getItem("token");
+    setDecodedToken(jwtDecode(storedToken + ""));
+  }, []);
 
+  const [isMine, setIsMine] = useState(true);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const getMyGroups = () =>
-    getApi({ link: "/groups/my?page=0&&size=99" }).then(
+    getApi({ link: "/groups/my?page=0&&size=30" }).then(
       (response) => response.json() as Promise<IGroups>
     );
   const { data, isLoading } = useQuery(["myGroups"], getMyGroups);
@@ -34,6 +44,27 @@ export default function Profile() {
     return data;
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
+
+  const getParties = () =>
+    getApi({ link: `/groups/${selectedId}/parties` }).then(
+      (response) => response.json() as Promise<IParties>
+    );
+  const { data: parties, isLoading: isLoadingParties } = useQuery(
+    ["parties", selectedId],
+    getParties,
+    {
+      enabled: !!selectedId,
+    }
+  );
+
+  useEffect(() => {
+    console.log("미팅 데이터", data);
+    console.log("유저 프로필", profile);
+    console.log();
+    if (selectedId) {
+      console.log("선택된", parties?.waitingParties);
+    }
+  }, [data, profile, parties, selectedId]);
 
   const nowTime = new Date().getTime();
 
@@ -49,6 +80,20 @@ export default function Profile() {
   });
 
   const sortedPastGroups = pastGroups?.sort((a, b) => a.id - b.id);
+
+  const [showButton, setShowButton] = useState(false);
+
+  const handleMeetingBoxClick = (groupId: number) => {
+    // 선택된 미팅 ID가 현재 클릭된 것과 같다면, showButton을 토글.
+    // 그렇지 않다면, 새로운 미팅 ID로 setSelectedId를 업데이트하고 showButton을 true로 설정한다.
+    if (selectedId === groupId) {
+      setShowButton((prev) => !prev);
+    } else {
+      setSelectedId(groupId);
+      setShowButton(true); // 새로운 MeetingBoxComponent 클릭 시 항상 true로 설정
+    }
+  };
+
   return (
     !isLoading && (
       <>
@@ -101,21 +146,97 @@ export default function Profile() {
                 지난 미팅
               </div>
             </MeetingTabBar>
-            <MeetingList>
-              <div className="divide-x-[1px]">
-                {isMine
-                  ? sortedCurrentGroups?.map((group, index) => (
-                      <MeetingBoxComponent meeting={group} key={index} />
-                    ))
-                  : sortedPastGroups?.map((group, index) => (
+
+            <div className="divide-x-[1px]">
+              {isMine
+                ? sortedCurrentGroups?.map((group) => (
+                    <div key={group?.id}>
                       <MeetingBoxComponent
+                        onClick={() => handleMeetingBoxClick(group.id)}
+                        meeting={group}
+                      />
+                      {showButton && selectedId === group?.id && (
+                        <HideFrame>
+                          {decodedToken?.sub ==
+                            parties?.leaderUserSummaryDto?.userId && (
+                            <>
+                              <SmallWhiteBtn
+                                text="미팅 수정"
+                                onClick={() => {
+                                  navigate(`/edit-meeting/${selectedId}`);
+                                }}
+                              />
+
+                              <div style={{ position: "relative" }}>
+                                <SmallWhiteBtn
+                                  text="참여 요청 목록"
+                                  onClick={() => {
+                                    navigate(`/request-list/${selectedId}`);
+                                  }}
+                                />
+                                {isLoadingParties ? (
+                                  <div>로딩중이에요...</div>
+                                ) : (
+                                  parties &&
+                                  parties.waitingParties &&
+                                  parties.waitingParties.length > 0 && (
+                                    <>
+                                      <div className="absolute w-3 h-3 rounded-full -top-0.5 -right-0.5 bg-[#FF7152]" />
+                                    </>
+                                  )
+                                )}
+                              </div>
+                            </>
+                          )}
+
+                          <SmallWhiteBtn
+                            text="채팅방 이동"
+                            onClick={() => {
+                              navigate(`/meeting-chat-room/${selectedId}`);
+                            }}
+                          />
+                        </HideFrame>
+                      )}
+                    </div>
+                  ))
+                : sortedPastGroups?.map((group) => (
+                    <div key={group?.id}>
+                      <MeetingBoxComponent
+                        onClick={() => handleMeetingBoxClick(group.id)}
                         isPast={true}
                         meeting={group}
-                        key={index}
                       />
-                    ))}
-              </div>
-            </MeetingList>
+                      {showButton && selectedId === group?.id && (
+                        <HideFrame>
+                          {decodedToken?.sub ==
+                            parties?.leaderUserSummaryDto?.userId && (
+                            <>
+                              <SmallWhiteBtn
+                                text="미팅 수정"
+                                onClick={() => {
+                                  navigate(`/edit-meeting/${selectedId}`);
+                                }}
+                              />
+                              <SmallWhiteBtn
+                                text="참여 요청 목록"
+                                onClick={() => {
+                                  navigate(`/request-list/${selectedId}`);
+                                }}
+                              />
+                            </>
+                          )}
+
+                          <SmallWhiteBtn
+                            text="채팅방 이동"
+                            onClick={() => {
+                              navigate(`/meeting-chat-room/${selectedId}`);
+                            }}
+                          />
+                        </HideFrame>
+                      )}
+                    </div>
+                  ))}
+            </div>
           </ProfileMeetings>
         </PaddingScreen>
         <TabBar />

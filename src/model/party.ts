@@ -15,6 +15,7 @@ export interface IParties {
     height: string;
     weight: string;
     nickname: string;
+    userId?: string;
   };
   acceptedParties: [
     {
