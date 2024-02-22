@@ -16,7 +16,6 @@ export const fetchProfile = async (
     weight: userWeight,
     description: userIntroduce,
   };
-  console.log(userHeight, userWeight);
   const headers = getHeaders(token);
 
   try {

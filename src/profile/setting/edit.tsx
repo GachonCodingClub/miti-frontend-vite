@@ -29,6 +29,7 @@ import NickNameCheckModule from "../../sign-up/components/nicknameCheck";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
 import { MyHeightSheet } from "../../sign-up/components/HeightSheet";
 import { MyWeightSheet } from "../../sign-up/components/WeightSheet";
+import { rangeToAlphabet } from "../../components/rangeToAlphabet";
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -126,7 +127,7 @@ export default function EditProfile() {
   };
 
   // 키(cm)
-  const [userHeight, setUserHeight] = useState("");
+  const [userHeight, setUserHeight] = useState(profile?.height);
   const [heightError, setHeightError] = useState("");
   const [showHeightSheet, setShowHeightSheet] = useState(false);
 
@@ -137,11 +138,11 @@ export default function EditProfile() {
   // 사용자가 누른거
   const onHeightSelected = (selectedHeight: string) => {
     setUserHeight(selectedHeight);
-    setShowHeightSheet(false); // 선택 후 Sheet를 숨김
+    setShowHeightSheet(false);
   };
 
   // 몸무게(kg)
-  const [userWeight, setUserWeight] = useState("");
+  const [userWeight, setUserWeight] = useState(profile?.weight);
   const [weightError, setWeightError] = useState("");
   const [showWeightSheet, setShowWeightSheet] = useState(false);
 
@@ -184,13 +185,15 @@ export default function EditProfile() {
     if (Object.values(errors).some((error) => error !== "")) {
       setSubscription(false);
     } else {
-      // Fetch
+      const heightToSend = rangeToAlphabet(userHeight, "height");
+      const weightToSend = rangeToAlphabet(userWeight, "weight");
+
       fetchProfile(
         token,
         userNickName,
         userIntroduce,
-        userHeight,
-        userWeight,
+        heightToSend,
+        weightToSend,
         setSubscription,
         setEditError
       )
