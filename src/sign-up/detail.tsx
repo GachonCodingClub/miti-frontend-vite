@@ -40,6 +40,7 @@ import { fetchSignUp } from "./components/fetchSignUp";
 import { useNavigate } from "react-router-dom";
 import { MyHeightSheet } from "./components/HeightSheet";
 import { MyWeightSheet } from "./components/WeightSheet";
+import { rangeToAlphabet } from "../components/rangeToAlphabet";
 
 export default function SingUpDetail() {
   const navigate = useNavigate();
@@ -210,13 +211,15 @@ export default function SingUpDetail() {
     if (Object.values(errors).some((error) => error !== "")) {
       setSubscription(false);
     } else {
-      // Fetch
+      const heightToSend = rangeToAlphabet(userHeight, "height");
+      const weightToSend = rangeToAlphabet(userWeight, "weight");
+
       fetchSignUp(
         userNickName,
         userGender,
         userBirth,
-        userHeight,
-        userWeight,
+        heightToSend,
+        weightToSend,
         userEmail,
         userPassword,
         userIntroduce

@@ -28,20 +28,6 @@ export const MyHeightSheet = ({
   title,
   rangeStart,
 }: SheetProps) => {
-  const getOptionValue = (value: number): string => {
-    if (value >= 120 && value <= 129) return "A";
-    if (value >= 130 && value <= 139) return "B";
-    if (value >= 140 && value <= 149) return "C";
-    if (value >= 150 && value <= 159) return "D";
-    if (value >= 160 && value <= 169) return "E";
-    if (value >= 170 && value <= 179) return "F";
-    if (value >= 180 && value <= 189) return "G";
-    if (value >= 190 && value <= 199) return "H";
-    if (value >= 200 && value <= 209) return "I";
-    if (value >= 210 && value <= 219) return "J";
-    return "HIDDEN";
-  };
-
   return (
     <>
       {show && (
@@ -71,17 +57,17 @@ export const MyHeightSheet = ({
                         <SheetElement>
                           <SheetText
                             onClick={() =>
-                              onSelected(getOptionValue(leftValue))
+                              onSelected(`${leftValue}~${leftValue + 9}`)
                             }
                           >
-                            {`${leftValue} ~ ${leftValue + 9}`}
+                            {`${leftValue}~${leftValue + 9}`}
                           </SheetText>
                           <SheetText
                             onClick={() =>
-                              onSelected(getOptionValue(rightValue))
+                              onSelected(`${rightValue}~${rightValue + 9}`)
                             }
                           >
-                            {`${rightValue} ~ ${rightValue + 9}`}
+                            {`${rightValue}~${rightValue + 9}`}
                           </SheetText>
                         </SheetElement>
                       </SheetBodyRow>
