@@ -13,6 +13,7 @@ import {
   LocationIcon,
   OrangeCrownIcon,
   PersonIcon,
+  XIcon,
 } from "../../components/styles/Icons";
 import { TopBar } from "../../components/TopBar";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
@@ -32,7 +33,7 @@ import {
   AddMemberWrapper,
 } from "../components/meetingDetail.Components";
 import { useNavigate, useParams } from "react-router-dom";
-import { Overlay } from "../../sign-up/styles/detailComponents";
+import { Overlay, SheetXIcon } from "../../sign-up/styles/detailComponents";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { formatDate } from "../../utils";
 import { getHeaders } from "../../components/getHeaders";
@@ -308,12 +309,26 @@ export default function MeetingDetail() {
           </JoinButtonBox>
 
           {showAdd && (
-            <Overlay>
+            <Overlay
+              onClick={() => {
+                setShowAdd(false);
+              }}
+            >
               <DialogContainer>
                 <AddMemberWrapper>
-                  <AddMemberText>
-                    닉네임으로 본인 외의 참여자 추가(선택 입력)
-                  </AddMemberText>
+                  <div className="flex flex-row-reverse gap-2 items-center">
+                    <SheetXIcon
+                      onClick={() => {
+                        setShowAdd(false);
+                      }}
+                    >
+                      <XIcon />
+                    </SheetXIcon>
+
+                    <AddMemberText>
+                      닉네임으로 본인 외의 참여자 추가(선택 입력)
+                    </AddMemberText>
+                  </div>
                   <div className="flex items-center">
                     <MyInputBoxSVG
                       onClick={() => {}}
