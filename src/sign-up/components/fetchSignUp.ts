@@ -22,8 +22,6 @@ export const fetchSignUp = async (
   userIntroduce: string
 ) => {
   const SignUpUrl = `${import.meta.env.VITE_BASE_URL}/auth/sign-up`;
-  console.log(userHeight, userWeight);
-  console.log(formatBirthday(userBirth));
 
   const headers = {
     "Content-Type": "application/json",

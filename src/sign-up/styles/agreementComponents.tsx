@@ -79,7 +79,7 @@ export const ViewContentsButton = styled.button`
 // 팝업창 프레임
 export const ViewContentsPopUpFrame = styled.div`
   display: flex;
-  max-width: 36rem;
+  max-width: 32rem;
   padding: 24px 16px 24px 16px;
   flex-direction: column;
   align-items: center;
