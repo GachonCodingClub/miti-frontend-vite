@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
+
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { getApi } from "../api/getApi";
@@ -15,38 +16,66 @@ import {
   ChatAlertFrame,
   ChatText,
   IGroup,
+  AlertCircle,
+  AlertCount,
 } from "./components/chattingListComponents";
 import { PaddingScreen } from "../components/styles/Screen";
 import ChattingListLayout from "./components/ChattingListLayout";
+import { useNavigate } from "react-router-dom";
 
 export default function ChattingList() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const getMyGroups = () =>
     getApi({ link: `/groups/my?page=0&size=99` }).then((response) =>
       response.json()
     );
-  const { data, isLoading, error } = useQuery(["myGroups"], () =>
-    getMyGroups()
-  );
+  // useQuery를 통해 그룹 목록 가져오기 및 자동 새로고침 설정
+  const { data, isLoading, error } = useQuery(["myGroups"], getMyGroups, {
+    refetchInterval: 10000, // 10초마다 데이터를 새로 고침
+  });
+
+  const formatUnreadMessagesCount = (count: number) => {
+    return count >= 100 ? "99+" : count.toString();
+  };
+
+  useEffect(() => {
+    if (!isLoading && data?.content) {
+      const totalUnread = data.content.reduce(
+        (acc: number, curr: IGroup) => acc + (curr.unreadMessagesCount || 0),
+        0
+      );
+      localStorage.setItem("totalUnreadMessages", totalUnread.toString());
+    }
+  }, [data, isLoading]);
 
   const [lastMessages, setLastMessages] = useState<LastMessages>({});
 
   useEffect(() => {
     if (!isLoading && data?.content) {
-      data?.content.forEach((group: { id: string }) => {
-        const getChat = async (groupId: string) => {
+      const fetchLastMessages = async () => {
+        const promises = data.content.map(async (group: { id: string }) => {
           const chatData = await getApi({
-            link: `/message/${groupId}/page?page=0&size=1`,
+            link: `/message/${group.id}/page?page=0&size=1`,
           }).then((response) => response.json());
-          const lastMessage = chatData[chatData.length - 1];
-          setLastMessages((prevMessages) => ({
-            ...prevMessages,
-            [group.id]: lastMessage,
-          }));
-        };
-        getChat(group.id);
-      });
+          const lastMessage = chatData[chatData.length - 1] || null;
+          return { [group.id]: lastMessage };
+        });
+
+        const results = await Promise.all(promises);
+        const newLastMessages = results.reduce(
+          (acc, current) => ({
+            ...acc,
+            ...current,
+          }),
+          {}
+        );
+        setLastMessages(newLastMessages);
+      };
+
+      fetchLastMessages();
     }
-  }, [data, isLoading]);
+  }, [data, isLoading, queryClient]);
 
   const formatTime = (timeString: string) => {
     const date = new Date(timeString);
@@ -77,14 +106,40 @@ export default function ChattingList() {
     );
   }
 
-  const sortedData = data?.content?.sort((a: IGroup, b: IGroup) => a.id - b.id);
+  const getAlert = async (id: number) => {
+    try {
+      const res = await getApi({ link: `/message/${id}/refresh/last-read` });
+      const data = await res.json();
+      console.log("알림 호출:", data);
+      return data;
+    } catch (error) {
+      console.error("알림 호출 오류:", error);
+      throw error;
+    }
+  };
+
+  const sortedData = data?.content?.sort(
+    (a: { id: string | number }, b: { id: string | number }) => {
+      const lastMessageA = lastMessages[a.id]?.createdAt || "";
+      const lastMessageB = lastMessages[b.id]?.createdAt || "";
+      return (
+        new Date(lastMessageB).getTime() - new Date(lastMessageA).getTime()
+      );
+    }
+  );
   return (
     <>
       <TopBar title="채팅" />
       <PaddingScreen>
         <ChattingWrapper>
           {sortedData?.map((group: IGroup, index: number) => (
-            <ChattingFrame key={index} to={`/meeting-chat-room/${group?.id}`}>
+            <ChattingFrame
+              onClick={() => {
+                getAlert(group?.id);
+                navigate(`/meeting-chat-room/${group?.id}`);
+              }}
+              key={index}
+            >
               <TitleMemberTimeFrame>
                 <TitleMemberFrame>
                   <TitleText>{group?.title}</TitleText>
@@ -100,6 +155,15 @@ export default function ChattingList() {
                 <ChatText>
                   {lastMessages[group?.id]?.content.replace("[MITI]", "")}
                 </ChatText>
+                {(group?.unreadMessagesCount ?? 0) > 0 && (
+                  <AlertCircle>
+                    <AlertCount>
+                      {formatUnreadMessagesCount(
+                        group?.unreadMessagesCount ?? 0
+                      )}
+                    </AlertCount>
+                  </AlertCircle>
+                )}
               </ChatAlertFrame>
             </ChattingFrame>
           ))}
