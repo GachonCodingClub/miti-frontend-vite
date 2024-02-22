@@ -37,6 +37,7 @@ export interface IGroup {
   title: string;
   leaderUserId: string;
   groupStatus: string;
+  unreadMessagesCount: number | undefined;
   leaderUserSummaryDto: {
     userId: string;
   };
