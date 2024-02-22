@@ -12,16 +12,18 @@ import { Location1pxIcon, Person1pxIcon } from "./styles/Icons";
 interface IMeetingBoxComponent {
   meeting: IGroup;
   isPast?: boolean;
+  onClick?: () => void;
 }
 
 export default function MeetingBoxComponent({
   meeting,
   isPast,
+  onClick,
 }: IMeetingBoxComponent) {
   const formattedDate = formatDate(meeting?.meetDate);
 
   return (
-    <MeetingBox to={`/meeting-list/${meeting.id}`}>
+    <MeetingBox onClick={onClick}>
       <div className="flex flex-col gap-2">
         <MeetingTitle>
           <span className="text-base font-medium text-gray-800">
