@@ -1,15 +1,17 @@
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../routes";
 
 export function TabBar() {
-  const toggleChat = () => setChatEmpty((prev) => !prev);
   const location = useLocation();
-  const [chatEmpty, setChatEmpty] = useState(true);
 
+  const totalUnreadMessages = parseInt(
+    localStorage.getItem("totalUnreadMessages") || "0",
+    10
+  );
+  const formattedTotalUnreadMessages =
+    totalUnreadMessages >= 100 ? "99+" : totalUnreadMessages.toString();
   return (
     <div className="w-full max-w-xl h-16 flex justify-around items-center fixed bottom-0 bg-white">
-      <button className="absolute top-1/2" onClick={toggleChat}></button>
       <Link to={ROUTES.MEETING_LIST}>
         <svg
           width="24"
@@ -29,42 +31,37 @@ export function TabBar() {
         </svg>
       </Link>
       <Link to={ROUTES.CHAT_LIST}>
-        {chatEmpty ? (
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20H4.61539C4.27552 20 4 19.7245 4 19.3846V12Z"
-              fill={
-                location.pathname === `${ROUTES.CHAT_LIST}`
-                  ? "#2F2A28"
-                  : "#C9C5C5"
-              }
-            />
-          </svg>
-        ) : (
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20H4.61539C4.27552 20 4 19.7245 4 19.3846V12Z"
-              fill={
-                location.pathname === `${ROUTES.CHAT_LIST}`
-                  ? "#2F2A28"
-                  : "#C9C5C5"
-              }
-            />
-            <circle cx="18" cy="6" r="4" fill="#FF7152" stroke="white" />
-          </svg>
-        )}
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20H4.61539C4.27552 20 4 19.7245 4 19.3846V12Z"
+            fill={
+              location.pathname === `${ROUTES.CHAT_LIST}`
+                ? "#2F2A28"
+                : "#C9C5C5"
+            }
+          />
+          {totalUnreadMessages > 0 && (
+            <>
+              <circle cx="18" cy="6" r="6" fill="#FF7152" />
+              <text
+                x="18"
+                y="7"
+                textAnchor="middle"
+                fill="white"
+                fontSize="8"
+                dy=".3em"
+              >
+                {formattedTotalUnreadMessages}
+              </text>
+            </>
+          )}
+        </svg>
       </Link>
       <Link to={ROUTES.PROFILE}>
         <svg

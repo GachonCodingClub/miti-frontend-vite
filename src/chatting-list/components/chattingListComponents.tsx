@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 export interface LastMessages {
   [groupId: string]: {
@@ -12,6 +11,7 @@ export interface IGroup {
   title: string;
   nowUsers: string;
   id: number;
+  unreadMessagesCount?: number;
 }
 
 export const ChattingWrapper = styled.div`
@@ -21,7 +21,7 @@ export const ChattingWrapper = styled.div`
   padding: 0px;
 `;
 
-export const ChattingFrame = styled(Link)`
+export const ChattingFrame = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

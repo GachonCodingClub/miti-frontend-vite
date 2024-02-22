@@ -69,6 +69,22 @@ export default function MeetingChatRoom() {
   const [chatList, setChatList] = useState<IChat[]>([]); // 채팅 메시지 리스트
   const [message, setMessage] = useState(""); // 사용자가 보낼 메시지
 
+  // 채팅방 들어왔을때 API호출
+  const getAlert = async () => {
+    try {
+      const res = await getApi({ link: `/message/${id}/refresh/last-read` });
+      const data = await res.json();
+      console.log("알림 호출:", data);
+      return data;
+    } catch (error) {
+      console.error("알림 오류", error);
+      throw error;
+    }
+  };
+  useEffect(() => {
+    getAlert();
+  }, [chatList]);
+
   // 미티 웹소켓 주소
   const brokerUrl = "wss://dev-miti-server.dockerfile.site/ws/chat/websocket";
   // client 객체가 StompJs.Client 타입을 따르도록
