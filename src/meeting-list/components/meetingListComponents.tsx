@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { PaddingScreen } from "../../components/styles/Screen";
 
@@ -6,7 +5,7 @@ export const MeetingListScreen = styled(PaddingScreen)`
   padding-bottom: 92px;
 `;
 
-export const MeetingBox = styled(Link)`
+export const MeetingBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;

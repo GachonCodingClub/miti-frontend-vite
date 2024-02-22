@@ -89,7 +89,13 @@ export default function MeetingList() {
         </CreateMeetingButton>
         <div className="divide-y-[1px]">
           {meetings?.map((meeting, index) => (
-            <MeetingBoxComponent meeting={meeting} key={index} />
+            <MeetingBoxComponent
+              onClick={() => {
+                navigate(`/meeting-list/${meeting?.id}`);
+              }}
+              meeting={meeting}
+              key={index}
+            />
           ))}
         </div>
         {loading && <div>로딩중...</div>}
