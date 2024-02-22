@@ -1,4 +1,5 @@
 import {
+  DialogContainer,
   DialogOneBtn,
   LongOrangeBtn,
   LongWhiteBtn,
@@ -50,7 +51,6 @@ export default function MeetingDetail() {
   const [token, setToken] = useState(""); // 토큰 상태 추가
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 localStorage에서 토큰을 가져와 상태에 설정
     const storedToken = localStorage.getItem("token");
     setDecodedToken(jwtDecode(storedToken + ""));
     if (storedToken) {
@@ -97,13 +97,13 @@ export default function MeetingDetail() {
   const [additionalParticipants, setAdditionalParticipants] = useState<
     string[]
   >([]);
-  const [inputAdditionalNickname, setInputAdditionalNickname] = useState("");
+  const [inputAddNickname, setInputAddNickname] = useState("");
   const [nonExistentDialog, setNonExistentDialog] = useState(false);
   const [addMyNicknameDialog, setAddMyNicknameDialog] = useState(false);
   const [duplicateOrBlankErrorDialog, setDuplicateOrBlankErrorDialog] =
     useState(false);
   const [showAdd, setShowAdd] = useState(false);
-  const [cannotAddDialog, setCannotAddDialog] = useState(false);
+  const [cantAddDialog, setCantAddDialog] = useState(false);
 
   const nowMember = (parties?.acceptedParties[0]?.users.length ?? 0) + 1;
   const AddMember = additionalParticipants.length + 1;
@@ -122,11 +122,11 @@ export default function MeetingDetail() {
   const onAddNicknameClick = async () => {
     try {
       const response = await getApi({
-        link: `/auth/check/nickname?nickname=${inputAdditionalNickname}`,
+        link: `/auth/check/nickname?nickname=${inputAddNickname}`,
       }); // 존재하는 닉네임인지 체크, 결과를 response에 저장
 
       // trim()으로 문자열 뒤 공백 제거
-      const trimmedNickname = inputAdditionalNickname.trim();
+      const trimmedNickname = inputAddNickname.trim();
 
       // 추가된 닉네임 배열에 빈 문자열이 있는지 확인
       if (trimmedNickname === "") {
@@ -144,7 +144,7 @@ export default function MeetingDetail() {
         }
 
         if (finalMember >= (group?.maxUsers ?? 0)) {
-          setCannotAddDialog(true);
+          setCantAddDialog(true);
           return;
         }
 
@@ -154,9 +154,9 @@ export default function MeetingDetail() {
           return;
         }
 
-        // 그렇지 않다면 추가된 닉네임 배열 끝에 inputAdditionalNickname 추가
+        // 그렇지 않다면 추가된 닉네임 배열 끝에 inputAddNickname 추가
         setAdditionalParticipants([...additionalParticipants, trimmedNickname]);
-        setInputAdditionalNickname(""); // 추가 후 입력 필드를 지움
+        setInputAddNickname(""); // 추가 후 입력 필드를 지움
       }
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
@@ -306,39 +306,39 @@ export default function MeetingDetail() {
               />
             )}
           </JoinButtonBox>
-          {showAdd && (
-            <>
-              <AddMemberWrapper>
-                <AddMemberText>
-                  닉네임으로 본인 외의 참여자 추가(선택 입력)
-                </AddMemberText>
-                <div className="flex items-center">
-                  <MyInputBoxSVG
-                    onClick={() => {}}
-                    label=""
-                    value={inputAdditionalNickname}
-                    onChange={(e) => setInputAdditionalNickname(e.target.value)}
-                    placeholder="추가 참여자 닉네임(선택 입력)"
-                    type="text"
-                  />
-                  <AddMemberButton onClick={onAddNicknameClick}>
-                    +
-                  </AddMemberButton>
-                </div>
-              </AddMemberWrapper>
-              <JoinButtonBox>
-                <LongOrangeBtn text="신청하기" onClick={onSubmitClick} />
-              </JoinButtonBox>
-            </>
-          )}
-          {/* 추가된 닉네임들을 표시 */}
 
-          {showAdd && additionalParticipants.length > 0 ? (
-            <AdditionalParticipantsList
-              participants={additionalParticipants}
-              onRemoveNicknameClick={onRemoveNicknameClick}
-            />
-          ) : null}
+          {showAdd && (
+            <Overlay>
+              <DialogContainer>
+                <AddMemberWrapper>
+                  <AddMemberText>
+                    닉네임으로 본인 외의 참여자 추가(선택 입력)
+                  </AddMemberText>
+                  <div className="flex items-center">
+                    <MyInputBoxSVG
+                      onClick={() => {}}
+                      label=""
+                      value={inputAddNickname}
+                      onChange={(e) => setInputAddNickname(e.target.value)}
+                      placeholder="추가 참여자 닉네임(선택 입력)"
+                      type="text"
+                    />
+                    <AddMemberButton onClick={onAddNicknameClick}>
+                      +
+                    </AddMemberButton>
+                  </div>
+                  {showAdd && additionalParticipants.length > 0 ? (
+                    <AdditionalParticipantsList
+                      participants={additionalParticipants}
+                      onRemoveNicknameClick={onRemoveNicknameClick}
+                    />
+                  ) : null}
+                </AddMemberWrapper>
+
+                <LongOrangeBtn text="신청하기" onClick={onSubmitClick} />
+              </DialogContainer>
+            </Overlay>
+          )}
         </DetailBox>
 
         {showDialog && (
@@ -367,13 +367,13 @@ export default function MeetingDetail() {
           </Overlay>
         )}
 
-        {cannotAddDialog && (
+        {cantAddDialog && (
           <Overlay>
             <DialogOneBtn
               title="미팅 정원보다 많이 추가할 수 없어요."
               contents=""
               onRightClick={() => {
-                setCannotAddDialog(false);
+                setCantAddDialog(false);
               }}
               right="닫기"
             />
