@@ -30,7 +30,6 @@ import { getHeaders } from "../components/getHeaders";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 
 export default function CreateMeetingDetail() {
-  // 리코일에서 가져온 정보
   const { meetingTitle, meetingDesc } = useRecoilStates();
   const token = useLocalStorageToken();
   const { id } = useParams();
@@ -66,7 +65,7 @@ export default function CreateMeetingDetail() {
       }
     },
     {
-      enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+      enabled: !!id,
     }
   );
 
@@ -81,11 +80,11 @@ export default function CreateMeetingDetail() {
     if (selectedDate < currentDate) {
       setDateError("날짜는 오늘 이후여야 합니다.");
     } else {
-      setDateError(""); // 오류가 없을 경우 메시지를 초기화
+      setDateError("");
     }
     setSelecteDate(selectedDate);
   };
-  const [dateError, setDateError] = useState(""); // 날짜 오류 메시지
+  const [dateError, setDateError] = useState("");
 
   // 장소
   const [inputPlace, setInputPlace] = useState(""); // 사용자가 입력하는 장소
@@ -93,14 +92,26 @@ export default function CreateMeetingDetail() {
     const newPlace = event.target.value;
     setInputPlace(newPlace);
   };
-  const [placeError, setPlaceError] = useState(""); // 장소 오류 메시지
+  const [placeError, setPlaceError] = useState("");
 
   // isUpdate가 존재할 경우 기본 value를 설정
   useEffect(() => {
-    if (isUpdate) {
+    if (isUpdate && group?.meetDate) {
       setInputPlace(group?.meetPlace);
+      const meetDate = new Date(group.meetDate);
+      meetDate.setTime(meetDate.getTime() + 9 * 60 * 60 * 1000);
+
+      const year = meetDate.getFullYear();
+      const month = (meetDate.getMonth() + 1).toString().padStart(2, "0"); // 월은 0부터 시작하므로 1을 더해줍니다.
+      const day = meetDate.getDate().toString().padStart(2, "0");
+      const hours = meetDate.getHours().toString().padStart(2, "0");
+      const minutes = meetDate.getMinutes().toString().padStart(2, "0");
+
+      const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+      setSelecteDate(formattedDateTime);
     }
-  }, [group?.meetPlace, isUpdate]);
+  }, [group?.meetDate, group?.meetPlace, isUpdate]);
 
   // 인원
   const [inputMember, setInputMember] = useState("2"); // 사용자 입력 input 기본은 2
@@ -110,17 +121,15 @@ export default function CreateMeetingDetail() {
     if (parseInt(newMember, 10) < 2) {
       setMemberError("인원은 2 이상이어야 합니다.");
     } else {
-      setMemberError(""); // 그렇지 않으면 에러 해제
+      setMemberError("");
     }
     setInputMember(newMember);
   };
-  const [memberError, setMemberError] = useState(""); // 인원 오류 메시지
+  const [memberError, setMemberError] = useState("");
   // 인원 텍스트를 숫자로 변환
   const numericInputMember = parseInt(inputMember, 10); // 문자열을 10진수 숫자로
-  // 인원 확정되면 Input비활성화 시키기
-  const [inputMemberDisabled, setInputMemberDisabled] = useState(false);
-  // 인원 수정 버튼(SVG)
-  const [memberCountModi, setMemberCountModi] = useState(false);
+  const [inputMemberDisabled, setInputDisabled] = useState(false);
+  const [modiSVG, setModiSVG] = useState(false);
 
   // =============================================== GrayLine
 
@@ -129,9 +138,8 @@ export default function CreateMeetingDetail() {
     string[]
   >([]);
 
-  // Dialog 띄우는 부분
   // 존재하지 않는 닉네임일때 Dialog
-  const [nonExistentDialog, setNonExistentDialog] = useState(false);
+  const [nonExistDialog, setNonExistDialog] = useState(false);
   // 본인을 추가했을때 Dialog
   const [addMyNicknameDialog, setAddMyNicknameDialog] = useState(false);
   // 최대 인원보다 더 추가하려 할 때 뜨는 오류 Dialog
@@ -139,22 +147,21 @@ export default function CreateMeetingDetail() {
   // 사용자가 인원 먼저 확정 안지었을때 뜨는 Dialog
   const [confirmErrorDialog, setConfirmErrorDialog] = useState(false);
   // 닉네임 중복, 혹은 빈칸일 때 뜨는 Dialog
-  const [duplicateOrBlankErrorDialog, setDuplicateOrBlankErrorDialog] =
+  const [duplicateBlankErrorDialog, setDuplicateBlankErrorDialog] =
     useState(false);
   // 미팅 정원이랑 추가한 유저수가 같으면 뜨는 Dialog
-  const [sameNumberUsersErrorDialog, setSameNumberUsersErrorDialog] =
-    useState(false);
+  const [overlapDialog, setOverlapDialog] = useState(false);
 
   // 현재 추가한 유저 수 몇명인지
-  const currentParticipantsCount = additionalParticipants.length; // 배열 길이 이용
+  const currentParticipantsCount = additionalParticipants.length;
   // 사용자에게 입력 받은 추가 참여자 닉네임
-  const [inputAdditionalNickname, setInputAdditionalNickname] = useState("");
+  const [inputAddNickname, setInputAddNickname] = useState("");
 
   // 닉네임 추가+ 버튼 클릭 이벤트
   const onAddNicknameClick = async () => {
     try {
       const response = await getApi({
-        link: `/auth/check/nickname?nickname=${inputAdditionalNickname}`,
+        link: `/auth/check/nickname?nickname=${inputAddNickname}`,
       }); // 존재하는 닉네임인지 체크, 결과를 response에 저장
 
       if (!inputMemberDisabled) {
@@ -164,7 +171,7 @@ export default function CreateMeetingDetail() {
       }
 
       // trim()으로 문자열 뒤 공백 제거
-      const trimmedNickname = inputAdditionalNickname.trim();
+      const trimmedNickname = inputAddNickname.trim();
 
       // 추가된 닉네임 배열에 빈 문자열이 있는지 확인
       if (trimmedNickname === "") {
@@ -173,11 +180,11 @@ export default function CreateMeetingDetail() {
 
       // response의 상태 코드가 409(중복)라면
       if (response.status !== 409) {
-        setNonExistentDialog(true); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
+        setNonExistDialog(true); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
       } else {
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
         if (additionalParticipants.includes(trimmedNickname)) {
-          setDuplicateOrBlankErrorDialog(true); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
+          setDuplicateBlankErrorDialog(true); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
           return;
         }
 
@@ -193,9 +200,9 @@ export default function CreateMeetingDetail() {
           return;
         }
 
-        // 그렇지 않다면 추가된 닉네임 배열 끝에 inputAdditionalNickname 추가
+        // 그렇지 않다면 추가된 닉네임 배열 끝에 inputAddNickname 추가
         setAdditionalParticipants([...additionalParticipants, trimmedNickname]);
-        setInputAdditionalNickname(""); // 추가 후 입력 필드를 지움
+        setInputAddNickname(""); // 추가 후 입력 필드를 지움
       }
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
@@ -229,7 +236,7 @@ export default function CreateMeetingDetail() {
 
   // 등록 완료 스낵바 표시
   const displayEnrollBar = () => {
-    setSameNumberUsersErrorDialog(false);
+    setOverlapDialog(false);
     setShowEnrollBar(true);
   };
 
@@ -238,9 +245,7 @@ export default function CreateMeetingDetail() {
     setShowEnrollBar(false);
   };
 
-  // 헤더에 Authorization을 추가하여 토큰을 전송
   const headers = getHeaders(token);
-
   // 미팅 등록 또는 수정
   const submitMeeting = async () => {
     try {
@@ -256,7 +261,6 @@ export default function CreateMeetingDetail() {
               nicknames: additionalParticipants,
             }),
       };
-      // post/patch 함수
       await fetchMeeting({
         isUpdate,
         id,
@@ -279,7 +283,7 @@ export default function CreateMeetingDetail() {
     setDateError,
     setPlaceError,
     setMemberError,
-    setDuplicateOrBlankErrorDialog,
+    setDuplicateBlankErrorDialog,
   };
 
   // 조건을 검사하고 미팅 등록 또는 수정 실행
@@ -290,7 +294,7 @@ export default function CreateMeetingDetail() {
         submitMeeting();
       } else {
         // currentParticipantsCount가 additionalParticipants의 길이와 같은 경우
-        setSameNumberUsersErrorDialog(true);
+        setOverlapDialog(true);
       }
     }
   };
@@ -314,8 +318,8 @@ export default function CreateMeetingDetail() {
               onMemberChange={onMemberChange}
               memberError={memberError}
               inputMemberDisabled={inputMemberDisabled}
-              setInputMemberDisabled={setInputMemberDisabled}
-              setMemberCountModi={setMemberCountModi}
+              setInputDisabled={setInputDisabled}
+              setModiSVG={setModiSVG}
             />
           ) : (
             <MeetingDetailsInputs
@@ -329,26 +333,26 @@ export default function CreateMeetingDetail() {
               onMemberChange={() => {}}
               memberError={"미팅 인원은 수정할 수 없어요"}
               inputMemberDisabled={true}
-              setInputMemberDisabled={setInputMemberDisabled}
-              setMemberCountModi={() => {
-                setMemberCountModi(false);
+              setInputDisabled={setInputDisabled}
+              setModiSVG={() => {
+                setModiSVG(false);
               }}
             />
           )}
 
-          {memberCountModi && (
+          {modiSVG && (
             <Overlay>
               <Dialog
                 title="미팅 인원을 수정하시겠습니까?"
                 contents="추가 인원 목록이 삭제됩니다."
                 left="아니요"
                 onLeftClick={() => {
-                  setInputMemberDisabled(true);
-                  setMemberCountModi(false);
+                  setInputDisabled(true);
+                  setModiSVG(false);
                 }}
                 right="예"
                 onRightClick={() => {
-                  setMemberCountModi(false);
+                  setModiSVG(false);
                   onDeleteAllMembersClick();
                 }}
               />
@@ -377,8 +381,8 @@ export default function CreateMeetingDetail() {
               <MyInputBoxSVG
                 onClick={() => {}}
                 label=""
-                value={inputAdditionalNickname}
-                onChange={(e) => setInputAdditionalNickname(e.target.value)}
+                value={inputAddNickname}
+                onChange={(e) => setInputAddNickname(e.target.value)}
                 placeholder="추가 참여자 닉네임(선택 입력)"
                 type="text"
               />
@@ -408,13 +412,13 @@ export default function CreateMeetingDetail() {
           </Overlay>
         )}
 
-        {nonExistentDialog && (
+        {nonExistDialog && (
           <Overlay>
             <DialogOneBtn
               title="존재하지 않는 닉네임이에요."
               contents=""
               onRightClick={() => {
-                setNonExistentDialog(false);
+                setNonExistDialog(false);
               }}
               right="닫기"
             />
@@ -434,26 +438,26 @@ export default function CreateMeetingDetail() {
           </Overlay>
         )}
 
-        {duplicateOrBlankErrorDialog && (
+        {duplicateBlankErrorDialog && (
           <Overlay>
             <DialogOneBtn
               title="닉네임을 확인해 주세요."
               contents="중복된 닉네임이나 빈칸이 있어요."
               onRightClick={() => {
-                setDuplicateOrBlankErrorDialog(false);
+                setDuplicateBlankErrorDialog(false);
               }}
               right="닫기"
             />
           </Overlay>
         )}
 
-        {sameNumberUsersErrorDialog && (
+        {overlapDialog && (
           <Overlay>
             <DialogOneBtn
               title="미팅 정원과 참여자의 수가 같아요."
               contents=""
               onRightClick={() => {
-                setSameNumberUsersErrorDialog(false);
+                setOverlapDialog(false);
               }}
               right="닫기"
             />

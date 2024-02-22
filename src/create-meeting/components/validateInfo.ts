@@ -6,7 +6,7 @@ export interface IValidationProps {
   setDateError: React.Dispatch<string>;
   setPlaceError: React.Dispatch<string>;
   setMemberError: React.Dispatch<string>;
-  setDuplicateOrBlankErrorDialog: React.Dispatch<boolean>;
+  setDuplicateBlankErrorDialog: React.Dispatch<boolean>;
 }
 
 export const validateForm = ({
@@ -17,7 +17,7 @@ export const validateForm = ({
   setDateError,
   setPlaceError,
   setMemberError,
-  setDuplicateOrBlankErrorDialog,
+  setDuplicateBlankErrorDialog,
 }: IValidationProps): boolean => {
   setDateError(selecteDate === "" ? "날짜를 선택해 주세요." : "");
   setPlaceError(inputPlace === "" ? "장소를 입력해 주세요." : "");
@@ -25,7 +25,7 @@ export const validateForm = ({
 
   // 배열에 빈 문자열이 있는지 검사.
   if (additionalParticipants.includes("")) {
-    setDuplicateOrBlankErrorDialog(true);
+    setDuplicateBlankErrorDialog(true);
   }
 
   return (
