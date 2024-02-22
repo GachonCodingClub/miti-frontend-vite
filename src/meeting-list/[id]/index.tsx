@@ -309,11 +309,7 @@ export default function MeetingDetail() {
           </JoinButtonBox>
 
           {showAdd && (
-            <Overlay
-              onClick={() => {
-                setShowAdd(false);
-              }}
-            >
+            <Overlay>
               <DialogContainer>
                 <AddMemberWrapper>
                   <div className="flex flex-row-reverse gap-2 items-center">
