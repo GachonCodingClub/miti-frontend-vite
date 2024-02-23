@@ -22,7 +22,7 @@ import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
 import React from "react";
 import { getHeaders } from "../../components/getHeaders";
-import { Overlay } from "../../sign-up/styles/detailComponents";
+import { CharCount, Overlay } from "../../sign-up/styles/detailComponents";
 import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
@@ -35,6 +35,9 @@ export default function MeetingChatRoom() {
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token + "");
   const headers = getHeaders(token);
+
+  const [charCount, setCharCount] = useState(0);
+  const MAX_INTRODUCE_LENGTH = 255;
 
   // 유저 프로필 가져오기
   const { data: profile, isLoading: profileLoading } = useGetMyProfile();
@@ -130,8 +133,9 @@ export default function MeetingChatRoom() {
   };
 
   // 채팅 메시지
-  const handleChangeMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
+    setCharCount(e.target.value.length);
   };
 
   // 폼 제출 이벤트 핸들러 함수
@@ -155,7 +159,26 @@ export default function MeetingChatRoom() {
       })
     );
     setMessage("");
+    setCharCount(0);
   }; // 제출된 JSON문자열은 서버로 전송됨
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // 엔터키가 입력되었으나 Shift키가 동시에 눌리지 않았을 경우 메시지 전송
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // 기본 동작(줄바꿈) 방지
+      if (message.trim() !== "") {
+        publish(
+          JSON.stringify({
+            message: message.trim(),
+            sender: decoded.sub,
+            groupId: id,
+          })
+        );
+        setMessage(""); // 메시지 초기화
+        setCharCount(0); // 글자 수 초기화
+      }
+    }
+  };
 
   useEffect(() => {
     connect(); // // 컴포넌트가 마운트될 때 WebSocket 연결
@@ -241,9 +264,9 @@ export default function MeetingChatRoom() {
             <ChattingInputDiv>
               <ChattingInput
                 placeholder="메시지 입력"
-                type="text"
                 value={message}
                 onChange={handleChangeMessage}
+                onKeyDown={handleKeyDown}
               />
               <button type="submit">
                 {message.trim() === "" ? (
@@ -252,6 +275,13 @@ export default function MeetingChatRoom() {
                   <SendIcon active={true} />
                 )}
               </button>
+              {charCount >= 0 && (
+                <div className="absolute bottom-1 right-2">
+                  <CharCount>
+                    {charCount} / {MAX_INTRODUCE_LENGTH}
+                  </CharCount>
+                </div>
+              )}
             </ChattingInputDiv>
           </form>
           {/* 사이드 메뉴 */}
