@@ -34,3 +34,9 @@ export const HideFrame = styled.div`
   display: flex;
   justify-content: end;
 `;
+
+export const ReqAlertDiv = styled.div`
+  position: absolute;
+  left: 0px;
+  top: 5px;
+`;

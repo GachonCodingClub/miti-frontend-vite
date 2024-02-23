@@ -38,6 +38,7 @@ export interface IGroup {
   leaderUserId: string;
   groupStatus: string;
   unreadMessagesCount: number | undefined;
+  isWaitingParty?: boolean;
   leaderUserSummaryDto: {
     userId: string;
   };
