@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
-
 import { TopBar } from "../components/TopBar";
-import { TabBar } from "../components/TabBar";
 import { getApi } from "../api/getApi";
 import {
   TitleMemberTimeFrame,
@@ -31,9 +29,7 @@ export default function ChattingList() {
       response.json()
     );
   // useQuery를 통해 그룹 목록 가져오기 및 자동 새로고침 설정
-  const { data, isLoading, error } = useQuery(["myGroups"], getMyGroups, {
-    refetchInterval: 10000, // 10초마다 데이터를 새로 고침
-  });
+  const { data, isLoading, error } = useQuery(["myGroups"], getMyGroups, {});
 
   const formatUnreadMessagesCount = (count: number) => {
     return count >= 100 ? "99+" : count.toString();
@@ -169,7 +165,6 @@ export default function ChattingList() {
           ))}
         </ChattingWrapper>
       </PaddingScreen>
-      <TabBar />
     </>
   );
 }

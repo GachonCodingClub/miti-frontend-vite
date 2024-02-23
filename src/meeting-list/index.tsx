@@ -12,7 +12,6 @@ import {
   PageNum,
   PrevNextButton,
 } from "./components/meetingListComponents";
-import { TabBar } from "../components/TabBar";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
@@ -119,7 +118,6 @@ export default function MeetingList() {
             다음
           </PrevNextButton>
         </PageFrame>
-        <TabBar />
       </MeetingListScreen>
     </>
   );

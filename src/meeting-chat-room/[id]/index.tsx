@@ -2,6 +2,7 @@ import {
   ChattingInputDiv,
   ChattingInput,
   IChat,
+  MeetingChatRoomScreen,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
@@ -22,7 +23,6 @@ import { SnackBarAtom } from "../../atoms";
 import React from "react";
 import { getHeaders } from "../../components/getHeaders";
 import { Overlay } from "../../sign-up/styles/detailComponents";
-import { PaddingScreen } from "../../components/styles/Screen";
 import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
@@ -218,11 +218,11 @@ export default function MeetingChatRoom() {
         }
       />
       {loading ? (
-        <PaddingScreen>
+        <MeetingChatRoomScreen>
           <div>로딩중이에요</div>
-        </PaddingScreen>
+        </MeetingChatRoomScreen>
       ) : (
-        <PaddingScreen>
+        <MeetingChatRoomScreen>
           <>
             <ChatWindow
               chatList={chatList}
@@ -303,7 +303,7 @@ export default function MeetingChatRoom() {
               />
             </Overlay>
           )}
-        </PaddingScreen>
+        </MeetingChatRoomScreen>
       )}
     </>
   );
