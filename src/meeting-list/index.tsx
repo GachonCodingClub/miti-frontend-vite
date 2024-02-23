@@ -12,7 +12,6 @@ import {
   PageNum,
   PrevNextButton,
 } from "./components/meetingListComponents";
-import { TabBar } from "../components/TabBar";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
