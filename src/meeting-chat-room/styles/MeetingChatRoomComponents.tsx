@@ -8,8 +8,10 @@ export interface IChat {
 }
 
 export const MeetingChatRoomScreen = styled(Screen)`
+  padding: 0;
   padding-top: 56px;
   padding-bottom: 24px;
+  overflow: hidden;
 `;
 
 // 채팅창 전체(채팅내용, 날짜, 입장/퇴장 다 담음)
@@ -21,7 +23,7 @@ export const ChatWindowContainer = styled.div`
   margin: auto;
   width: 100%;
   overflow-y: auto;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 10px 20px 10px;
   max-height: 90vh;
   position: relative;
 `;
@@ -127,7 +129,7 @@ export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
   max-width: 36rem;
-  padding: 16px 24px;
+  padding: 32px 24px;
   align-items: center;
   position: fixed;
   bottom: 0;
@@ -139,6 +141,10 @@ export const ChattingInputDiv = styled.div`
 export const ChattingInput = styled.input`
   color: #414141;
   line-height: 20px;
+
+  height: auto;
+  white-space: break-spaces;
+
   width: 100%;
   ::placeholder {
     color: #c0c0c0;

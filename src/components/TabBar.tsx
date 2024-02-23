@@ -1,15 +1,35 @@
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../routes";
+import { useEffect, useState } from "react";
+import { getApi } from "../api/getApi";
+import { IGroup } from "../model/group";
 
 export function TabBar() {
   const location = useLocation();
+  const [unread, setUnread] = useState(0);
 
-  const totalUnreadMessages = parseInt(
-    localStorage.getItem("totalUnreadMessages") || "0",
-    10
-  );
+  useEffect(() => {
+    const getMyGroups = async () => {
+      const res = await getApi({ link: `/groups/my?page=0&size=99` }).then(
+        (response) => response.json()
+      );
+
+      const totalUnread = res.content.reduce(
+        (acc: number, curr: IGroup) => acc + (curr.unreadMessagesCount || 0),
+        0
+      );
+      setUnread(totalUnread);
+
+      return res;
+    };
+
+    getMyGroups();
+  }, []);
+
+  console.log(unread);
+
   const formattedTotalUnreadMessages =
-    totalUnreadMessages >= 100 ? "99+" : totalUnreadMessages.toString();
+    unread >= 100 ? "99+" : unread.toString();
   return (
     <div className="w-full max-w-xl h-16 flex justify-around items-center fixed bottom-0 bg-white">
       <Link to={ROUTES.MEETING_LIST}>
@@ -46,7 +66,7 @@ export function TabBar() {
                 : "#C9C5C5"
             }
           />
-          {totalUnreadMessages > 0 && (
+          {unread > 0 && (
             <>
               <circle cx="18" cy="6" r="6" fill="#FF7152" />
               <text

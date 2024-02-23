@@ -23,6 +23,7 @@ import Withdrawal from "./profile/setting/withdrawal";
 import ChangePassword from "./sign-in/change-password";
 import MITI from ".";
 import SearchPage from "./search";
+import { CustomTabBar } from "./components/CustomTabBar";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => {
               {/* 참여 요청 목록 */}
               <Route path="/request-list/:id" element={<RequestProfile />} />
             </Routes>
+            <CustomTabBar />
           </BrowserRouter>
         </div>
       </QueryClientProvider>
