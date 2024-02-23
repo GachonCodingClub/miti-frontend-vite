@@ -143,89 +143,101 @@ export default function Profile() {
 
             <div className="divide-x-[1px]">
               {isMine
-                ? sortedCurrentGroups?.map((group) => (
-                    <div key={group?.id}>
-                      <MeetingBoxComponent
-                        onClick={() => handleMeetingBoxClick(group.id)}
-                        meeting={group}
-                      />
-                      {showButton && selectedId === group?.id && (
-                        <HideFrame>
-                          {isLeader && (
-                            <>
-                              <SmallWhiteBtn
-                                text="미팅 수정"
-                                onClick={() => {
-                                  navigate(`/edit-meeting/${selectedId}`);
-                                }}
-                              />
+                ? sortedCurrentGroups?.map((group) => {
+                    const isLeaderForGroup =
+                      decodedToken?.sub === group?.leaderUserSummaryDto.userId;
+                    return (
+                      <div key={group?.id}>
+                        <MeetingBoxComponent
+                          onClick={() => handleMeetingBoxClick(group.id)}
+                          meeting={group}
+                          isWaitingParty={group?.isWaitingParty}
+                          isLeader={isLeaderForGroup}
+                        />
+                        {showButton && selectedId === group?.id && (
+                          <HideFrame>
+                            {isLeader && (
+                              <>
+                                <SmallWhiteBtn
+                                  text="미팅 수정"
+                                  onClick={() => {
+                                    navigate(`/edit-meeting/${selectedId}`);
+                                  }}
+                                />
 
-                              <div style={{ position: "relative" }}>
+                                <div style={{ position: "relative" }}>
+                                  <SmallWhiteBtn
+                                    text="참여 요청 목록"
+                                    onClick={() => {
+                                      navigate(`/request-list/${selectedId}`);
+                                    }}
+                                  />
+                                  {isLoadingParties ? (
+                                    <div>로딩중이에요...</div>
+                                  ) : (
+                                    parties &&
+                                    parties.waitingParties &&
+                                    parties.waitingParties.length > 0 && (
+                                      <div className="absolute w-3 h-3 rounded-full -top-0.5 -right-0.5 bg-[#FF7152]" />
+                                    )
+                                  )}
+                                </div>
+                              </>
+                            )}
+
+                            <SmallWhiteBtn
+                              text="채팅방 이동"
+                              onClick={() => {
+                                navigate(`/meeting-chat-room/${selectedId}`);
+                              }}
+                            />
+                          </HideFrame>
+                        )}
+                      </div>
+                    );
+                  })
+                : sortedPastGroups?.map((group) => {
+                    const isLeaderForGroup =
+                      decodedToken?.sub === group?.leaderUserSummaryDto.userId;
+                    return (
+                      <div key={group?.id}>
+                        <MeetingBoxComponent
+                          onClick={() => handleMeetingBoxClick(group.id)}
+                          isPast={true}
+                          meeting={group}
+                          isWaitingParty={group?.isWaitingParty}
+                          isLeader={isLeaderForGroup}
+                        />
+                        {showButton && selectedId === group?.id && (
+                          <HideFrame>
+                            {isLeader && (
+                              <>
+                                <SmallWhiteBtn
+                                  text="미팅 수정"
+                                  onClick={() => {
+                                    navigate(`/edit-meeting/${selectedId}`);
+                                  }}
+                                />
                                 <SmallWhiteBtn
                                   text="참여 요청 목록"
                                   onClick={() => {
                                     navigate(`/request-list/${selectedId}`);
                                   }}
                                 />
-                                {isLoadingParties ? (
-                                  <div>로딩중이에요...</div>
-                                ) : (
-                                  parties &&
-                                  parties.waitingParties &&
-                                  parties.waitingParties.length > 0 && (
-                                    <div className="absolute w-3 h-3 rounded-full -top-0.5 -right-0.5 bg-[#FF7152]" />
-                                  )
-                                )}
-                              </div>
-                            </>
-                          )}
+                              </>
+                            )}
 
-                          <SmallWhiteBtn
-                            text="채팅방 이동"
-                            onClick={() => {
-                              navigate(`/meeting-chat-room/${selectedId}`);
-                            }}
-                          />
-                        </HideFrame>
-                      )}
-                    </div>
-                  ))
-                : sortedPastGroups?.map((group) => (
-                    <div key={group?.id}>
-                      <MeetingBoxComponent
-                        onClick={() => handleMeetingBoxClick(group.id)}
-                        isPast={true}
-                        meeting={group}
-                      />
-                      {showButton && selectedId === group?.id && (
-                        <HideFrame>
-                          {isLeader && (
-                            <>
-                              <SmallWhiteBtn
-                                text="미팅 수정"
-                                onClick={() => {
-                                  navigate(`/edit-meeting/${selectedId}`);
-                                }}
-                              />
-                              <SmallWhiteBtn
-                                text="참여 요청 목록"
-                                onClick={() => {
-                                  navigate(`/request-list/${selectedId}`);
-                                }}
-                              />
-                            </>
-                          )}
-
-                          <SmallWhiteBtn
-                            text="채팅방 이동"
-                            onClick={() => {
-                              navigate(`/meeting-chat-room/${selectedId}`);
-                            }}
-                          />
-                        </HideFrame>
-                      )}
-                    </div>
-                  ))}
+                            <SmallWhiteBtn
+                              text="채팅방 이동"
+                              onClick={() => {
+                                navigate(`/meeting-chat-room/${selectedId}`);
+                              }}
+                            />
+                          </HideFrame>
+                        )}
+                      </div>
+                    );
+                  })}
             </div>
           </ProfileMeetings>
         </PaddingScreen>

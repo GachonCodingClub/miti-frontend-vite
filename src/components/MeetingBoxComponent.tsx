@@ -6,28 +6,44 @@ import {
   PeopleInfo,
 } from "../meeting-list/components/meetingListComponents";
 import { IGroup } from "../model/group";
+import { ReqAlertDiv } from "../profile/styles/profileStyle";
+
 import { formatDate } from "../utils";
-import { Location1pxIcon, Person1pxIcon } from "./styles/Icons";
+import {
+  FrameIcon,
+  Location1pxIcon,
+  OrangeCrownIcon,
+  Person1pxIcon,
+} from "./styles/Icons";
 
 interface IMeetingBoxComponent {
   meeting: IGroup;
   isPast?: boolean;
   onClick?: () => void;
+  isLeader?: boolean;
+  isWaitingParty?: boolean;
 }
 
 export default function MeetingBoxComponent({
   meeting,
   isPast,
   onClick,
+  isLeader,
+  isWaitingParty,
 }: IMeetingBoxComponent) {
   const formattedDate = formatDate(meeting?.meetDate);
 
   return (
     <MeetingBox onClick={onClick}>
+      {isWaitingParty && (
+        <ReqAlertDiv>
+          <FrameIcon />
+        </ReqAlertDiv>
+      )}
       <div className="flex flex-col gap-2">
         <MeetingTitle>
-          <span className="text-base font-medium text-gray-800">
-            {meeting.title}
+          <span className="text-base font-medium text-gray-800 flex gap-1">
+            {meeting.title} {isLeader && <OrangeCrownIcon />}
           </span>
           <span className="text-xs font-normal text-gray-300">
             {formattedDate}

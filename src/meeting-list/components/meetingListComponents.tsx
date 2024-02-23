@@ -10,6 +10,7 @@ export const MeetingBox = styled.div`
   flex-direction: column;
   gap: 12px;
   padding: 16px 24px;
+  position: relative;
 `;
 
 export const MeetingTitle = styled.div`
