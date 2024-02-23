@@ -119,7 +119,6 @@ export default function MeetingList() {
             다음
           </PrevNextButton>
         </PageFrame>
-        <TabBar />
       </MeetingListScreen>
     </>
   );

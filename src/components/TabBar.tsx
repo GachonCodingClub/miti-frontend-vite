@@ -1,15 +1,36 @@
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../routes";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { getApi } from "../api/getApi";
+import { IGroup } from "../model/group";
 
 export function TabBar() {
   const location = useLocation();
+  const [unread, setUnread] = useState(0);
+  const getMyGroups = () =>
+    getApi({ link: `/groups/my?page=0&size=99` }).then((response) =>
+      response.json()
+    );
+  // useQuery를 통해 그룹 목록 가져오기 및 자동 새로고침 설정
+  const { data, isLoading, error } = useQuery(["myGroups"], getMyGroups, {
+    refetchInterval: 10000000, //
+  });
 
-  const totalUnreadMessages = parseInt(
-    localStorage.getItem("totalUnreadMessages") || "0",
-    10
-  );
+  console.log("탭바 데이타:", data);
+
+  useEffect(() => {
+    if (!isLoading && data?.content) {
+      const totalUnread = data.content.reduce(
+        (acc: number, curr: IGroup) => acc + (curr.unreadMessagesCount || 0),
+        0
+      );
+      setUnread(totalUnread);
+    }
+  }, [data, isLoading]);
+
   const formattedTotalUnreadMessages =
-    totalUnreadMessages >= 100 ? "99+" : totalUnreadMessages.toString();
+    unread >= 100 ? "99+" : unread.toString();
   return (
     <div className="w-full max-w-xl h-16 flex justify-around items-center fixed bottom-0 bg-white">
       <Link to={ROUTES.MEETING_LIST}>
@@ -46,7 +67,7 @@ export function TabBar() {
                 : "#C9C5C5"
             }
           />
-          {totalUnreadMessages > 0 && (
+          {unread > 0 && (
             <>
               <circle cx="18" cy="6" r="6" fill="#FF7152" />
               <text
