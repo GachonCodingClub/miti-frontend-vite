@@ -1,5 +1,5 @@
 export interface IUser {
-  nickname: string;
+  nickname: string | undefined;
   description: string;
   userId: string;
   userName?: string;

@@ -25,7 +25,7 @@ interface ChatMessage {
 
 interface ChatWindowProps {
   chatList: ChatMessage[];
-  profileNickname: string;
+  profileNickname: string | undefined;
   id: string | undefined;
   setChatList: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
 }
