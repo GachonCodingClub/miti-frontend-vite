@@ -274,7 +274,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                 </ProfileLeftButton>
                 <ProfileRightButton
                   onClick={() => {
-                    console.log("신고");
+                    navigate(`/report`);
                   }}
                 >
                   <DialogRightText>신고하기</DialogRightText>

@@ -186,7 +186,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       const { scrollTop, scrollHeight, clientHeight } =
         chatContainerRef.current;
       // 스크롤 위치가 거의 최하단에 있는지 확인 (여기서는 1px 여유를 둠)
-      return scrollHeight - scrollTop <= clientHeight + 100;
+      return scrollHeight - scrollTop <= clientHeight + 300;
     };
 
     if (isScrollAtBottom()) {

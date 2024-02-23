@@ -90,6 +90,8 @@ export const MyChattingBubble = styled.div`
 // 채팅 글자
 export const ChattingText = styled.span`
   line-height: 20px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 `;
 
 // 채팅 시간
@@ -129,7 +131,7 @@ export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
   max-width: 36rem;
-  padding: 32px 24px;
+  padding: 24px 24px;
   align-items: center;
   position: fixed;
   bottom: 0;
@@ -138,18 +140,21 @@ export const ChattingInputDiv = styled.div`
 `;
 
 // 채팅 인풋
-export const ChattingInput = styled.input`
+export const ChattingInput = styled.textarea`
   color: #414141;
   line-height: 20px;
-
   height: auto;
-  white-space: break-spaces;
+  overflow-y: auto;
+  resize: none;
 
   width: 100%;
   ::placeholder {
     color: #c0c0c0;
     line-height: 20px;
   }
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
 `;
 
 export const ScrollToBottomButton = styled.button`
