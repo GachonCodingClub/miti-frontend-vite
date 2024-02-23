@@ -9,7 +9,6 @@ import { MyInputBoxSVG } from "../components/MyInputBox";
 import { TopBar } from "../components/TopBar";
 import { getApi } from "../api/getApi";
 import { ArrowbackIcon } from "../components/styles/Icons";
-import { useQuery } from "react-query";
 import { ROUTES } from "../routes";
 import { fetchMeeting } from "./components/fetchMeeting";
 import { IValidationProps, validateForm } from "./components/validateInfo";
@@ -29,6 +28,7 @@ import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { getHeaders } from "../components/getHeaders";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 import useGetGroups from "../api/useGetGroups";
+import useGetMyProfile from "../api/useGetMyProfile";
 
 export default function CreateMeetingDetail() {
   const { meetingTitle, meetingDesc } = useRecoilStates();
@@ -38,18 +38,9 @@ export default function CreateMeetingDetail() {
   // id가 있으면 isUpdate가 true
   const isUpdate = !!id;
 
-  const {
-    data: group,
-    isLoading: isGroupLoading,
-    error: groupError,
-  } = useGetGroups(id);
+  const { data: group } = useGetGroups(id);
 
-  const getUserProfile = async () => {
-    const response = await getApi({ link: `/users/profile/my` });
-    const data = await response.json();
-    return data;
-  };
-  const { data: profile } = useQuery(["profile"], getUserProfile);
+  const { data: profile } = useGetMyProfile();
 
   // 날짜
   const [selecteDate, setSelecteDate] = useState("");
@@ -177,7 +168,7 @@ export default function CreateMeetingDetail() {
         }
 
         // 닉네임이 myNickname과 같은지 확인
-        if (trimmedNickname === profile.nickname) {
+        if (trimmedNickname === profile?.nickname) {
           setAddMyNicknameDialog(true); // 본인 닉네임 추가 못하게 막기
           return;
         }

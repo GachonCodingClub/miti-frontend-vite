@@ -4,7 +4,6 @@ import {
   LongOrangeBtn,
   LongWhiteBtn,
 } from "../../components/styles/Button";
-import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { getApi } from "../../api/getApi";
 import {
@@ -43,6 +42,7 @@ import { MyInputBoxSVG } from "../../components/MyInputBox";
 import AdditionalParticipantsList from "../../create-meeting/components/additionalParticipantsList";
 import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
+import useGetMyProfile from "../../api/useGetMyProfile";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -74,9 +74,7 @@ export default function MeetingDetail() {
     error: partiesError,
   } = useGetParties(id);
 
-  const { data: profile } = useQuery("profile", () =>
-    getApi({ link: `/users/profile/my` }).then((response) => response.json())
-  );
+  const { data: profile } = useGetMyProfile();
 
   const meetingDate = group?.meetDate ? new Date(group?.meetDate) : null;
   const formattedDate = meetingDate ? formatDate(group?.meetDate) : "";

@@ -19,6 +19,7 @@ import { PaddingScreen } from "../components/styles/Screen";
 import { SmallWhiteBtn } from "../components/styles/Button";
 import { IParties } from "../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import useGetMyProfile from "../api/useGetMyProfile";
 
 export default function Profile() {
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
@@ -37,12 +38,7 @@ export default function Profile() {
     );
   const { data, isLoading } = useQuery(["myGroups"], getMyGroups);
 
-  const getUserProfile = async () => {
-    const response = await getApi({ link: `/users/profile/my` });
-    const data = await response.json();
-    return data;
-  };
-  const { data: profile } = useQuery(["profile"], getUserProfile);
+  const { data: profile } = useGetMyProfile();
 
   const getParties = () =>
     getApi({ link: `/groups/${selectedId}/parties` }).then(

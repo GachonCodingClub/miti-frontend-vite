@@ -4,8 +4,8 @@ export const fetchProfile = async (
   token: string,
   userNickName: string,
   userIntroduce: string,
-  userHeight: string,
-  userWeight: string,
+  userHeight: string | undefined,
+  userWeight: string | undefined,
   setSubscription: React.Dispatch<boolean>,
   setEditError: React.Dispatch<boolean>
 ) => {

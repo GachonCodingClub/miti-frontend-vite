@@ -5,7 +5,6 @@ import {
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
-import { useQuery } from "react-query";
 import { getApi } from "../../api/getApi";
 import { TopBar } from "../../components/TopBar";
 import {
@@ -27,6 +26,7 @@ import { PaddingScreen } from "../../components/styles/Screen";
 import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
+import useGetMyProfile from "../../api/useGetMyProfile";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -37,16 +37,7 @@ export default function MeetingChatRoom() {
   const headers = getHeaders(token);
 
   // 유저 프로필 가져오기
-  const getUserProfile = async () => {
-    const response = await getApi({ link: `/users/profile/my` });
-    const data = await response.json();
-    return data;
-  };
-  const { data: profile, isLoading: profileLoading } = useQuery(
-    ["profile"],
-    getUserProfile
-  );
-
+  const { data: profile, isLoading: profileLoading } = useGetMyProfile();
   const {
     data: group,
     isLoading: isGroupLoading,
