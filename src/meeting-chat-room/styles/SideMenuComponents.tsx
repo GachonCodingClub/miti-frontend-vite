@@ -229,7 +229,7 @@ export interface IUser {
   description?: string;
   userId?: string;
   username?: string;
-  nickname: string;
+  nickname: string | undefined;
   age: number;
   gender: "MALE" | "FEMALE" | string;
   height: string | number;

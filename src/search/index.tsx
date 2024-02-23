@@ -32,7 +32,7 @@ export default function SearchPage() {
   const fetchMeetings = async () => {
     setLoading(true); // 데이터를 가져오기 전 로딩 상태
     try {
-      const res = await getApi({ link: `/groups?size=999` });
+      const res = await getApi({ link: `/groups?size=100` });
       const data = await res.json();
       setMeetings(data?.content || []);
       setLoading(false); // 데이터를 가져온 후 로딩 상태
