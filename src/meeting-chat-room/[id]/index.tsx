@@ -162,24 +162,6 @@ export default function MeetingChatRoom() {
     setCharCount(0);
   }; // 제출된 JSON문자열은 서버로 전송됨
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // 엔터키가 입력되었으나 Shift키가 동시에 눌리지 않았을 경우 메시지 전송
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // 기본 동작(줄바꿈) 방지
-      if (message.trim() !== "") {
-        publish(
-          JSON.stringify({
-            message: message.trim(),
-            sender: decoded.sub,
-            groupId: id,
-          })
-        );
-        setMessage(""); // 메시지 초기화
-        setCharCount(0); // 글자 수 초기화
-      }
-    }
-  };
-
   useEffect(() => {
     connect(); // // 컴포넌트가 마운트될 때 WebSocket 연결
     return () => disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
@@ -266,7 +248,6 @@ export default function MeetingChatRoom() {
                 placeholder="메시지 입력"
                 value={message}
                 onChange={handleChangeMessage}
-                onKeyDown={handleKeyDown}
               />
               <button type="submit">
                 {message.trim() === "" ? (
