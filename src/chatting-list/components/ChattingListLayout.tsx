@@ -1,6 +1,5 @@
 import React from "react";
 import { TopBar } from "../../components/TopBar";
-import { TabBar } from "../../components/TabBar";
 import { PaddingScreen } from "../../components/styles/Screen";
 
 interface ChattingListLayoutProps {
@@ -16,7 +15,6 @@ const ChattingListLayout: React.FC<ChattingListLayoutProps> = ({
     <>
       <TopBar title={title} />
       <PaddingScreen>{children}</PaddingScreen>
-      <TabBar />
     </>
   );
 };

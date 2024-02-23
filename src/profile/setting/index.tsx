@@ -1,5 +1,4 @@
 import { ArrowbackIcon } from "../../components/styles/Icons";
-import { TabBar } from "../../components/TabBar";
 import { TopBar } from "../../components/TopBar";
 import { useNavigate } from "react-router-dom";
 import {
@@ -34,7 +33,6 @@ export default function Setting() {
           로그아웃
         </LogoutButton>
       </LogoutFrame>
-      <TabBar />
     </>
   );
 }
