@@ -46,6 +46,7 @@ export const CreateMeetingButton = styled.button`
   border-radius: 50%;
   color: white;
   font-size: 24px;
+  z-index: 50;
 `;
 
 // 페이징
