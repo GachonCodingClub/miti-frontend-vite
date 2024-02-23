@@ -129,7 +129,7 @@ export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
   max-width: 36rem;
-  padding: 16px 24px;
+  padding: 32px 24px;
   align-items: center;
   position: fixed;
   bottom: 0;
@@ -141,6 +141,10 @@ export const ChattingInputDiv = styled.div`
 export const ChattingInput = styled.input`
   color: #414141;
   line-height: 20px;
+
+  height: auto;
+  white-space: break-spaces;
+
   width: 100%;
   ::placeholder {
     color: #c0c0c0;

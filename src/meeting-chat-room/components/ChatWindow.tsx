@@ -178,6 +178,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     chatContainer?.addEventListener("scroll", handleScroll);
     return () => chatContainer?.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
+  useEffect(() => {
+    const isScrollAtBottom = () => {
+      if (!chatContainerRef.current) return false;
+
+      const { scrollTop, scrollHeight, clientHeight } =
+        chatContainerRef.current;
+      // 스크롤 위치가 거의 최하단에 있는지 확인 (여기서는 1px 여유를 둠)
+      return scrollHeight - scrollTop <= clientHeight + 100;
+    };
+
+    if (isScrollAtBottom()) {
+      // 스크롤이 최하단에 위치해 있다면, chatList 업데이트 후에도 최하단으로 유지
+      scrollToBottom();
+    }
+    // chatList가 변경될 때마다 이 useEffect가 실행됨
+  }, [chatList]); // chatList가 변경될 때마다 이 효과를 재실행
+
   return (
     <ChatWindowContainer ref={chatContainerRef}>
       {chatList.map((chat, index) => {
@@ -238,7 +256,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </React.Fragment>
         );
       })}
-      <div id="chatEnd" ref={chatEndRef} />
+      <div className="pt-12" id="chatEnd" ref={chatEndRef}></div>
     </ChatWindowContainer>
   );
 };
