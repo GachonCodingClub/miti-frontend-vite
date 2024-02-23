@@ -1,4 +1,3 @@
-import { TabBar } from "../components/TabBar";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getApi } from "../api/getApi";
@@ -51,15 +50,6 @@ export default function Profile() {
   } = useQuery(["parties", selectedId], getParties, {
     enabled: !!selectedId,
   });
-
-  // useEffect(() => {
-  //   console.log("미팅 데이터", data);
-  //   console.log("유저 프로필", profile);
-  //   console.log();
-  //   if (selectedId) {
-  //     console.log("선택된", parties?.waitingParties);
-  //   }
-  // }, []);
 
   const nowTime = new Date().getTime();
 

@@ -1,6 +1,6 @@
 import "./styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import SignUp from "./sign-up";
 import LogIn from "./sign-in";
@@ -23,7 +23,7 @@ import Withdrawal from "./profile/setting/withdrawal";
 import ChangePassword from "./sign-in/change-password";
 import MITI from ".";
 import SearchPage from "./search";
-import { TabBar } from "./components/TabBar";
+import { CustomTabBar } from "./components/CustomTabBar";
 
 const queryClient = new QueryClient();
 
@@ -83,16 +83,6 @@ const App = () => {
       </QueryClientProvider>
     </RecoilRoot>
   );
-};
-
-// CustomTabBar 컴포넌트 정의
-const CustomTabBar = () => {
-  const location = useLocation();
-  const showTabBar = ["/meeting-list", "/chat-list", "/profile"].includes(
-    location.pathname
-  );
-
-  return showTabBar ? <TabBar /> : null;
 };
 
 export default App;

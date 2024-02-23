@@ -2,6 +2,7 @@ import {
   ChattingInputDiv,
   ChattingInput,
   IChat,
+  MeetingChatRoomScreen,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
@@ -222,7 +223,7 @@ export default function MeetingChatRoom() {
           <div>로딩중이에요</div>
         </PaddingScreen>
       ) : (
-        <PaddingScreen>
+        <MeetingChatRoomScreen>
           <>
             <ChatWindow
               chatList={chatList}
@@ -303,7 +304,7 @@ export default function MeetingChatRoom() {
               />
             </Overlay>
           )}
-        </PaddingScreen>
+        </MeetingChatRoomScreen>
       )}
     </>
   );

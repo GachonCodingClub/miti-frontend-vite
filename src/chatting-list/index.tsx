@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
-
 import { TopBar } from "../components/TopBar";
-import { TabBar } from "../components/TabBar";
 import { getApi } from "../api/getApi";
 import {
   TitleMemberTimeFrame,
