@@ -26,6 +26,7 @@ import { Overlay } from "../../sign-up/styles/detailComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
 import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
+import useGetGroups from "../../api/useGetGroups";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -46,25 +47,14 @@ export default function MeetingChatRoom() {
     getUserProfile
   );
 
-  const getGroup = async () => {
-    try {
-      const response = await getApi({ link: `/groups/${id}` });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("채팅 데이터 불러오기 오류", error);
-      throw error;
-    }
-  };
-  const { data: group, isLoading: groupLoading } = useQuery(
-    ["group", id],
-    getGroup,
-    {
-      enabled: !!id,
-    }
-  );
+  const {
+    data: group,
+    isLoading: isGroupLoading,
+    error: groupError,
+  } = useGetGroups(id);
+
   // 로딩 상태
-  const loading = profileLoading || groupLoading;
+  const loading = profileLoading || isGroupLoading;
 
   const [chatList, setChatList] = useState<IChat[]>([]); // 채팅 메시지 리스트
   const [message, setMessage] = useState(""); // 사용자가 보낼 메시지
@@ -222,6 +212,7 @@ export default function MeetingChatRoom() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
 
+  if (groupError) return <div>데이터 로딩 중 오류 발생</div>;
   return (
     <>
       <TopBar
