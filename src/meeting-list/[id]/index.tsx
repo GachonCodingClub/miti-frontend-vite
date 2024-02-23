@@ -33,7 +33,7 @@ import {
   AddMemberWrapper,
 } from "../components/meetingDetail.Components";
 import { useNavigate, useParams } from "react-router-dom";
-import { Overlay, SheetXIcon } from "../../sign-up/styles/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { formatDate } from "../../utils";
 import { getHeaders } from "../../components/getHeaders";
@@ -62,34 +62,31 @@ export default function MeetingDetail() {
   const [showDialog, setShowDialog] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
 
-  const getGroup = () =>
-    getApi({ link: `/groups/${id}` }).then(
-      (response) => response.json() as Promise<IGroup>
-    );
-  const { data: group } = useQuery(["group", id], getGroup, {
-    enabled: !!id,
-  });
+  const {
+    data: group,
+    isLoading: isGroupLoading,
+    error: groupError,
+  } = useQuery<IGroup, Error>(["group", id], () =>
+    getApi({ link: `/groups/${id}` }).then((res) => res.json())
+  );
 
-  const getParties = () =>
-    getApi({ link: `/groups/${id}/parties` }).then(
-      (response) => response.json() as Promise<IParties>
-    );
-  const { data: parties } = useQuery(["parties", id], getParties, {
-    enabled: !!id,
-  });
+  const {
+    data: parties,
+    isLoading: isPartiesLoading,
+    error: partiesError,
+  } = useQuery<IParties, Error>(["parties", id], () =>
+    getApi({ link: `/groups/${id}/parties` }).then((res) => res.json())
+  );
 
-  const getUserProfile = async () => {
-    const response = await getApi({ link: `/users/profile/my` });
-    const data = await response.json();
-    return data;
-  };
-  const { data: profile } = useQuery(["profile"], getUserProfile);
+  const { data: profile } = useQuery("profile", () =>
+    getApi({ link: `/users/profile/my` }).then((response) => response.json())
+  );
 
   const meetingDate = group?.meetDate ? new Date(group?.meetDate) : null;
   const formattedDate = meetingDate ? formatDate(group?.meetDate) : "";
 
   useEffect(() => {
-    console.log("AcceptedParties", parties);
+    console.log("AcceptedParties", parties?.leaderUserSummaryDto.nickname);
     console.log(profile);
     console.log("그룹", group);
   }, []);
@@ -138,6 +135,20 @@ export default function MeetingDetail() {
       if (response.status !== 409) {
         setNonExistentDialog(true); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
       } else {
+        // 미팅에 이미 참여 중인 모든 사용자의 닉네임 목록 생성
+        const existingNicknames = parties?.acceptedParties.flatMap((party) =>
+          party.users.map((user) => user.nickname)
+        );
+        const leaderNickname = parties?.leaderUserSummaryDto?.nickname;
+
+        if (
+          trimmedNickname === leaderNickname ||
+          existingNicknames?.includes(trimmedNickname)
+        ) {
+          setDuplicateOrBlankErrorDialog(true);
+          return;
+        }
+
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
         if (additionalParticipants.includes(trimmedNickname)) {
           setDuplicateOrBlankErrorDialog(true); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
@@ -193,6 +204,9 @@ export default function MeetingDetail() {
         console.error(error);
       });
   };
+
+  if (isGroupLoading || isPartiesLoading) return <div>로딩중...</div>;
+  if (groupError || partiesError) return <div>데이터 로딩 중 오류 발생</div>;
 
   // token을 없앴을 때 문제 없이 로그인 화면으로 가지 않고 에러가 생김
   if (group == null || parties == null) {
@@ -312,19 +326,20 @@ export default function MeetingDetail() {
             <Overlay>
               <DialogContainer>
                 <AddMemberWrapper>
-                  <div className="flex flex-row-reverse gap-2 items-center">
-                    <SheetXIcon
+                  <div className="flex items-center relative">
+                    <div
+                      className="bg-[#f2f0ef] rounded-full absolute -right-4"
                       onClick={() => {
                         setShowAdd(false);
                       }}
                     >
                       <XIcon />
-                    </SheetXIcon>
-
+                    </div>
                     <AddMemberText>
                       닉네임으로 본인 외의 참여자 추가(선택 입력)
                     </AddMemberText>
                   </div>
+
                   <div className="flex items-center">
                     <MyInputBoxSVG
                       onClick={() => {}}
@@ -338,12 +353,12 @@ export default function MeetingDetail() {
                       +
                     </AddMemberButton>
                   </div>
-                  {showAdd && additionalParticipants.length > 0 ? (
+                  {showAdd && additionalParticipants.length > 0 && (
                     <AdditionalParticipantsList
                       participants={additionalParticipants}
                       onRemoveNicknameClick={onRemoveNicknameClick}
                     />
-                  ) : null}
+                  )}
                 </AddMemberWrapper>
 
                 <LongOrangeBtn text="신청하기" onClick={onSubmitClick} />
