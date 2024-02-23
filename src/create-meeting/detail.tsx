@@ -28,6 +28,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { getHeaders } from "../components/getHeaders";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
+import useGetGroups from "../api/useGetGroups";
 
 export default function CreateMeetingDetail() {
   const { meetingTitle, meetingDesc } = useRecoilStates();
@@ -37,17 +38,11 @@ export default function CreateMeetingDetail() {
   // id가 있으면 isUpdate가 true
   const isUpdate = !!id;
 
-  // 업데이트인 경우 기존 룸 데이터를 가져옴
-  const getGroup = async () => {
-    try {
-      const response = await getApi({ link: `/groups/${id}` });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("그룹 데이터를 불러오는 중 오류 발생:", error);
-      throw error; // 에러를 상위로 전파
-    }
-  };
+  const {
+    data: group,
+    isLoading: isGroupLoading,
+    error: groupError,
+  } = useGetGroups(id);
 
   const getUserProfile = async () => {
     const response = await getApi({ link: `/users/profile/my` });
@@ -55,19 +50,6 @@ export default function CreateMeetingDetail() {
     return data;
   };
   const { data: profile } = useQuery(["profile"], getUserProfile);
-
-  // useQuery 훅을 사용하여 데이터를 가져오는 부분
-  const { data: group } = useQuery(
-    ["group", id],
-    () => {
-      if (id) {
-        return getGroup();
-      }
-    },
-    {
-      enabled: !!id,
-    }
-  );
 
   // 날짜
   const [selecteDate, setSelecteDate] = useState("");

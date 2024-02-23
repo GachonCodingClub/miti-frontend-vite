@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
-import { getApi } from "../../api/getApi";
 import {
   DateIcon,
   LocationIcon,
   PersonIcon,
   OrangeCrownIcon,
 } from "../../components/styles/Icons";
-
 import { useNavigate, useParams } from "react-router-dom";
-import { IParties } from "../../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { Overlay } from "../../sign-up/styles/detailComponents";
 import {
@@ -51,6 +47,8 @@ import {
   ProfileRightButton,
   ISideMenu,
 } from "../styles/SideMenuComponents";
+import useGetGroups from "../../api/useGetGroups";
+import useGetParties from "../../api/useGetParties";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
@@ -62,40 +60,25 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     setDecodedToken(jwtDecode(storedToken + ""));
   }, []);
 
-  const getGroup = async () => {
-    try {
-      const response = await getApi({ link: `/groups/${id}` });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching group data:", error);
-      throw error;
-    }
-  };
-
   const {
     data: group,
-    isError: isGroupError,
-    isLoading: isLoadingGroup,
-  } = useQuery(["group", id], getGroup, {
-    enabled: !!id,
-  });
+    isLoading: isGroupLoading,
+    error: groupError,
+  } = useGetGroups(id);
+
   const formattedDate = formatDate(group?.meetDate);
 
-  const getParties = () =>
-    getApi({ link: `/groups/${id}/parties` }).then(
-      (response) => response.json() as Promise<IParties>
-    );
   const {
     data: parties,
-    isLoading: isLoadingParties,
-    isError: isPartiesError,
-  } = useQuery(["parties", id], getParties, {
-    enabled: !!id,
-  });
+    isLoading: isPartiesLoading,
+    error: partiesError,
+  } = useGetParties(id);
 
   useEffect(() => {
-    console.log("그룹", decodedToken?.sub == group.leaderUserSummaryDto.userId);
+    console.log(
+      "그룹",
+      decodedToken?.sub == group?.leaderUserSummaryDto.userId
+    );
     console.log(parties);
   }, []);
 
@@ -105,11 +88,11 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     null
   );
 
-  if (isLoadingGroup || isLoadingParties) {
+  if (isGroupLoading || isPartiesLoading) {
     return <div>로딩중이에요...</div>;
   }
 
-  if (isGroupError || isPartiesError) {
+  if (groupError || partiesError) {
     return (
       <div>
         데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요.
@@ -225,7 +208,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             }}
           >
             참여 요청 목록
-            {isLoadingParties ? (
+            {isPartiesLoading ? (
               <div>로딩중이에요...</div>
             ) : (
               parties &&

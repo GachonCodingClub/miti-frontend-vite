@@ -1,5 +1,4 @@
 import { getApi } from "../../api/getApi";
-import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { TopBar } from "../../components/TopBar";
 import { ArrowbackIcon } from "../../components/styles/Icons";
@@ -19,21 +18,7 @@ import {
 } from "../components/requestListComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
 import { GrayLine } from "../../meeting-chat-room/styles/SideMenuComponents";
-
-interface Party {
-  partyId: string;
-  users: User[];
-}
-
-// User 인터페이스
-interface User {
-  nickname: string;
-  description: string;
-  age: number;
-  gender: "MALE" | "FEMALE";
-  height: number;
-  weight: number;
-}
+import useGetParties from "../../api/useGetParties";
 
 interface DialogStates {
   [key: string]: boolean;
@@ -43,20 +28,18 @@ export default function RequestProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const getParties = () =>
-    getApi({ link: `/groups/${id}/parties` }).then((response) =>
-      response.json()
-    );
-  const { data: parties } = useQuery(["parties", id], getParties, {
-    enabled: !!id,
-  });
+  const {
+    data: parties,
+    isLoading: isPartiesLoading,
+    error: partiesError,
+  } = useGetParties(id);
 
   // 각 파티별로 수락/거절 상태를 관리하는 객체
   const [dialogStates, setDialogStates] = useState<DialogStates>({});
 
   // 수락/거절 상태 설정 함수
   const setDialogState = (
-    partyId: string,
+    partyId: string | number,
     type: "accept" | "reject",
     value: boolean
   ) => {
@@ -64,18 +47,30 @@ export default function RequestProfile() {
   };
 
   // 수락 클릭 핸들러
-  const onAcceptClick = (partyId: string) => {
+  const onAcceptClick = (partyId: number | string) => {
     getApi({ link: `/groups/${id}/parties/${partyId}/accept` }).then(() => {
       setDialogState(partyId, "accept", true);
     });
   };
 
   // 거절 클릭 핸들러
-  const onRejectClick = (partyId: string) => {
+  const onRejectClick = (partyId: number | string) => {
     getApi({ link: `/groups/${id}/parties/${partyId}/reject` }).then(() => {
       setDialogState(partyId, "reject", true);
     });
   };
+
+  if (isPartiesLoading) {
+    return <div>로딩중이에요...</div>;
+  }
+
+  if (partiesError) {
+    return (
+      <div>
+        데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요.
+      </div>
+    );
+  }
 
   return (
     <>
@@ -84,7 +79,7 @@ export default function RequestProfile() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <PaddingScreen>
-        {parties?.waitingParties?.map((party: Party) => (
+        {parties?.waitingParties?.map((party) => (
           <RequestBox key={party.partyId}>
             <GrayLine />
             {party.users.map((user, index) => (

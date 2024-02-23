@@ -17,8 +17,6 @@ import {
 } from "../../components/styles/Icons";
 import { TopBar } from "../../components/TopBar";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
-import { IGroup } from "../../model/group";
-import { IParties } from "../../model/party";
 import {
   DetailScreen,
   DetailBox,
@@ -43,6 +41,8 @@ import {
 } from "../../create-meeting/styles/createMeetingDetailComponents";
 import { MyInputBoxSVG } from "../../components/MyInputBox";
 import AdditionalParticipantsList from "../../create-meeting/components/additionalParticipantsList";
+import useGetGroups from "../../api/useGetGroups";
+import useGetParties from "../../api/useGetParties";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -66,17 +66,13 @@ export default function MeetingDetail() {
     data: group,
     isLoading: isGroupLoading,
     error: groupError,
-  } = useQuery<IGroup, Error>(["group", id], () =>
-    getApi({ link: `/groups/${id}` }).then((res) => res.json())
-  );
+  } = useGetGroups(id);
 
   const {
     data: parties,
     isLoading: isPartiesLoading,
     error: partiesError,
-  } = useQuery<IParties, Error>(["parties", id], () =>
-    getApi({ link: `/groups/${id}/parties` }).then((res) => res.json())
-  );
+  } = useGetParties(id);
 
   const { data: profile } = useQuery("profile", () =>
     getApi({ link: `/users/profile/my` }).then((response) => response.json())
