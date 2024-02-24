@@ -34,7 +34,7 @@ export default function SignUpAgreement() {
   // 이벤트 파라미터를 받고, 이걸 체크하면 모든 checkBox의 name을 배열에 넣음
   const checkAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked
-      ? setCheckList(["first", "second", "third"])
+      ? setCheckList(["first", "second", "third", "fourth", "fifth"])
       : setCheckList([]); // 이건 다 없애기
   };
 
@@ -54,7 +54,9 @@ export default function SignUpAgreement() {
     setShowButton(
       checkList.includes("first") &&
         checkList.includes("second") &&
-        checkList.includes("third")
+        checkList.includes("third") &&
+        checkList.includes("fourth") &&
+        checkList.includes("fifth")
     );
   }, [checkList]);
 
@@ -93,13 +95,14 @@ export default function SignUpAgreement() {
       <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
       <AgreementScreen>
         <AgreementTitle>다음 약관에 동의해주세요</AgreementTitle>
+        <div>서비스 이용 약관 및 개인정보 처리 정책</div>
         {/* 전체 동의 체크박스 */}
         <AllCheckFrame>
           <CheckBox
             type="checkbox"
             name="all"
             onChange={checkAll}
-            checked={checkList.length === 3 ? true : false}
+            checked={checkList.length === 5 ? true : false}
           />
           <CheckText>이용약관 전체동의</CheckText>
         </AllCheckFrame>
@@ -146,6 +149,34 @@ export default function SignUpAgreement() {
               <CheckText>개인정보의 제공 및 공유 (필수)</CheckText>
             </div>
             <ViewContentsButton onClick={() => onOpenPopUp(3)}>
+              내용보기
+            </ViewContentsButton>
+          </EachCheckBoxFrame>
+          <EachCheckBoxFrame>
+            <div className="flex items-center">
+              <CheckBox
+                type="checkbox"
+                name="fourth"
+                onChange={check}
+                checked={checkList.includes("fourth") ? true : false}
+              />
+              <CheckText>서비스 이용 책임의 한계 (필수)</CheckText>
+            </div>
+            <ViewContentsButton onClick={() => onOpenPopUp(4)}>
+              내용보기
+            </ViewContentsButton>
+          </EachCheckBoxFrame>
+          <EachCheckBoxFrame>
+            <div className="flex items-center">
+              <CheckBox
+                type="checkbox"
+                name="fifth"
+                onChange={check}
+                checked={checkList.includes("fifth") ? true : false}
+              />
+              <CheckText>약관의 변경 (필수)</CheckText>
+            </div>
+            <ViewContentsButton onClick={() => onOpenPopUp(5)}>
               내용보기
             </ViewContentsButton>
           </EachCheckBoxFrame>
