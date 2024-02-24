@@ -79,12 +79,6 @@ export default function MeetingDetail() {
   const meetingDate = group?.meetDate ? new Date(group?.meetDate) : null;
   const formattedDate = meetingDate ? formatDate(group?.meetDate) : "";
 
-  useEffect(() => {
-    console.log("AcceptedParties", parties?.leaderUserSummaryDto.nickname);
-    console.log(profile);
-    console.log("그룹", group);
-  }, []);
-
   // 닉네임으로 참여자 추가(선택 입력)
   const [additionalParticipants, setAdditionalParticipants] = useState<
     string[]

@@ -56,7 +56,6 @@ export const fetchSignUp = async (
       return false;
     }
     const data = await response.json();
-    console.log(data);
     return data === true;
   } catch (error) {
     console.error(error);

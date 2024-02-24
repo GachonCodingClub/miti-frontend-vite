@@ -58,7 +58,6 @@ export default function MeetingChatRoom() {
     try {
       const res = await getApi({ link: `/message/${id}/refresh/last-read` });
       const data = await res.json();
-      console.log("알림 호출:", data);
       return data;
     } catch (error) {
       console.error("알림 오류", error);

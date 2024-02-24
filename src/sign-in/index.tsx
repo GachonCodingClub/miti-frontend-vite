@@ -70,7 +70,6 @@ export default function LogIn() {
       body: bodyData,
     })
       .then((response) => {
-        console.log(response);
         if (!response.ok) {
           console.error(`
         API 오류: ${response.status} - ${response.statusText}`);
@@ -79,7 +78,6 @@ export default function LogIn() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data?.accessToken) {
           localStorage.setItem("token", data?.accessToken);
           {

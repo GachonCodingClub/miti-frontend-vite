@@ -26,8 +26,6 @@ export function TabBar() {
     getMyGroups();
   }, []);
 
-  console.log(unread);
-
   const formattedTotalUnreadMessages =
     unread >= 100 ? "99+" : unread.toString();
   return (
