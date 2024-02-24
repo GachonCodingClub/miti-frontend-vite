@@ -79,7 +79,7 @@ export const ViewContentsButton = styled.button`
 // 팝업창 프레임
 export const ViewContentsPopUpFrame = styled.div`
   display: flex;
-  max-width: 32rem;
+  max-width: 24rem;
   padding: 24px 16px 24px 16px;
   flex-direction: column;
   align-items: center;
@@ -105,7 +105,7 @@ export const ViewContents = styled.div`
   padding: 16px;
   background: #f8f9fb;
   white-space: pre-line;
-  line-height: 20px;
+  line-height: 25px;
 `;
 
 // 팝업 닫기 프레임
