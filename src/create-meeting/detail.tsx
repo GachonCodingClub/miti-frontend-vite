@@ -179,6 +179,7 @@ export default function CreateMeetingDetail() {
       }
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
+      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
     }
   };
 
@@ -244,6 +245,8 @@ export default function CreateMeetingDetail() {
       displayEnrollBar();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생:", error);
+      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+
       closeEnrollBar();
     }
   };

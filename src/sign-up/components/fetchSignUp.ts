@@ -48,6 +48,11 @@ export const fetchSignUp = async (
     });
     if (!response.ok) {
       console.error(`API 오류: ${response.status} - ${response.statusText}`);
+      if (response.status === 500) {
+        alert("닉네임을 확인해주세요.");
+      } else {
+        alert(`오류가 발생했습니다: ${response.status}`);
+      }
       return false;
     }
     const data = await response.json();
@@ -55,6 +60,7 @@ export const fetchSignUp = async (
     return data === true;
   } catch (error) {
     console.error(error);
+    alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
     return false;
   }
 };

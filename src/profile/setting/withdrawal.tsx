@@ -37,10 +37,12 @@ export default function Withdrawal() {
           setShowDialog(false);
         } else {
           console.error("탈퇴 실패");
+          alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
         }
       })
       .catch((error) => {
         console.error("네트워크 에러:", error);
+        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
       });
   };
   return (

@@ -32,6 +32,7 @@ export default function CreateMeeting() {
       return data;
     } catch (error) {
       console.error("Error fetching group data:", error);
+      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
       throw error; // 에러를 상위로 전파
     }
   };
@@ -105,6 +106,7 @@ export default function CreateMeeting() {
       } catch (error) {
         // 오류 처리
         console.error("비동기 작업 중 오류 발생:", error);
+        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
         setShowDialog(true);
       }
     } else {

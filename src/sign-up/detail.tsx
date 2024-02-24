@@ -71,11 +71,16 @@ export default function SingUpDetail() {
   };
 
   // 닉네임 중복확인 API
-  const getNickName = () => {
-    // 파싱 로직 추가
-    getApi({
-      link: `/auth/check/nickname?nickname=${userNickName}`,
-    });
+  const getNickName = async () => {
+    try {
+      const response = await getApi({
+        link: `/auth/check/nickname?nickname=${userNickName}`,
+      });
+      return response; // API 호출 결과를 반환
+    } catch (error) {
+      console.error("닉네임 중복 확인 중 에러 발생", error);
+      throw error; // 에러를 던져서 useQuery가 에러 상태를 인식할 수 있도록 함
+    }
   };
 
   // 닉네임 중복검사 다이얼로그

@@ -298,7 +298,7 @@ export default function EditProfile() {
           {subscription && (
             <Overlay>
               <DialogOneBtn
-                title="수정 완료!"
+                title="프로필 수정"
                 contents=""
                 onRightClick={onSubscriptionClick}
                 right="프로필 화면으로 이동"

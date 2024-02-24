@@ -75,6 +75,7 @@ export default function ChangePassword() {
       })
       .catch((error) => {
         console.error(error);
+        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
         setError("");
       });
   };
@@ -113,7 +114,8 @@ export default function ChangePassword() {
       })
       .catch((error) => {
         console.error(error);
-        setCertiError("에러임");
+        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        setCertiError("에러발생");
       });
 
     formData.append("certiNum", certiNum);
@@ -187,7 +189,8 @@ export default function ChangePassword() {
       setCompleteDialog(true);
     } catch (error) {
       console.error(error);
-      setCertiError("에러임");
+      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      setCertiError("에러발생");
     }
   };
 
