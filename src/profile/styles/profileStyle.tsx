@@ -37,6 +37,5 @@ export const HideFrame = styled.div`
 
 export const ReqAlertDiv = styled.div`
   position: absolute;
-  left: 0px;
-  top: 5px;
+  bottom: 0;
 `;

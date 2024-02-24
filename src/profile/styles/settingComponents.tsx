@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const SettingScreen = styled.div`
-  padding: 0 16px;
-  padding-top: 56px;
-`;
-
 export const SettingButtonBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,7 +21,7 @@ export const LogoutFrame = styled.div`
   position: fixed;
   width: 100%;
   max-width: 36rem;
-  bottom: 88px;
+  bottom: 40px;
   margin: auto;
 `;
 

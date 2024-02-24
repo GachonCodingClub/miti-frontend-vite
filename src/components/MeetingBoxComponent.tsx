@@ -4,13 +4,13 @@ import {
   MeetingInfo,
   PlaceInfo,
   PeopleInfo,
+  AlertMessage,
 } from "../meeting-list/components/meetingListComponents";
 import { IGroup } from "../model/group";
 import { ReqAlertDiv } from "../profile/styles/profileStyle";
 
 import { formatDate } from "../utils";
 import {
-  FrameIcon,
   Location1pxIcon,
   OrangeCrownIcon,
   Person1pxIcon,
@@ -37,7 +37,7 @@ export default function MeetingBoxComponent({
     <MeetingBox onClick={onClick}>
       {isWaitingParty && (
         <ReqAlertDiv>
-          <FrameIcon />
+          <AlertMessage>새로운 참여 요청이 있어요!</AlertMessage>
         </ReqAlertDiv>
       )}
       <div className="flex flex-col gap-2">

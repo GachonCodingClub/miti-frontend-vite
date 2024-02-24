@@ -49,6 +49,13 @@ export const CreateMeetingButton = styled.button`
   z-index: 50;
 `;
 
+export const AlertMessage = styled.div`
+  color: #ff7152;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 15px;
+`;
+
 // 페이징
 export const PageFrame = styled.div`
   display: flex;
