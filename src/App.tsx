@@ -24,6 +24,9 @@ import ChangePassword from "./sign-in/change-password";
 import MITI from ".";
 import SearchPage from "./search";
 import { CustomTabBar } from "./components/CustomTabBar";
+import Report from "./report";
+import Agreement from "./profile/setting/agreement";
+import Notice from "./profile/setting/notice";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +60,8 @@ const App = () => {
               <Route path="/profile/setting" element={<Setting />} />
               <Route path="/setting/edit" element={<EditProfile />} />
               <Route path="/setting/withdrawal" element={<Withdrawal />} />
+              <Route path="/agreement" element={<Agreement />} />
+              <Route path="/notice" element={<Notice />} />
               {/* 미팅 만들기 */}
               <Route path="/create-meeting" element={<CreateMeeting />} />
               <Route
@@ -76,6 +81,8 @@ const App = () => {
               />
               {/* 참여 요청 목록 */}
               <Route path="/request-list/:id" element={<RequestProfile />} />
+              {/* 신고하기 */}
+              <Route path="/report" element={<Report />} />
             </Routes>
             <CustomTabBar />
           </BrowserRouter>
