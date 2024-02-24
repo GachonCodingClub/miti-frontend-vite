@@ -34,7 +34,7 @@ export default function SignUpAgreement() {
   // 이벤트 파라미터를 받고, 이걸 체크하면 모든 checkBox의 name을 배열에 넣음
   const checkAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked
-      ? setCheckList(["first", "second", "third", "fourth", "fifth"])
+      ? setCheckList(["zero", "first", "second", "third", "fourth", "fifth"])
       : setCheckList([]); // 이건 다 없애기
   };
 
@@ -52,7 +52,8 @@ export default function SignUpAgreement() {
   호출하게 되면 state값이 즉각적으로 바뀌지 않기 때문에 useEffect안에서 작동되게 함 */
   useEffect(() => {
     setShowButton(
-      checkList.includes("first") &&
+      checkList.includes("zero") &&
+        checkList.includes("first") &&
         checkList.includes("second") &&
         checkList.includes("third") &&
         checkList.includes("fourth") &&
@@ -102,13 +103,28 @@ export default function SignUpAgreement() {
             type="checkbox"
             name="all"
             onChange={checkAll}
-            checked={checkList.length === 5 ? true : false}
+            checked={checkList.length === 6 ? true : false}
           />
           <CheckText>이용약관 전체동의</CheckText>
         </AllCheckFrame>
         <GrayLine />
         {/* 각각의 체크박스와 내용보기 버튼 */}
         <CheckBoxContainer>
+          <EachCheckBoxFrame>
+            <div className="flex items-center">
+              <CheckBox
+                type="checkbox"
+                name="zero"
+                onChange={check}
+                checked={checkList.includes("zero") ? true : false}
+              />
+
+              <CheckText>목적 및 정의 (필수)</CheckText>
+            </div>
+            <ViewContentsButton onClick={() => onOpenPopUp(0)}>
+              내용보기
+            </ViewContentsButton>
+          </EachCheckBoxFrame>
           <EachCheckBoxFrame>
             <div className="flex items-center">
               <CheckBox
