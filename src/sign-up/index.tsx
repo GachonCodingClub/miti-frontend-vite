@@ -178,8 +178,8 @@ export default function SignUp() {
         <SignUpFrame>
           <form>
             <MyInputBoxButton
-              placeholder="miti_001@gachon.ac.kr"
-              label="대학교 이메일"
+              placeholder="miti_001@gachon.ac.kr (@gachon.ac.kr)"
+              label="대학교 이메일 (@gachon.ac.kr의 이메일만 가능해요)"
               type="email"
               btnText={btnText}
               onClick={onClick}

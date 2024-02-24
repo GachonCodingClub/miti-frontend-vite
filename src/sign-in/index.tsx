@@ -98,7 +98,7 @@ export default function LogIn() {
         <LoginFrame>
           <InputElement
             type="email"
-            label="대학교 이메일"
+            label="대학교 이메일 (@gachon.ac.kr의 이메일만 가능해요)"
             placeholder="miti_001@gachon.ac.kr"
             value={loginEmail}
             onChange={onEmailChange}
