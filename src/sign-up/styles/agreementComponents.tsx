@@ -36,8 +36,8 @@ export const CheckBoxContainer = styled.div`
 
 // 체크박스 input 하나씩 담은 프레임
 export const EachCheckBoxFrame = styled.div`
-  padding: 16px;
   display: flex;
+  padding: 16px;
   width: 100%;
   justify-content: space-between;
 `;
