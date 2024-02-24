@@ -28,7 +28,6 @@ export default function CreateMeeting() {
       // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
       const response = await getApi({ link: `/groups/${id}` });
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.error("Error fetching group data:", error);

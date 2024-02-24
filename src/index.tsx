@@ -8,7 +8,6 @@ export default function MITI() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userToken);
     if (userToken) {
       navigate(ROUTES.MEETING_LIST);
     } else {

@@ -74,14 +74,6 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     error: partiesError,
   } = useGetParties(id);
 
-  useEffect(() => {
-    console.log(
-      "그룹",
-      decodedToken?.sub == group?.leaderUserSummaryDto.userId
-    );
-    console.log(parties);
-  }, []);
-
   const isGroupLeader =
     decodedToken?.sub === group?.leaderUserSummaryDto?.userId;
   const [selectedUserProfile, setSelectedUserProfile] = useState<IUser | null>(

@@ -40,8 +40,6 @@ export const fetchMeeting = async ({
     }
 
     const data = await response.json();
-    console.log("미팅 생성/업데이트 결과:", data);
-
     return data;
   } catch (error) {
     console.error("미팅 생성/업데이트 중 오류 발생:", error);
