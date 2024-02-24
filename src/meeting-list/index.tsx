@@ -17,11 +17,18 @@ import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
 import { useRecoilValue } from "recoil";
 import { SnackBarAtom } from "../atoms";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 export default function MeetingList() {
   useLoginGuard();
   const isRoomDeleted = useRecoilValue(SnackBarAtom);
   const navigate = useNavigate();
+
+  const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setDecodedToken(jwtDecode(storedToken + ""));
+  }, []);
 
   const [meetings, setMeetings] = useState<IGroup[]>([]);
   const [loading, setLoading] = useState(false);
@@ -87,15 +94,20 @@ export default function MeetingList() {
           +
         </CreateMeetingButton>
         <div className="divide-y-[1px]">
-          {meetings?.map((meeting, index) => (
-            <MeetingBoxComponent
-              onClick={() => {
-                navigate(`/meeting-list/${meeting?.id}`);
-              }}
-              meeting={meeting}
-              key={index}
-            />
-          ))}
+          {meetings?.map((meeting, index) => {
+            const isLeaderForGroup =
+              decodedToken?.sub === meeting?.leaderUserSummaryDto.userId;
+            return (
+              <MeetingBoxComponent
+                onClick={() => {
+                  navigate(`/meeting-list/${meeting?.id}`);
+                }}
+                meeting={meeting}
+                key={index}
+                isLeader={isLeaderForGroup}
+              />
+            );
+          })}
         </div>
         {loading && <div>로딩중...</div>}
         {/* 미팅 삭제하기를 통해 미팅리스트로 이동했을 경우 */}
