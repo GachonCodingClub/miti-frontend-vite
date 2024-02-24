@@ -85,23 +85,6 @@ export default function ChattingList() {
       hour12: false,
     });
   };
-
-  if (error) {
-    return (
-      <ChattingListLayout title="채팅">
-        <div>에러가 발생했어요</div>
-      </ChattingListLayout>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <ChattingListLayout title="채팅">
-        <div>로딩중이에요</div>
-      </ChattingListLayout>
-    );
-  }
-
   const getAlert = async (id: number) => {
     try {
       const res = await getApi({ link: `/message/${id}/refresh/last-read` });
@@ -110,9 +93,27 @@ export default function ChattingList() {
       return data;
     } catch (error) {
       console.error("알림 호출 오류:", error);
+      setAlertError("데이터를 불러오는데 실패했어요.");
       throw error;
     }
   };
+
+  const [alertError, setAlertError] = useState<string | null>(null);
+
+  if (error || alertError) {
+    return (
+      <ChattingListLayout title="채팅">
+        <div>{alertError || "에러가 발생했어요"}</div>{" "}
+      </ChattingListLayout>
+    );
+  }
+  if (isLoading) {
+    return (
+      <ChattingListLayout title="채팅">
+        <div>로딩중이에요</div>
+      </ChattingListLayout>
+    );
+  }
 
   const sortedData = data?.content?.sort(
     (a: { id: string | number }, b: { id: string | number }) => {

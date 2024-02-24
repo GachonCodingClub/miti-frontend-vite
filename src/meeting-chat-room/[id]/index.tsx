@@ -62,6 +62,7 @@ export default function MeetingChatRoom() {
       return data;
     } catch (error) {
       console.error("알림 오류", error);
+
       throw error;
     }
   };
