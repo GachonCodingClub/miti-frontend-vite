@@ -23,41 +23,14 @@ import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 
 export default function MeetingList() {
-  const [, setToken] = useState<string | null>(null);
-
-  const putToken = (tokenValue: string | null) => {
-    const headers = getHeaders(loginToken);
-    const bodyData = {
-      token: tokenValue,
-    };
-
-    const PutURL = `${import.meta.env.VITE_BASE_URL}/notification/token`;
-
-    fetch(PutURL, {
-      method: "PUT",
-      mode: "cors",
-      body: JSON.stringify(bodyData),
-      headers: headers,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          console.error(
-            `API 오류: ${response.status} - ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  const [token, setToken] = useState<string | null>(null);
+  const loginToken = useLocalStorageToken();
 
   const addListeners = async () => {
     await PushNotifications.addListener("registration", (token) => {
       console.info("Registration token: ", token.value);
       alert("Registration token: " + token.value);
       setToken(token.value);
-      putToken(token.value);
     });
 
     await PushNotifications.addListener("registrationError", (err) => {
@@ -97,7 +70,38 @@ export default function MeetingList() {
     await PushNotifications.register();
   };
 
-  const loginToken = useLocalStorageToken();
+  const putToken = (tokenValue: string | null) => {
+    const headers = getHeaders(loginToken);
+    const bodyData = {
+      token: tokenValue,
+    };
+
+    const PutURL = `${import.meta.env.VITE_BASE_URL}/notification/token`;
+
+    fetch(PutURL, {
+      method: "PUT",
+      mode: "cors",
+      body: JSON.stringify(bodyData),
+      headers: headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error(
+            `API 오류: ${response.status} - ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    if (token && loginToken) {
+      putToken(token); // 두 토큰이 모두 유효할 때 PUT 요청 실행
+    }
+  }, [token, loginToken]); // token과 loginToken 상태에 의존
 
   useLoginGuard();
   const isRoomDeleted = useRecoilValue(SnackBarAtom);
