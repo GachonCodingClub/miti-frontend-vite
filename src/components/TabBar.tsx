@@ -3,10 +3,15 @@ import { ROUTES } from "../routes";
 import { useEffect, useState } from "react";
 import { getApi } from "../api/getApi";
 import { IGroup } from "../model/group";
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 export function TabBar() {
   const location = useLocation();
   const [unread, setUnread] = useState(0);
+
+  const hapticsImpactLight = async () => {
+    await Haptics.impact({ style: ImpactStyle.Light });
+  };
 
   useEffect(() => {
     const getMyGroups = async () => {
@@ -30,7 +35,7 @@ export function TabBar() {
     unread >= 100 ? "99+" : unread.toString();
   return (
     <div className="w-full max-w-xl h-16 flex justify-around items-center fixed bottom-0 bg-white">
-      <Link to={ROUTES.MEETING_LIST}>
+      <Link to={ROUTES.MEETING_LIST} onClick={hapticsImpactLight}>
         <svg
           width="24"
           height="24"
@@ -48,7 +53,7 @@ export function TabBar() {
           />
         </svg>
       </Link>
-      <Link to={ROUTES.CHAT_LIST}>
+      <Link to={ROUTES.CHAT_LIST} onClick={hapticsImpactLight}>
         <svg
           width="24"
           height="24"
@@ -81,7 +86,7 @@ export function TabBar() {
           )}
         </svg>
       </Link>
-      <Link to={ROUTES.PROFILE}>
+      <Link to={ROUTES.PROFILE} onClick={hapticsImpactLight}>
         <svg
           width="24"
           height="24"
