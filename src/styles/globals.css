@@ -7,6 +7,9 @@ body {
   font-size: 16px;
   line-height: 16px;
   letter-spacing: -0.32px;
+
+  padding-top: constant(safe-area-inset-top); /* iOS 11.0 */
+  padding-top: env(safe-area-inset-top); /* iOS 11+ */
 }
 
 @font-face {

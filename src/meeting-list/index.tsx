@@ -132,7 +132,6 @@ export default function MeetingList() {
         setTotalPages(data.totalPages);
       } catch (error) {
         console.error("미팅 불러오기 실패:", error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
       } finally {
         addListeners();
         registerNotifications();
