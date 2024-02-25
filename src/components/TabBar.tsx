@@ -24,7 +24,7 @@ export function TabBar() {
     };
 
     getMyGroups();
-  }, []);
+  }, [location]);
 
   const formattedTotalUnreadMessages =
     unread >= 100 ? "99+" : unread.toString();
