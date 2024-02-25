@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../routes";
 import { useEffect, useState } from "react";
-import { getApi } from "../api/getApi";
 import { IGroup } from "../model/group";
+import { getApi } from "../api/getApi";
 import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 export function TabBar() {
