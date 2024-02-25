@@ -76,7 +76,7 @@ export const MyHeightSheet = ({
                     return (
                       <SheetBodyRow key="private">
                         <SheetElement>
-                          <SheetText onClick={() => onSelected("HIDDEN")}>
+                          <SheetText onClick={() => onSelected("비공개")}>
                             비공개
                           </SheetText>
                         </SheetElement>
