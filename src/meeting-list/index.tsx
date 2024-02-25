@@ -29,6 +29,7 @@ export default function MeetingList() {
       console.info("Registration token: ", token.value);
       alert("Registration token: " + token.value);
       setToken(token.value);
+      putToken();
     });
 
     await PushNotifications.addListener("registrationError", (err) => {
@@ -94,10 +95,6 @@ export default function MeetingList() {
         console.error(error);
       });
   };
-
-  useEffect(() => {
-    putToken();
-  }, []);
 
   useLoginGuard();
   const isRoomDeleted = useRecoilValue(SnackBarAtom);
