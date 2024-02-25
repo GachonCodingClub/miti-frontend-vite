@@ -196,7 +196,7 @@ export default function MeetingList() {
         {isRoomDeleted && (
           <SnackBar text="미팅을 나왔어요." onClick={() => {}} />
         )}
-        {token && <div>{token}</div>}
+
         {/* 페이징 버튼 */}
         <PageFrame>
           <PrevNextButton
