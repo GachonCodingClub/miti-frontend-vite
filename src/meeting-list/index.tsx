@@ -29,7 +29,6 @@ export default function MeetingList() {
   const addListeners = async () => {
     await PushNotifications.addListener("registration", (token) => {
       console.info("Registration token: ", token.value);
-      alert("Registration token: " + token.value);
       setToken(token.value);
     });
 
