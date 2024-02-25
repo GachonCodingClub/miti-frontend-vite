@@ -23,13 +23,41 @@ import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 
 export default function MeetingList() {
-  const [token, setToken] = useState<string | null>(null);
+  const [, setToken] = useState<string | null>(null);
+
+  const putToken = (tokenValue: string | null) => {
+    const headers = getHeaders(loginToken);
+    const bodyData = {
+      token: tokenValue,
+    };
+
+    const PutURL = `${import.meta.env.VITE_BASE_URL}/notification/token`;
+
+    fetch(PutURL, {
+      method: "PUT",
+      mode: "cors",
+      body: JSON.stringify(bodyData),
+      headers: headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error(
+            `API 오류: ${response.status} - ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const addListeners = async () => {
     await PushNotifications.addListener("registration", (token) => {
       console.info("Registration token: ", token.value);
       alert("Registration token: " + token.value);
       setToken(token.value);
-      putToken();
+      putToken(token.value);
     });
 
     await PushNotifications.addListener("registrationError", (err) => {
@@ -70,31 +98,6 @@ export default function MeetingList() {
   };
 
   const loginToken = useLocalStorageToken();
-  const headers = getHeaders(loginToken);
-  const bodyData = {
-    token: token,
-  };
-  const putToken = () => {
-    const PutURL = `${import.meta.env.VITE_BASE_URL}/notification/token`;
-
-    fetch(PutURL, {
-      method: "PUT",
-      mode: "cors",
-      body: JSON.stringify(bodyData),
-      headers: headers,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          console.error(
-            `API 오류: ${response.status} - ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
   useLoginGuard();
   const isRoomDeleted = useRecoilValue(SnackBarAtom);
