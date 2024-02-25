@@ -71,6 +71,7 @@ export default function MeetingChatRoom() {
 
   // 미티 웹소켓 주소
   const brokerUrl = `${import.meta.env.VITE_WEBSOCKET_URL}`;
+  console.log(brokerUrl);
   // client 객체가 StompJs.Client 타입을 따르도록
   const client = useRef<StompJs.Client>(null!); // WebSocket 클라이언트 객체
   // useRef 초기값을 null이 아님으로 설정
