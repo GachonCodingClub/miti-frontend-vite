@@ -18,8 +18,87 @@ import { ROUTES } from "../routes";
 import { useRecoilValue } from "recoil";
 import { SnackBarAtom } from "../atoms";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { PushNotifications } from "@capacitor/push-notifications";
+import { getHeaders } from "../components/getHeaders";
+import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 
 export default function MeetingList() {
+  const [token, setToken] = useState<string | null>(null);
+  const addListeners = async () => {
+    await PushNotifications.addListener("registration", (token) => {
+      console.info("Registration token: ", token.value);
+      alert("Registration token: " + token.value);
+      setToken(token.value);
+    });
+
+    await PushNotifications.addListener("registrationError", (err) => {
+      console.error("Registration error: ", err.error);
+    });
+
+    await PushNotifications.addListener(
+      "pushNotificationReceived",
+      (notification) => {
+        console.log("Push notification received: ", notification);
+      }
+    );
+
+    await PushNotifications.addListener(
+      "pushNotificationActionPerformed",
+      (notification) => {
+        console.log(
+          "Push notification action performed",
+          notification.actionId,
+          notification.inputValue
+        );
+      }
+    );
+  };
+
+  const registerNotifications = async () => {
+    let permStatus = await PushNotifications.checkPermissions();
+
+    if (permStatus.receive === "prompt") {
+      permStatus = await PushNotifications.requestPermissions();
+    }
+
+    if (permStatus.receive !== "granted") {
+      throw new Error("User denied permissions!");
+    }
+
+    await PushNotifications.register();
+  };
+
+  const loginToken = useLocalStorageToken();
+  const headers = getHeaders(loginToken);
+  const bodyData = {
+    token: token,
+  };
+  const putToken = () => {
+    const PutURL = `${import.meta.env.VITE_BASE_URL}/notification/token`;
+
+    fetch(PutURL, {
+      method: "PUT",
+      mode: "cors",
+      body: JSON.stringify(bodyData),
+      headers: headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error(
+            `API 오류: ${response.status} - ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    putToken();
+  }, []);
+
   useLoginGuard();
   const isRoomDeleted = useRecoilValue(SnackBarAtom);
   const navigate = useNavigate();
@@ -52,6 +131,8 @@ export default function MeetingList() {
         console.error("미팅 불러오기 실패:", error);
         alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
       } finally {
+        addListeners();
+        registerNotifications();
         setLoading(false);
       }
     };
@@ -115,6 +196,7 @@ export default function MeetingList() {
         {isRoomDeleted && (
           <SnackBar text="미팅을 나왔어요." onClick={() => {}} />
         )}
+        {token && <div>{token}</div>}
         {/* 페이징 버튼 */}
         <PageFrame>
           <PrevNextButton
