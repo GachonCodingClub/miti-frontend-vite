@@ -28,6 +28,7 @@ import Report from "./report";
 import Agreement from "./profile/setting/agreement";
 import Notice from "./profile/setting/notice";
 import BackButtonHandler from "./BackButtonHandler";
+import GlobalAlert from "./components/GlobalAlert";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +88,7 @@ const App = () => {
               <Route path="/report" element={<Report />} />
             </Routes>
             <CustomTabBar />
+            <GlobalAlert />
           </BrowserRouter>
         </div>
       </QueryClientProvider>

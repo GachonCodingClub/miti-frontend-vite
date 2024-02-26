@@ -15,8 +15,8 @@ import {
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
-import { useRecoilValue } from "recoil";
-import { SnackBarAtom } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { NewAlert, SnackBarAtom } from "../atoms";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { getHeaders } from "../components/getHeaders";
@@ -25,6 +25,8 @@ import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 export default function MeetingList() {
   const [token, setToken] = useState<string | null>(null);
   const loginToken = useLocalStorageToken();
+
+  const setNewAlert = useSetRecoilState(NewAlert);
 
   const addListeners = async () => {
     await PushNotifications.addListener("registration", (token) => {
@@ -36,12 +38,12 @@ export default function MeetingList() {
       console.error("Registration error: ", err.error);
     });
 
-    await PushNotifications.addListener(
-      "pushNotificationReceived",
-      (notification) => {
-        console.log("Push notification received: ", notification);
-      }
-    );
+    await PushNotifications.addListener("pushNotificationReceived", () => {
+      setNewAlert(true);
+      setTimeout(() => {
+        setNewAlert(false);
+      }, 1500);
+    });
 
     await PushNotifications.addListener(
       "pushNotificationActionPerformed",

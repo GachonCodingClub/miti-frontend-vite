@@ -32,3 +32,9 @@ export const SnackBarAtom = atom({
   key: "SnackBar",
   default: false,
 });
+
+// 새로운 알림
+export const NewAlert = atom({
+  key: "NewAlert",
+  default: false,
+});
