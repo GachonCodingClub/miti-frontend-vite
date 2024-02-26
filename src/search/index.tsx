@@ -96,7 +96,13 @@ export default function SearchPage() {
 
         <ul className="divide-y-[1px] pt-14">
           {searchResults.map((meeting, index) => (
-            <MeetingBoxComponent meeting={meeting} key={index} />
+            <MeetingBoxComponent
+              onClick={() => {
+                navigate(`/meeting-list/${meeting?.id}`);
+              }}
+              meeting={meeting}
+              key={index}
+            />
           ))}
         </ul>
       </PaddingScreen>
