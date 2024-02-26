@@ -150,10 +150,10 @@ export default function ChattingList() {
               <ChatAlertFrame>
                 <ChatText>
                   {lastMessages[group?.id]?.content.replace("[MITI]", "")
-                    .length > 64
+                    .length > 32
                     ? lastMessages[group?.id]?.content
                         .replace("[MITI]", "")
-                        .substring(0, 64) + "..."
+                        .substring(0, 32) + "..."
                     : lastMessages[group?.id]?.content.replace("[MITI]", "")}
                 </ChatText>
                 {(group?.unreadMessagesCount ?? 0) > 0 && (
