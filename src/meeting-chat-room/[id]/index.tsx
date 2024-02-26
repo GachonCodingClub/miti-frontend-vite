@@ -71,7 +71,7 @@ export default function MeetingChatRoom() {
 
   // 미티 웹소켓 주소
   const brokerUrl = `${import.meta.env.VITE_WEBSOCKET_URL}`;
-  console.log(brokerUrl);
+
   // client 객체가 StompJs.Client 타입을 따르도록
   const client = useRef<StompJs.Client>(null!); // WebSocket 클라이언트 객체
   // useRef 초기값을 null이 아님으로 설정
@@ -139,6 +139,8 @@ export default function MeetingChatRoom() {
     setCharCount(e.target.value.length);
   };
 
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
   // 폼 제출 이벤트 핸들러 함수
   const handleSubmit = (
     event: { preventDefault: () => void }, // 제출 이벤트
@@ -161,6 +163,12 @@ export default function MeetingChatRoom() {
     );
     setMessage("");
     setCharCount(0);
+
+    // 메시지 전송 후 입력 필드에 포커스를 다시 맞춥니다.
+    // ref 객체의 current 속성이 실제 DOM 요소를 가리키는지 확인
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }; // 제출된 JSON문자열은 서버로 전송됨
 
   useEffect(() => {
@@ -246,6 +254,7 @@ export default function MeetingChatRoom() {
             <input placeholder="groupId" type="number" value={id} hidden />
             <ChattingInputDiv>
               <ChattingInput
+                ref={inputRef}
                 placeholder="메시지 입력"
                 value={message}
                 onChange={handleChangeMessage}
