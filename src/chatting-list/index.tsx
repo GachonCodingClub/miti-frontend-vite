@@ -149,7 +149,12 @@ export default function ChattingList() {
               {/* 알림이 있을 경우 표시 */}
               <ChatAlertFrame>
                 <ChatText>
-                  {lastMessages[group?.id]?.content.replace("[MITI]", "")}
+                  {lastMessages[group?.id]?.content.replace("[MITI]", "")
+                    .length > 64
+                    ? lastMessages[group?.id]?.content
+                        .replace("[MITI]", "")
+                        .substring(0, 64) + "..."
+                    : lastMessages[group?.id]?.content.replace("[MITI]", "")}
                 </ChatText>
                 {(group?.unreadMessagesCount ?? 0) > 0 && (
                   <AlertCircle>

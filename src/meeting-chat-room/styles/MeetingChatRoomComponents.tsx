@@ -75,13 +75,14 @@ export const MyChatting = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   gap: 4px;
-  width: 66%;
+  max-width: 66%;
 `;
 
 // 내 채팅 버블
 export const MyChattingBubble = styled.div`
   display: flex;
   padding: 8px 12px;
+  max-width: 100%;
   align-items: flex-start;
   border-radius: 12px 2px 12px 12px;
   background: #ffe8d0;
@@ -92,6 +93,8 @@ export const ChattingText = styled.span`
   line-height: 20px;
   white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
 `;
 
 // 채팅 시간
@@ -160,7 +163,7 @@ export const ChattingInput = styled.textarea`
 export const ScrollToBottomButton = styled.button`
   position: fixed;
   right: 20px;
-  bottom: 70px;
+  bottom: 100px;
   padding: 10px 10px;
   background-color: rgba(206, 206, 206, 0.1);
 
