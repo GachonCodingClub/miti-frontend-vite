@@ -1,6 +1,6 @@
 import "./styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import SignUp from "./sign-up";
 import LogIn from "./sign-in";
@@ -27,34 +27,17 @@ import { CustomTabBar } from "./components/CustomTabBar";
 import Report from "./report";
 import Agreement from "./profile/setting/agreement";
 import Notice from "./profile/setting/notice";
-import { useEffect } from "react";
-import { App as CapacitorApp } from "@capacitor/app";
+import BackButtonHandler from "./BackButtonHandler";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const registerBackButton = async () => {
-      const backListener = await CapacitorApp.addListener("backButton", () => {
-        if (window.history.length > 1) {
-          navigate(-1);
-        } else {
-          CapacitorApp.exitApp(); // 더 이상 뒤로 갈 페이지가 없으면 앱 종료
-        }
-      });
-
-      return () => backListener.remove();
-    };
-
-    registerBackButton();
-  }, [navigate]);
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <div className="w-full max-w-xl mx-auto">
           <BrowserRouter>
+            <BackButtonHandler />
             <Routes>
               {/* 기본 미티 화면 */}
               <Route path="/" element={<MITI />} />
