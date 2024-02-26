@@ -313,8 +313,9 @@ export default function EditProfile() {
                 contents="닉네임을 확인해주세요."
                 onRightClick={() => {
                   setEditError(false);
+                  navigate(-1);
                 }}
-                right="닫기"
+                right="프로필 화면으로 이동"
               />
             </Overlay>
           )}
