@@ -201,7 +201,7 @@ export default function SignUp() {
               />
             </Overlay>
           )}
-          {showDialog && (
+          {!overlapError && showDialog && (
             <Overlay>
               <DialogOneBtn
                 title="인증 메일이 전송되었습니다."
