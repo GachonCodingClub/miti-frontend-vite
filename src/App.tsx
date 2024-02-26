@@ -1,6 +1,6 @@
 import "./styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import SignUp from "./sign-up";
 import LogIn from "./sign-in";
@@ -33,21 +33,23 @@ import { App as CapacitorApp } from "@capacitor/app";
 const queryClient = new QueryClient();
 
 const App = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // 비동기 작업을 수행하는 별도의 함수 선언
     const registerBackButton = async () => {
       const backListener = await CapacitorApp.addListener("backButton", () => {
-        window.history.back();
+        if (window.history.length > 1) {
+          navigate(-1);
+        } else {
+          CapacitorApp.exitApp(); // 더 이상 뒤로 갈 페이지가 없으면 앱 종료
+        }
       });
 
-      // 클린업 함수에서는 리스너를 제거
       return () => backListener.remove();
     };
-    registerBackButton();
 
-    // useEffect 훅에서는 클린업 함수나 undefined를 반환해야 하므로,
-    // 비동기 함수 내에서 클린업 로직을 처리하고, 여기서는 별도의 반환을 하지 않음
-  }, []);
+    registerBackButton();
+  }, [navigate]);
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
