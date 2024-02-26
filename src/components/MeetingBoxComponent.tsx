@@ -42,7 +42,7 @@ export default function MeetingBoxComponent({
       )}
       <div className="flex flex-col gap-2">
         <MeetingTitle>
-          <span className="text-base font-medium text-gray-800 flex gap-1">
+          <span className="text-base font-medium text-gray-800 flex">
             {meeting.title} {isLeader && <OrangeCrownIcon />}
           </span>
           <span className="text-xs font-normal text-gray-300">

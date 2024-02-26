@@ -29,6 +29,7 @@ export const ChattingFrame = styled.div`
   padding: 16px 24px;
   gap: 16px;
   border-bottom: 1px solid #f2f0ef;
+  height: 80px;
 `;
 
 export const TitleMemberTimeFrame = styled.div`
@@ -72,6 +73,11 @@ export const ChatText = styled.span`
   line-height: 14px;
   letter-spacing: -0.01em;
   color: #a7a7a7;
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
 `;
 
 export const AlertCircle = styled.div`
