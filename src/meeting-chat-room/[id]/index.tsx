@@ -133,13 +133,31 @@ export default function MeetingChatRoom() {
     client.current.deactivate();
   };
 
-  // 채팅 메시지
-  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-    setCharCount(e.target.value.length);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const [isComposing, setIsComposing] = useState(false);
+
+  const handleCompositionStart = () => {
+    setIsComposing(true);
   };
 
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const handleCompositionEnd = (
+    e: React.CompositionEvent<HTMLTextAreaElement>
+  ) => {
+    setIsComposing(false);
+    // e.target은 EventTarget 타입이므로, HTMLTextAreaElement로 타입 캐스팅이 필요합니다.
+    const target = e.currentTarget as HTMLTextAreaElement;
+    setMessage(target.value);
+    setCharCount(target.value.length);
+  };
+
+  // 채팅 메시지
+  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (!isComposing) {
+      setMessage(e.target.value);
+      setCharCount(e.target.value.length);
+    }
+  };
 
   // 폼 제출 이벤트 핸들러 함수
   const handleSubmit = (
@@ -258,6 +276,8 @@ export default function MeetingChatRoom() {
                 placeholder="메시지 입력"
                 value={message}
                 onInput={handleChangeMessage}
+                onCompositionStart={handleCompositionStart}
+                onCompositionEnd={handleCompositionEnd}
               />
               <button type="submit">
                 {message.trim() === "" ? (
