@@ -27,10 +27,27 @@ import { CustomTabBar } from "./components/CustomTabBar";
 import Report from "./report";
 import Agreement from "./profile/setting/agreement";
 import Notice from "./profile/setting/notice";
+import { useEffect } from "react";
+import { App as CapacitorApp } from "@capacitor/app";
 
 const queryClient = new QueryClient();
 
 const App = () => {
+  useEffect(() => {
+    // 비동기 작업을 수행하는 별도의 함수 선언
+    const registerBackButton = async () => {
+      const backListener = await CapacitorApp.addListener("backButton", () => {
+        window.history.back();
+      });
+
+      // 클린업 함수에서는 리스너를 제거
+      return () => backListener.remove();
+    };
+    registerBackButton();
+
+    // useEffect 훅에서는 클린업 함수나 undefined를 반환해야 하므로,
+    // 비동기 함수 내에서 클린업 로직을 처리하고, 여기서는 별도의 반환을 하지 않음
+  }, []);
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>

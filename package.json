@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/app": "^5.0.7",
     "@capacitor/haptics": "^5.0.7",
     "@capacitor/push-notifications": "^5.1.1",
     "@stomp/stompjs": "^7.0.0",
