@@ -167,6 +167,7 @@ export default function MeetingChatRoom() {
     // 메시지 전송 후 입력 필드에 포커스를 다시 맞춥니다.
     // ref 객체의 current 속성이 실제 DOM 요소를 가리키는지 확인
     if (inputRef.current) {
+      inputRef.current.value = "";
       inputRef.current.focus();
     }
   }; // 제출된 JSON문자열은 서버로 전송됨
