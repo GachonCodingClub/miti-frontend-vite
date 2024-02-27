@@ -101,10 +101,9 @@ export default function RequestProfile() {
                     <DialogOneBtn
                       title={`${user.nickname}님의 그룹을 수락했어요.`}
                       contents=""
-                      onRightClick={() => {
-                        setDialogState(party.partyId, "accept", false);
-                        navigate(-1);
-                      }}
+                      onRightClick={() =>
+                        setDialogState(party.partyId, "accept", false)
+                      }
                       right="닫기"
                     />
                   </Overlay>
@@ -114,10 +113,9 @@ export default function RequestProfile() {
                     <DialogOneBtn
                       title={`${user.nickname}님의 그룹을 거절했어요.`}
                       contents=""
-                      onRightClick={() => {
-                        setDialogState(party.partyId, "reject", false);
-                        navigate(-1);
-                      }}
+                      onRightClick={() =>
+                        setDialogState(party.partyId, "reject", false)
+                      }
                       right="닫기"
                     />
                   </Overlay>
