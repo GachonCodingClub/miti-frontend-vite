@@ -59,18 +59,15 @@ export default function MeetingList() {
 
   const registerNotifications = async () => {
     let permStatus = await PushNotifications.checkPermissions();
-
     if (permStatus.receive === "prompt") {
       permStatus = await PushNotifications.requestPermissions();
     }
-
-    if (permStatus.receive !== "granted") {
-      throw new Error("User denied permissions!");
+    if (permStatus.receive === "granted") {
+      await PushNotifications.register();
+    } else {
+      console.error("User denied permissions!");
     }
-
-    await PushNotifications.register();
   };
-
   const putToken = (tokenValue: string | null) => {
     const headers = getHeaders(loginToken);
     const bodyData = {
