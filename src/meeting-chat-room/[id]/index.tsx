@@ -27,7 +27,6 @@ import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
 import useGetMyProfile from "../../api/useGetMyProfile";
-import { Keyboard } from "@capacitor/keyboard";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -182,26 +181,6 @@ export default function MeetingChatRoom() {
     }
   };
 
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  // @capacitor/keyboard 이벤트 리스너 추가
-  useEffect(() => {
-    // 키보드가 나타날 때
-    const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
-      console.log("Keyboard will show with height:", info.keyboardHeight);
-      setKeyboardHeight(info.keyboardHeight);
-    });
-
-    // 키보드가 사라질 때
-    const hideListener = Keyboard.addListener("keyboardWillHide", () => {
-      setKeyboardHeight(0);
-    });
-
-    return () => {
-      showListener.remove();
-      hideListener.remove();
-    };
-  }, []);
-
   useEffect(() => {
     connect(); // // 컴포넌트가 마운트될 때 WebSocket 연결
     return () => disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
@@ -283,7 +262,7 @@ export default function MeetingChatRoom() {
           </div>
           <form onSubmit={(event) => handleSubmit(event, message, id)}>
             <input placeholder="groupId" type="number" value={id} hidden />
-            <ChattingInputDiv style={{ marginBottom: keyboardHeight }}>
+            <ChattingInputDiv>
               <ChattingInput
                 placeholder="메시지 입력"
                 value={message}
