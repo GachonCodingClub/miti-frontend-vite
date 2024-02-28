@@ -34,7 +34,7 @@ export function TabBar() {
   const formattedTotalUnreadMessages =
     unread >= 100 ? "99+" : unread.toString();
   return (
-    <div className="w-full max-w-xl h-16 flex justify-around items-center fixed bottom-0 bg-white">
+    <div className="w-full max-w-xl pb-3 h-16 flex justify-around items-center fixed bottom-0 bg-white">
       <Link to={ROUTES.MEETING_LIST} onClick={hapticsImpactLight}>
         <svg
           width="24"
