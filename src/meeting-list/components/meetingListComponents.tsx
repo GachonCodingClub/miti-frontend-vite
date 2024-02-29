@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { PaddingScreen } from "../../components/styles/Screen";
 
 export const MeetingListScreen = styled(PaddingScreen)`
-  padding-bottom: 92px;
+  padding-bottom: 108px;
 `;
 
 export const MeetingBox = styled.div`
@@ -41,7 +41,7 @@ export const CreateMeetingButton = styled.button`
   width: 48px;
   height: 48px;
   position: fixed;
-  bottom: 108px;
+  bottom: 116px;
   right: 24px;
   border-radius: 50%;
   color: white;
@@ -60,17 +60,18 @@ export const AlertMessage = styled.div`
 export const PageFrame = styled.div`
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   position: fixed;
   max-width: 36rem;
   width: 100%;
   background-color: #fff;
   bottom: 64px;
-  padding: 5px 0px;
 `;
 
 export const PrevNextButton = styled.button`
   font-size: 14px;
   font-weight: 500;
+  padding: 16px;
 `;
 
 export const PageNum = styled.button<{ isActive: boolean }>`
@@ -79,4 +80,8 @@ export const PageNum = styled.button<{ isActive: boolean }>`
   height: 18px;
   background-color: ${({ isActive }) => (isActive ? "#ececec" : "#ffffff")};
   border-radius: 100px;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

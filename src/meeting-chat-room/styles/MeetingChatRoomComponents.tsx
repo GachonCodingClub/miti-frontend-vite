@@ -25,7 +25,6 @@ export const ChatWindowContainer = styled.div`
   overflow-y: auto;
   padding: 10px 10px 10px 10px;
   max-height: 80vh;
-  position: fixed;
 `;
 
 // 날짜랑 누구누구 입장/퇴장 프레임
@@ -134,7 +133,7 @@ export const ChattingInputDiv = styled.div`
   display: flex;
   width: 100%;
   max-width: 36rem;
-  padding: 24px 24px;
+  padding: 8px 24px 24px 24px;
   align-items: center;
   position: fixed;
   bottom: 0;

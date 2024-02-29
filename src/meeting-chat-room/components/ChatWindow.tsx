@@ -28,6 +28,7 @@ interface ChatWindowProps {
   profileNickname: string | undefined;
   id: string | undefined;
   setChatList: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+  keyboardHeight: number;
 }
 
 interface ChatDisplayOptions {
@@ -91,6 +92,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   setChatList,
   profileNickname,
   id,
+  keyboardHeight,
 }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -196,8 +198,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     // chatList가 변경될 때마다 이 useEffect가 실행됨
   }, [chatList]); // chatList가 변경될 때마다 이 효과를 재실행
 
+  const containerStyle = {
+    paddingBottom: keyboardHeight + "px",
+  };
+
+  useEffect(() => {
+    if (keyboardHeight > 0) {
+      // 키보드 높이가 0보다 크다면, 즉 키보드가 활성화되었다면
+      chatEndRef.current?.scrollIntoView();
+      // chatEndRef는 채팅 컨테이너 내에서 가장 하단을 가리키는 요소의 참조여야 합니다.
+    }
+  }, [keyboardHeight]);
+
   return (
-    <ChatWindowContainer ref={chatContainerRef}>
+    <ChatWindowContainer style={containerStyle} ref={chatContainerRef}>
       {chatList.map((chat, index) => {
         const {
           displayTime,

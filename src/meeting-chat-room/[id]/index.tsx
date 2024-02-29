@@ -27,6 +27,7 @@ import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
 import useGetMyProfile from "../../api/useGetMyProfile";
+import { Keyboard } from "@capacitor/keyboard";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -227,6 +228,30 @@ export default function MeetingChatRoom() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
 
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  useEffect(() => {
+    // 키보드가 나타날 때
+    const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
+      setKeyboardHeight(info.keyboardHeight); // 키보드 높이 설정
+    });
+
+    // 키보드가 사라질 때
+    const hideListener = Keyboard.addListener("keyboardWillHide", () => {
+      setKeyboardHeight(0); // 키보드 높이를 0으로 리셋
+    });
+
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }, []);
+
+  // ChattingInputDiv 컴포넌트의 스타일을 조정합니다.
+  // 예: 키보드 높이만큼 padding-bottom을 추가하여 textarea를 위로 올립니다.
+  const chattingInputDivStyle = {
+    paddingBottom: keyboardHeight + "px",
+  };
+
   if (groupError) return <div>데이터 로딩 중 오류 발생</div>;
   return (
     <>
@@ -253,6 +278,7 @@ export default function MeetingChatRoom() {
               setChatList={setChatList}
               profileNickname={profile?.nickname}
               id={id}
+              keyboardHeight={keyboardHeight}
             />
           </>
           <div>
@@ -262,7 +288,7 @@ export default function MeetingChatRoom() {
           </div>
           <form onSubmit={(event) => handleSubmit(event, message, id)}>
             <input placeholder="groupId" type="number" value={id} hidden />
-            <ChattingInputDiv>
+            <ChattingInputDiv style={chattingInputDivStyle}>
               <ChattingInput
                 placeholder="메시지 입력"
                 value={message}
