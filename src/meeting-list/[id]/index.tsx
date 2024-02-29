@@ -27,7 +27,6 @@ import {
   MemberInfo,
   MemberDetail,
   JoinButtonBox,
-  AddMemberWrapper,
 } from "../components/meetingDetail.Components";
 import { useNavigate, useParams } from "react-router-dom";
 import { Overlay } from "../../sign-up/styles/detailComponents";
@@ -315,41 +314,39 @@ export default function MeetingDetail() {
           {showAdd && (
             <Overlay>
               <DialogContainer>
-                <AddMemberWrapper>
-                  <div className="flex items-center relative">
-                    <div
-                      className="bg-[#f2f0ef] rounded-full absolute -right-4"
-                      onClick={() => {
-                        setShowAdd(false);
-                      }}
-                    >
-                      <XIcon />
-                    </div>
-                    <AddMemberText>
-                      닉네임으로 본인 외의 참여자 추가(선택 입력)
-                    </AddMemberText>
+                <div className="flex items-center flex-row-reverse justify-evenly ">
+                  <div
+                    className="bg-[#f2f0ef] rounded-full p-1 ml-4"
+                    onClick={() => {
+                      setShowAdd(false);
+                    }}
+                  >
+                    <XIcon />
                   </div>
+                  <AddMemberText>
+                    닉네임으로 본인 외의 참여자 추가(선택 입력)
+                  </AddMemberText>
+                </div>
 
-                  <div className="flex items-center">
-                    <MyInputBoxSVG
-                      onClick={() => {}}
-                      label=""
-                      value={inputAddNickname}
-                      onChange={(e) => setInputAddNickname(e.target.value)}
-                      placeholder="추가 참여자 닉네임(선택 입력)"
-                      type="text"
-                    />
-                    <AddMemberButton onClick={onAddNicknameClick}>
-                      +
-                    </AddMemberButton>
-                  </div>
-                  {showAdd && additionalParticipants.length > 0 && (
-                    <AdditionalParticipantsList
-                      participants={additionalParticipants}
-                      onRemoveNicknameClick={onRemoveNicknameClick}
-                    />
-                  )}
-                </AddMemberWrapper>
+                <div className="flex">
+                  <MyInputBoxSVG
+                    onClick={() => {}}
+                    label=""
+                    value={inputAddNickname}
+                    onChange={(e) => setInputAddNickname(e.target.value)}
+                    placeholder="추가 참여자 닉네임(선택 입력)"
+                    type="text"
+                  />
+                  <AddMemberButton onClick={onAddNicknameClick}>
+                    +
+                  </AddMemberButton>
+                </div>
+                {showAdd && additionalParticipants.length > 0 && (
+                  <AdditionalParticipantsList
+                    participants={additionalParticipants}
+                    onRemoveNicknameClick={onRemoveNicknameClick}
+                  />
+                )}
 
                 <LongOrangeBtn text="신청하기" onClick={onSubmitClick} />
               </DialogContainer>
