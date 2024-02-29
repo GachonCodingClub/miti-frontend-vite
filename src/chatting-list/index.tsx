@@ -146,15 +146,18 @@ export default function ChattingList() {
                 </TimeText>
               </TitleMemberTimeFrame>
 
-              {/* 알림이 있을 경우 표시 */}
               <ChatAlertFrame>
                 <ChatText>
-                  {lastMessages[group?.id]?.content.replace("[MITI]", "")
-                    .length > 32
+                  {lastMessages[group?.id]?.content
+                    .replace("[MITI]", "")
+                    .replace(/\n/g, "").length > 32 // 여기에 추가: 모든 개행 문자를 제거
                     ? lastMessages[group?.id]?.content
                         .replace("[MITI]", "")
+                        .replace(/\n/g, "") // 여기에도 추가: 문자열을 잘라내기 전에 개행 문자 제거
                         .substring(0, 32) + "..."
-                    : lastMessages[group?.id]?.content.replace("[MITI]", "")}
+                    : lastMessages[group?.id]?.content
+                        .replace("[MITI]", "")
+                        .replace(/\n/g, "")}
                 </ChatText>
                 {(group?.unreadMessagesCount ?? 0) > 0 && (
                   <AlertCircle>
