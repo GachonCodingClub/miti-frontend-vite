@@ -134,6 +134,8 @@ export default function MeetingChatRoom() {
     client.current.deactivate();
   };
 
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
+
   // 채팅 메시지
   const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
@@ -162,25 +164,13 @@ export default function MeetingChatRoom() {
     );
     setMessage("");
     setCharCount(0);
-  }; // 제출된 JSON문자열은 서버로 전송됨
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // 엔터키가 입력되었으나 Shift키가 동시에 눌리지 않았을 경우 메시지 전송
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // 기본 동작(줄바꿈) 방지
-      if (message.trim() !== "") {
-        publish(
-          JSON.stringify({
-            message: message.trim(),
-            sender: decoded.sub,
-            groupId: id,
-          })
-        );
-        setMessage("");
-        setCharCount(0);
+    setTimeout(() => {
+      if (messageInputRef.current) {
+        messageInputRef.current.focus();
       }
-    }
-  };
+    }, 0);
+  }; // 제출된 JSON문자열은 서버로 전송됨
 
   useEffect(() => {
     connect(); // // 컴포넌트가 마운트될 때 WebSocket 연결
@@ -293,22 +283,24 @@ export default function MeetingChatRoom() {
                 placeholder="메시지 입력"
                 value={message}
                 onChange={handleChangeMessage}
-                onKeyDown={handleKeyDown}
+                ref={messageInputRef}
               />
-              <button type="submit">
-                {message.trim() === "" ? (
-                  <SendIcon active={false} />
-                ) : (
-                  <SendIcon active={true} />
+              <div>
+                <button className="pr-1 z-10">
+                  {message.trim() === "" ? (
+                    <SendIcon active={false} />
+                  ) : (
+                    <SendIcon active={true} />
+                  )}
+                </button>
+                {charCount >= 0 && (
+                  <div className="fixed">
+                    <CharCount>
+                      {charCount} / {MAX_INTRODUCE_LENGTH}
+                    </CharCount>
+                  </div>
                 )}
-              </button>
-              {charCount >= 0 && (
-                <div className="absolute bottom-1 right-2">
-                  <CharCount>
-                    {charCount} / {MAX_INTRODUCE_LENGTH}
-                  </CharCount>
-                </div>
-              )}
+              </div>
             </ChattingInputDiv>
           </form>
           {/* 사이드 메뉴 */}
