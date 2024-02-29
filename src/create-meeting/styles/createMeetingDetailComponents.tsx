@@ -48,6 +48,7 @@ export const AddMemberText = styled.div`
 // 사용자 추가 + 버튼
 export const AddMemberButton = styled.button`
   font-size: 2rem;
+  padding: 8px;
   color: var(--Grey-grey500, #767170);
 `;
 
@@ -68,6 +69,5 @@ export const SubmitButtonFrame = styled.div`
   gap: 10px;
   background: var(--grey-scale-coolgrey-00, #fff);
 
-  /* Bottom btn shadow */
   box-shadow: 0px -2px 4px 0px rgba(18, 22, 26, 0.04);
 `;

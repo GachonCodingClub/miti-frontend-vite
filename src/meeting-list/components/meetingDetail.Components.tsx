@@ -62,10 +62,6 @@ export const MemberDetail = styled.div`
   }
 `;
 
-export const AddMemberWrapper = styled.div`
-  padding: 0px 16px;
-`;
-
 export const JoinButtonBox = styled(FixedButtonBox)`
   padding: 16px 16px 48px 16px;
   box-shadow: 0px -2px 4px 0px rgba(18, 22, 26, 0.04);
