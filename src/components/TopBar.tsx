@@ -16,9 +16,11 @@ const Wrapper = styled.div`
   display: flex;
   position: fixed;
   width: 100%;
+
   max-width: 36rem;
-  padding: 16px 24px;
-  align-items: flex-start;
+  padding: 8px 8px 0px 8px;
+
+  align-items: center;
   gap: 16px;
   background: var(--grey-grey-00, #fff);
   z-index: 10;
@@ -30,10 +32,15 @@ const TopBarText = styled.span`
   font-weight: 500;
   line-height: 24px;
   letter-spacing: -0.32px;
+  padding: 8px;
 `;
 
-const LeftIconWrapper = styled.div``;
-const RightIconWrapper = styled.div``;
+const LeftIconWrapper = styled.div`
+  padding: 16px;
+`;
+const RightIconWrapper = styled.div`
+  padding: 16px;
+`;
 
 export const TopBar = ({
   title,
