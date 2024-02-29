@@ -22,10 +22,11 @@ export const ChatWindowContainer = styled.div`
   gap: 16px;
   margin: auto;
   width: 100%;
+  max-width: 36rem;
   overflow-y: auto;
-  padding: 10px 10px 20px 10px;
+  padding: 10px 10px 80px 10px;
   max-height: 90vh;
-  position: relative;
+  position: fixed;
 `;
 
 // 날짜랑 누구누구 입장/퇴장 프레임
