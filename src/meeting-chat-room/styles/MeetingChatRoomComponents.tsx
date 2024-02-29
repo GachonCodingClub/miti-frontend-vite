@@ -20,12 +20,11 @@ export const ChatWindowContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  margin: auto;
   width: 100%;
   max-width: 36rem;
   overflow-y: auto;
-  padding: 10px 10px 80px 10px;
-  max-height: 90vh;
+  padding: 10px 10px 10px 10px;
+  max-height: 80vh;
   position: fixed;
 `;
 
@@ -150,7 +149,7 @@ export const ChattingInput = styled.textarea`
   height: auto;
   overflow-y: auto;
   resize: none;
-
+  padding: 12px 0px;
   width: 100%;
   ::placeholder {
     color: #c0c0c0;
@@ -164,7 +163,7 @@ export const ChattingInput = styled.textarea`
 export const ScrollToBottomButton = styled.button`
   position: fixed;
   right: 20px;
-  bottom: 100px;
+  bottom: 120px;
   padding: 10px 10px;
   background-color: rgba(206, 206, 206, 0.1);
 
