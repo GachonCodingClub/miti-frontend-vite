@@ -5,9 +5,9 @@ export const FixedButtonBox = styled.div`
   position: fixed;
   width: 100%;
   max-width: 36rem;
-  padding: 0 16px;
+  padding: 0px 16px;
   bottom: 0;
-  padding-bottom: 10px;
+  padding-bottom: 48px;
   background-color: #fff;
 `;
 
