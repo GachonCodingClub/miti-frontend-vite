@@ -4,7 +4,7 @@ import {
   LongOrangeBtn,
   LongWhiteBtn,
 } from "../../components/styles/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getApi } from "../../api/getApi";
 import {
   ArrowbackIcon,
@@ -33,10 +33,7 @@ import { Overlay } from "../../sign-up/styles/detailComponents";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { formatDate } from "../../utils";
 import { getHeaders } from "../../components/getHeaders";
-import {
-  AddMemberButton,
-  AddMemberText,
-} from "../../create-meeting/styles/createMeetingDetailComponents";
+import { AddMemberButton } from "../../create-meeting/styles/createMeetingDetailComponents";
 import { MyInputBoxSVG } from "../../components/MyInputBox";
 import AdditionalParticipantsList from "../../create-meeting/components/additionalParticipantsList";
 import useGetGroups from "../../api/useGetGroups";
@@ -157,11 +154,15 @@ export default function MeetingDetail() {
         setAdditionalParticipants([...additionalParticipants, trimmedNickname]);
         setInputAddNickname(""); // 추가 후 입력 필드를 지움
       }
+
+      inputRef.current?.focus();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
       alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
     }
   };
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const bodyData = {
     nicknames: [...additionalParticipants],
@@ -314,24 +315,22 @@ export default function MeetingDetail() {
           {showAdd && (
             <Overlay>
               <DialogContainer>
-                <div className="flex items-center flex-row-reverse justify-evenly ">
+                <div className="flex">
                   <div
-                    className="bg-[#f2f0ef] rounded-full p-1 ml-4"
+                    className="bg-[#f2f0ef] fixed rounded-full p-1 right-4 top-3 "
                     onClick={() => {
                       setShowAdd(false);
                     }}
                   >
                     <XIcon />
                   </div>
-                  <AddMemberText>
-                    닉네임으로 본인 외의 참여자 추가(선택 입력)
-                  </AddMemberText>
                 </div>
 
-                <div className="flex">
+                <div className="flex items-center">
                   <MyInputBoxSVG
+                    ref={inputRef}
                     onClick={() => {}}
-                    label=""
+                    label=" 닉네임으로 본인 외의 참여자 추가(선택 입력)"
                     value={inputAddNickname}
                     onChange={(e) => setInputAddNickname(e.target.value)}
                     placeholder="추가 참여자 닉네임(선택 입력)"
