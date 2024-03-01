@@ -1,3 +1,5 @@
+import React from "react";
+import { ForwardedRef } from "react";
 import styled from "styled-components";
 
 // 작은 인증 오렌지 버튼
@@ -212,35 +214,41 @@ interface InputProps extends InputElementProps {
   pattern?: string;
 }
 
-export const InputBoxWithSVG = ({
-  placeholder,
-  label,
-  type,
-  onClick,
-  value,
-  onChange,
-  svg,
-  caution,
-  disable,
-  pattern,
-}: InputProps) => {
-  const hasCaution = !!caution;
+export const InputBoxWithSVG = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      placeholder,
+      label,
+      type,
+      onClick,
+      value,
+      onChange,
+      svg,
+      caution,
+      disable,
+      pattern,
+    },
+    ref: ForwardedRef<HTMLInputElement> // ref 타입 명시
+  ) => {
+    const hasCaution = !!caution;
 
-  return (
-    <InputBoxWrapper>
-      <InputBoxText>{label}</InputBoxText>
-      <SVGInputContainer error={hasCaution}>
-        <SVGInput
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          disabled={disable}
-          pattern={pattern}
-        />
-        <SVGBtn onClick={onClick}>{svg}</SVGBtn>
-      </SVGInputContainer>
-      {hasCaution && <CautionMessage>{caution}</CautionMessage>}
-    </InputBoxWrapper>
-  );
-};
+    return (
+      <InputBoxWrapper>
+        <InputBoxText>{label}</InputBoxText>
+        <SVGInputContainer error={hasCaution}>
+          <SVGInput
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            disabled={disable}
+            pattern={pattern}
+            ref={ref}
+          />
+          <SVGBtn onClick={onClick}>{svg}</SVGBtn>
+        </SVGInputContainer>
+        {hasCaution && <CautionMessage>{caution}</CautionMessage>}
+      </InputBoxWrapper>
+    );
+  }
+);
