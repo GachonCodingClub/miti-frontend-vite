@@ -35,7 +35,6 @@ export const fetchSignUp = async (
     weight: userWeight,
     userId: userEmail,
     password: userPassword,
-    userName: "A",
     description: userIntroduce,
   });
 
