@@ -55,18 +55,15 @@ export default function Report() {
           console.error(
             `API 오류: ${response.status} - ${response.statusText}`
           );
-          navigate(-1);
+          if (response.status === 404) {
+            alert("대상의 닉네임을 다시 확인해주세요.");
+          }
         }
         return response.json();
       })
-      .then((data) => {
-        console.log(data);
-        navigate(-1);
-      })
       .then((error) => {
+        alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
         console.error(error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
-        navigate(-1);
       });
     navigate(-1);
   };
