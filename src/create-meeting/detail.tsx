@@ -29,6 +29,7 @@ import { getHeaders } from "../components/getHeaders";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 import useGetGroups from "../api/useGetGroups";
 import useGetMyProfile from "../api/useGetMyProfile";
+import { Keyboard } from "@capacitor/keyboard";
 
 export default function CreateMeetingDetail() {
   const { meetingTitle, meetingDesc } = useRecoilStates();
@@ -268,13 +269,36 @@ export default function CreateMeetingDetail() {
       }
     }
   };
+
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    // iOS에서만 키보드 높이를 감지하고 상태를 업데이트합니다.
+    const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
+      setKeyboardHeight(info.keyboardHeight);
+    });
+
+    const hideListener = Keyboard.addListener("keyboardWillHide", () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      // 리스너 제거
+      showListener?.remove();
+      hideListener?.remove();
+    };
+  }, []);
+
+  const chattingInputDivStyle = {
+    paddingBottom: keyboardHeight + "px",
+  };
   return (
     <>
       <TopBar
         title={isUpdate ? "미팅 수정하기" : "미팅 만들기"}
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
-      <CreateMeetingDetailScreen>
+      <CreateMeetingDetailScreen style={chattingInputDivStyle}>
         <DatePlaceMemberFrame>
           {!isUpdate ? (
             <MeetingDetailsInputs
