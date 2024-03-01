@@ -3,6 +3,7 @@ import {
   AddMemberContainer,
   DeleteMemberButton,
   AddedNicknameText,
+  AddMemberList,
 } from "../styles/createMeetingDetailComponents";
 
 interface IAdditionalParticipantsListProps {
@@ -13,7 +14,7 @@ interface IAdditionalParticipantsListProps {
 export const AdditionalParticipantsList: React.FC<
   IAdditionalParticipantsListProps
 > = ({ participants, onRemoveNicknameClick }) => (
-  <div style={{ overflowY: "scroll", maxHeight: "15vh" }}>
+  <AddMemberList>
     <ul>
       {participants.map((nickname, index) => (
         <li key={index}>
@@ -26,7 +27,7 @@ export const AdditionalParticipantsList: React.FC<
         </li>
       ))}
     </ul>
-  </div>
+  </AddMemberList>
 );
 
 export default AdditionalParticipantsList;

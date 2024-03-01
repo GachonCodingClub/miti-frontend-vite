@@ -23,10 +23,17 @@ export const AddMemberFrame = styled.div`
   gap: 16px;
 `;
 
+export const AddMemberList = styled.div`
+  overflow-y: scroll;
+  max-height: 15vh;
+  width: 100%;
+`;
+
 // 추가 멤버 컨테이너
 export const AddMemberContainer = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   background-color: #f5f5f5;
 `;
 
