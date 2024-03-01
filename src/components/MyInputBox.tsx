@@ -77,30 +77,36 @@ interface IInputSVGProps extends IInputProps {
   pattern?: string;
 }
 
-export const MyInputBoxSVG = ({
-  label,
-  value,
-  onChange,
-  error,
-  placeholder,
-  type,
-  onClick,
-  svg,
-  disable,
-  pattern,
-}: IInputSVGProps) => {
-  return (
-    <InputBoxWithSVG
-      placeholder={placeholder}
-      label={label}
-      type={type}
-      onClick={onClick}
-      value={value}
-      onChange={onChange}
-      svg={svg}
-      disable={disable}
-      caution={error}
-      pattern={pattern}
-    />
-  );
-};
+export const MyInputBoxSVG = React.forwardRef<HTMLInputElement, IInputSVGProps>(
+  (
+    {
+      label,
+      value,
+      onChange,
+      error,
+      placeholder,
+      type,
+      onClick,
+      svg,
+      disable,
+      pattern,
+    },
+    ref // 여기에 ref 매개변수를 추가합니다.
+  ) => {
+    return (
+      <InputBoxWithSVG
+        placeholder={placeholder}
+        label={label}
+        type={type}
+        onClick={onClick}
+        value={value}
+        onChange={onChange}
+        svg={svg}
+        disable={disable}
+        caution={error}
+        pattern={pattern}
+        ref={ref}
+      />
+    );
+  }
+);
