@@ -103,6 +103,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const getChatting = async (pageNum: number) => {
     if (loading || !id) return;
     setLoading(true);
+
     const chatResponse = await getApi({
       link: `/message/${id}/page?page=${pageNum}&size=20`,
     });
