@@ -283,7 +283,7 @@ export default function SingUpDetail() {
             )}
           </IntroduceFrame>
 
-          {/* 여기 버그 뜸 정신 나감 */}
+          {/* 성별 선택 */}
           <SelectBtnFrame>
             <SelectBtnText>성별</SelectBtnText>
             <SelectButtonContainer>
