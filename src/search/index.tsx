@@ -9,6 +9,7 @@ import { ArrowbackIcon, SearchIcon } from "../components/styles/Icons";
 import { ROUTES } from "../routes";
 import { SearchBox, SearchInput } from "./styles/searchStyles";
 import { useLocalStorageSearch } from "./components/useLocalStorageSearch";
+import { Keyboard } from "@capacitor/keyboard";
 
 const SEARCH_TERM_KEY = "searchTerm";
 const SEARCH_RESULTS_KEY = "searchResults";
@@ -74,6 +75,29 @@ export default function SearchPage() {
     navigate(`${ROUTES.MEETING_LIST}`);
   };
 
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    // iOS에서만 키보드 높이를 감지하고 상태를 업데이트합니다.
+    const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
+      setKeyboardHeight(info.keyboardHeight);
+    });
+
+    const hideListener = Keyboard.addListener("keyboardWillHide", () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      // 리스너 제거
+      showListener?.remove();
+      hideListener?.remove();
+    };
+  }, []);
+
+  const chattingInputDivStyle = {
+    paddingBottom: keyboardHeight + "px",
+  };
+
   return (
     <>
       <TopBar title="검색" leftIcon={<ArrowbackIcon onClick={onBackClick} />} />
@@ -94,7 +118,7 @@ export default function SearchPage() {
           </form>
         )}
 
-        <ul className="divide-y-[1px] pt-14">
+        <ul className="divide-y-[1px] pt-14" style={chattingInputDivStyle}>
           {searchResults.map((meeting, index) => (
             <MeetingBoxComponent
               onClick={() => {
