@@ -28,6 +28,7 @@ import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
 import useGetMyProfile from "../../api/useGetMyProfile";
 import { Keyboard } from "@capacitor/keyboard";
+import { Capacitor } from "@capacitor/core";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -236,6 +237,9 @@ export default function MeetingChatRoom() {
     };
   }, []);
 
+  const adjustedKeyboardHeight =
+    Capacitor.getPlatform() === "ios" ? keyboardHeight : 0;
+
   // ChattingInputDiv 컴포넌트의 스타일을 조정합니다.
   // 예: 키보드 높이만큼 padding-bottom을 추가하여 textarea를 위로 올립니다.
   const chattingInputDivStyle = {
@@ -268,7 +272,7 @@ export default function MeetingChatRoom() {
               setChatList={setChatList}
               profileNickname={profile?.nickname}
               id={id}
-              keyboardHeight={keyboardHeight}
+              keyboardHeight={adjustedKeyboardHeight}
             />
           </>
           <div>
