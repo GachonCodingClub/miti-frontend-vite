@@ -197,6 +197,7 @@ export const DialogContainer = styled.div`
   transform: translate(-50%, -50%);
   display: flex;
   width: 352px;
+  max-width: 36rem;
   padding: 24px 16px 16px 16px;
   flex-direction: column;
   align-items: center;
