@@ -273,7 +273,6 @@ export default function CreateMeetingDetail() {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
-    // iOS에서만 키보드 높이를 감지하고 상태를 업데이트합니다.
     const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
       setKeyboardHeight(info.keyboardHeight);
     });
