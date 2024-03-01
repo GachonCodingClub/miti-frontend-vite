@@ -91,7 +91,7 @@ export const MyInputBoxSVG = React.forwardRef<HTMLInputElement, IInputSVGProps>(
       disable,
       pattern,
     },
-    ref // 여기에 ref 매개변수를 추가합니다.
+    ref
   ) => {
     return (
       <InputBoxWithSVG
