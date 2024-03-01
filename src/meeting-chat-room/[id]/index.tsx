@@ -28,7 +28,7 @@ import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
 import useGetMyProfile from "../../api/useGetMyProfile";
 import { Keyboard } from "@capacitor/keyboard";
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -220,25 +220,28 @@ export default function MeetingChatRoom() {
   const [showExitDialog, setShowExitDialog] = useState(false);
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  useEffect(() => {
-    // 키보드가 나타날 때
-    const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
-      setKeyboardHeight(info.keyboardHeight); // 키보드 높이 설정
-    });
 
-    // 키보드가 사라질 때
-    const hideListener = Keyboard.addListener("keyboardWillHide", () => {
-      setKeyboardHeight(0); // 키보드 높이를 0으로 리셋
-    });
+  useEffect(() => {
+    let showListener: PluginListenerHandle | null = null;
+    let hideListener: PluginListenerHandle | null = null;
+
+    if (Capacitor.getPlatform() === "ios") {
+      // iOS에서만 키보드 높이를 감지하고 상태를 업데이트합니다.
+      showListener = Keyboard.addListener("keyboardWillShow", (info) => {
+        setKeyboardHeight(info.keyboardHeight);
+      });
+
+      hideListener = Keyboard.addListener("keyboardWillHide", () => {
+        setKeyboardHeight(0);
+      });
+    }
 
     return () => {
-      showListener.remove();
-      hideListener.remove();
+      // 리스너 제거
+      showListener?.remove();
+      hideListener?.remove();
     };
   }, []);
-
-  const adjustedKeyboardHeight =
-    Capacitor.getPlatform() === "ios" ? keyboardHeight : 0;
 
   // ChattingInputDiv 컴포넌트의 스타일을 조정합니다.
   // 예: 키보드 높이만큼 padding-bottom을 추가하여 textarea를 위로 올립니다.
@@ -272,7 +275,7 @@ export default function MeetingChatRoom() {
               setChatList={setChatList}
               profileNickname={profile?.nickname}
               id={id}
-              keyboardHeight={adjustedKeyboardHeight}
+              keyboardHeight={keyboardHeight}
             />
           </>
           <div>
