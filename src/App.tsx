@@ -29,16 +29,28 @@ import Agreement from "./profile/setting/agreement";
 import Notice from "./profile/setting/notice";
 import BackButtonHandler from "./BackButtonHandler";
 import GlobalAlert from "./components/GlobalAlert";
+import { Capacitor } from "@capacitor/core";
+import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
 const App = () => {
+  const [statusBar, setStatusBar] = useState(false);
+  useEffect(() => {
+    if (Capacitor.getPlatform() === "ios") {
+      setStatusBar(true);
+    }
+  }, []);
+
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <div className="w-full max-w-xl mx-auto">
           <BrowserRouter>
             <BackButtonHandler />
+            {statusBar && (
+              <div className="bg-black top-0 fixed h-12 z-50 w-full" />
+            )}
             <Routes>
               {/* 기본 미티 화면 */}
               <Route path="/" element={<MITI />} />
