@@ -45,7 +45,7 @@ export default function MeetingBoxComponent({
           <span className="text-base font-medium text-gray-800 flex">
             {meeting.title} {isLeader && <OrangeCrownIcon />}
           </span>
-          <span className="text-xs font-normal text-gray-300">
+          <span className="text-xs font-normal text-gray-500">
             {formattedDate}
           </span>
         </MeetingTitle>
