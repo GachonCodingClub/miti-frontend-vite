@@ -29,6 +29,7 @@ import useGetGroups from "../../api/useGetGroups";
 import useGetMyProfile from "../../api/useGetMyProfile";
 import { Keyboard } from "@capacitor/keyboard";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
+import { InLoading } from "../../components/InLoading";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -249,7 +250,7 @@ export default function MeetingChatRoom() {
     paddingBottom: keyboardHeight + "px",
   };
 
-  if (groupError) return <div>데이터 로딩 중 오류 발생</div>;
+  if (groupError) return <InLoading />;
   return (
     <>
       <TopBar
@@ -265,7 +266,7 @@ export default function MeetingChatRoom() {
       />
       {loading ? (
         <MeetingChatRoomScreen>
-          <div>로딩중이에요</div>
+          <InLoading />
         </MeetingChatRoomScreen>
       ) : (
         <MeetingChatRoomScreen>

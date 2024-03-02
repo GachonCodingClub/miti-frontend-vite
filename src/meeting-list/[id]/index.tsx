@@ -39,6 +39,7 @@ import AdditionalParticipantsList from "../../create-meeting/components/addition
 import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
 import useGetMyProfile from "../../api/useGetMyProfile";
+import { InLoading } from "../../components/InLoading";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -195,7 +196,7 @@ export default function MeetingDetail() {
       });
   };
 
-  if (isGroupLoading || isPartiesLoading) return <div>로딩중...</div>;
+  if (isGroupLoading || isPartiesLoading) return <InLoading />;
   if (groupError || partiesError) return <div>데이터 로딩 중 오류 발생</div>;
 
   // token을 없앴을 때 문제 없이 로그인 화면으로 가지 않고 에러가 생김

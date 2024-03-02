@@ -10,6 +10,7 @@ import { ROUTES } from "../routes";
 import { SearchBox, SearchInput } from "./styles/searchStyles";
 import { useLocalStorageSearch } from "./components/useLocalStorageSearch";
 import { Keyboard } from "@capacitor/keyboard";
+import { InLoading } from "../components/InLoading";
 
 const SEARCH_TERM_KEY = "searchTerm";
 const SEARCH_RESULTS_KEY = "searchResults";
@@ -103,7 +104,7 @@ export default function SearchPage() {
       <TopBar title="검색" leftIcon={<ArrowbackIcon onClick={onBackClick} />} />
       <PaddingScreen>
         {loading ? (
-          <div>로딩중...</div>
+          <InLoading />
         ) : (
           <form>
             <SearchBox>

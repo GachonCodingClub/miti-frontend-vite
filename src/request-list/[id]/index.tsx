@@ -19,6 +19,7 @@ import {
 import { PaddingScreen } from "../../components/styles/Screen";
 import { GrayLine } from "../../meeting-chat-room/styles/SideMenuComponents";
 import useGetParties from "../../api/useGetParties";
+import { InLoading } from "../../components/InLoading";
 
 interface DialogStates {
   [key: string]: boolean;
@@ -61,7 +62,7 @@ export default function RequestProfile() {
   };
 
   if (isPartiesLoading) {
-    return <div>로딩중이에요...</div>;
+    return <InLoading />;
   }
 
   if (partiesError) {

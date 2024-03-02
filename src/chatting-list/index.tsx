@@ -20,6 +20,7 @@ import {
 import { PaddingScreen } from "../components/styles/Screen";
 import ChattingListLayout from "./components/ChattingListLayout";
 import { useNavigate } from "react-router-dom";
+import { InLoading } from "../components/InLoading";
 
 export default function ChattingList() {
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ export default function ChattingList() {
   if (isLoading) {
     return (
       <ChattingListLayout title="채팅">
-        <div>로딩중이에요</div>
+        <InLoading />
       </ChattingListLayout>
     );
   }

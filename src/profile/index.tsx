@@ -19,6 +19,7 @@ import { SmallWhiteBtn } from "../components/styles/Button";
 import { IParties } from "../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import useGetMyProfile from "../api/useGetMyProfile";
+import { InLoading } from "../components/InLoading";
 
 export default function Profile() {
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
@@ -173,7 +174,7 @@ export default function Profile() {
                                     }}
                                   />
                                   {isLoadingParties ? (
-                                    <div>로딩중이에요...</div>
+                                    <InLoading />
                                   ) : (
                                     parties &&
                                     parties.waitingParties &&

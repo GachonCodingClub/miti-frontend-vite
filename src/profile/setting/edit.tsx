@@ -30,6 +30,7 @@ import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
 import { MyHeightSheet } from "../../sign-up/components/HeightSheet";
 import { MyWeightSheet } from "../../sign-up/components/WeightSheet";
 import { rangeToAlphabet } from "../../components/rangeToAlphabet";
+import { InLoading } from "../../components/InLoading";
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -207,7 +208,7 @@ export default function EditProfile() {
       <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
       {profileLoading ? (
         <DetailSetScreen>
-          <div>로딩중이에요</div>
+          <InLoading />
         </DetailSetScreen>
       ) : (
         <DetailSetScreen>
