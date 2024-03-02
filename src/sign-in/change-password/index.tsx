@@ -14,27 +14,20 @@ import {
 } from "../../components/styles/Button";
 import { PassWordFrame } from "../../sign-up/styles/passwordComponents";
 import { ROUTES } from "../../routes";
-import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
-import { getHeaders } from "../../components/getHeaders";
 
 export const ChangePWScreen = styled(Screen)`
-  padding: 0;
   padding: 56px 16px 112px 24px;
 `;
 
 export default function ChangePassword() {
-  const token = useLocalStorageToken();
-
   const navigate = useNavigate();
 
-  // 처음 이메일 입력하고 인증메일 보내기
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
   const [showDialog, setShowDialog] = useState(false);
 
-  // onClick
-  const onClick = () => {
+  const onVeriEmailClick = () => {
     const validateEmail = (email: string) => {
       const regex = /@gachon\.ac\.kr$/;
       return regex.test(email);
@@ -56,7 +49,6 @@ export default function ChangePassword() {
       import.meta.env.VITE_BASE_URL
     }/auth/verification/password?email=${email}`;
 
-    // Fetch
     fetch(CertiUrl, {
       method: "POST",
       mode: "cors",
@@ -69,9 +61,6 @@ export default function ChangePassword() {
           );
         }
         return response.json();
-      })
-      .then((data) => {
-        console.log("이메일 인증", data);
       })
       .catch((error) => {
         console.error(error);
@@ -138,6 +127,28 @@ export default function ChangePassword() {
     setCertiNumber(newCertiNum);
   };
 
+  // 사용자가 입력하는 비번
+  const [inputUserPW, setInputUserPW] = useState("");
+  const [inputUserPWError, setInputUserPWError] = useState("");
+
+  // 사용자가 입력하는 비번 확인
+  const [veriUserPW, setVeriUserPW] = useState("");
+  const [veriUserPWError, setVeriUserPWError] = useState("");
+
+  // 비밀번호 입력
+  const onInputPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 비밀번호 유효성 검사
+
+    const newPassword = e.target.value;
+    setInputUserPW(newPassword);
+  };
+
+  // 비밀번호 확인 입력
+  const onVeriPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setVeriUserPW(newPassword);
+  };
+
   // 변경 완료 다이얼로그
   const [completeDialog, setCompleteDialog] = useState(false);
 
@@ -163,23 +174,20 @@ export default function ChangePassword() {
       return;
     }
 
-    const AuthUrl = `${
-      import.meta.env.VITE_BASE_URL
-    }/auth/verification/password`;
+    const AuthUrl = `${import.meta.env.VITE_BASE_URL}/auth/password`;
 
-    // 이 시점에서 formData에 필요한 데이터를 추가해야 함
     const bodyData = {
       email: email,
       newPassword: veriUserPW,
       verificationNumber: certiNum,
     };
-    const headers = getHeaders(token);
+
     try {
       const response = await fetch(AuthUrl, {
         method: "PATCH",
         mode: "cors",
         body: JSON.stringify(bodyData),
-        headers: headers,
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!response.ok) {
@@ -192,31 +200,10 @@ export default function ChangePassword() {
     } catch (error) {
       console.error(error);
       alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
-      setCertiError("에러발생");
+      setCertiError("서버 오류 발생");
     }
   };
 
-  // 사용자가 입력하는 비번
-  const [inputUserPW, setInputUserPW] = useState("");
-  const [inputUserPWError, setInputUserPWError] = useState("");
-
-  // 사용자가 입력하는 비번 확인
-  const [veriUserPW, setVeriUserPW] = useState("");
-  const [veriUserPWError, setVeriUserPWError] = useState("");
-
-  // 비밀번호 입력
-  const onInputPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 비밀번호 유효성 검사
-
-    const newPassword = e.target.value;
-    setInputUserPW(newPassword);
-  };
-
-  // 비밀번호 확인 입력
-  const onVeriPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setVeriUserPW(newPassword);
-  };
   return (
     <>
       <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
@@ -230,7 +217,7 @@ export default function ChangePassword() {
               label="대학교 이메일"
               type="email"
               btnText={btnText}
-              onClick={onClick}
+              onClick={onVeriEmailClick}
               value={email}
               onChange={onEmailChange}
               error={error}
@@ -240,7 +227,7 @@ export default function ChangePassword() {
           {showDialog && (
             <Overlay>
               <DialogOneBtn
-                title="인증 메일이 전송되었습니다."
+                title="인증 메일이 전송됐어요."
                 contents=""
                 onRightClick={() => {
                   setShowDialog(false);
@@ -275,6 +262,7 @@ export default function ChangePassword() {
               value={inputUserPW}
               onChange={onInputPasswordChange}
               error={inputUserPWError}
+              maxLength={16}
             />
           )}
 
@@ -286,6 +274,7 @@ export default function ChangePassword() {
               value={veriUserPW}
               onChange={onVeriPasswordChange}
               error={veriUserPWError}
+              maxLength={16}
             />
           )}
           {completeDialog && !certiError && (
@@ -305,7 +294,7 @@ export default function ChangePassword() {
       </ChangePWScreen>
       {showInputBox && !error && (
         <FixedButtonBox>
-          <LongOrangeBtn text="인증" onClick={onSubmitAuth} />
+          <LongOrangeBtn text="변경" onClick={onSubmitAuth} />
         </FixedButtonBox>
       )}
     </>
