@@ -47,8 +47,8 @@ export const CheckBox = styled.input`
   appearance: none;
   border: 1.5px solid gray;
   border-radius: 50%;
-  width: 1.5rem;
-  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
 
   &:checked {
     border-color: transparent;
