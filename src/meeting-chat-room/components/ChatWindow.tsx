@@ -129,11 +129,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         return [...formattedChatData, ...prevChats];
       });
       requestAnimationFrame(() => {
-        const currentScrollHeight = chatContainerRef.current?.scrollHeight ?? 0;
-        chatContainerRef.current?.scrollTo(
-          0,
-          currentScrollHeight - previousScrollHeight
-        );
+        setTimeout(() => {
+          const currentScrollHeight =
+            chatContainerRef.current?.scrollHeight ?? 0;
+          chatContainerRef.current?.scrollTo(
+            0,
+            currentScrollHeight - previousScrollHeight
+          );
+        }, 1); // 1ms
       });
     }
     setLoading(false);
