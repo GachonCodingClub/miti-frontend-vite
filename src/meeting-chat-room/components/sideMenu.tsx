@@ -49,6 +49,7 @@ import {
 } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
+import { InLoading } from "../../components/InLoading";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
@@ -81,7 +82,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   );
 
   if (isGroupLoading || isPartiesLoading) {
-    return <div>로딩중이에요...</div>;
+    return <InLoading />;
   }
 
   if (groupError || partiesError) {
@@ -201,7 +202,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
           >
             참여 요청 목록
             {isPartiesLoading ? (
-              <div>로딩중이에요...</div>
+              <InLoading />
             ) : (
               parties &&
               parties.waitingParties &&

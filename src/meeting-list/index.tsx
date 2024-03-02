@@ -21,6 +21,7 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
+import { InLoading } from "../components/InLoading";
 
 export default function MeetingList() {
   const [token, setToken] = useState<string | null>(null);
@@ -195,7 +196,7 @@ export default function MeetingList() {
             );
           })}
         </div>
-        {loading && <div>로딩중...</div>}
+        {loading && <InLoading />}
         {/* 미팅 삭제하기를 통해 미팅리스트로 이동했을 경우 */}
         {isRoomDeleted && (
           <SnackBar text="미팅을 나왔어요." onClick={() => {}} />
