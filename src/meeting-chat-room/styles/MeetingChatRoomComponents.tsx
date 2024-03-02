@@ -142,7 +142,7 @@ export const ChattingInputDiv = styled.div`
 `;
 
 // 채팅 인풋
-export const ChattingInput = styled.textarea`
+export const ChattingTextarea = styled.textarea`
   color: #414141;
   line-height: 20px;
   height: auto;
