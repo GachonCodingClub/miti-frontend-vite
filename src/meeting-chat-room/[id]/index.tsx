@@ -1,8 +1,8 @@
 import {
   ChattingInputDiv,
-  ChattingInput,
   IChat,
   MeetingChatRoomScreen,
+  ChattingTextarea,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
@@ -171,7 +171,7 @@ export default function MeetingChatRoom() {
       if (messageInputRef.current) {
         messageInputRef.current.focus();
       }
-    }, 0);
+    }, 1);
   }; // 제출된 JSON문자열은 서버로 전송됨
 
   useEffect(() => {
@@ -287,7 +287,7 @@ export default function MeetingChatRoom() {
           <form onSubmit={(event) => handleSubmit(event, message, id)}>
             <input placeholder="groupId" type="number" value={id} hidden />
             <ChattingInputDiv style={chattingInputDivStyle}>
-              <ChattingInput
+              <ChattingTextarea
                 placeholder="메시지 입력"
                 value={message}
                 onChange={handleChangeMessage}
