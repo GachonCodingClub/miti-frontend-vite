@@ -54,7 +54,7 @@ export default function ChangePassword() {
     formData.append("email", email);
     const CertiUrl = `${
       import.meta.env.VITE_BASE_URL
-    }/auth/certification/password?email=${email}`;
+    }/auth/verification/password?email=${email}`;
 
     // Fetch
     fetch(CertiUrl, {
@@ -87,7 +87,7 @@ export default function ChangePassword() {
 
     const AuthUrl = `${
       import.meta.env.VITE_BASE_URL
-    }/auth/certification/confirm?email=${email}&certificationNumber=${certiNum}`;
+    }/auth/verification/confirm?email=${email}&verificationNumber=${certiNum}`;
 
     fetch(AuthUrl, {
       method: "POST",
@@ -169,7 +169,7 @@ export default function ChangePassword() {
     const bodyData = {
       email: email,
       newPassword: veriUserPW,
-      certificationNumber: certiNum,
+      verificationNumber: certiNum,
     };
     const headers = getHeaders(token);
     try {

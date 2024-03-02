@@ -72,7 +72,7 @@ export default function SignUp() {
 
     const CertiUrl = `${
       import.meta.env.VITE_BASE_URL
-    }/auth/certification?email=${email}`;
+    }/auth/verification?email=${email}`;
 
     // Fetch
     fetch(CertiUrl, {
@@ -130,7 +130,7 @@ export default function SignUp() {
 
     const AuthUrl = `${
       import.meta.env.VITE_BASE_URL
-    }/auth/certification/confirm?email=${email}&certificationNumber=${certiNum}`;
+    }/auth/verification/confirm?email=${email}&verificationNumber=${certiNum}`;
 
     fetch(AuthUrl, {
       method: "POST",
