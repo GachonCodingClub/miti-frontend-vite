@@ -18,7 +18,6 @@ import { useNavigate } from "react-router-dom";
 export default function PasswordSetting() {
   const navigate = useNavigate();
 
-  // recoil 사용 부분
   const [, setRecoilPassword] = useRecoilState(userPasswordAtom);
 
   // 비밀번호 입력
@@ -76,7 +75,7 @@ export default function PasswordSetting() {
         <TitleFrame>
           <Title>비밀번호를 설정해 주세요</Title>
           <SubTitle>
-            영문, 특수문자, 숫자 포함 8자리 이상 입력해 주세요
+            영문, 특수문자, 숫자 포함 8자리 이상 16자리 이하 입력해 주세요
           </SubTitle>
         </TitleFrame>
         <form className="w-full relative">
@@ -88,6 +87,7 @@ export default function PasswordSetting() {
               value={inputUserPW}
               onChange={inputPassword}
               error={inputUserPWError}
+              maxLength={16}
             />
 
             <MyInputBox
@@ -97,6 +97,7 @@ export default function PasswordSetting() {
               value={veriUserPW}
               onChange={veriPassword}
               error={veriUserPWError}
+              maxLength={16}
             />
           </PassWordFrame>
         </form>
