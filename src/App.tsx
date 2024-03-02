@@ -31,6 +31,7 @@ import BackButtonHandler from "./BackButtonHandler";
 import GlobalAlert from "./components/GlobalAlert";
 import { Capacitor } from "@capacitor/core";
 import { useEffect, useState } from "react";
+import PersonlaInfo from "./PersonalInfo";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +99,8 @@ const App = () => {
               <Route path="/request-list/:id" element={<RequestProfile />} />
               {/* 신고하기 */}
               <Route path="/report" element={<Report />} />
+              {/* 개인정보 처리 방침 */}
+              <Route path="/personal-info" element={<PersonlaInfo />} />
             </Routes>
             <CustomTabBar />
             <GlobalAlert />
