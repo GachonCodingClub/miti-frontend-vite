@@ -163,7 +163,9 @@ export default function ChangePassword() {
       return;
     }
 
-    const AuthUrl = `${import.meta.env.VITE_BASE_URL}/auth/password`;
+    const AuthUrl = `${
+      import.meta.env.VITE_BASE_URL
+    }/auth/verification/password`;
 
     // 이 시점에서 formData에 필요한 데이터를 추가해야 함
     const bodyData = {
