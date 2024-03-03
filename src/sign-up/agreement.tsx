@@ -15,7 +15,7 @@ import {
   ViewContents,
   ClosePopUpButtonFrame,
 } from "./styles/agreementComponents";
-import { SIGNUP_ROUTES } from "../routes";
+import { ROUTES } from "../routes";
 import { Overlay } from "./styles/detailComponents";
 import { LongOrangeBtn } from "../components/styles/Button";
 import agreementData from "../sign-up/components/agreementData.json";
@@ -89,7 +89,7 @@ export default function SignUpAgreement() {
 
   const navigate = useNavigate();
   const onNextButtonClick = () => {
-    navigate(`${SIGNUP_ROUTES.SIGN_UP}`);
+    navigate(`${ROUTES.SIGN_UP}`);
   };
   return (
     <>

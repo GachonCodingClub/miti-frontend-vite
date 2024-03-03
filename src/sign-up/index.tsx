@@ -10,7 +10,7 @@ import { useRecoilState } from "recoil";
 import { Overlay } from "./styles/detailComponents";
 import { userEmailAtom } from "../atoms";
 import { MyInputBox, MyInputBoxButton } from "../components/MyInputBox";
-import { ROUTES, SIGNUP_ROUTES } from "../routes";
+import { ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
 import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
@@ -152,7 +152,7 @@ export default function SignUp() {
         } else {
           setCertiError("");
           setRecoilEmail(email);
-          navigate(`${SIGNUP_ROUTES.PASSWORD}`);
+          navigate(`${ROUTES.PASSWORD}`);
         }
       })
       .catch((error) => {

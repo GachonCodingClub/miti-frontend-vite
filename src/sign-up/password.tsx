@@ -10,7 +10,7 @@ import {
 } from "./styles/passwordComponents";
 import { userPasswordAtom } from "../atoms";
 import { MyInputBox } from "../components/MyInputBox";
-import { SIGNUP_ROUTES } from "../routes";
+import { ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
 import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
@@ -60,7 +60,7 @@ export default function PasswordSetting() {
 
     if (inputUserPW === veriUserPW) {
       setVeriUserPWError("");
-      navigate(`${SIGNUP_ROUTES.DETAIL}`);
+      navigate(`${ROUTES.DETAIL}`);
       return;
     } else {
       setVeriUserPWError("비밀번호를 확인해주세요");
