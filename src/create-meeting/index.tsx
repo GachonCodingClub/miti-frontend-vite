@@ -140,17 +140,20 @@ export default function CreateMeeting() {
             error={meetingTitleError}
             maxLength={20}
           />
-
+          <div className="text-[14px] text-[#767170] tracking-[-0.224px]">
+            미팅 설명
+          </div>
           <DescriptionArea
             placeholder="미팅 설명"
             onChange={onMeetingDescChange}
             value={inputMeetingDesc}
             maxLength={35}
           />
+          <div className="bg-[#c9c5c5] h-[1px] w-full"></div>
           {showDialog && (
             <Overlay>
               <DialogOneBtn
-                title="글자 수를 확인해 주세요."
+                title="제목과 설명을 확인해 주세요."
                 contents=""
                 onRightClick={() => {
                   setShowDialog(false);

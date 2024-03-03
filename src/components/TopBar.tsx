@@ -69,9 +69,11 @@ export const TopBarNextButton = ({ title, onRightIconClick }: ITopBar) => {
   const navigate = useNavigate();
   return (
     <Wrapper>
-      <ArrowbackIcon onClick={() => navigate(-1)} />
-      <TopBarText>{title}</TopBarText>
-      <OrangeSmButton text="다음" onClick={onRightIconClick || (() => {})} />
+      <div className="p-3 flex items-center">
+        <ArrowbackIcon onClick={() => navigate(-1)} />
+        <TopBarText>{title}</TopBarText>
+        <OrangeSmButton text="다음" onClick={onRightIconClick || (() => {})} />
+      </div>
     </Wrapper>
   );
 };
