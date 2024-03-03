@@ -20,6 +20,7 @@ import { IParties } from "../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import useGetMyProfile from "../api/useGetMyProfile";
 import { InLoading } from "../components/InLoading";
+import { ROUTES } from "../routes";
 
 export default function Profile() {
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
@@ -95,7 +96,9 @@ export default function Profile() {
         <TopBar
           title="프로필"
           rightIcon={
-            <SettingIcon onClick={() => navigate("/profile/setting")} />
+            <SettingIcon
+              onClick={() => navigate(`${ROUTES.PORFILE_SETTING}`)}
+            />
           }
         />
         <PaddingScreen>

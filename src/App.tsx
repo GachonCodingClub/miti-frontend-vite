@@ -32,6 +32,7 @@ import GlobalAlert from "./components/GlobalAlert";
 import { Capacitor } from "@capacitor/core";
 import { useEffect, useState } from "react";
 import PersonlaInfo from "./PersonalInfo";
+import { ROUTES } from "./routes";
 
 const queryClient = new QueryClient();
 
@@ -56,51 +57,81 @@ const App = () => {
               {/* 기본 미티 화면 */}
               <Route path="/" element={<MITI />} />
               {/* 로그인/회원가입 */}
-              <Route path="/sign-in" element={<LogIn />} />
+              <Route path={`${ROUTES.SIGN_IN}`} element={<LogIn />} />
               <Route
-                path="/sign-in/change-password"
+                path={`${ROUTES.CHANGE_PASSWORD}`}
                 element={<ChangePassword />}
               />
-              <Route path="/sign-up/agreement" element={<SignUpAgreement />} />
-              <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/sign-up/password" element={<PasswordSetting />} />
-              <Route path="/sign-up/detail" element={<SingUpDetail />} />
-              {/* 미팅리스트 */}
-              <Route path="/meeting-list" element={<MeetingList />} />
-              <Route path="/meeting-list/:id" element={<MeetingDetail />} />
-              <Route path="/search" element={<SearchPage />} />
-              {/* 채팅리스트 */}
-              <Route path="/chat-list" element={<ChattingList />} />
-              {/* 프로필 */}
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/profile/setting" element={<Setting />} />
-              <Route path="/setting/edit" element={<EditProfile />} />
-              <Route path="/setting/withdrawal" element={<Withdrawal />} />
-              <Route path="/agreement" element={<Agreement />} />
-              <Route path="/notice" element={<Notice />} />
-              {/* 미팅 만들기 */}
-              <Route path="/create-meeting" element={<CreateMeeting />} />
               <Route
-                path="/create-meeting/detail"
+                path={`${ROUTES.AGREEMENTS}`}
+                element={<SignUpAgreement />}
+              />
+              <Route path={`${ROUTES.SIGN_UP}`} element={<SignUp />} />
+              <Route
+                path={`${ROUTES.PASSWORD}`}
+                element={<PasswordSetting />}
+              />
+              <Route path={`${ROUTES.DETAIL}`} element={<SingUpDetail />} />
+              {/* 미팅리스트 */}
+              <Route
+                path={`${ROUTES.MEETING_LIST}`}
+                element={<MeetingList />}
+              />
+              <Route
+                path={`${ROUTES.MEETING_LIST_ID}`}
+                element={<MeetingDetail />}
+              />
+              <Route path={`${ROUTES.SEARCH}`} element={<SearchPage />} />
+              {/* 채팅리스트 */}
+              <Route path={`${ROUTES.CHAT_LIST}`} element={<ChattingList />} />
+              {/* 프로필 */}
+              <Route path={`${ROUTES.PROFILE}`} element={<Profile />} />
+              <Route path={`${ROUTES.PORFILE_SETTING}`} element={<Setting />} />
+              <Route
+                path={`${ROUTES.SETTING_EDIT}`}
+                element={<EditProfile />}
+              />
+              <Route
+                path={`${ROUTES.SETTING_WITHDRAWAL}`}
+                element={<Withdrawal />}
+              />
+              <Route path={`${ROUTES.AGREEMENT}`} element={<Agreement />} />
+              <Route path={`${ROUTES.NOTICE}`} element={<Notice />} />
+              <Route path={`${ROUTES.REPORT}`} element={<Report />} />
+              {/* 미팅 만들기 */}
+              <Route
+                path={`${ROUTES.CREATE_MEETING}`}
+                element={<CreateMeeting />}
+              />
+              <Route
+                path={`${ROUTES.CREATE_MEETING_DETAIL}`}
                 element={<CreateMeetingDetail />}
               />
               {/* 채팅방 */}
               <Route
-                path="/meeting-chat-room/:id"
+                path={`${ROUTES.MEETING_CHAT_ROOM_ID}`}
                 element={<MeetingChatRoom />}
               />
               {/* 미팅 수정하기 */}
-              <Route path="/edit-meeting/:id" element={<EditMeeting />} />
               <Route
-                path="/edit-meeting/:id/detail"
+                path={`${ROUTES.EDIT_MEETING_ID}`}
+                element={<EditMeeting />}
+              />
+              <Route
+                path={`${ROUTES.EDIT_MEETING_ID_DETAIL}`}
                 element={<EditMeetingDetail />}
               />
               {/* 참여 요청 목록 */}
-              <Route path="/request-list/:id" element={<RequestProfile />} />
-              {/* 신고하기 */}
-              <Route path="/report" element={<Report />} />
+              <Route
+                path={`${ROUTES.REQUEST_LIST_ID}`}
+                element={<RequestProfile />}
+              />
+
               {/* 개인정보 처리 방침 */}
-              <Route path="/personal-info" element={<PersonlaInfo />} />
+              <Route
+                path={`${ROUTES.PERSONAL_INFO}`}
+                element={<PersonlaInfo />}
+              />
             </Routes>
             <CustomTabBar />
             <GlobalAlert />

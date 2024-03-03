@@ -8,6 +8,7 @@ import {
   LogoutFrame,
 } from "../styles/settingComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
+import { ROUTES } from "../../routes";
 
 export default function Setting() {
   const navigate = useNavigate();
@@ -20,11 +21,20 @@ export default function Setting() {
       />
       <PaddingScreen>
         <SettingButtonBox>
-          <SettingButton to="/setting/edit">기본 프로필 수정</SettingButton>
-          <SettingButton to="/notice">공지사항</SettingButton>
-          <SettingButton to="/report">신고하기</SettingButton>
-          <SettingButton to="/agreement">서비스 이용약관</SettingButton>
-          <SettingButton to="/setting/withdrawal">회원 탈퇴하기</SettingButton>
+          <SettingButton to={`${ROUTES.SETTING_EDIT}`}>
+            기본 프로필 수정
+          </SettingButton>
+          <SettingButton to={`${ROUTES.NOTICE}`}>공지사항</SettingButton>
+          <SettingButton to={`${ROUTES.REPORT}`}>신고하기</SettingButton>
+          <SettingButton to={`${ROUTES.AGREEMENT}`}>
+            서비스 이용약관
+          </SettingButton>
+          <SettingButton to={`${ROUTES.CHANGE_PASSWORD}`}>
+            비밀번호 변경
+          </SettingButton>
+          <SettingButton to={`${ROUTES.SETTING_WITHDRAWAL}`}>
+            회원 탈퇴하기
+          </SettingButton>
         </SettingButtonBox>
       </PaddingScreen>
       <LogoutFrame>

@@ -36,7 +36,6 @@ export default function Withdrawal() {
           navigate("/");
           setShowDialog(false);
         } else {
-          console.error("탈퇴 실패");
           alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
         }
       })
