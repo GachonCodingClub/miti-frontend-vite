@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { LongOrangeBtn } from "../components/styles/Button";
 import { useState } from "react";
 import { Screen } from "../components/styles/Screen";
-import { ROUTES, SIGNUP_ROUTES } from "../routes";
+import { ROUTES } from "../routes";
 import { InputElement } from "../components/styles/Input";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -120,7 +120,7 @@ export default function LogIn() {
           <SearchText to={`${ROUTES.CHANGE_PASSWORD}`}>
             비밀번호 찾기
           </SearchText>
-          <SearchText to={`${SIGNUP_ROUTES.AGREEMENTS}`}>회원가입</SearchText>
+          <SearchText to={`${ROUTES.AGREEMENTS}`}>회원가입</SearchText>
         </SearchFrame>
       </div>
     </Screen>
