@@ -24,7 +24,7 @@ export default function Setting() {
           <SettingButton to={`${ROUTES.SETTING_EDIT}`}>
             기본 프로필 수정
           </SettingButton>
-          <SettingButton to={`${ROUTES.NOTICE}`}>공지사항</SettingButton>
+          <SettingButton to={`${ROUTES.NOTICE}`}>문의하기</SettingButton>
           <SettingButton to={`${ROUTES.REPORT}`}>신고하기</SettingButton>
           <SettingButton to={`${ROUTES.AGREEMENT}`}>
             서비스 이용약관
