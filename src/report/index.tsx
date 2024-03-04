@@ -57,15 +57,21 @@ export default function Report() {
           );
           if (response.status === 404) {
             alert("대상의 닉네임을 다시 확인해주세요.");
+          } else {
+            alert("신고 접수에 실패했습니다. 나중에 다시 시도해주세요.");
           }
+          throw new Error("Response not ok");
         }
+        alert("신고가 접수되었습니다. 검토까지는 최대 24시간이 소요됩니다.");
         return response.json();
       })
       .then((error) => {
-        alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
         console.error(error);
+        alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      })
+      .finally(() => {
+        navigate(-1); // 사용자를 이전 페이지로 이동시키기
       });
-    navigate(-1);
   };
   return (
     <>
@@ -75,6 +81,19 @@ export default function Report() {
       />
       <WithdrawalScreen>
         <div className="mt-7">
+          <p className="mt-7">
+            신고가 누적된 사용자는 미티 서비스를 이용하실 수 없습니다.
+          </p>
+          <p className="mt-1">
+            저희는 신고 내용을 최대 24시간 이내에 검토하고 신고 대상에게 적절한
+            제재를 가합니다.
+          </p>
+          <p className="my-7">
+            문의 사항은 설정의 '문의하기'를 이용해 주십시오.
+          </p>
+        </div>
+
+        <div className="mt-10">
           <WithdrawalTitle>신고하기</WithdrawalTitle>
         </div>
         <div className="mt-4">
