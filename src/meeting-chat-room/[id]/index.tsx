@@ -155,6 +155,17 @@ export default function MeetingChatRoom() {
     if (message.trim() === "") {
       return;
     }
+
+    // 임시로 Input을 만들고 다시 없앰
+    // 사용자는 채팅을 누르면 이 Input으로 임시로 focus를 옮김
+    const tempInput = document.createElement("input");
+    tempInput.setAttribute("type", "text");
+    tempInput.style.position = "absolute";
+    tempInput.style.opacity = "0";
+    document.body.appendChild(tempInput);
+    tempInput.focus();
+    document.body.removeChild(tempInput);
+
     // 발행 함수 호출을 통해 메시지 전송, stomp 프로토콜로 websocket을 통해 메시지 발송
     publish(
       JSON.stringify({
@@ -167,11 +178,9 @@ export default function MeetingChatRoom() {
     setMessage("");
     setCharCount(0);
 
-    setTimeout(() => {
-      if (messageInputRef.current) {
-        messageInputRef.current.focus();
-      }
-    }, 1);
+    if (messageInputRef.current) {
+      messageInputRef.current.focus();
+    }
   }; // 제출된 JSON문자열은 서버로 전송됨
 
   useEffect(() => {
