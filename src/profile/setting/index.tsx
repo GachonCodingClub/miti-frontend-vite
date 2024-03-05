@@ -27,7 +27,7 @@ export default function Setting() {
           <SettingButton to={`${ROUTES.NOTICE}`}>문의하기</SettingButton>
           <SettingButton to={`${ROUTES.REPORT}`}>신고하기</SettingButton>
           <SettingButton to={`${ROUTES.AGREEMENT}`}>
-            서비스 이용약관
+            개인정보처리방침 및 서비스이용약관
           </SettingButton>
           <SettingButton to={`${ROUTES.CHANGE_PASSWORD}`}>
             비밀번호 변경

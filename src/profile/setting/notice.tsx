@@ -12,11 +12,11 @@ export default function Notice() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <PaddingScreen>
-        <div className="mt-7">
+        <div className="mt-7 px-6">
           <div className="font-bold text-lg">오픈채팅 링크</div>
           <p className="mt-7">https://open.kakao.com/o/sNCuzzcg</p>
         </div>
-        <div className="mt-7">
+        <div className="mt-7 px-6">
           <div className="font-bold text-lg">이메일</div>
           <p className="mt-7">kjyse2@naver.com</p>
         </div>

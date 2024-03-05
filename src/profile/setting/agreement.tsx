@@ -40,54 +40,24 @@ export default function Agreement() {
   return (
     <>
       <TopBar
-        title="서비스 이용약관"
+        title="개인정보 처리방침 및 서비스 이용 약관"
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <AgreementScreen>
         <div className="mb-8">
-          <AgreementTitle>
-            서비스 이용 약관 및 개인정보 처리 정책
-          </AgreementTitle>
+          <AgreementTitle>개인정보 처리방침 및 서비스 이용 약관</AgreementTitle>
         </div>
         <EachCheckBoxFrame>
-          <CheckText>제1조(목적 및 정의)</CheckText>
+          <CheckText>개인정보 처리방침</CheckText>
 
           <ViewContentsButton onClick={() => onOpenPopUp(0)}>
             내용보기
           </ViewContentsButton>
         </EachCheckBoxFrame>
         <EachCheckBoxFrame>
-          <CheckText>제2조(개인정보 수집 및 이용에 대한 동의)</CheckText>
+          <CheckText>서비스 이용 약관</CheckText>
 
           <ViewContentsButton onClick={() => onOpenPopUp(1)}>
-            내용보기
-          </ViewContentsButton>
-        </EachCheckBoxFrame>
-        <EachCheckBoxFrame>
-          <CheckText>제3조(개인정보의 보호 및 책임 면제)</CheckText>
-
-          <ViewContentsButton onClick={() => onOpenPopUp(2)}>
-            내용보기
-          </ViewContentsButton>
-        </EachCheckBoxFrame>
-        <EachCheckBoxFrame>
-          <CheckText>제4조(개인정보의 제공 및 공유)</CheckText>
-
-          <ViewContentsButton onClick={() => onOpenPopUp(3)}>
-            내용보기
-          </ViewContentsButton>
-        </EachCheckBoxFrame>
-        <EachCheckBoxFrame>
-          <CheckText>제5조(서비스 이용 책임의 한계)</CheckText>
-
-          <ViewContentsButton onClick={() => onOpenPopUp(4)}>
-            내용보기
-          </ViewContentsButton>
-        </EachCheckBoxFrame>
-        <EachCheckBoxFrame>
-          <CheckText>제6조(약관의 변경)</CheckText>
-
-          <ViewContentsButton onClick={() => onOpenPopUp(5)}>
             내용보기
           </ViewContentsButton>
         </EachCheckBoxFrame>
