@@ -81,6 +81,10 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     null
   );
 
+  useEffect(() => {
+    console.log(parties);
+  }, []);
+
   if (isGroupLoading || isPartiesLoading) {
     return <InLoading />;
   }
@@ -145,6 +149,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
               <MenuUserProfileFrame>
                 <MenuMasterFrame
                   onClick={() => {
+                    console.log(parties?.leaderUserSummaryDto?.userId);
                     setSelectedUserProfile(parties?.leaderUserSummaryDto);
                   }}
                 >
@@ -174,6 +179,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                   <MenuUserProfileFrame
                     key={user?.userId}
                     onClick={() => {
+                      console.log(user?.userId);
                       setSelectedUserProfile(user);
                     }}
                   >
