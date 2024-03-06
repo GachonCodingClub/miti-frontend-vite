@@ -270,7 +270,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                     navigate(`/report`);
                   }}
                 >
-                  <DialogRightText>신고하기</DialogRightText>
+                  <DialogRightText>신고 및 차단</DialogRightText>
                 </ProfileRightButton>
               </DialogBtnFrame>
             </div>
