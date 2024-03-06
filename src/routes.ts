@@ -20,6 +20,7 @@ export const ROUTES = {
   SETTING_WITHDRAWAL: "/setting/withdrawal",
   AGREEMENT: "/agreement",
   NOTICE: "/notice",
+  BLOCKLIST: "/block-list",
   REPORT: "/report",
   // 미팅만들기
   CREATE_MEETING: "/create-meeting",

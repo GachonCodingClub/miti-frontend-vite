@@ -33,6 +33,7 @@ import { Capacitor } from "@capacitor/core";
 import { useEffect, useState } from "react";
 import PersonlaInfo from "./PersonalInfo";
 import { ROUTES } from "./routes";
+import BlockList from "./block/blockList";
 
 const queryClient = new QueryClient();
 
@@ -97,6 +98,7 @@ const App = () => {
               />
               <Route path={`${ROUTES.AGREEMENT}`} element={<Agreement />} />
               <Route path={`${ROUTES.NOTICE}`} element={<Notice />} />
+              <Route path={`${ROUTES.BLOCKLIST}`} element={<BlockList />} />
               <Route path={`${ROUTES.REPORT}`} element={<Report />} />
               {/* 미팅 만들기 */}
               <Route
