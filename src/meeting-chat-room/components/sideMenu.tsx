@@ -50,15 +50,20 @@ import {
 import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
 import { InLoading } from "../../components/InLoading";
+import { getHeaders } from "../../components/getHeaders";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [token, setToken] = useState("");
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setDecodedToken(jwtDecode(storedToken + ""));
+    if (storedToken) {
+      setToken(storedToken);
+    }
   }, []);
 
   const {
@@ -80,6 +85,37 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const [selectedUserProfile, setSelectedUserProfile] = useState<IUser | null>(
     null
   );
+
+  const headers = getHeaders(token);
+
+  const onBlockClick = (blockUserId: string | undefined) => {
+    const PostUrl = `${
+      import.meta.env.VITE_BASE_URL
+    }/users/${blockUserId}/block`;
+
+    fetch(PostUrl, {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({
+        blockUserId: blockUserId,
+      }),
+      headers: headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error(
+            `API 오류 : ${response.status} - ${response.statusText}`
+          );
+          alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+          return response.json();
+        }
+        alert("해당 유저를 차단했어요.");
+        return response.json();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
     console.log(parties);
@@ -271,13 +307,15 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                 >
                   <DialogLeftText>닫기</DialogLeftText>
                 </ProfileLeftButton>
-                <ProfileRightButton
-                  onClick={() => {
-                    navigate(`/report`);
-                  }}
-                >
-                  <DialogRightText>차단하기</DialogRightText>
-                </ProfileRightButton>
+                {selectedUserProfile?.userId !== decodedToken?.sub && (
+                  <ProfileRightButton
+                    onClick={() => {
+                      onBlockClick(selectedUserProfile?.userId);
+                    }}
+                  >
+                    <DialogRightText>차단하기</DialogRightText>
+                  </ProfileRightButton>
+                )}
               </DialogBtnFrame>
             </div>
           </DialogContainer>
