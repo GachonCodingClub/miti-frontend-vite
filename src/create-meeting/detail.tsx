@@ -28,7 +28,7 @@ import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { getHeaders } from "../components/getHeaders";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 import useGetGroups from "../api/useGetGroups";
-import useGetMyProfile from "../api/useGetMyProfile";
+import { useGetMyProfile } from "../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
 
 export default function CreateMeetingDetail() {

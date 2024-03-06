@@ -38,7 +38,7 @@ import { MyInputBoxSVG } from "../../components/MyInputBox";
 import AdditionalParticipantsList from "../../create-meeting/components/additionalParticipantsList";
 import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
-import useGetMyProfile from "../../api/useGetMyProfile";
+import { useGetMyProfile } from "../../api/profile";
 import { InLoading } from "../../components/InLoading";
 
 export default function MeetingDetail() {
