@@ -9,7 +9,7 @@ export const fetchProfile = async (
   setSubscription: React.Dispatch<boolean>,
   setEditError: React.Dispatch<boolean>
 ) => {
-  const SignUpUrl = `${import.meta.env.VITE_BASE_URL}/users/profile/my`;
+  const SignUpUrl = `${import.meta.env.VITE_BASE_URL}/users/me/profile`;
   const bodyData = {
     nickname: userNickName,
     height: userHeight,

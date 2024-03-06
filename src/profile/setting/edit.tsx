@@ -39,7 +39,7 @@ export default function EditProfile() {
   const [editError, setEditError] = useState(false);
 
   const getUserProfile = async () => {
-    const response = await getApi({ link: `/users/profile/my` });
+    const response = await getApi({ link: `/users/me/profile` });
     const data = await response.json();
     return data;
   };
