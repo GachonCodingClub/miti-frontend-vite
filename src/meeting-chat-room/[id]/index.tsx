@@ -190,7 +190,6 @@ export default function MeetingChatRoom() {
   }, []);
 
   const { data: blockData } = useGetBlockList();
-  console.log("차단한 사용자 목록:", blockData);
 
   // 메뉴 표시
   const [showRightMenu, setShowRightMenu] = useState(false);
@@ -290,6 +289,7 @@ export default function MeetingChatRoom() {
               profileNickname={profile?.nickname}
               id={id}
               keyboardHeight={keyboardHeight}
+              blockData={blockData}
             />
           </>
           <div>
