@@ -285,7 +285,7 @@ export default function MeetingDetail() {
                           blockedUser.nickname === user?.nickname
                       );
                       return isBlocked ? (
-                        <div className="text-[#d05438]" key={user?.userId}>
+                        <div className="pb-3 text-[#d05438]" key={user?.userId}>
                           차단된 사용자입니다
                         </div>
                       ) : (
