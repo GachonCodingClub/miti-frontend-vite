@@ -30,6 +30,7 @@ import { useGetMyProfile } from "../../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { InLoading } from "../../components/InLoading";
+import { useGetBlockList } from "../../api/blockList";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -187,6 +188,9 @@ export default function MeetingChatRoom() {
     connect(); // // 컴포넌트가 마운트될 때 WebSocket 연결
     return () => disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
   }, []);
+
+  const { data: blockData } = useGetBlockList();
+  console.log("차단한 사용자 목록:", blockData);
 
   // 메뉴 표시
   const [showRightMenu, setShowRightMenu] = useState(false);

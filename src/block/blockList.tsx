@@ -1,31 +1,17 @@
-import styled from "styled-components";
 import { TopBar } from "../components/TopBar";
 import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
-import { Screen } from "../components/styles/Screen";
 import { getApi } from "../api/getApi";
-import { useQuery } from "react-query";
-import { useEffect } from "react";
-import { getHeaders } from "../components/getHeaders";
-import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
+import { Key, useEffect } from "react";
 import { SmallOrangeBtn } from "../components/styles/Button";
-
-export const BlockListScreen = styled(Screen)`
-  padding-top: 80px;
-  padding-bottom: 112px;
-`;
+import { useGetBlockList } from "../api/blockList";
+import { BUserBox, BlockListScreen } from "./styles/BlockListComponents";
+import { UserName } from "../request-list/components/requestListComponents";
 
 export default function BlockList() {
   const navigate = useNavigate();
-  const token = useLocalStorageToken();
-  const headers = getHeaders(token);
 
-  const getBlockList = () =>
-    getApi({ link: `/users/me/blocked-users` }).then((response) =>
-      response.json()
-    );
-
-  const { data, isLoading, error } = useQuery(["myList"], getBlockList);
+  const { data } = useGetBlockList();
 
   const onUnblockClick = (blockUserId: string | undefined) => {
     console.log(blockUserId, "차단 해제");
@@ -42,19 +28,21 @@ export default function BlockList() {
         title="차단 유저 목록"
       />
       <BlockListScreen>
-        {data?.blockedUserOutputs?.map((block: { nickname: string }) => (
-          <>
-            <div>{block?.nickname}</div>
-            <div>
-              <SmallOrangeBtn
-                text="차단 해제"
-                onClick={() => {
-                  onUnblockClick(block?.nickname);
-                }}
-              />
-            </div>
-          </>
-        ))}
+        {data?.blockedUserOutputs?.map(
+          (block: { nickname: string }, index: Key | null | undefined) => (
+            <BUserBox key={index}>
+              <UserName>{block?.nickname}</UserName>
+              <div>
+                <SmallOrangeBtn
+                  text="차단 해제"
+                  onClick={() => {
+                    onUnblockClick(block?.nickname);
+                  }}
+                />
+              </div>
+            </BUserBox>
+          )
+        )}
       </BlockListScreen>
     </>
   );
