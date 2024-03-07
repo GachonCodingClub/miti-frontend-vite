@@ -18,7 +18,7 @@ import { PaddingScreen } from "../components/styles/Screen";
 import { SmallWhiteBtn } from "../components/styles/Button";
 import { IParties } from "../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
-import useGetMyProfile from "../api/useGetMyProfile";
+import { useGetMyProfile } from "../api/profile";
 import { InLoading } from "../components/InLoading";
 import { ROUTES } from "../routes";
 

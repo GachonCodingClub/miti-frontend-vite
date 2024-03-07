@@ -31,29 +31,21 @@ import { MyHeightSheet } from "../../sign-up/components/HeightSheet";
 import { MyWeightSheet } from "../../sign-up/components/WeightSheet";
 import { rangeToAlphabet } from "../../components/rangeToAlphabet";
 import { InLoading } from "../../components/InLoading";
+import { useGetMyProfile } from "../../api/profile";
 
 export default function EditProfile() {
   const navigate = useNavigate();
   const token = useLocalStorageToken();
 
+  const { data: profile, isLoading: profileLoading } = useGetMyProfile();
+
   const [editError, setEditError] = useState(false);
-
-  const getUserProfile = async () => {
-    const response = await getApi({ link: `/users/me/profile` });
-    const data = await response.json();
-    return data;
-  };
-
-  const { data: profile, isLoading: profileLoading } = useQuery(
-    ["profile"],
-    getUserProfile
-  );
 
   // 수정 완료 스낵바
   const [subscription, setSubscription] = useState(false);
 
   // 닉네임
-  const [userNickName, setUserNickName] = useState(profile?.nickname); // 입력받은 닉
+  const [userNickName, setUserNickName] = useState(profile?.nickname ?? ""); // 입력받은 닉
   const [nickNameError, setNickNameError] = useState(""); // 닉네임 오류
   const [isCheckNicknameButtonDisabled, setIsCheckNicknameButtonDisabled] =
     useState(true); // 닉네임 버튼 활/비활
@@ -90,7 +82,9 @@ export default function EditProfile() {
   const checkOverlap = () => {
     setOverlapNickname(false);
   };
-  const { data } = useQuery(["nickname", userNickName], getNickName);
+  const { data } = useQuery(["nickname", userNickName], getNickName, {
+    enabled: !isCheckNicknameButtonDisabled,
+  });
 
   // 닉네임 중복확인 버튼
   const onCheckNicknameBtn = () => {
@@ -106,7 +100,9 @@ export default function EditProfile() {
   };
 
   // 자기소개
-  const [userIntroduce, setUserIntroduce] = useState(profile?.description);
+  const [userIntroduce, setUserIntroduce] = useState(
+    profile?.description ?? ""
+  );
   const [introduceError, setIntroduceError] = useState("");
   const [charCount, setCharCount] = useState(profile?.description?.length);
 
@@ -128,7 +124,9 @@ export default function EditProfile() {
   };
 
   // 키(cm)
-  const [userHeight, setUserHeight] = useState(profile?.height);
+  const [userHeight, setUserHeight] = useState<string>(
+    String(profile?.height ?? "")
+  );
   const [heightError, setHeightError] = useState("");
   const [showHeightSheet, setShowHeightSheet] = useState(false);
 
@@ -143,7 +141,9 @@ export default function EditProfile() {
   };
 
   // 몸무게(kg)
-  const [userWeight, setUserWeight] = useState(profile?.weight);
+  const [userWeight, setUserWeight] = useState<string>(
+    String(profile?.weight ?? "")
+  );
   const [weightError, setWeightError] = useState("");
   const [showWeightSheet, setShowWeightSheet] = useState(false);
 
@@ -246,7 +246,7 @@ export default function EditProfile() {
                 onChange={onSubmitIntroduce}
                 error={introduceError}
               />
-              {charCount >= 0 && (
+              {charCount != undefined && charCount >= 0 && (
                 <CharCount>
                   {charCount} / {MAX_INTRODUCE_LENGTH}
                 </CharCount>
