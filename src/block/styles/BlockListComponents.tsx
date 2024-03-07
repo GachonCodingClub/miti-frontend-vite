@@ -9,7 +9,7 @@ export const BlockListScreen = styled(Screen)`
 export const BUserBox = styled.div`
   display: flex;
   width: 100%;
-  align-items: center;
+
   justify-content: space-between;
-  padding: 16px 0px 16px 0px;
+  padding: 16px 0px 0px 0px;
 `;
