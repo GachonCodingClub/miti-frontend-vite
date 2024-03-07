@@ -51,6 +51,7 @@ import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
 import { InLoading } from "../../components/InLoading";
 import { getHeaders } from "../../components/getHeaders";
+import { useGetBlockList } from "../../api/blockList";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
@@ -117,9 +118,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       });
   };
 
-  useEffect(() => {
-    console.log(parties);
-  }, []);
+  const { data: blockData } = useGetBlockList();
 
   if (isGroupLoading || isPartiesLoading) {
     return <InLoading />;
@@ -211,25 +210,49 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             {/* 일반 참여자 */}
             {parties?.acceptedParties?.map((party) => (
               <div key={party.partyId}>
-                {party?.users.map((user) => (
-                  <MenuUserProfileFrame
-                    key={user?.userId}
-                    onClick={() => {
-                      console.log(user?.userId);
-                      setSelectedUserProfile(user);
-                    }}
-                  >
-                    <MenuUserDetailFrame>
-                      <MenuUserNickname>{user?.nickname}</MenuUserNickname>
-                      <div>
-                        <MenuUserDetailText>{user?.age}살</MenuUserDetailText>
-                        <MenuUserDetailText>
-                          {user?.gender === "MALE" ? "남자" : "여자"}
-                        </MenuUserDetailText>
-                      </div>
-                    </MenuUserDetailFrame>
-                  </MenuUserProfileFrame>
-                ))}
+                {party?.users.map((user) => {
+                  // 차단된 사용자인지 확인
+                  const isUserBlocked = blockData?.blockedUserOutputs?.some(
+                    (blockedUser: { nickname: string | undefined }) =>
+                      blockedUser.nickname === user?.nickname
+                  );
+
+                  return (
+                    <MenuUserProfileFrame
+                      key={user?.userId}
+                      onClick={() => {
+                        if (!isUserBlocked) {
+                          console.log(user?.userId);
+                          setSelectedUserProfile(user);
+                        }
+                      }}
+                    >
+                      {isUserBlocked ? (
+                        <MenuUserDetailFrame>
+                          <div className="text-[#d05438]">
+                            차단된 사용자입니다.
+                          </div>
+                        </MenuUserDetailFrame>
+                      ) : (
+                        <>
+                          <MenuUserDetailFrame>
+                            <MenuUserNickname>
+                              {user?.nickname}
+                            </MenuUserNickname>
+                            <div>
+                              <MenuUserDetailText>
+                                {user?.age}살
+                              </MenuUserDetailText>
+                              <MenuUserDetailText>
+                                {user?.gender === "MALE" ? "남자" : "여자"}
+                              </MenuUserDetailText>
+                            </div>
+                          </MenuUserDetailFrame>
+                        </>
+                      )}
+                    </MenuUserProfileFrame>
+                  );
+                })}
               </div>
             ))}
           </MenuMemberFrame>
