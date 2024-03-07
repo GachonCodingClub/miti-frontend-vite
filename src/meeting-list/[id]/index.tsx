@@ -40,6 +40,7 @@ import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
 import { useGetMyProfile } from "../../api/profile";
 import { InLoading } from "../../components/InLoading";
+import { useGetBlockList } from "../../api/blockList";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -72,6 +73,8 @@ export default function MeetingDetail() {
   } = useGetParties(id);
 
   const { data: profile } = useGetMyProfile();
+
+  const { data: blockData } = useGetBlockList();
 
   const meetingDate = group?.meetDate ? new Date(group?.meetDate) : null;
   const formattedDate = meetingDate ? formatDate(group?.meetDate) : "";
@@ -275,24 +278,35 @@ export default function MeetingDetail() {
               <MemberInfo>
                 {parties?.acceptedParties?.map((party) => (
                   <div key={party.partyId}>
-                    {party.users.map((user) => (
-                      <div key={user?.userId}>
-                        <div className="flex gap-1 items-center">
-                          <span>{user?.nickname}</span>
+                    {party.users.map((user) => {
+                      // 차단된 사용자인지 확인
+                      const isBlocked = blockData?.blockedUserOutputs?.some(
+                        (blockedUser: { nickname: string | undefined }) =>
+                          blockedUser.nickname === user?.nickname
+                      );
+                      return isBlocked ? (
+                        <div className="text-[#d05438]" key={user?.userId}>
+                          차단된 사용자입니다
                         </div>
-                        <span className="text-sm whitespace-pre-wrap">
-                          {user?.description}
-                        </span>
-                        <MemberDetail>
-                          <span>{user?.age}살</span>
-                          <span>
-                            {user?.gender === "MALE" ? "남자" : "여자"}
+                      ) : (
+                        <div key={user?.userId}>
+                          <div className="flex gap-1 items-center">
+                            <span>{user?.nickname}</span>
+                          </div>
+                          <span className="text-sm whitespace-pre-wrap">
+                            {user?.description}
                           </span>
-                          <span>{user?.height}cm</span>
-                          <span>{user?.weight}kg</span>
-                        </MemberDetail>
-                      </div>
-                    ))}
+                          <MemberDetail>
+                            <span>{user?.age}살</span>
+                            <span>
+                              {user?.gender === "MALE" ? "남자" : "여자"}
+                            </span>
+                            <span>{user?.height}cm</span>
+                            <span>{user?.weight}kg</span>
+                          </MemberDetail>
+                        </div>
+                      );
+                    })}
                   </div>
                 ))}
               </MemberInfo>
