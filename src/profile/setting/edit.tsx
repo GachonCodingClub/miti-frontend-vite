@@ -52,7 +52,12 @@ export default function EditProfile() {
 
   // 닉네임 중복확인 버튼
   const onSubmitNickName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickName = e.target.value;
+    let newNickName = e.target.value;
+
+    // 이모지를 제거하는 정규 표현식
+    const emojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+    newNickName = newNickName.replace(emojiRegex, "");
+
     setUserNickName(newNickName);
 
     if (newNickName === "") {
