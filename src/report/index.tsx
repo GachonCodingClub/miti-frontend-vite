@@ -106,7 +106,7 @@ export default function Report() {
           />
         </div>
 
-        <div className="gap-5">
+        <div>
           <WithdrawalContents>신고 내용</WithdrawalContents>
           <DescriptionArea
             placeholder="내용 입력"
