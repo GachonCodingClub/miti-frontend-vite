@@ -3,6 +3,7 @@ import {
   IChat,
   MeetingChatRoomScreen,
   ChattingTextarea,
+  ChatCount,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
@@ -22,7 +23,7 @@ import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
 import React from "react";
 import { getHeaders } from "../../components/getHeaders";
-import { CharCount, Overlay } from "../../sign-up/styles/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
@@ -316,9 +317,9 @@ export default function MeetingChatRoom() {
                 </button>
                 {charCount >= 0 && (
                   <div className="fixed">
-                    <CharCount>
+                    <ChatCount>
                       {charCount} / {MAX_INTRODUCE_LENGTH}
-                    </CharCount>
+                    </ChatCount>
                   </div>
                 )}
               </div>
