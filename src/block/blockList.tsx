@@ -40,6 +40,7 @@ export default function BlockList() {
           return response.json();
         }
         alert("해당 유저의 차단을 해제했어요.");
+        navigate(-1);
         return response.json();
       })
       .catch((error) => {
