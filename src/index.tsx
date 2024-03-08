@@ -4,16 +4,16 @@ import { Screen } from "./components/styles/Screen";
 import { ROUTES } from "./routes";
 
 export default function MITI() {
-  const userToken = localStorage.getItem("token");
   const navigate = useNavigate();
 
   useEffect(() => {
+    const userToken = localStorage.getItem("token");
     if (userToken) {
       navigate(ROUTES.MEETING_LIST);
     } else {
       navigate(ROUTES.SIGN_IN);
     }
-  }, [userToken, navigate]);
+  }, [navigate]);
 
   return (
     <Screen>
