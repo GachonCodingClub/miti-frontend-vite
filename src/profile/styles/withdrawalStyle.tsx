@@ -13,5 +13,5 @@ export const WithdrawalTitle = styled.span`
 `;
 
 export const WithdrawalContents = styled.div`
-  padding-top: 20px;
+  padding: 20px 0px 20px 0px;
 `;
