@@ -171,3 +171,11 @@ export const ScrollToBottomButton = styled.button`
   border-radius: 50%;
   z-index: 30;
 `;
+
+// 채팅 인풋 글자수
+export const ChatCount = styled.div`
+  color: var(--grey-grey-500, #767170);
+  margin-left: 4px;
+  margin-top: -2px;
+  font-size: 0.65rem;
+`;
