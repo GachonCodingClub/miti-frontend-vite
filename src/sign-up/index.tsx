@@ -111,6 +111,7 @@ export default function SignUp() {
 
   // 이메일 입력란의 값이 변경될 때 호출되는 함수
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const newEmail = e.target.value;
     setEmail(newEmail);
   };
@@ -166,6 +167,7 @@ export default function SignUp() {
 
   // 인증번호 입력란의 값이 변경될 때 호출되는 함수
   const onCertiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const newCertiNum = e.target.value;
     setCertiNumber(newCertiNum);
   };
@@ -176,7 +178,7 @@ export default function SignUp() {
       <SignUpScreen>
         <SignUpTitle>대학교 이메일을 입력해 주세요</SignUpTitle>
         <SignUpFrame>
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             <MyInputBoxButton
               placeholder="miti_001@gachon.ac.kr (@gachon.ac.kr)"
               label="대학교 이메일 (@gachon.ac.kr의 이메일만 가능해요)"
@@ -216,7 +218,10 @@ export default function SignUp() {
           )}
 
           {!overlapError && !error && showInputBox && (
-            <form className="flex flex-col mt-[25px]">
+            <form
+              className="flex flex-col mt-[25px]"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <MyInputBox
                 placeholder="인증 번호 입력"
                 label="인증 번호"
