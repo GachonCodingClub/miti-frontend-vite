@@ -370,3 +370,12 @@ export const XIcon = () => {
     </svg>
   );
 };
+
+// 아래화살표
+export const ScrollDownIcon = () => {
+  return (
+    <svg viewBox="0 0 24 24">
+      <path d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6-6-6z" />
+    </svg>
+  );
+};
