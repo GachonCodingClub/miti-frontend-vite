@@ -4,6 +4,7 @@ import {
   LocationIcon,
   PersonIcon,
   OrangeCrownIcon,
+  ScrollDownIcon,
 } from "../../components/styles/Icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
@@ -46,6 +47,7 @@ import {
   ProfileLeftButton,
   ProfileRightButton,
   ISideMenu,
+  ScrollDownArrow,
 } from "../styles/SideMenuComponents";
 import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
@@ -88,6 +90,18 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   );
 
   const headers = getHeaders(token);
+
+  const [totalParticipants, setTotalParticipants] = useState(0);
+
+  // useEffect를 사용하여 parties 데이터가 로드될 때마다 인원 수를 업데이트
+  useEffect(() => {
+    const total =
+      parties?.acceptedParties?.reduce(
+        (acc, party) => acc + party.users.length,
+        0
+      ) || 0;
+    setTotalParticipants(total + 1);
+  }, [parties?.acceptedParties]);
 
   const onBlockClick = (blockUserId: string | undefined) => {
     const PostUrl = `${
@@ -177,7 +191,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       {/* 참여자 */}
       <MenuMemberAndReqButtonWrapper>
         <MenuMemberContainer>
-          <MenuDetailText>참여자</MenuDetailText>
+          <MenuDetailText>참여자 (총 {totalParticipants}명)</MenuDetailText>
           <MenuMemberFrame>
             {/* 방장님 */}
             {parties?.leaderUserSummaryDto && (
@@ -257,7 +271,9 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             ))}
           </MenuMemberFrame>
         </MenuMemberContainer>
-
+        <ScrollDownArrow>
+          <ScrollDownIcon />
+        </ScrollDownArrow>
         {/* 참여 요청 목록 */}
         {isGroupLeader && (
           <ParticipationReqButton
