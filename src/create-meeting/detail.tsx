@@ -85,12 +85,16 @@ export default function CreateMeetingDetail() {
   const [inputMember, setInputMember] = useState("2"); // 사용자 입력 input 기본은 2
   const onMemberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newMember = event.target.value;
-    // 미팅 인원이 2보다 작으면 에러 설정
-    if (parseInt(newMember, 10) < 2) {
-      setMemberError("인원은 2 이상이어야 합니다.");
+    const newMemberInt = parseInt(newMember, 10); // 입력 값을 숫자로 변환
+
+    if (newMemberInt < 2) {
+      setMemberError("인원은 2명 이상이어야 해요.");
+    } else if (newMemberInt > 50) {
+      setMemberError("최대 50명을 초과할 수 없어요.");
     } else {
       setMemberError("");
     }
+
     setInputMember(newMember);
   };
   const [memberError, setMemberError] = useState("");
