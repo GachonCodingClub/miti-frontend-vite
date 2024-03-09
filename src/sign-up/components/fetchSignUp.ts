@@ -49,6 +49,8 @@ export const fetchSignUp = async (
       console.error(`API 오류: ${response.status} - ${response.statusText}`);
       if (response.status === 500) {
         alert("닉네임을 확인해주세요.");
+      } else if (response.status === 400) {
+        alert("생년월일을 확인해주세요.");
       } else {
         alert(`오류가 발생했습니다: ${response.status}`);
       }
