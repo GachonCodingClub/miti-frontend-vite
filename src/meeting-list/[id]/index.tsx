@@ -385,7 +385,7 @@ export default function MeetingDetail() {
           <Overlay>
             <DialogOneBtn
               title="신청할 수 없어요"
-              contents="이미 신청한 미팅방일 수 있어요"
+              contents="이미 신청한 미팅방이에요"
               right="닫기"
               onRightClick={() => {
                 setShowErrorDialog(false);

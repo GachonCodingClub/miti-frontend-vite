@@ -80,19 +80,6 @@ export default function Report() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <WithdrawalScreen>
-        <div className="mt-7">
-          <p className="mt-7">
-            신고가 누적된 사용자는 미티 서비스를 이용하실 수 없습니다.
-          </p>
-          <p className="mt-1">
-            저희는 신고 내용을 최대 24시간 이내에 검토하고 신고 대상에게 적절한
-            제재를 가합니다.
-          </p>
-          <p className="my-7">
-            문의 사항은 설정의 '문의하기'를 이용해 주십시오.
-          </p>
-        </div>
-
         <div className="mt-10">
           <WithdrawalTitle>신고하기</WithdrawalTitle>
         </div>
@@ -114,6 +101,16 @@ export default function Report() {
             value={content}
           />
         </div>
+        <div className="mt-7">
+          <p className="mt-7">
+            신고가 누적된 사용자는 <br /> 미티 서비스를 이용하실 수 없습니다.
+          </p>
+          <p className="mt-1">
+            저희는 신고 내용을 최대 24시간 이내에 검토하고 신고 대상에게 적절한
+            제재를 가합니다.
+          </p>
+        </div>
+
         {showDialog && (
           <Overlay>
             <Dialog
