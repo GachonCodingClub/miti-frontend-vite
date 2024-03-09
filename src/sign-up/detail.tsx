@@ -42,6 +42,14 @@ import { MyHeightSheet } from "./components/HeightSheet";
 import { MyWeightSheet } from "./components/WeightSheet";
 import { rangeToAlphabet } from "../components/rangeToAlphabet";
 
+const getCurrentDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 export default function SingUpDetail() {
   const navigate = useNavigate();
   // 닉네임
@@ -147,7 +155,14 @@ export default function SingUpDetail() {
 
   const onSubmitBirth = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newBirth = e.target.value;
-    setUserBirth(newBirth);
+    const todayYYYYMMDD = getCurrentDate();
+    if (newBirth > todayYYYYMMDD) {
+      setBirthError("정확한 생년월일을 입력해주세요.");
+    } else {
+      // 입력이 유효한 경우
+      setBirthError("");
+      setUserBirth(newBirth);
+    }
   };
 
   // 키(cm)
