@@ -82,7 +82,12 @@ export default function CreateMeetingDetail() {
   }, [group?.meetDate, group?.meetPlace, isUpdate]);
 
   // 인원
-  const [inputMember, setInputMember] = useState("2"); // 사용자 입력 input 기본은 2
+  const [inputMember, setInputMember] = useState(
+    isUpdate ? group?.maxUsers : "2"
+  );
+  const inputMemberValue =
+    inputMember === undefined ? "" : inputMember.toString();
+
   const onMemberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newMember = event.target.value;
     const newMemberInt = parseInt(newMember, 10); // 입력 값을 숫자로 변환
@@ -99,7 +104,7 @@ export default function CreateMeetingDetail() {
   };
   const [memberError, setMemberError] = useState("");
   // 인원 텍스트를 숫자로 변환
-  const numericInputMember = parseInt(inputMember, 10); // 문자열을 10진수 숫자로
+  const numericInputMember = parseInt(inputMemberValue, 10); // 문자열을 10진수 숫자로
   const [inputMemberDisabled, setInputDisabled] = useState(false);
   const [modiSVG, setModiSVG] = useState(false);
 
@@ -311,7 +316,7 @@ export default function CreateMeetingDetail() {
               inputPlace={inputPlace}
               onPlaceChange={onPlaceChange}
               placeError={placeError}
-              inputMember={inputMember}
+              inputMember={inputMemberValue}
               onMemberChange={onMemberChange}
               memberError={memberError}
               inputMemberDisabled={inputMemberDisabled}
@@ -326,7 +331,7 @@ export default function CreateMeetingDetail() {
               inputPlace={inputPlace}
               onPlaceChange={onPlaceChange}
               placeError={placeError}
-              inputMember={inputMember}
+              inputMember={inputMemberValue}
               onMemberChange={() => {}}
               memberError={"미팅 인원은 수정할 수 없어요"}
               inputMemberDisabled={true}
