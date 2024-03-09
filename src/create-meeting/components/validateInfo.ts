@@ -19,16 +19,24 @@ export const validateForm = ({
   setDuplicateBlankErrorDialog,
 }: IValidationProps): boolean => {
   const currentDate = new Date().toISOString().split("T")[0]; // 현재 날짜
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1); // 1년 후의 날짜
+  const oneYearFromNowDate = oneYearFromNow.toISOString().split("T")[0];
+
   let isValid = true;
 
   if (selecteDate === "") {
     setDateError("날짜를 선택해 주세요.");
     isValid = false;
   } else if (selecteDate < currentDate) {
-    setDateError("날짜는 오늘 이후여야 합니다.");
+    setDateError("날짜는 오늘 이후여야 해요");
+    isValid = false;
+  } else if (selecteDate > oneYearFromNowDate) {
+    // 1년 이후 날짜 검증 추가
+    setDateError("날짜는 1년 이내로 해주세요.");
     isValid = false;
   } else {
-    setDateError(""); // 오류가 없을 경우 오류 메시지를 비웁니다.
+    setDateError(""); // 오류가 없을 경우 오류 메시지를 비움
   }
 
   setPlaceError(inputPlace === "" ? "장소를 입력해 주세요." : "");
