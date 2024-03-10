@@ -36,7 +36,14 @@ export default function Block() {
           console.error(
             `API 오류 : ${response.status} - ${response.statusText}`
           );
-          alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+
+          if (response.status === 404) {
+            alert("닉네임을 확인해 주세요.");
+          } else if (response.status === 409) {
+            alert("이미 차단된 사용자예요.");
+          } else {
+            alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+          }
           return response.json();
         }
         alert("해당 유저를 차단했어요.");
