@@ -26,7 +26,7 @@ export default function Setting() {
           </SettingButton>
           <SettingButton to={`${ROUTES.NOTICE}`}>문의하기</SettingButton>
           <SettingButton to={`${ROUTES.REPORT}`}>신고하기</SettingButton>
-          <SettingButton to={`${ROUTES.BLOCKLIST}`}>차단목록</SettingButton>
+          <SettingButton to={`${ROUTES.BLOCK}`}>차단하기</SettingButton>
           <SettingButton to={`${ROUTES.AGREEMENT}`}>
             개인정보처리방침 및 서비스이용약관
           </SettingButton>
