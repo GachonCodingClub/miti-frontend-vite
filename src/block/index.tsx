@@ -22,14 +22,13 @@ export default function Block() {
   };
 
   const onBlockClick = () => {
-    const PostUrl = `${import.meta.env.VITE_BASE_URL}/users/${blockName}/block`;
+    const PostUrl = `${
+      import.meta.env.VITE_BASE_URL
+    }/users/block?blockTargetNickname=${blockName}`;
 
     fetch(PostUrl, {
       method: "POST",
       mode: "cors",
-      body: JSON.stringify({
-        blockTargetUserId: blockName,
-      }),
       headers: headers,
     })
       .then((response) => {
