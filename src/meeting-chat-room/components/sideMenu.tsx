@@ -85,6 +85,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
 
   const isGroupLeader =
     decodedToken?.sub === group?.leaderUserSummaryDto?.userId;
+
   const [selectedUserProfile, setSelectedUserProfile] = useState<IUser | null>(
     null
   );
@@ -103,17 +104,15 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
     setTotalParticipants(total + 1);
   }, [parties?.acceptedParties]);
 
-  const onBlockClick = (blockUserId: string | undefined) => {
+  const onBlockClick = (blockTargetNickname: string | undefined) => {
     const PostUrl = `${
       import.meta.env.VITE_BASE_URL
-    }/users/${blockUserId}/block`;
+    }/users/block?blockTargetNickname=${blockTargetNickname}`;
 
     fetch(PostUrl, {
       method: "POST",
       mode: "cors",
-      body: JSON.stringify({
-        blockUserId: blockUserId,
-      }),
+
       headers: headers,
     })
       .then((response) => {
@@ -236,7 +235,6 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                       key={user?.userId}
                       onClick={() => {
                         if (!isUserBlocked) {
-                          console.log(user?.userId);
                           setSelectedUserProfile(user);
                         }
                       }}
@@ -349,7 +347,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                 {selectedUserProfile?.userId !== decodedToken?.sub && (
                   <ProfileRightButton
                     onClick={() => {
-                      onBlockClick(selectedUserProfile?.userId);
+                      onBlockClick(selectedUserProfile?.nickname);
                     }}
                   >
                     <DialogRightText>차단하기</DialogRightText>
