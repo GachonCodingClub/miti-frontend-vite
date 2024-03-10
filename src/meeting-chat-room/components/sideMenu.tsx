@@ -94,7 +94,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
 
   const [totalParticipants, setTotalParticipants] = useState(0);
 
-  // useEffect를 사용하여 parties 데이터가 로드될 때마다 인원 수를 업데이트
+  // parties 데이터가 로드될 때마다 인원 수를 업데이트
   useEffect(() => {
     const total =
       parties?.acceptedParties?.reduce(
