@@ -18,17 +18,14 @@ export default function BlockList() {
 
   const headers = getHeaders(token);
 
-  const onUnblockClick = (blockUserId: string | undefined) => {
+  const onUnblockClick = (blockTargetNickname: string | undefined) => {
     const PostUrl = `${
       import.meta.env.VITE_BASE_URL
-    }/users/${blockUserId}/unblock`;
-    console.log("차단해제", blockUserId);
+    }/users/unblock?blockTargetNickname=${blockTargetNickname}`;
+
     fetch(PostUrl, {
       method: "POST",
       mode: "cors",
-      body: JSON.stringify({
-        blockUserId: blockUserId,
-      }),
       headers: headers,
     })
       .then((response) => {
@@ -56,10 +53,7 @@ export default function BlockList() {
       />
       <BlockListScreen>
         {data?.blockedUserOutputs?.map(
-          (
-            block: { nickname: string; userId: string },
-            index: Key | null | undefined
-          ) => (
+          (block: { nickname: string }, index: Key | null | undefined) => (
             <>
               <BUserBox key={index}>
                 <UserName>{block?.nickname}</UserName>
@@ -67,7 +61,7 @@ export default function BlockList() {
                   <SmallOrangeBtn
                     text="차단 해제"
                     onClick={() => {
-                      onUnblockClick(block?.userId);
+                      onUnblockClick(block?.nickname);
                     }}
                   />
                 </div>
