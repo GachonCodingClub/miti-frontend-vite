@@ -137,6 +137,22 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
 
   const { data: blockData } = useGetBlockList();
 
+  const renderUserProfile = (user: IUser, isUserBlocked: boolean) => {
+    return isUserBlocked ? (
+      <div className="pr-2 text-[#d05438]">차단된 사용자입니다</div>
+    ) : (
+      <MenuMasterFrame onClick={() => setSelectedUserProfile(user)}>
+        <MenuUserNickname>{user?.nickname}</MenuUserNickname>
+        <MenuUserDetailFrame>
+          <MenuUserDetailText>{user?.age}살</MenuUserDetailText>
+          <MenuUserDetailText>
+            {user?.gender === "MALE" ? "남자" : "여자"}
+          </MenuUserDetailText>
+        </MenuUserDetailFrame>
+      </MenuMasterFrame>
+    );
+  };
+
   if (isGroupLoading || isPartiesLoading) {
     return <InLoading />;
   }
@@ -199,40 +215,15 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             {/* 방장님 */}
             {parties?.leaderUserSummaryDto && (
               <MenuUserProfileFrame>
-                <>
-                  {blockData?.blockedUserOutputs?.some(
+                {renderUserProfile(
+                  parties.leaderUserSummaryDto,
+                  blockData?.blockedUserOutputs?.some(
                     (blockedUser: { nickname: string | undefined }) =>
                       blockedUser.nickname ===
                       parties.leaderUserSummaryDto?.nickname
-                  ) ? (
-                    <div className=" gap-1 flex items-center text-[#d05438]">
-                      차단된 사용자입니다 <OrangeCrownIcon />
-                    </div>
-                  ) : (
-                    <MenuMasterFrame
-                      onClick={() => {
-                        setSelectedUserProfile(parties?.leaderUserSummaryDto);
-                      }}
-                    >
-                      <div className="flex gap-2">
-                        <MenuUserNickname>
-                          {parties?.leaderUserSummaryDto?.nickname}
-                        </MenuUserNickname>
-                        <OrangeCrownIcon />
-                      </div>
-                      <div>
-                        <MenuUserDetailText>
-                          {parties?.leaderUserSummaryDto?.age}살
-                        </MenuUserDetailText>
-                        <MenuUserDetailText>
-                          {parties?.leaderUserSummaryDto?.gender === "MALE"
-                            ? "남자"
-                            : "여자"}
-                        </MenuUserDetailText>
-                      </div>
-                    </MenuMasterFrame>
-                  )}
-                </>
+                  )
+                )}
+                <OrangeCrownIcon />
               </MenuUserProfileFrame>
             )}
             {/* 일반 참여자 */}
@@ -246,37 +237,8 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                   );
 
                   return (
-                    <MenuUserProfileFrame
-                      key={user?.userId}
-                      onClick={() => {
-                        if (!isUserBlocked) {
-                          setSelectedUserProfile(user);
-                        }
-                      }}
-                    >
-                      {isUserBlocked ? (
-                        <MenuUserDetailFrame>
-                          <div className="text-[#d05438]">
-                            차단된 사용자입니다
-                          </div>
-                        </MenuUserDetailFrame>
-                      ) : (
-                        <>
-                          <MenuUserDetailFrame>
-                            <MenuUserNickname>
-                              {user?.nickname}
-                            </MenuUserNickname>
-                            <div>
-                              <MenuUserDetailText>
-                                {user?.age}살
-                              </MenuUserDetailText>
-                              <MenuUserDetailText>
-                                {user?.gender === "MALE" ? "남자" : "여자"}
-                              </MenuUserDetailText>
-                            </div>
-                          </MenuUserDetailFrame>
-                        </>
-                      )}
+                    <MenuUserProfileFrame key={user?.userId}>
+                      {renderUserProfile(user, isUserBlocked)}
                     </MenuUserProfileFrame>
                   );
                 })}
