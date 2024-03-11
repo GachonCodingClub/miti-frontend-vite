@@ -21,8 +21,10 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 import { useGetMyProfile } from "../api/profile";
 import { InLoading } from "../components/InLoading";
 import { ROUTES } from "../routes";
+import { useLoginGuard } from "../hooks/useLoginGuard";
 
 export default function Profile() {
+  useLoginGuard();
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
