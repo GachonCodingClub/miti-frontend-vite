@@ -184,9 +184,7 @@ export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
 // 유저 프로필 프레임
 export const MenuUserProfileFrame = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-
   align-self: stretch;
 `;
 
@@ -208,7 +206,7 @@ export const MenuUserNickname = styled.span`
 export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
-  flex-direction: column;
+
   padding-bottom: 8px;
 `;
 
