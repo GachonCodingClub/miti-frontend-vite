@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { meetingDescAtom, meetingTitleAtom } from "../atoms";
-import { Overlay } from "../sign-up/styles/detailComponents";
-import { DialogOneBtn } from "../components/styles/Button";
 import { MyInputBox } from "../components/MyInputBox";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
@@ -14,6 +12,7 @@ import {
   DescriptionArea,
 } from "./styles/createMeetingIndexComponents";
 import { Screen } from "../components/styles/Screen";
+import OneBtnDialog from "../components/Dialog";
 
 export default function CreateMeeting() {
   const navigate = useNavigate();
@@ -153,18 +152,15 @@ export default function CreateMeeting() {
             maxLength={35}
           />
           <div className="bg-[#c9c5c5] h-[1px] w-full"></div>
-          {showDialog && (
-            <Overlay>
-              <DialogOneBtn
-                title="제목과 설명을 확인해 주세요."
-                contents=""
-                onRightClick={() => {
-                  setShowDialog(false);
-                }}
-                right="닫기"
-              />
-            </Overlay>
-          )}
+
+          <OneBtnDialog
+            isOpen={showDialog}
+            title="제목과 설명을 확인해 주세요."
+            onBtnClick={() => {
+              setShowDialog(false);
+            }}
+            buttonText="닫기"
+          />
         </InputWrapper>
       </Screen>
     </>
