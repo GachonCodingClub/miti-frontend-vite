@@ -254,23 +254,35 @@ export default function MeetingDetail() {
               <MemberInfo>
                 {parties?.leaderUserSummaryDto && (
                   <>
-                    <div className="flex items-center gap-1">
-                      {parties?.leaderUserSummaryDto?.nickname}
-                      <OrangeCrownIcon />
-                    </div>
-                    <span className="whitespace-pre-wrap text-sm">
-                      {parties?.leaderUserSummaryDto?.description}
-                    </span>
-                    <MemberDetail>
-                      <span>{parties?.leaderUserSummaryDto?.age}살</span>
-                      <span>
-                        {parties?.leaderUserSummaryDto?.gender === "MALE"
-                          ? "남자"
-                          : "여자"}
-                      </span>
-                      <span>{parties?.leaderUserSummaryDto?.height}cm</span>
-                      <span>{parties?.leaderUserSummaryDto?.weight}kg</span>
-                    </MemberDetail>
+                    {blockData?.blockedUserOutputs?.some(
+                      (blockedUser: { nickname: string | undefined }) =>
+                        blockedUser.nickname ===
+                        parties.leaderUserSummaryDto?.nickname
+                    ) ? (
+                      <div className="pb-3 gap-1 flex items-center text-[#d05438]">
+                        차단된 사용자입니다 <OrangeCrownIcon />
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-1">
+                          {parties?.leaderUserSummaryDto?.nickname}
+                          <OrangeCrownIcon />
+                        </div>
+                        <span className="whitespace-pre-wrap text-sm">
+                          {parties?.leaderUserSummaryDto?.description}
+                        </span>
+                        <MemberDetail>
+                          <span>{parties?.leaderUserSummaryDto?.age}살</span>
+                          <span>
+                            {parties?.leaderUserSummaryDto?.gender === "MALE"
+                              ? "남자"
+                              : "여자"}
+                          </span>
+                          <span>{parties?.leaderUserSummaryDto?.height}cm</span>
+                          <span>{parties?.leaderUserSummaryDto?.weight}kg</span>
+                        </MemberDetail>
+                      </>
+                    )}
                   </>
                 )}
               </MemberInfo>
