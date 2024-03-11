@@ -1,6 +1,7 @@
 import React from "react";
 import { Overlay } from "../styles/detailComponents";
-import { DialogOneBtn, Dialog } from "../../components/styles/Button";
+import { Dialog } from "../../components/styles/Button";
+import OneBtnDialog from "../../components/Dialog";
 
 interface INicknameCheck {
   overlapNickname: boolean;
@@ -22,16 +23,12 @@ const NickNameCheckModule = ({
 }: INicknameCheck) => {
   return (
     <>
-      {overlapNickname && (
-        <Overlay>
-          <DialogOneBtn
-            title="이미 사용 중인 닉네임입니다."
-            contents=""
-            onRightClick={checkOverlap}
-            right="닫기"
-          />
-        </Overlay>
-      )}
+      <OneBtnDialog
+        isOpen={overlapNickname}
+        title="이미 사용 중인 닉네임입니다."
+        onBtnClick={checkOverlap}
+        buttonText="닫기"
+      />
       {possibleNickname && !isInputDisabled && (
         <Overlay>
           <Dialog

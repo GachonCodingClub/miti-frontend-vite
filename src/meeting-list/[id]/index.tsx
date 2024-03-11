@@ -1,6 +1,5 @@
 import {
   DialogContainer,
-  DialogOneBtn,
   LongOrangeBtn,
   LongWhiteBtn,
 } from "../../components/styles/Button";
@@ -41,6 +40,7 @@ import useGetParties from "../../api/useGetParties";
 import { useGetMyProfile } from "../../api/profile";
 import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
+import OneBtnDialog from "../../components/Dialog";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -368,83 +368,57 @@ export default function MeetingDetail() {
           )}
         </DetailBox>
 
-        {showDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="참여 신청 완료"
-              contents=""
-              right="닫기"
-              onRightClick={() => {
-                setShowDialog(false);
-                setShowAdd(false);
-              }}
-            />
-          </Overlay>
-        )}
-        {showErrorDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="신청할 수 없어요"
-              contents="이미 신청한 미팅방이에요"
-              right="닫기"
-              onRightClick={() => {
-                setShowErrorDialog(false);
-              }}
-            />
-          </Overlay>
-        )}
-
-        {cantAddDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="미팅 정원보다 많이 추가할 수 없어요."
-              contents=""
-              onRightClick={() => {
-                setCantAddDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
-
-        {duplicateOrBlankErrorDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="닉네임을 확인해 주세요."
-              contents="중복된 닉네임이나 빈칸이 있어요."
-              onRightClick={() => {
-                setDuplicateOrBlankErrorDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
-
-        {addMyNicknameDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="본인은 추가할 수 없어요."
-              contents=""
-              onRightClick={() => {
-                setAddMyNicknameDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
-
-        {nonExistentDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="존재하지 않는 닉네임이에요."
-              contents=""
-              onRightClick={() => {
-                setNonExistentDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={showDialog}
+          title="참여 신청 완료"
+          onBtnClick={() => {
+            setShowDialog(false);
+            setShowAdd(false);
+          }}
+          buttonText="닫기"
+        />
+        <OneBtnDialog
+          isOpen={showErrorDialog}
+          title="신청할 수 없어요"
+          contents="이미 신청한 미팅방이에요"
+          onBtnClick={() => {
+            setShowErrorDialog(false);
+          }}
+          buttonText="닫기"
+        />
+        <OneBtnDialog
+          isOpen={cantAddDialog}
+          title="미팅 정원보다 많이 추가할 수 없어요."
+          onBtnClick={() => {
+            setCantAddDialog(false);
+          }}
+          buttonText="닫기"
+        />
+        <OneBtnDialog
+          isOpen={duplicateOrBlankErrorDialog}
+          title="닉네임을 확인해 주세요."
+          contents="중복된 닉네임이나 빈칸이 있어요."
+          onBtnClick={() => {
+            setDuplicateOrBlankErrorDialog(false);
+          }}
+          buttonText="닫기"
+        />
+        <OneBtnDialog
+          isOpen={addMyNicknameDialog}
+          title="본인은 추가할 수 없어요."
+          onBtnClick={() => {
+            setAddMyNicknameDialog(false);
+          }}
+          buttonText="닫기"
+        />
+        <OneBtnDialog
+          isOpen={nonExistentDialog}
+          title="존재하지 않는 닉네임이에요."
+          onBtnClick={() => {
+            setNonExistentDialog(false);
+          }}
+          buttonText="닫기"
+        />
       </DetailScreen>
     </>
   );

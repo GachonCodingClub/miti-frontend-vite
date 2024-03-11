@@ -1,19 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Screen } from "../components/styles/Screen";
-import {
-  DialogOneBtn,
-  FixedButtonBox,
-  LongOrangeBtn,
-} from "../components/styles/Button";
+import { FixedButtonBox, LongOrangeBtn } from "../components/styles/Button";
 import { useRecoilState } from "recoil";
-import { Overlay } from "./styles/detailComponents";
 import { userEmailAtom } from "../atoms";
 import { MyInputBox, MyInputBoxButton } from "../components/MyInputBox";
 import { ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
 import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
+import OneBtnDialog from "../components/Dialog";
 
 const SignUpScreen = styled(Screen)`
   padding-top: 56px;
@@ -191,31 +187,25 @@ export default function SignUp() {
               disable={isInputDisabled}
             />
           </form>
-          {overlapError && (
-            <Overlay>
-              <DialogOneBtn
-                title="이미 가입된 이메일입니다."
-                contents=""
-                right="처음으로"
-                onRightClick={() => {
-                  navigate(`${ROUTES.SIGN_IN}`);
-                }}
-              />
-            </Overlay>
-          )}
-          {!overlapError && showDialog && (
-            <Overlay>
-              <DialogOneBtn
-                title="인증 메일이 전송되었습니다."
-                contents=""
-                onRightClick={() => {
-                  setShowDialog(false);
-                  setIsInputDisabled(true);
-                }}
-                right="닫기"
-              />
-            </Overlay>
-          )}
+
+          <OneBtnDialog
+            isOpen={overlapError}
+            title="이미 가입된 이메일입니다."
+            onBtnClick={() => {
+              navigate(`${ROUTES.SIGN_IN}`);
+            }}
+            buttonText="처음으로"
+          />
+          <OneBtnDialog
+            isOpen={!overlapError && showDialog}
+            title="인증 메일이 전송됐어요."
+            contents="@gachon.ac.kr 메일함을 확인해 주세요."
+            onBtnClick={() => {
+              setShowDialog(false);
+              setIsInputDisabled(true);
+            }}
+            buttonText="닫기"
+          />
 
           {!overlapError && !error && showInputBox && (
             <form

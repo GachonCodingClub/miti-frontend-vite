@@ -10,16 +10,11 @@ import {
   DetailSetScreen,
   DetailTitle,
   IntroduceFrame,
-  Overlay,
   SelectBtnFrame,
   SelectBtnText,
   SelectButtonContainer,
 } from "./styles/detailComponents";
-import {
-  DialogOneBtn,
-  FixedButtonBox,
-  LongOrangeBtn,
-} from "../components/styles/Button";
+import { FixedButtonBox, LongOrangeBtn } from "../components/styles/Button";
 import { useRecoilState } from "recoil";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
@@ -41,6 +36,7 @@ import { useNavigate } from "react-router-dom";
 import { MyHeightSheet } from "./components/HeightSheet";
 import { MyWeightSheet } from "./components/WeightSheet";
 import { rangeToAlphabet } from "../components/rangeToAlphabet";
+import OneBtnDialog from "../components/Dialog";
 
 const getCurrentDate = () => {
   const today = new Date();
@@ -376,16 +372,12 @@ export default function SingUpDetail() {
         />
 
         {/* 가입 성공 */}
-        {subscription && (
-          <Overlay>
-            <DialogOneBtn
-              title="가입 성공!"
-              contents=""
-              onRightClick={onSubscriptionClick}
-              right="로그인 화면으로 이동"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={subscription}
+          title="가입 성공!"
+          onBtnClick={onSubscriptionClick}
+          buttonText="로그인 화면으로 이동"
+        />
       </DetailSetScreen>
       <FixedButtonBox>
         <LongOrangeBtn text="가입 완료" onClick={completeButton} />

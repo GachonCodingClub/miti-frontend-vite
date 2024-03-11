@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogOneBtn,
-  LongOrangeBtn,
-} from "../components/styles/Button";
+import { Dialog, LongOrangeBtn } from "../components/styles/Button";
 import { Overlay } from "../sign-up/styles/detailComponents";
 import { MyInputBoxSVG } from "../components/MyInputBox";
 import { TopBar } from "../components/TopBar";
@@ -30,6 +26,7 @@ import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 import useGetGroups from "../api/useGetGroups";
 import { useGetMyProfile } from "../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
+import OneBtnDialog from "../components/Dialog";
 
 export default function CreateMeetingDetail() {
   const { meetingTitle, meetingDesc } = useRecoilStates();
@@ -360,18 +357,15 @@ export default function CreateMeetingDetail() {
               />
             </Overlay>
           )}
-          {confirmErrorDialog && (
-            <Overlay>
-              <DialogOneBtn
-                title="먼저 인원을 확정 지어주세요."
-                contents=""
-                onRightClick={() => {
-                  setConfirmErrorDialog(false);
-                }}
-                right="닫기"
-              />
-            </Overlay>
-          )}
+
+          <OneBtnDialog
+            isOpen={confirmErrorDialog}
+            title="먼저 인원을 확정 지어주세요."
+            onBtnClick={() => {
+              setConfirmErrorDialog(false);
+            }}
+            buttonText="닫기"
+          />
         </DatePlaceMemberFrame>
 
         <GrayLine />
@@ -401,81 +395,58 @@ export default function CreateMeetingDetail() {
           />
         )}
 
-        {addMyNicknameDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="본인은 추가할 수 없어요."
-              contents=""
-              onRightClick={() => {
-                setAddMyNicknameDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={addMyNicknameDialog}
+          title="본인은 추가할 수 없어요."
+          onBtnClick={() => {
+            setAddMyNicknameDialog(false);
+          }}
+          buttonText="닫기"
+        />
 
-        {nonExistDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="존재하지 않는 닉네임이에요."
-              contents=""
-              onRightClick={() => {
-                setNonExistDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={nonExistDialog}
+          title="존재하지 않는 닉네임이에요."
+          onBtnClick={() => {
+            setNonExistDialog(false);
+          }}
+          buttonText="닫기"
+        />
 
-        {cannotAddDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="미팅 인원보다 많이 추가할 수 없어요."
-              contents=""
-              onRightClick={() => {
-                setCannotAddDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={cannotAddDialog}
+          title="미팅 인원보다 많이 추가할 수 없어요."
+          onBtnClick={() => {
+            setCannotAddDialog(false);
+          }}
+          buttonText="닫기"
+        />
 
-        {duplicateBlankErrorDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="닉네임을 확인해 주세요."
-              contents="중복된 닉네임이나 빈칸이 있어요."
-              onRightClick={() => {
-                setDuplicateBlankErrorDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={duplicateBlankErrorDialog}
+          title="닉네임을 확인해 주세요."
+          contents="중복된 닉네임이나 빈칸이 있어요."
+          onBtnClick={() => {
+            setDuplicateBlankErrorDialog(false);
+          }}
+          buttonText="닫기"
+        />
 
-        {overlapDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="미팅 정원과 참여자의 수가 같아요."
-              contents=""
-              onRightClick={() => {
-                setOverlapDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={overlapDialog}
+          title="미팅 정원과 참여자의 수가 같아요."
+          onBtnClick={() => {
+            setOverlapDialog(false);
+          }}
+          buttonText="닫기"
+        />
 
-        {showEnrollBar && (
-          <Overlay>
-            <DialogOneBtn
-              title="등록 완료"
-              contents=""
-              onRightClick={onEnrollClick}
-              right="돌아가기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={showEnrollBar}
+          title="등록 완료"
+          onBtnClick={onEnrollClick}
+          buttonText="돌아가기"
+        />
       </CreateMeetingDetailScreen>
       <SubmitButtonFrame>
         <LongOrangeBtn
