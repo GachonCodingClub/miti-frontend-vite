@@ -41,13 +41,14 @@ import { useGetMyProfile } from "../../api/profile";
 import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
 import OneBtnDialog from "../../components/Dialog";
+import { IUser } from "../../meeting-chat-room/styles/SideMenuComponents";
 
 export default function MeetingDetail() {
   useLoginGuard();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [token, setToken] = useState(""); // 토큰 상태 추가
+  const [token, setToken] = useState("");
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -199,6 +200,29 @@ export default function MeetingDetail() {
       });
   };
 
+  const renderUserProfile = (user: IUser, isUserBlocked: boolean) => {
+    return isUserBlocked ? (
+      <div className="pb-3 text-[#d05438]">차단된 사용자입니다</div>
+    ) : (
+      <>
+        <div className="gap-1">
+          <span>{user?.nickname}</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-sm whitespace-pre-wrap">
+            {user?.description}
+          </span>
+          <MemberDetail>
+            <span>{user?.age}살</span>
+            <span>{user?.gender === "MALE" ? "남자" : "여자"}</span>
+            <span>{user?.height}cm</span>
+            <span>{user?.weight}kg</span>
+          </MemberDetail>
+        </div>
+      </>
+    );
+  };
+
   if (isGroupLoading || isPartiesLoading) return <InLoading />;
   if (groupError || partiesError) return <div>데이터 로딩 중 오류 발생</div>;
 
@@ -248,41 +272,24 @@ export default function MeetingDetail() {
             </DetailInfoBox>
             <div className="w-full h-[1px] bg-[#EBE8E7]" />
             <DetailMember>
-              <span className="text-sm font-normal text-gray-500 mb-4">
+              <span className="text-sm font-normal text-gray-500 mb-1">
                 참여자
               </span>
               <MemberInfo>
                 {parties?.leaderUserSummaryDto && (
                   <>
-                    {blockData?.blockedUserOutputs?.some(
-                      (blockedUser: { nickname: string | undefined }) =>
-                        blockedUser.nickname ===
-                        parties.leaderUserSummaryDto?.nickname
-                    ) ? (
-                      <div className="pb-3 gap-1 flex items-center text-[#d05438]">
-                        차단된 사용자입니다 <OrangeCrownIcon />
-                      </div>
-                    ) : (
-                      <>
-                        <div className="flex items-center gap-1">
-                          {parties?.leaderUserSummaryDto?.nickname}
-                          <OrangeCrownIcon />
-                        </div>
-                        <span className="whitespace-pre-wrap text-sm">
-                          {parties?.leaderUserSummaryDto?.description}
-                        </span>
-                        <MemberDetail>
-                          <span>{parties?.leaderUserSummaryDto?.age}살</span>
-                          <span>
-                            {parties?.leaderUserSummaryDto?.gender === "MALE"
-                              ? "남자"
-                              : "여자"}
-                          </span>
-                          <span>{parties?.leaderUserSummaryDto?.height}cm</span>
-                          <span>{parties?.leaderUserSummaryDto?.weight}kg</span>
-                        </MemberDetail>
-                      </>
-                    )}
+                    {" "}
+                    <OrangeCrownIcon />
+                    <div className="gap-1">
+                      {renderUserProfile(
+                        parties.leaderUserSummaryDto,
+                        blockData?.blockedUserOutputs?.some(
+                          (blockedUser: { nickname: string | undefined }) =>
+                            blockedUser.nickname ===
+                            parties.leaderUserSummaryDto?.nickname
+                        )
+                      )}
+                    </div>
                   </>
                 )}
               </MemberInfo>
@@ -296,26 +303,9 @@ export default function MeetingDetail() {
                         (blockedUser: { nickname: string | undefined }) =>
                           blockedUser.nickname === user?.nickname
                       );
-                      return isBlocked ? (
-                        <div className="pb-3 text-[#d05438]" key={user?.userId}>
-                          차단된 사용자입니다
-                        </div>
-                      ) : (
+                      return (
                         <div key={user?.userId}>
-                          <div className="flex gap-1 items-center">
-                            <span>{user?.nickname}</span>
-                          </div>
-                          <span className="text-sm whitespace-pre-wrap">
-                            {user?.description}
-                          </span>
-                          <MemberDetail>
-                            <span>{user?.age}살</span>
-                            <span>
-                              {user?.gender === "MALE" ? "남자" : "여자"}
-                            </span>
-                            <span>{user?.height}cm</span>
-                            <span>{user?.weight}kg</span>
-                          </MemberDetail>
+                          {renderUserProfile(user, isBlocked)}
                         </div>
                       );
                     })}
