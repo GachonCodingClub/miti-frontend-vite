@@ -120,7 +120,11 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
           console.error(
             `API 오류 : ${response.status} - ${response.statusText}`
           );
-          alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+          if (response.status === 409) {
+            alert("이미 차단된 유저예요.");
+          } else {
+            alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+          }
           return response.json();
         }
         alert("해당 유저를 차단했어요.");
@@ -195,29 +199,40 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             {/* 방장님 */}
             {parties?.leaderUserSummaryDto && (
               <MenuUserProfileFrame>
-                <MenuMasterFrame
-                  onClick={() => {
-                    console.log(parties?.leaderUserSummaryDto?.userId);
-                    setSelectedUserProfile(parties?.leaderUserSummaryDto);
-                  }}
-                >
-                  <div className="flex gap-2">
-                    <MenuUserNickname>
-                      {parties?.leaderUserSummaryDto?.nickname}
-                    </MenuUserNickname>
-                    <OrangeCrownIcon />
-                  </div>
-                  <div>
-                    <MenuUserDetailText>
-                      {parties?.leaderUserSummaryDto?.age}살
-                    </MenuUserDetailText>
-                    <MenuUserDetailText>
-                      {parties?.leaderUserSummaryDto?.gender === "MALE"
-                        ? "남자"
-                        : "여자"}
-                    </MenuUserDetailText>
-                  </div>
-                </MenuMasterFrame>
+                <>
+                  {blockData?.blockedUserOutputs?.some(
+                    (blockedUser: { nickname: string | undefined }) =>
+                      blockedUser.nickname ===
+                      parties.leaderUserSummaryDto?.nickname
+                  ) ? (
+                    <div className=" gap-1 flex items-center text-[#d05438]">
+                      차단된 사용자입니다 <OrangeCrownIcon />
+                    </div>
+                  ) : (
+                    <MenuMasterFrame
+                      onClick={() => {
+                        setSelectedUserProfile(parties?.leaderUserSummaryDto);
+                      }}
+                    >
+                      <div className="flex gap-2">
+                        <MenuUserNickname>
+                          {parties?.leaderUserSummaryDto?.nickname}
+                        </MenuUserNickname>
+                        <OrangeCrownIcon />
+                      </div>
+                      <div>
+                        <MenuUserDetailText>
+                          {parties?.leaderUserSummaryDto?.age}살
+                        </MenuUserDetailText>
+                        <MenuUserDetailText>
+                          {parties?.leaderUserSummaryDto?.gender === "MALE"
+                            ? "남자"
+                            : "여자"}
+                        </MenuUserDetailText>
+                      </div>
+                    </MenuMasterFrame>
+                  )}
+                </>
               </MenuUserProfileFrame>
             )}
             {/* 일반 참여자 */}
@@ -242,7 +257,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                       {isUserBlocked ? (
                         <MenuUserDetailFrame>
                           <div className="text-[#d05438]">
-                            차단된 사용자입니다.
+                            차단된 사용자입니다
                           </div>
                         </MenuUserDetailFrame>
                       ) : (
