@@ -115,7 +115,7 @@ export default function Report() {
           <Overlay>
             <Dialog
               title="신고하시겠습니까?"
-              contents=""
+              contents="허위 신고는 제재를 당할 수 있어요."
               left="아니요"
               right="예"
               onLeftClick={() => {
