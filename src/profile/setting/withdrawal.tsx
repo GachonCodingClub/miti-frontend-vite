@@ -64,7 +64,6 @@ export default function Withdrawal() {
           <Overlay>
             <Dialog
               title="탈퇴하기"
-              contents=""
               left="다시 생각하기"
               right="탈퇴"
               onLeftClick={() => {

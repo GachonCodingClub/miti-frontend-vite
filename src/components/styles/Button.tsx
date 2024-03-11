@@ -261,7 +261,7 @@ export const DialogLeftText = styled(DialogRightText)`
 
 interface IDialog {
   title: string;
-  contents: string;
+  contents?: string | undefined;
   left?: string;
   right?: string;
   onLeftClick?: () => void;
