@@ -9,10 +9,11 @@ import {
 } from "../styles/settingComponents";
 import { PaddingScreen } from "../../components/styles/Screen";
 import { ROUTES } from "../../routes";
+import { useLoginGuard } from "../../hooks/useLoginGuard";
 
 export default function Setting() {
   const navigate = useNavigate();
-
+  useLoginGuard();
   return (
     <>
       <TopBar
