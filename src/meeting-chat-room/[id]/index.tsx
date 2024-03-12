@@ -240,7 +240,7 @@ export default function MeetingChatRoom() {
     let hideListener: PluginListenerHandle | null = null;
 
     if (Capacitor.getPlatform() === "ios") {
-      // iOS에서만 키보드 높이를 감지하고 상태를 업데이트합니다.
+      // iOS에서만 키보드 높이를 감지하고 상태를 업데이트
       showListener = Keyboard.addListener("keyboardWillShow", (info) => {
         setKeyboardHeight(info.keyboardHeight);
       });
@@ -257,8 +257,8 @@ export default function MeetingChatRoom() {
     };
   }, []);
 
-  // ChattingInputDiv 컴포넌트의 스타일을 조정합니다.
-  // 예: 키보드 높이만큼 padding-bottom을 추가하여 textarea를 위로 올립니다.
+  // ChattingInputDiv 컴포넌트의 스타일을 조정
+  // 예: 키보드 높이만큼 padding-bottom을 추가하여 textarea를 위로 올림
   const chattingInputDivStyle = {
     paddingBottom: keyboardHeight + "px",
   };

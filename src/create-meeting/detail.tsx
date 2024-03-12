@@ -180,7 +180,7 @@ export default function CreateMeetingDetail() {
       }
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
-      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
     }
   };
 
@@ -246,7 +246,7 @@ export default function CreateMeetingDetail() {
       displayEnrollBar();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생:", error);
-      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
 
       closeEnrollBar();
     }
@@ -343,7 +343,7 @@ export default function CreateMeetingDetail() {
             <Overlay>
               <Dialog
                 title="미팅 인원을 수정하시겠습니까?"
-                contents="추가 인원 목록이 삭제됩니다."
+                contents="추가 인원 목록이 삭제돼요."
                 left="아니요"
                 onLeftClick={() => {
                   setInputDisabled(true);

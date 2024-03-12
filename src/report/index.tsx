@@ -58,7 +58,7 @@ export default function Report() {
           if (response.status === 404) {
             alert("대상의 닉네임을 다시 확인해주세요.");
           } else {
-            alert("신고 접수에 실패했습니다. 나중에 다시 시도해주세요.");
+            alert("신고 접수에 실패했어요. 나중에 다시 시도해주세요.");
           }
           throw new Error("Response not ok");
         }
@@ -67,7 +67,7 @@ export default function Report() {
       })
       .then((error) => {
         console.error(error);
-        alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("오류가 발생했어요. 나중에 다시 시도해주세요.");
       })
       .finally(() => {
         navigate(-1); // 사용자를 이전 페이지로 이동시키기

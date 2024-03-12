@@ -123,7 +123,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
           if (response.status === 409) {
             alert("이미 차단된 유저예요.");
           } else {
-            alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+            alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
           }
           return response.json();
         }

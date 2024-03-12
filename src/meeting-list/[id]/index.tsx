@@ -163,7 +163,7 @@ export default function MeetingDetail() {
       inputRef.current?.focus();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
-      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
     }
   };
 
@@ -196,7 +196,7 @@ export default function MeetingDetail() {
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
       });
   };
 

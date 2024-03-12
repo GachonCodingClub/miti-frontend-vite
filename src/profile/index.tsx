@@ -74,7 +74,7 @@ export default function Profile() {
 
   const handleMeetingBoxClick = (groupId: number) => {
     // 선택된 미팅 ID가 현재 클릭된 것과 같다면, showButton을 토글.
-    // 그렇지 않다면, 새로운 미팅 ID로 setSelectedId를 업데이트하고 showButton을 true로 설정한다.
+    // 그렇지 않다면, 새로운 미팅 ID로 setSelectedId를 업데이트하고 showButton을 true로 설정
     if (selectedId === groupId) {
       setShowButton((prev) => !prev);
     } else {
