@@ -36,12 +36,12 @@ export default function Withdrawal() {
           navigate("/");
           setShowDialog(false);
         } else {
-          alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+          alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         }
       })
       .catch((error) => {
         console.error("네트워크 에러:", error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
       });
   };
   return (
