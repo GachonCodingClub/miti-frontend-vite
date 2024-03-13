@@ -144,7 +144,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       <MenuMasterFrame onClick={() => setSelectedUserProfile(user)}>
         <MenuUserNickname>{user?.nickname}</MenuUserNickname>
         <MenuUserDetailFrame>
-          <MenuUserDetailText>{user?.age}살</MenuUserDetailText>
+          <MenuUserDetailText>{(user?.age ?? 0) + 1}살</MenuUserDetailText>
           <MenuUserDetailText>
             {user?.gender === "MALE" ? "남자" : "여자"}
           </MenuUserDetailText>
@@ -300,7 +300,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             <DialogContents>{selectedUserProfile?.description}</DialogContents>
             <div className="p-2 flex flex-col">
               <DialogContents className="mr-2">
-                나이: {selectedUserProfile?.age}살
+                나이: {(selectedUserProfile?.age ?? 0) + 1}살
               </DialogContents>
               <DialogContents className="mr-2">
                 성별: {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}

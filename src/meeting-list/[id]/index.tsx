@@ -213,7 +213,7 @@ export default function MeetingDetail() {
             {user?.description}
           </span>
           <MemberDetail>
-            <span>{user?.age}살</span>
+            <span>{(user?.age ?? 0) + 1}살</span>
             <span>{user?.gender === "MALE" ? "남자" : "여자"}</span>
             <span>{user?.height}cm</span>
             <span>{user?.weight}kg</span>
