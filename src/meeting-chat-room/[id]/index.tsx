@@ -32,6 +32,7 @@ import { Keyboard } from "@capacitor/keyboard";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
+import { App } from "@capacitor/app";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -250,10 +251,24 @@ export default function MeetingChatRoom() {
       });
     }
 
+    const handleAppResume = () => {
+      console.log("돌아옴");
+      getAlert();
+    };
+
+    // 리스너 등록
+    const resumeListener = App.addListener("appStateChange", (state) => {
+      // 앱이 resume 상태로 변경될 때만 handleAppResume 함수 호출
+      if (state.isActive) {
+        handleAppResume();
+      }
+    });
+
     return () => {
       // 리스너 제거
       showListener?.remove();
       hideListener?.remove();
+      resumeListener?.remove();
     };
   }, []);
 
