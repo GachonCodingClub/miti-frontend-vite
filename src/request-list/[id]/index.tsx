@@ -85,7 +85,7 @@ export default function RequestProfile() {
                   <UserName>{user?.nickname}</UserName>
                   <UserDescription>{user?.description}</UserDescription>
                   <UserDetail>
-                    <span>{user?.age}살</span>
+                    <span>{(user?.age ?? 0) + 1}살</span>
                     <span>{user?.gender === "MALE" ? "남자" : "여자"}</span>
                     <span>{user?.height}cm</span>
                     <span>{user?.weight}kg</span>
