@@ -14,11 +14,17 @@ export default function Notice() {
       <PaddingScreen>
         <div className="mt-7 px-6">
           <div className="font-bold text-lg">오픈채팅 링크</div>
-          <p className="mt-7">https://open.kakao.com/o/sNCuzzcg</p>
+          <p className="mt-7">
+            미티 1:1문의 : https://open.kakao.com/o/sNCuzzcg
+          </p>
         </div>
         <div className="mt-7 px-6">
           <div className="font-bold text-lg">이메일</div>
           <p className="mt-7">kjyse2@naver.com</p>
+        </div>
+        <div className="mt-7 px-6">
+          <div className="font-bold text-lg">인스타그램</div>
+          <p className="mt-7">가천대_미티(gachon_miti)</p>
         </div>
       </PaddingScreen>
     </>
