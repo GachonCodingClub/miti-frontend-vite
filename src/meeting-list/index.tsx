@@ -15,8 +15,8 @@ import {
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { NewAlert, SnackBarAtom } from "../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { NewAlert, isNotificationinitialized, SnackBarAtom } from "../atoms";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { getHeaders } from "../components/getHeaders";
@@ -27,14 +27,15 @@ export default function MeetingList() {
   const [token, setToken] = useState<string | null>(null);
   const loginToken = useLocalStorageToken();
 
+  const [isNotificationInitialized, setNotificationInitialized] =
+    useRecoilState(isNotificationinitialized);
+
   const setNewAlert = useSetRecoilState(NewAlert);
 
   const addListeners = async () => {
     await PushNotifications.addListener("registration", (token) => {
       console.info("Registration token: ", token.value);
       setToken(token.value);
-
-      console.log("토큰", token);
     });
 
     await PushNotifications.addListener("registrationError", (err) => {
@@ -144,8 +145,13 @@ export default function MeetingList() {
       } catch (error) {
         console.error("미팅 불러오기 실패:", error);
       } finally {
-        addListeners();
-        registerNotifications();
+        // 알림 리스너 1번만 호출
+        if (isNotificationInitialized === false) {
+          addListeners();
+          registerNotifications();
+          setNotificationInitialized(true);
+        }
+
         setLoading(false);
       }
     };
