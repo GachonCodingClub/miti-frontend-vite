@@ -67,7 +67,6 @@ export default function MeetingChatRoom() {
       return data;
     } catch (error) {
       console.error("알림 오류", error);
-
       throw error;
     }
   };
@@ -261,6 +260,7 @@ export default function MeetingChatRoom() {
       // 앱이 resume 상태로 변경될 때만 handleAppResume 함수 호출
       if (state.isActive) {
         handleAppResume();
+        navigate(`/meeting-chat-room/${id}`);
       }
     });
 
