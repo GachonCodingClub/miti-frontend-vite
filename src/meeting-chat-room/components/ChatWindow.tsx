@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   MyChattingFrame,
   ChattingTime,
@@ -225,12 +231,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     }
   }, [keyboardHeight]);
 
+  const blockedUserNicknames = useMemo(() => {
+    return new Set(blockData.blockedUserOutputs.map((user) => user.nickname));
+  }, [blockData]);
+
   return (
     <ChatWindowContainer style={containerStyle} ref={chatContainerRef}>
       {chatList.map((chat, index) => {
-        const isUserBlocked = blockData?.blockedUserOutputs?.some(
-          (blockedUser: BlockedUser) => blockedUser.nickname === chat?.nickname
-        );
+        const isUserBlocked = blockedUserNicknames.has(chat.nickname);
 
         const chatContent = isUserBlocked
           ? "차단된 메시지입니다."
