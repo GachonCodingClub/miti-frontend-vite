@@ -54,10 +54,12 @@ import useGetParties from "../../api/useGetParties";
 import { InLoading } from "../../components/InLoading";
 import { getHeaders } from "../../components/getHeaders";
 import { useGetBlockList } from "../../api/blockList";
+import { useQueryClient } from "react-query";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [token, setToken] = useState("");
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
@@ -128,6 +130,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
           return response.json();
         }
         alert("해당 유저를 차단했어요.");
+        queryClient.invalidateQueries(["blocklist"]);
         return response.json();
       })
       .catch((error) => {
