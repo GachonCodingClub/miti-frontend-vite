@@ -38,3 +38,9 @@ export const NewAlert = atom({
   key: "NewAlert",
   default: false,
 });
+
+// 알림 리스너
+export const isNotificationinitialized = atom({
+  key: "Notifications",
+  default: false,
+});
