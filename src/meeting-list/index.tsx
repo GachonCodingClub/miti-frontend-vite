@@ -33,6 +33,8 @@ export default function MeetingList() {
     await PushNotifications.addListener("registration", (token) => {
       console.info("Registration token: ", token.value);
       setToken(token.value);
+
+      console.log("토큰", token);
     });
 
     await PushNotifications.addListener("registrationError", (err) => {
@@ -41,6 +43,7 @@ export default function MeetingList() {
 
     await PushNotifications.addListener("pushNotificationReceived", () => {
       setNewAlert(true);
+      // console.log("노티피케이션", JSON.stringify(notification));
       setTimeout(() => {
         setNewAlert(false);
       }, 1500);
@@ -49,11 +52,16 @@ export default function MeetingList() {
     await PushNotifications.addListener(
       "pushNotificationActionPerformed",
       (notification) => {
-        console.log(
-          "Push notification action performed",
-          notification.actionId,
-          notification.inputValue
-        );
+        if (
+          window.location.toString() !==
+            `/meeting-chat-room/${notification.notification?.data?.groupId}` &&
+          notification.actionId === "tap" &&
+          notification.notification?.data?.groupId
+        ) {
+          navigate(
+            `/meeting-chat-room/${notification.notification?.data?.groupId}`
+          );
+        }
       }
     );
   };
