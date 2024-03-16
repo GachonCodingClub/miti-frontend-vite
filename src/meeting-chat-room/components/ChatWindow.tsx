@@ -232,7 +232,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   }, [keyboardHeight]);
 
   const blockedUserNicknames = useMemo(() => {
-    return new Set(blockData.blockedUserOutputs.map((user) => user.nickname));
+    return new Set(blockData?.blockedUserOutputs.map((user) => user?.nickname));
   }, [blockData]);
 
   return (
