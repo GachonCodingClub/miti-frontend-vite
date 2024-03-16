@@ -26,12 +26,14 @@ import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 import { useGetMyProfile } from "../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
 import OneBtnDialog from "../components/Dialog";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 export default function CreateMeetingDetail() {
   const { meetingTitle, meetingDesc } = useRecoilStates();
   const token = useLocalStorageToken();
   const { id } = useParams();
+
+  const queryClient = useQueryClient();
 
   // id가 있으면 isUpdate가 true
   const isUpdate = !!id;
@@ -269,6 +271,9 @@ export default function CreateMeetingDetail() {
         headers,
         meetingData: bodyData,
       });
+
+      // 요청 성공 후 캐시 무효화
+      queryClient.invalidateQueries(["group"]);
 
       displayEnrollBar();
     } catch (error) {

@@ -22,6 +22,7 @@ import { PushNotifications } from "@capacitor/push-notifications";
 import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { InLoading } from "../components/InLoading";
+import { useQuery } from "react-query";
 
 export default function MeetingList() {
   const [token, setToken] = useState<string | null>(null);
@@ -132,42 +133,47 @@ export default function MeetingList() {
   });
   const [totalPages, setTotalPages] = useState(0);
 
-  useEffect(() => {
-    const fetchMeetings = async () => {
-      try {
-        setLoading(true);
-        const res = await getApi({
-          link: `/groups?page=${page}&size=7&sort=meetDate`,
-        });
-        if (res.status === 401) {
-          alert("서버 오류가 발생했어요.");
-          localStorage.removeItem("token");
-          navigate(`${ROUTES.SIGN_IN}`);
-        }
-        const data = await res.json();
-        setMeetings(data.content);
-        setTotalPages(data.totalPages);
-      } catch (error) {
-        console.error("미팅 불러오기 실패:", error);
-        // localStorage.removeItem("token");
-      } finally {
+  const { data } = useQuery(
+    ["group", page],
+    async () => {
+      const res = await getApi({
+        link: `/groups?page=${page}&size=7&sort=meetDate`,
+      });
+      if (res.status === 401) {
+        alert("서버 오류가 발생했어요.");
+        localStorage.removeItem("token");
+        navigate(`${ROUTES.SIGN_IN}`);
+        return;
+      }
+      return res.json();
+    },
+    {
+      keepPreviousData: true, // 이전 페이지 데이터 유지
+      staleTime: 60000, // 1분 동안 새로고침하지 않음
+      onSuccess: () => {
         // 알림 리스너 1번만 호출
-        if (isNotificationInitialized === false) {
+        if (!isNotificationInitialized) {
           addListeners();
           registerNotifications();
           setNotificationInitialized(true);
         }
-
+      },
+      onSettled: () => {
         setLoading(false);
-      }
-    };
+      },
+    }
+  );
 
-    fetchMeetings();
-    sessionStorage.setItem("currentPage", page.toString());
-  }, [page]);
+  useEffect(() => {
+    if (data) {
+      setMeetings(data.content);
+      setTotalPages(data.totalPages);
+    }
+  }, [data]);
 
   const loadPage = (pageNumber: number) => {
     setPage(pageNumber);
+    sessionStorage.setItem("currentPage", pageNumber.toString());
   };
 
   const renderPageNumbers = () => {
