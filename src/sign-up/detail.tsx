@@ -250,7 +250,6 @@ export default function SingUpDetail() {
     }
   };
 
-  const customSvg = <ArrowdropIcon />;
   return (
     <>
       <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
@@ -329,26 +328,28 @@ export default function SingUpDetail() {
 
           {/* 키 */}
           <MyInputBoxSVG
-            placeholder="키 선택(10단위)"
+            placeholder="버튼을 눌러 키를 선택해주세요"
             label="키(cm)"
             type="text"
             onClick={onSubmitHeight}
             value={userHeight}
             onChange={() => {}}
             error={heightError}
-            svg={customSvg}
+            svg={<ArrowdropIcon />}
+            disable={true}
           />
 
           {/* 몸무게 */}
           <MyInputBoxSVG
-            placeholder="몸무게 선택(10단위)"
+            placeholder="버튼을 눌러 몸무게를 선택해주세요"
             label="몸무게(kg)"
             type="text"
             onClick={onSubmitWeight}
             value={userWeight}
             onChange={() => {}}
             error={weightError}
-            svg={customSvg}
+            svg={<ArrowdropIcon />}
+            disable={true}
           />
         </DetailFrame>
 

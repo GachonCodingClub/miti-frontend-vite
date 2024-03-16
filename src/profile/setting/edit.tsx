@@ -255,7 +255,7 @@ export default function EditProfile() {
             </IntroduceFrame>
             {/* 키 */}
             <MyInputBoxSVG
-              placeholder="키 선택(10단위)"
+              placeholder="버튼을 눌러 키를 선택해주세요"
               label="키(cm)"
               type="text"
               onClick={onSubmitHeight}
@@ -263,11 +263,12 @@ export default function EditProfile() {
               onChange={() => {}}
               error={heightError}
               svg={<ArrowdropIcon />}
+              disable={true}
             />
 
             {/* 몸무게 */}
             <MyInputBoxSVG
-              placeholder="몸무게 선택(10단위)"
+              placeholder="버튼을 눌러 몸무게를 선택해주세요"
               label="몸무게(kg)"
               type="text"
               onClick={onSubmitWeight}
@@ -275,6 +276,7 @@ export default function EditProfile() {
               onChange={() => {}}
               error={weightError}
               svg={<ArrowdropIcon />}
+              disable={true}
             />
           </DetailFrame>
           {/* 키 선택시트 */}
