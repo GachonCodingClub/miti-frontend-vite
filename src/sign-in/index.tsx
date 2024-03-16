@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { LongOrangeBtn } from "../components/styles/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Screen } from "../components/styles/Screen";
 import { ROUTES } from "../routes";
 import { InputElement } from "../components/styles/Input";
@@ -41,6 +41,15 @@ const SearchText = styled(Link)`
 
 export default function LogIn() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userToken = localStorage.getItem("token");
+    if (userToken) {
+      navigate(ROUTES.MEETING_LIST);
+    } else {
+      navigate(ROUTES.SIGN_IN);
+    }
+  }, [navigate]);
 
   const [loginEmail, setLoginEmail] = useState("");
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
