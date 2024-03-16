@@ -5,6 +5,7 @@ import {
   PersonIcon,
   OrangeCrownIcon,
   ScrollDownIcon,
+  ReportIcon,
 } from "../../components/styles/Icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
@@ -55,6 +56,7 @@ import { InLoading } from "../../components/InLoading";
 import { getHeaders } from "../../components/getHeaders";
 import { useGetBlockList } from "../../api/blockList";
 import { useQueryClient } from "react-query";
+import { ROUTES } from "../../routes";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
@@ -297,10 +299,22 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       {selectedUserProfile && (
         <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
           <DialogContainer>
-            <DialogTitle className="p-4">
+            <DialogTitle className="p-4 flex items-center">
               {selectedUserProfile?.nickname}
+              {selectedUserProfile?.userId !== decodedToken?.sub && (
+                <div
+                  className="pl-4"
+                  onClick={() => {
+                    navigate(ROUTES.REPORT);
+                  }}
+                >
+                  <ReportIcon />
+                </div>
+              )}
             </DialogTitle>
+
             <DialogContents>{selectedUserProfile?.description}</DialogContents>
+
             <div className="p-2 flex flex-col">
               <DialogContents className="mr-2">
                 나이: {(selectedUserProfile?.age ?? 0) + 1}살
