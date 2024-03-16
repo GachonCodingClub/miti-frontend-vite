@@ -57,6 +57,7 @@ export const fetchSignUp = async (
       return false;
     }
     const data = await response.json();
+    localStorage.setItem("token", data?.accessToken);
     return data === true;
   } catch (error) {
     console.error(error);

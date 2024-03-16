@@ -245,7 +245,7 @@ export default function SingUpDetail() {
         userPassword,
         userIntroduce
       )
-        .then((success) => setSubscription(success))
+        .then(() => setSubscription(true))
         .catch(() => setSubscription(false));
     }
   };
