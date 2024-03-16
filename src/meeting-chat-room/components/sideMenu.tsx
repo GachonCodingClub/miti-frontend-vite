@@ -50,13 +50,13 @@ import {
   ISideMenu,
   ScrollDownArrow,
 } from "../styles/SideMenuComponents";
-import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
 import { InLoading } from "../../components/InLoading";
 import { getHeaders } from "../../components/getHeaders";
 import { useGetBlockList } from "../../api/blockList";
 import { useQueryClient } from "react-query";
 import { ROUTES } from "../../routes";
+import { useGetGroups } from "../../api/useGetGroups";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();

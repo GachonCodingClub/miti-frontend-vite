@@ -2,10 +2,12 @@ import { useQuery } from "react-query";
 import { IGroup } from "../model/group";
 import { getApi } from "./getApi";
 
-const useGetGroups = (id: string | undefined) => {
-  return useQuery<IGroup, Error>(["group", id], () =>
-    getApi({ link: `/groups/${id}` }).then((res) => res.json())
-  );
+export const getGroups = async (id: string | undefined) => {
+  const response = await getApi({ link: `/groups/${id}` });
+  const data = await response.json();
+  return data;
 };
 
-export default useGetGroups;
+export const useGetGroups = (id: string | undefined) => {
+  return useQuery<IGroup, Error>(["group", id], () => getGroups(id));
+};

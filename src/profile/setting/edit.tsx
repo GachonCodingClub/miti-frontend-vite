@@ -201,7 +201,6 @@ export default function EditProfile() {
         setEditError
       )
         .then((success) => {
-          console.log("석세스", success);
           if (!success) {
             queryClient.invalidateQueries(["profile"]);
           }

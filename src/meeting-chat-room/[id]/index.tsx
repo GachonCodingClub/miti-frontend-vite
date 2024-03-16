@@ -26,13 +26,13 @@ import { getHeaders } from "../../components/getHeaders";
 import { Overlay } from "../../sign-up/styles/detailComponents";
 import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
-import useGetGroups from "../../api/useGetGroups";
 import { useGetMyProfile } from "../../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
 import { App } from "@capacitor/app";
+import { useGetGroups } from "../../api/useGetGroups";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
