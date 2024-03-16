@@ -15,6 +15,7 @@ import { useState } from "react";
 import { Overlay } from "../../sign-up/styles/detailComponents";
 import { getHeaders } from "../../components/getHeaders";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
+import { ROUTES } from "../../routes";
 
 export default function Withdrawal() {
   const navigate = useNavigate();
@@ -78,6 +79,10 @@ export default function Withdrawal() {
         <LongOrangeBtn
           text="탈퇴하기"
           onClick={() => {
+            if (!token) {
+              alert("로그인이 필요해요. 로그인 페이지로 이동합니다.");
+              navigate(ROUTES.SIGN_IN);
+            }
             setShowDialog(true);
           }}
         />
