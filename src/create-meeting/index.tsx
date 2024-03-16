@@ -21,17 +21,20 @@ export default function CreateMeeting() {
   const isUpdate = !!id; // id가 있으면 isUpdate가 true
 
   // 원래 방 정보 가져오기
+
   const getGroup = async () => {
-    try {
-      // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
-      // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
-      const response = await getApi({ link: `/groups/${id}` });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching group data:", error);
-      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
-      throw error; // 에러를 상위로 전파
+    if (isUpdate) {
+      try {
+        // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
+        // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
+        const response = await getApi({ link: `/groups/${id}` });
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Error fetching group data:", error);
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        throw error; // 에러를 상위로 전파
+      }
     }
   };
 
