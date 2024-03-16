@@ -9,5 +9,8 @@ export const getUserProfile = async () => {
 };
 
 export const useGetMyProfile = () => {
-  return useQuery<IUser, Error>(["profile"], () => getUserProfile());
+  return useQuery<IUser, Error>(["profile"], () => getUserProfile(), {
+    staleTime: 1000 * 60 * 60 * 24 * 365 * 1, // 1년
+    cacheTime: Infinity,
+  });
 };

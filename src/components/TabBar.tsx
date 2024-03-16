@@ -15,7 +15,7 @@ export function TabBar() {
 
   useEffect(() => {
     const getMyGroups = async () => {
-      const res = await getApi({ link: `/groups/my?page=0&size=99` }).then(
+      const res = await getApi({ link: `/groups/my?page=0&size=50` }).then(
         (response) => response.json()
       );
 
