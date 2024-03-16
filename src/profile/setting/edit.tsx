@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { fetchProfile } from "../components/fetchProfile";
 import { validateProfile } from "../components/validateProfile";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,7 @@ export default function EditProfile() {
   const navigate = useNavigate();
   const token = useLocalStorageToken();
 
+  const queryClient = useQueryClient();
   const { data: profile, isLoading: profileLoading } = useGetMyProfile();
 
   const [editError, setEditError] = useState(false);
@@ -199,7 +200,13 @@ export default function EditProfile() {
         setSubscription,
         setEditError
       )
-        .then(() => setSubscription(true))
+        .then((success) => {
+          console.log("석세스", success);
+          if (!success) {
+            queryClient.invalidateQueries(["profile"]);
+          }
+          setSubscription(true);
+        })
         .catch(() => setSubscription(false));
     }
   };
