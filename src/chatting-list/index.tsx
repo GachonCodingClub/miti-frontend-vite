@@ -26,7 +26,7 @@ export default function ChattingList() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const getMyGroups = () =>
-    getApi({ link: `/groups/my?page=0&size=99` }).then((response) =>
+    getApi({ link: `/groups/my?page=0&size=50` }).then((response) =>
       response.json()
     );
   // useQuery를 통해 그룹 목록 가져오기 및 자동 새로고침 설정
