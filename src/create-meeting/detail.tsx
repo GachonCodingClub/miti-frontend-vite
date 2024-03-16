@@ -23,10 +23,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { getHeaders } from "../components/getHeaders";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
-import useGetGroups from "../api/useGetGroups";
 import { useGetMyProfile } from "../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
 import OneBtnDialog from "../components/Dialog";
+import { useQuery } from "react-query";
 
 export default function CreateMeetingDetail() {
   const { meetingTitle, meetingDesc } = useRecoilStates();
@@ -36,7 +36,34 @@ export default function CreateMeetingDetail() {
   // id가 있으면 isUpdate가 true
   const isUpdate = !!id;
 
-  const { data: group } = useGetGroups(id);
+  const getGroup = async () => {
+    if (isUpdate) {
+      try {
+        // getApi 함수를 사용하여 외부 API에서 데이터를 가져옴
+        // API 엔드포인트 경로는 `/groups/${id}`로 지정되며, id는 외부에서 전달되는 매개변수
+        const response = await getApi({ link: `/groups/${id}` });
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Error fetching group data:", error);
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        throw error; // 에러를 상위로 전파
+      }
+    }
+  };
+
+  // useQuery 훅을 사용하여 데이터를 가져오는 부분
+  const { data: group } = useQuery(
+    ["group", id],
+    () => {
+      if (id) {
+        return getGroup();
+      }
+    },
+    {
+      enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+    }
+  );
 
   const { data: profile } = useGetMyProfile();
 
