@@ -35,13 +35,13 @@ import { getHeaders } from "../../components/getHeaders";
 import { AddMemberButton } from "../../create-meeting/styles/createMeetingDetailComponents";
 import { MyInputBoxSVG } from "../../components/MyInputBox";
 import AdditionalParticipantsList from "../../create-meeting/components/additionalParticipantsList";
-import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
 import { useGetMyProfile } from "../../api/profile";
 import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
 import OneBtnDialog from "../../components/Dialog";
 import { IUser } from "../../meeting-chat-room/styles/SideMenuComponents";
+import { useGetGroups } from "../../api/useGetGroups";
 
 export default function MeetingDetail() {
   useLoginGuard();
