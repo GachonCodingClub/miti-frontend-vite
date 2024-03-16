@@ -139,11 +139,17 @@ export default function MeetingList() {
         const res = await getApi({
           link: `/groups?page=${page}&size=7&sort=meetDate`,
         });
+        if (res.status === 401) {
+          alert("서버 오류가 발생했어요.");
+          localStorage.removeItem("token");
+          navigate(`${ROUTES.SIGN_IN}`);
+        }
         const data = await res.json();
         setMeetings(data.content);
         setTotalPages(data.totalPages);
       } catch (error) {
         console.error("미팅 불러오기 실패:", error);
+        // localStorage.removeItem("token");
       } finally {
         // 알림 리스너 1번만 호출
         if (isNotificationInitialized === false) {
