@@ -33,10 +33,12 @@ import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
 import { App } from "@capacitor/app";
 import { useGetGroups } from "../../api/useGetGroups";
+import { useQueryClient } from "react-query";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token + "");
@@ -207,6 +209,9 @@ export default function MeetingChatRoom() {
     });
 
     setRoomDelted(true);
+    queryClient.invalidateQueries(["group"]);
+
+    alert("미팅을 삭제했어요");
     navigate(`${ROUTES.MEETING_LIST}`);
     setTimeout(() => {
       setRoomDelted(false);
@@ -215,6 +220,7 @@ export default function MeetingChatRoom() {
 
   const ExitUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}/leave`;
 
+  // (비방장) 방 나가기
   const setRoomExited = useSetRecoilState(SnackBarAtom);
   const handleExitRoom = () => {
     fetch(ExitUrl, {
@@ -251,7 +257,6 @@ export default function MeetingChatRoom() {
     }
 
     const handleAppResume = () => {
-      console.log("돌아옴");
       getAlert();
     };
 
