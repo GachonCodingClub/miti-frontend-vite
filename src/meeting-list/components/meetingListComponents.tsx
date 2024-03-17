@@ -49,6 +49,14 @@ export const CreateMeetingButton = styled.button`
   z-index: 50;
 `;
 
+export const RefreshButton = styled(CreateMeetingButton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dadada;
+  bottom: 180px;
+`;
+
 export const AlertMessage = styled.div`
   color: #ff7152;
   font-size: 10px;
