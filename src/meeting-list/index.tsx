@@ -25,6 +25,7 @@ import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { InLoading } from "../components/InLoading";
 import { useQuery } from "react-query";
 import { motion } from "framer-motion";
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 export default function MeetingList() {
   const [token, setToken] = useState<string | null>(null);
@@ -32,6 +33,10 @@ export default function MeetingList() {
 
   const [isNotificationInitialized, setNotificationInitialized] =
     useRecoilState(isNotificationinitialized);
+
+  const hapticsImpactLight = async () => {
+    await Haptics.impact({ style: ImpactStyle.Light });
+  };
 
   const setNewAlert = useSetRecoilState(NewAlert);
 
@@ -203,7 +208,10 @@ export default function MeetingList() {
       <MeetingListScreen>
         <RefreshButton
           as={motion.div}
-          onClick={() => refetch()}
+          onClick={() => {
+            refetch();
+            hapticsImpactLight();
+          }}
           whileTap={{ rotate: 360 * 2 }}
           transition={{ duration: 1.5 }}
         >
@@ -212,6 +220,7 @@ export default function MeetingList() {
 
         <CreateMeetingButton
           onClick={() => {
+            hapticsImpactLight();
             navigate(`${ROUTES.CREATE_MEETING}`);
           }}
         >
