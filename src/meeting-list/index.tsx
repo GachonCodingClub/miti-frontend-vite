@@ -24,6 +24,7 @@ import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { InLoading } from "../components/InLoading";
 import { useQuery } from "react-query";
+import { motion } from "framer-motion";
 
 export default function MeetingList() {
   const [token, setToken] = useState<string | null>(null);
@@ -200,7 +201,12 @@ export default function MeetingList() {
         }}
       />
       <MeetingListScreen>
-        <RefreshButton onClick={() => refetch()}>
+        <RefreshButton
+          as={motion.div}
+          onClick={() => refetch()}
+          whileTap={{ rotate: 360 * 2 }}
+          transition={{ duration: 1.5 }}
+        >
           <RefreshIcon />
         </RefreshButton>
 
