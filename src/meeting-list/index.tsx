@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getApi } from "../api/getApi";
 import { IGroup } from "../model/group";
-import { SearchIcon } from "../components/styles/Icons";
+import { RefreshIcon, SearchIcon } from "../components/styles/Icons";
 import { TopBar } from "../components/TopBar";
 import { useLoginGuard } from "../hooks/useLoginGuard";
 import {
@@ -11,6 +11,7 @@ import {
   PageFrame,
   PageNum,
   PrevNextButton,
+  RefreshButton,
 } from "./components/meetingListComponents";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { SnackBar } from "../components/styles/Button";
@@ -133,7 +134,7 @@ export default function MeetingList() {
   });
   const [totalPages, setTotalPages] = useState(0);
 
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     ["group", page],
     async () => {
       const res = await getApi({
@@ -199,6 +200,10 @@ export default function MeetingList() {
         }}
       />
       <MeetingListScreen>
+        <RefreshButton onClick={() => refetch()}>
+          <RefreshIcon />
+        </RefreshButton>
+
         <CreateMeetingButton
           onClick={() => {
             navigate(`${ROUTES.CREATE_MEETING}`);
