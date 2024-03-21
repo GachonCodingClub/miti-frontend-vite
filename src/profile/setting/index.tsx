@@ -10,10 +10,12 @@ import {
 import { PaddingScreen } from "../../components/styles/Screen";
 import { ROUTES } from "../../routes";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
+import { useQueryClient } from "react-query";
 
 export default function Setting() {
   const navigate = useNavigate();
   useLoginGuard();
+  const queryClient = useQueryClient();
   return (
     <>
       <TopBar
@@ -43,6 +45,7 @@ export default function Setting() {
         <LogoutButton
           onClick={() => {
             localStorage.removeItem("token");
+            queryClient.invalidateQueries(["profile"]);
             navigate("/");
           }}
         >
