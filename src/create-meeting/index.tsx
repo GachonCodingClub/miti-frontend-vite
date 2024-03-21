@@ -13,6 +13,7 @@ import {
 } from "./styles/createMeetingIndexComponents";
 import { Screen } from "../components/styles/Screen";
 import OneBtnDialog from "../components/Dialog";
+import { CautionMessage } from "../components/styles/Input";
 
 export default function CreateMeeting() {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ export default function CreateMeeting() {
       inputMeetingTitle === "" ? "미팅 제목을 입력하세요" : ""
     );
     setMeetingDescError(
-      inputMeetingDesc === "" ? "미팅 설명을 입력하세요" : ""
+      inputMeetingDesc.length >= 10 ? "" : "미팅 설명은 10자 이상 입력해주세요"
     );
 
     // 오류가 없다면 Recoil 상태를 업데이트
@@ -138,7 +139,7 @@ export default function CreateMeeting() {
           </div>
           <MyInputBox
             label="미팅 제목"
-            placeholder=""
+            placeholder="제목은 최대 20자까지 가능해요"
             type="text"
             value={inputMeetingTitle}
             onChange={onMeetingTitleChange}
@@ -149,11 +150,14 @@ export default function CreateMeeting() {
             미팅 설명
           </div>
           <DescriptionArea
-            placeholder="미팅 설명"
+            placeholder="미팅의 설명, 만나고 싶은 사람들 또는 주최자들의 소개 등을 입력해주세요!"
             onChange={onMeetingDescChange}
             value={inputMeetingDesc}
-            maxLength={35}
+            maxLength={65}
           />
+          {meetingDescError && (
+            <CautionMessage>{meetingDescError}</CautionMessage>
+          )}
           <div className="bg-[#c9c5c5] h-[1px] w-full"></div>
 
           <OneBtnDialog

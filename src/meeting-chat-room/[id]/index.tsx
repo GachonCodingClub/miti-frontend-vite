@@ -192,6 +192,15 @@ export default function MeetingChatRoom() {
     return () => disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
   }, []);
 
+  let limitedTitle = "";
+
+  if (group && typeof group.title === "string") {
+    limitedTitle =
+      group.title.length > 15
+        ? `${group.title.substring(0, 15)}...`
+        : group.title;
+  }
+
   const { data: blockData } = useGetBlockList();
 
   // 메뉴 표시
@@ -287,7 +296,7 @@ export default function MeetingChatRoom() {
   return (
     <>
       <TopBar
-        title={loading ? `로딩중...` : `${group?.title}`}
+        title={loading ? `로딩중...` : limitedTitle}
         leftIcon={<ArrowbackIcon onClick={() => navigate(`/chat-list`)} />}
         rightIcon={
           <HamburgerIcon
