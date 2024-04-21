@@ -3,7 +3,7 @@ import { MyInputBox, MyInputBoxSVG } from "../../components/MyInputBox";
 import { CheckIcon, ModifyIcon } from "../../components/styles/Icons";
 
 interface MeetingDetailsInputsProps {
-  selecteDate: string;
+  selectedDate: string;
   handleDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   dateError: string;
   inputPlace: string;
@@ -18,7 +18,7 @@ interface MeetingDetailsInputsProps {
 }
 
 const MeetingDetailsInputs: React.FC<MeetingDetailsInputsProps> = ({
-  selecteDate,
+  selectedDate,
   handleDateChange,
   dateError,
   inputPlace,
@@ -36,7 +36,7 @@ const MeetingDetailsInputs: React.FC<MeetingDetailsInputsProps> = ({
       placeholder="만날 날짜"
       label="미팅 날짜"
       type="datetime-local"
-      value={selecteDate}
+      value={selectedDate}
       onChange={handleDateChange}
       error={dateError}
     />

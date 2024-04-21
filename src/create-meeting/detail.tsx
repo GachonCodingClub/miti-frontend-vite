@@ -35,6 +35,12 @@ export default function CreateMeetingDetail() {
 
   const queryClient = useQueryClient();
 
+  // 에러 다이얼로그
+  const [dialog, setDialog] = useState({
+    open: false,
+    text: "",
+  });
+
   // id가 있으면 isUpdate가 true
   const isUpdate = !!id;
 
@@ -63,15 +69,15 @@ export default function CreateMeetingDetail() {
       }
     },
     {
-      enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+      enabled: !!id, // id가 존재할 때에만 데이터를 가져오도록 설정
     }
   );
 
   const { data: profile } = useGetMyProfile();
 
   // 날짜
-  const [selecteDate, setSelecteDate] = useState("");
-  const formattedDate = selecteDate && new Date(selecteDate).toISOString();
+  const [selectedDate, setSelecteDate] = useState("");
+  const formattedDate = selectedDate && new Date(selectedDate).toISOString();
 
   // 날짜 변화 handleDateChange함수
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,20 +147,9 @@ export default function CreateMeetingDetail() {
     string[]
   >([]);
 
-  // 존재하지 않는 닉네임일때 Dialog
-  const [nonExistDialog, setNonExistDialog] = useState(false);
-  // 본인을 추가했을때 Dialog
-  const [addMyNicknameDialog, setAddMyNicknameDialog] = useState(false);
-  // 최대 인원보다 더 추가하려 할 때 뜨는 오류 Dialog
-  const [cannotAddDialog, setCannotAddDialog] = useState(false);
-  // 사용자가 인원 먼저 확정 안지었을때 뜨는 Dialog
-  const [confirmErrorDialog, setConfirmErrorDialog] = useState(false);
   // 닉네임 중복, 혹은 빈칸일 때 뜨는 Dialog
   const [duplicateBlankErrorDialog, setDuplicateBlankErrorDialog] =
     useState(false);
-  // 미팅 정원이랑 추가한 유저수가 같으면 뜨는 Dialog
-  const [overlapDialog, setOverlapDialog] = useState(false);
-
   // 현재 추가한 유저 수 몇명인지
   const currentParticipantsCount = additionalParticipants.length;
   // 사용자에게 입력 받은 추가 참여자 닉네임
@@ -169,7 +164,10 @@ export default function CreateMeetingDetail() {
 
       if (!inputMemberDisabled) {
         // inputMemberDisabled가 false인 경우, 추가할 수 없으므로 confirm 에러를 설정
-        setConfirmErrorDialog(true);
+        setDialog({
+          open: true,
+          text: "먼저 인원을 확정 지어주세요",
+        });
         return; // 닉네임 추가를 중단
       }
 
@@ -183,7 +181,10 @@ export default function CreateMeetingDetail() {
 
       // response의 상태 코드가 409(중복)라면
       if (response.status !== 409) {
-        setNonExistDialog(true); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
+        setDialog({
+          open: true,
+          text: "존재하지 않는 닉네임이에요",
+        });
       } else {
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
         if (additionalParticipants.includes(trimmedNickname)) {
@@ -193,13 +194,19 @@ export default function CreateMeetingDetail() {
 
         // 미팅 정원 -1 이랑, 사용자가 추가하려는 인원 수 비교, 사 추 인이 적어야 추가 가능
         if (additionalParticipants.length >= numericInputMember - 1) {
-          setCannotAddDialog(true); // 미팅 정원보다 많이 추가하려 하면 오류 띄우기
+          setDialog({
+            open: true,
+            text: "미팅 인원보다 많이 추가할 수 없어요",
+          });
           return;
         }
 
         // 닉네임이 myNickname과 같은지 확인
         if (trimmedNickname === profile?.nickname) {
-          setAddMyNicknameDialog(true); // 본인 닉네임 추가 못하게 막기
+          setDialog({
+            open: true,
+            text: "본인은 추가할 수 없어요",
+          });
           return;
         }
 
@@ -237,13 +244,10 @@ export default function CreateMeetingDetail() {
       !isUpdate ? navigate(ROUTES.MEETING_LIST) : navigate(ROUTES.CHAT_LIST);
     }
   };
-
   // 등록 완료 스낵바 표시
   const displayEnrollBar = () => {
-    setOverlapDialog(false);
     setShowEnrollBar(true);
   };
-
   // 등록 완료 스낵바 닫기
   const closeEnrollBar = () => {
     setShowEnrollBar(false);
@@ -285,7 +289,7 @@ export default function CreateMeetingDetail() {
   };
 
   const validationParameter: IValidationProps = {
-    selecteDate,
+    selectedDate,
     inputPlace,
     numericInputMember,
     additionalParticipants,
@@ -303,7 +307,10 @@ export default function CreateMeetingDetail() {
         submitMeeting();
       } else {
         // currentParticipantsCount가 additionalParticipants의 길이와 같은 경우
-        setOverlapDialog(true);
+        setDialog({
+          open: true,
+          text: "미팅 정원과 참여자의 수가 같아요",
+        });
       }
     }
   };
@@ -337,39 +344,22 @@ export default function CreateMeetingDetail() {
       />
       <CreateMeetingDetailScreen style={chattingInputDivStyle}>
         <DatePlaceMemberFrame>
-          {!isUpdate ? (
-            <MeetingDetailsInputs
-              selecteDate={selecteDate}
-              handleDateChange={handleDateChange}
-              dateError={dateError}
-              inputPlace={inputPlace}
-              onPlaceChange={onPlaceChange}
-              placeError={placeError}
-              inputMember={inputMemberValue}
-              onMemberChange={onMemberChange}
-              memberError={memberError}
-              inputMemberDisabled={inputMemberDisabled}
-              setInputDisabled={setInputDisabled}
-              setModiSVG={setModiSVG}
-            />
-          ) : (
-            <MeetingDetailsInputs
-              selecteDate={selecteDate}
-              handleDateChange={handleDateChange}
-              dateError={dateError}
-              inputPlace={inputPlace}
-              onPlaceChange={onPlaceChange}
-              placeError={placeError}
-              inputMember={inputMemberValue}
-              onMemberChange={() => {}}
-              memberError={"미팅 인원은 수정할 수 없어요"}
-              inputMemberDisabled={true}
-              setInputDisabled={setInputDisabled}
-              setModiSVG={() => {
-                setModiSVG(false);
-              }}
-            />
-          )}
+          <MeetingDetailsInputs
+            selectedDate={selectedDate}
+            handleDateChange={handleDateChange}
+            dateError={dateError}
+            inputPlace={inputPlace}
+            onPlaceChange={onPlaceChange}
+            placeError={placeError}
+            inputMember={inputMemberValue}
+            onMemberChange={isUpdate ? () => {} : onMemberChange}
+            memberError={
+              isUpdate ? "미팅 인원은 수정할 수 없어요" : memberError
+            }
+            inputMemberDisabled={isUpdate}
+            setInputDisabled={setInputDisabled}
+            setModiSVG={isUpdate ? () => setModiSVG(false) : setModiSVG}
+          />
 
           {modiSVG && (
             <Overlay>
@@ -389,15 +379,6 @@ export default function CreateMeetingDetail() {
               />
             </Overlay>
           )}
-
-          <OneBtnDialog
-            isOpen={confirmErrorDialog}
-            title="먼저 인원을 확정 지어주세요."
-            onBtnClick={() => {
-              setConfirmErrorDialog(false);
-            }}
-            buttonText="닫기"
-          />
         </DatePlaceMemberFrame>
 
         <GrayLine />
@@ -427,32 +408,16 @@ export default function CreateMeetingDetail() {
           />
         )}
 
-        <OneBtnDialog
-          isOpen={addMyNicknameDialog}
-          title="본인은 추가할 수 없어요."
-          onBtnClick={() => {
-            setAddMyNicknameDialog(false);
-          }}
-          buttonText="닫기"
-        />
-
-        <OneBtnDialog
-          isOpen={nonExistDialog}
-          title="존재하지 않는 닉네임이에요."
-          onBtnClick={() => {
-            setNonExistDialog(false);
-          }}
-          buttonText="닫기"
-        />
-
-        <OneBtnDialog
-          isOpen={cannotAddDialog}
-          title="미팅 인원보다 많이 추가할 수 없어요."
-          onBtnClick={() => {
-            setCannotAddDialog(false);
-          }}
-          buttonText="닫기"
-        />
+        {dialog && (
+          <OneBtnDialog
+            isOpen={dialog.open}
+            title={dialog.text}
+            onBtnClick={() => {
+              setDialog((prev) => ({ ...prev, open: false }));
+            }}
+            buttonText={"닫기"}
+          />
+        )}
 
         <OneBtnDialog
           isOpen={duplicateBlankErrorDialog}
@@ -460,15 +425,6 @@ export default function CreateMeetingDetail() {
           contents="중복된 닉네임이나 빈칸이 있어요."
           onBtnClick={() => {
             setDuplicateBlankErrorDialog(false);
-          }}
-          buttonText="닫기"
-        />
-
-        <OneBtnDialog
-          isOpen={overlapDialog}
-          title="미팅 정원과 참여자의 수가 같아요."
-          onBtnClick={() => {
-            setOverlapDialog(false);
           }}
           buttonText="닫기"
         />
@@ -484,7 +440,7 @@ export default function CreateMeetingDetail() {
         <LongOrangeBtn
           onClick={onSubmitButtonClick}
           text={isUpdate ? "미팅 수정" : "미팅 등록"}
-        ></LongOrangeBtn>
+        />
       </SubmitButtonFrame>
     </>
   );

@@ -1,5 +1,5 @@
 export interface IValidationProps {
-  selecteDate: string;
+  selectedDate: string;
   inputPlace: string;
   numericInputMember: number;
   additionalParticipants: string[];
@@ -9,7 +9,7 @@ export interface IValidationProps {
   setDuplicateBlankErrorDialog: React.Dispatch<boolean>;
 }
 export const validateForm = ({
-  selecteDate,
+  selectedDate,
   inputPlace,
   numericInputMember,
   additionalParticipants,
@@ -25,13 +25,13 @@ export const validateForm = ({
 
   let isValid = true;
 
-  if (selecteDate === "") {
+  if (selectedDate === "") {
     setDateError("날짜를 선택해 주세요.");
     isValid = false;
-  } else if (selecteDate < currentDate) {
+  } else if (selectedDate < currentDate) {
     setDateError("날짜는 오늘 이후여야 해요");
     isValid = false;
-  } else if (selecteDate > oneYearFromNowDate) {
+  } else if (selectedDate > oneYearFromNowDate) {
     // 1년 이후 날짜 검증 추가
     setDateError("날짜는 1년 이내로 해주세요.");
     isValid = false;
@@ -60,7 +60,7 @@ export const validateForm = ({
   // 모든 검증을 통과했는지 여부 반환
   return (
     isValid &&
-    selecteDate >= currentDate &&
+    selectedDate >= currentDate &&
     inputPlace !== "" &&
     numericInputMember >= 2 &&
     numericInputMember <= 50 &&

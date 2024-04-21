@@ -22,7 +22,6 @@ export default function CreateMeeting() {
   const isUpdate = !!id; // id가 있으면 isUpdate가 true
 
   // 원래 방 정보 가져오기
-
   const getGroup = async () => {
     if (isUpdate) {
       try {
@@ -48,7 +47,7 @@ export default function CreateMeeting() {
       }
     },
     {
-      enabled: !!id, // enabled 옵션을 사용하여 id가 존재할 때에만 데이터를 가져오도록 설정
+      enabled: !!id, // id가 존재할 때에만 데이터를 가져오도록 설정
     }
   );
 
