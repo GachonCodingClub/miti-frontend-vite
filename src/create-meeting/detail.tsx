@@ -408,16 +408,14 @@ export default function CreateMeetingDetail() {
           />
         )}
 
-        {dialog && (
-          <OneBtnDialog
-            isOpen={dialog.open}
-            title={dialog.text}
-            onBtnClick={() => {
-              setDialog((prev) => ({ ...prev, open: false }));
-            }}
-            buttonText={"닫기"}
-          />
-        )}
+        <OneBtnDialog
+          isOpen={dialog.open}
+          title={dialog.text}
+          onBtnClick={() => {
+            setDialog((prev) => ({ ...prev, open: false }));
+          }}
+          buttonText={"닫기"}
+        />
 
         <OneBtnDialog
           isOpen={duplicateBlankErrorDialog}
