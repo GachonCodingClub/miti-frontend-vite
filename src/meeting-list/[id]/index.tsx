@@ -58,8 +58,13 @@ export default function MeetingDetail() {
     }
   }, []);
 
-  const [showDialog, setShowDialog] = useState(false);
-  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [errorDialog, setErrorDialog] = useState({
+    open: false,
+    contents: "",
+    text: "",
+  });
+
+  const [successDialog, setSuccessDialog] = useState(false);
 
   const {
     data: group,
@@ -85,12 +90,8 @@ export default function MeetingDetail() {
     string[]
   >([]);
   const [inputAddNickname, setInputAddNickname] = useState("");
-  const [nonExistentDialog, setNonExistentDialog] = useState(false);
-  const [addMyNicknameDialog, setAddMyNicknameDialog] = useState(false);
-  const [duplicateOrBlankErrorDialog, setDuplicateOrBlankErrorDialog] =
-    useState(false);
+
   const [showAdd, setShowAdd] = useState(false);
-  const [cantAddDialog, setCantAddDialog] = useState(false);
 
   const nowMember = (parties?.acceptedParties[0]?.users.length ?? 0) + 1;
   const AddMember = additionalParticipants.length + 1;
@@ -112,8 +113,7 @@ export default function MeetingDetail() {
         link: `/auth/check/nickname?nickname=${inputAddNickname}`,
       }); // 존재하는 닉네임인지 체크, 결과를 response에 저장
 
-      // trim()으로 문자열 뒤 공백 제거
-      const trimmedNickname = inputAddNickname.trim();
+      const trimmedNickname = inputAddNickname.trim(); // 문자열 뒤 공백 제거
 
       // 추가된 닉네임 배열에 빈 문자열이 있는지 확인
       if (trimmedNickname === "") {
@@ -122,7 +122,11 @@ export default function MeetingDetail() {
 
       // response의 상태 코드가 409(중복)라면
       if (response.status !== 409) {
-        setNonExistentDialog(true); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
+        setErrorDialog({
+          open: true,
+          text: "존재하지 않는 닉네임이에요",
+          contents: "",
+        }); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
       } else {
         // 미팅에 이미 참여 중인 모든 사용자의 닉네임 목록 생성
         const existingNicknames = parties?.acceptedParties.flatMap((party) =>
@@ -134,24 +138,40 @@ export default function MeetingDetail() {
           trimmedNickname === leaderNickname ||
           existingNicknames?.includes(trimmedNickname)
         ) {
-          setDuplicateOrBlankErrorDialog(true);
+          setErrorDialog({
+            open: true,
+            text: "닉네임을 확인해 주세요",
+            contents: "중복된 닉네임이나 빈칸이 있어요",
+          });
           return;
         }
 
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
         if (additionalParticipants.includes(trimmedNickname)) {
-          setDuplicateOrBlankErrorDialog(true); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
+          setErrorDialog({
+            open: true,
+            text: "닉네임을 확인해 주세요",
+            contents: "중복된 닉네임이나 빈칸이 있어요",
+          }); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
           return;
         }
 
         if (finalMember >= (group?.maxUsers ?? 0)) {
-          setCantAddDialog(true);
+          setErrorDialog({
+            open: true,
+            text: "미팅 정원보다 많이 추가할 수 없어요",
+            contents: "",
+          });
           return;
         }
 
         // 닉네임이 myNickname과 같은지 확인
         if (trimmedNickname === profile?.nickname) {
-          setAddMyNicknameDialog(true); // 본인 닉네임 추가 못하게 막기
+          setErrorDialog({
+            open: true,
+            text: "본인은 추가할 수 없어요",
+            contents: "",
+          }); // 본인 닉네임 추가 못하게 막기
           return;
         }
 
@@ -188,10 +208,14 @@ export default function MeetingDetail() {
           console.error(
             `API 오류: ${response.status} - ${response.statusText}`
           );
-          setShowErrorDialog(true);
+          setErrorDialog({
+            open: true,
+            contents: "이미 신청한 미팅방이에요",
+            text: "신청할 수 없어요",
+          });
           return response.json();
         }
-        setShowDialog(true);
+        setSuccessDialog(true);
         return response.json();
       })
       .catch((error) => {
@@ -278,7 +302,6 @@ export default function MeetingDetail() {
               <MemberInfo>
                 {parties?.leaderUserSummaryDto && (
                   <>
-                    {" "}
                     <OrangeCrownIcon />
                     <div className="gap-1">
                       {renderUserProfile(
@@ -371,55 +394,23 @@ export default function MeetingDetail() {
         </DetailBox>
 
         <OneBtnDialog
-          isOpen={showDialog}
+          isOpen={successDialog}
           title="참여 신청 완료"
           onBtnClick={() => {
-            setShowDialog(false);
+            setSuccessDialog(false);
             setShowAdd(false);
           }}
           buttonText="닫기"
         />
+
         <OneBtnDialog
-          isOpen={showErrorDialog}
-          title="신청할 수 없어요"
-          contents="이미 신청한 미팅방이에요"
+          isOpen={errorDialog.open}
+          title={errorDialog.text}
+          contents={errorDialog.contents}
           onBtnClick={() => {
-            setShowErrorDialog(false);
+            setErrorDialog((prev) => ({ ...prev, open: false }));
           }}
-          buttonText="닫기"
-        />
-        <OneBtnDialog
-          isOpen={cantAddDialog}
-          title="미팅 정원보다 많이 추가할 수 없어요."
-          onBtnClick={() => {
-            setCantAddDialog(false);
-          }}
-          buttonText="닫기"
-        />
-        <OneBtnDialog
-          isOpen={duplicateOrBlankErrorDialog}
-          title="닉네임을 확인해 주세요."
-          contents="중복된 닉네임이나 빈칸이 있어요."
-          onBtnClick={() => {
-            setDuplicateOrBlankErrorDialog(false);
-          }}
-          buttonText="닫기"
-        />
-        <OneBtnDialog
-          isOpen={addMyNicknameDialog}
-          title="본인은 추가할 수 없어요."
-          onBtnClick={() => {
-            setAddMyNicknameDialog(false);
-          }}
-          buttonText="닫기"
-        />
-        <OneBtnDialog
-          isOpen={nonExistentDialog}
-          title="존재하지 않는 닉네임이에요."
-          onBtnClick={() => {
-            setNonExistentDialog(false);
-          }}
-          buttonText="닫기"
+          buttonText={"닫기"}
         />
       </DetailScreen>
     </>
