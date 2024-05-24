@@ -40,7 +40,7 @@ export default function SearchPage() {
       setLoading(false); // 데이터를 가져온 후 로딩 상태
     } catch (error) {
       console.error("미팅 가져오는데 에러 발생", error);
-      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
       setLoading(true);
     }
   };
@@ -79,7 +79,7 @@ export default function SearchPage() {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
-    // iOS에서만 키보드 높이를 감지하고 상태를 업데이트합니다.
+    // iOS에서만 키보드 높이를 감지하고 상태를 업데이트
     const showListener = Keyboard.addListener("keyboardWillShow", (info) => {
       setKeyboardHeight(info.keyboardHeight);
     });

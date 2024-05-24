@@ -33,6 +33,16 @@ export default function MeetingBoxComponent({
 }: IMeetingBoxComponent) {
   const formattedDate = formatDate(meeting?.meetDate);
 
+  const limitedTitle =
+    meeting?.title.length > 17
+      ? `${meeting?.title.substring(0, 17)}...`
+      : meeting?.title;
+
+  const limitedDescription =
+    meeting?.description.length > 45
+      ? `${meeting?.description.substring(0, 45)}...`
+      : meeting?.description;
+
   return (
     <MeetingBox onClick={onClick}>
       {isWaitingParty && (
@@ -43,15 +53,15 @@ export default function MeetingBoxComponent({
       <div className="flex flex-col gap-2">
         <MeetingTitle>
           <span className="text-base font-medium text-gray-800 flex">
-            {meeting.title} {isLeader && <OrangeCrownIcon />}
+            {limitedTitle} {isLeader && <OrangeCrownIcon />}
           </span>
-          <span className="text-xs font-normal text-gray-500">
+          <span className="text-[10px] font-normal text-gray-500">
             {formattedDate}
           </span>
         </MeetingTitle>
         {!isPast && (
           <div className="text-xs font-normal text-gray-500">
-            {meeting.description}
+            {limitedDescription}
           </div>
         )}
       </div>

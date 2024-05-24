@@ -5,7 +5,7 @@ export function formatDate(dateString: string | undefined) {
   date.setHours(date.getHours() + 9);
 
   return new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
+    year: "2-digit",
     month: "long",
     day: "2-digit",
     hour: "2-digit",

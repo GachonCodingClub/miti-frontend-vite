@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   MyChattingFrame,
   ChattingTime,
@@ -23,12 +29,23 @@ interface ChatMessage {
   content: string;
 }
 
+interface BlockedUser {
+  nickname: string;
+  userId: string;
+  contents: string;
+}
+
+interface BlockedUserData {
+  blockedUserOutputs: BlockedUser[];
+}
+
 interface ChatWindowProps {
   chatList: ChatMessage[];
   profileNickname: string | undefined;
   id: string | undefined;
   setChatList: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
   keyboardHeight: number;
+  blockData: BlockedUserData;
 }
 
 interface ChatDisplayOptions {
@@ -93,6 +110,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   profileNickname,
   id,
   keyboardHeight,
+  blockData,
 }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -210,13 +228,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     if (keyboardHeight > 0) {
       // 키보드 높이가 0보다 크다면, 즉 키보드가 활성화되었다면
       chatEndRef.current?.scrollIntoView();
-      // chatEndRef는 채팅 컨테이너 내에서 가장 하단을 가리키는 요소의 참조여야 합니다.
     }
   }, [keyboardHeight]);
+
+  const blockedUserNicknames = useMemo(() => {
+    return new Set(blockData?.blockedUserOutputs.map((user) => user?.nickname));
+  }, [blockData]);
 
   return (
     <ChatWindowContainer style={containerStyle} ref={chatContainerRef}>
       {chatList.map((chat, index) => {
+        const isUserBlocked = blockedUserNicknames.has(chat.nickname);
+
+        const chatContent = isUserBlocked
+          ? "차단된 메시지입니다."
+          : chat.content;
+
         const {
           displayTime,
           displayNickname,
@@ -245,7 +272,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   <MyChattingBubble
                     style={reduceMargin ? { marginBottom: -10 } : {}}
                   >
-                    <ChattingText>{chat.content}</ChattingText>
+                    <ChattingText>{chatContent}</ChattingText>
                   </MyChattingBubble>
                 </MyChatting>
               </MyChattingFrame>
@@ -261,7 +288,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   <OtherChattingBubble
                     style={reduceMargin ? { marginBottom: -10 } : {}}
                   >
-                    <ChattingText>{chat.content}</ChattingText>
+                    <ChattingText>{chatContent}</ChattingText>
                   </OtherChattingBubble>
                 </OtherChatting>
               </OtherChattingFrame>

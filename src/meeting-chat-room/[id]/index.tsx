@@ -3,6 +3,7 @@ import {
   IChat,
   MeetingChatRoomScreen,
   ChattingTextarea,
+  ChatCount,
 } from "../styles/MeetingChatRoomComponents";
 import { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
@@ -22,18 +23,22 @@ import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
 import React from "react";
 import { getHeaders } from "../../components/getHeaders";
-import { CharCount, Overlay } from "../../sign-up/styles/detailComponents";
+import { Overlay } from "../../sign-up/styles/detailComponents";
 import ChatWindow from "../components/ChatWindow";
 import { RightMenuFrame, MenuAnimation } from "../styles/SideMenuComponents";
-import useGetGroups from "../../api/useGetGroups";
-import useGetMyProfile from "../../api/useGetMyProfile";
+import { useGetMyProfile } from "../../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
 import { Capacitor, PluginListenerHandle } from "@capacitor/core";
 import { InLoading } from "../../components/InLoading";
+import { useGetBlockList } from "../../api/blockList";
+import { App } from "@capacitor/app";
+import { useGetGroups } from "../../api/useGetGroups";
+import { useQueryClient } from "react-query";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token + "");
@@ -64,7 +69,6 @@ export default function MeetingChatRoom() {
       return data;
     } catch (error) {
       console.error("알림 오류", error);
-
       throw error;
     }
   };
@@ -188,6 +192,17 @@ export default function MeetingChatRoom() {
     return () => disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
   }, []);
 
+  let limitedTitle = "";
+
+  if (group && typeof group.title === "string") {
+    limitedTitle =
+      group.title.length > 15
+        ? `${group.title.substring(0, 15)}...`
+        : group.title;
+  }
+
+  const { data: blockData } = useGetBlockList();
+
   // 메뉴 표시
   const [showRightMenu, setShowRightMenu] = useState(false);
 
@@ -203,6 +218,9 @@ export default function MeetingChatRoom() {
     });
 
     setRoomDelted(true);
+    queryClient.invalidateQueries(["group"]);
+
+    alert("미팅을 삭제했어요");
     navigate(`${ROUTES.MEETING_LIST}`);
     setTimeout(() => {
       setRoomDelted(false);
@@ -211,6 +229,7 @@ export default function MeetingChatRoom() {
 
   const ExitUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}/leave`;
 
+  // (비방장) 방 나가기
   const setRoomExited = useSetRecoilState(SnackBarAtom);
   const handleExitRoom = () => {
     fetch(ExitUrl, {
@@ -236,7 +255,7 @@ export default function MeetingChatRoom() {
     let hideListener: PluginListenerHandle | null = null;
 
     if (Capacitor.getPlatform() === "ios") {
-      // iOS에서만 키보드 높이를 감지하고 상태를 업데이트합니다.
+      // iOS에서만 키보드 높이를 감지하고 상태를 업데이트
       showListener = Keyboard.addListener("keyboardWillShow", (info) => {
         setKeyboardHeight(info.keyboardHeight);
       });
@@ -246,15 +265,29 @@ export default function MeetingChatRoom() {
       });
     }
 
+    const handleAppResume = () => {
+      getAlert();
+    };
+
+    // 리스너 등록
+    const resumeListener = App.addListener("appStateChange", (state) => {
+      // 앱이 resume 상태로 변경될 때만 handleAppResume 함수 호출
+      if (state.isActive) {
+        handleAppResume();
+        navigate(`/meeting-chat-room/${id}`);
+      }
+    });
+
     return () => {
       // 리스너 제거
       showListener?.remove();
       hideListener?.remove();
+      resumeListener?.remove();
     };
   }, []);
 
-  // ChattingInputDiv 컴포넌트의 스타일을 조정합니다.
-  // 예: 키보드 높이만큼 padding-bottom을 추가하여 textarea를 위로 올립니다.
+  // ChattingInputDiv 컴포넌트의 스타일을 조정
+  // 예: 키보드 높이만큼 padding-bottom을 추가하여 textarea를 위로 올림
   const chattingInputDivStyle = {
     paddingBottom: keyboardHeight + "px",
   };
@@ -263,7 +296,7 @@ export default function MeetingChatRoom() {
   return (
     <>
       <TopBar
-        title={loading ? `로딩중...` : `${group?.title}`}
+        title={loading ? `로딩중...` : limitedTitle}
         leftIcon={<ArrowbackIcon onClick={() => navigate(`/chat-list`)} />}
         rightIcon={
           <HamburgerIcon
@@ -286,6 +319,7 @@ export default function MeetingChatRoom() {
               profileNickname={profile?.nickname}
               id={id}
               keyboardHeight={keyboardHeight}
+              blockData={blockData}
             />
           </>
           <div>
@@ -312,9 +346,9 @@ export default function MeetingChatRoom() {
                 </button>
                 {charCount >= 0 && (
                   <div className="fixed">
-                    <CharCount>
+                    <ChatCount>
                       {charCount} / {MAX_INTRODUCE_LENGTH}
-                    </CharCount>
+                    </ChatCount>
                   </div>
                 )}
               </div>

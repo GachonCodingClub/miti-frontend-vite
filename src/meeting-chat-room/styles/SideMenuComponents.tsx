@@ -36,7 +36,7 @@ export const RightMenuFrame = styled(motion.div)`
 
 // 메뉴에 나오는 미팅 제목/설명 프레임
 export const MenuMeetingTitleAndDescFrame = styled.div`
-  padding-top: 64px;
+  padding-top: 80px;
   margin: auto;
   display: flex;
   width: 80%;
@@ -75,7 +75,7 @@ export const MenuDetailAndMemberWrapper = styled.div`
   width: 80%;
   flex-direction: column;
   align-items: flex-start;
-  gap: 32px;
+  gap: 16px;
   padding-top: 32px;
 `;
 
@@ -84,7 +84,7 @@ export const MenuDetailAndButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 32px;
+  gap: 16px;
   align-self: stretch;
 `;
 
@@ -134,7 +134,6 @@ export const MenuModifyMeetingButton = styled.button`
   border: 1px solid var(--Grey-grey100, #dedbd9);
   background: #fff;
 
-  // 텍스트 부분
   color: var(--Grey-grey500, #767170);
   text-align: center;
   font-size: 14px;
@@ -155,7 +154,7 @@ export const MenuMemberAndReqButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 32px;
+  gap: 16px;
   width: 80%;
   margin: auto;
   max-height: 25%;
@@ -165,6 +164,18 @@ export const MenuMemberAndReqButtonWrapper = styled.div`
 export const MenuMemberContainer = styled(MenuDetailFrame)`
   overflow-y: scroll;
   width: 100%;
+  position: relative;
+  min-height: 108px;
+`;
+
+export const ScrollDownArrow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  svg {
+    width: 16px;
+    fill: #000;
+  }
 `;
 
 // 참여자 프레임
@@ -173,9 +184,7 @@ export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
 // 유저 프로필 프레임
 export const MenuUserProfileFrame = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
   align-self: stretch;
 `;
 
@@ -197,8 +206,8 @@ export const MenuUserNickname = styled.span`
 export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
-  flex-direction: column;
-  padding-bottom: 16px;
+
+  padding-bottom: 8px;
 `;
 
 // 유저 디테일 텍스트

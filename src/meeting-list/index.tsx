@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getApi } from "../api/getApi";
 import { IGroup } from "../model/group";
-import { SearchIcon } from "../components/styles/Icons";
+import { RefreshIcon, SearchIcon } from "../components/styles/Icons";
 import { TopBar } from "../components/TopBar";
 import { useLoginGuard } from "../hooks/useLoginGuard";
 import {
@@ -11,21 +11,32 @@ import {
   PageFrame,
   PageNum,
   PrevNextButton,
+  RefreshButton,
 } from "./components/meetingListComponents";
 import MeetingBoxComponent from "../components/MeetingBoxComponent";
 import { SnackBar } from "../components/styles/Button";
 import { ROUTES } from "../routes";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { NewAlert, SnackBarAtom } from "../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { NewAlert, isNotificationinitialized, SnackBarAtom } from "../atoms";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { InLoading } from "../components/InLoading";
+import { useQuery } from "react-query";
+import { motion } from "framer-motion";
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 export default function MeetingList() {
   const [token, setToken] = useState<string | null>(null);
   const loginToken = useLocalStorageToken();
+
+  const [isNotificationInitialized, setNotificationInitialized] =
+    useRecoilState(isNotificationinitialized);
+
+  const hapticsImpactLight = async () => {
+    await Haptics.impact({ style: ImpactStyle.Light });
+  };
 
   const setNewAlert = useSetRecoilState(NewAlert);
 
@@ -41,6 +52,7 @@ export default function MeetingList() {
 
     await PushNotifications.addListener("pushNotificationReceived", () => {
       setNewAlert(true);
+      // console.log("노티피케이션", JSON.stringify(notification));
       setTimeout(() => {
         setNewAlert(false);
       }, 1500);
@@ -49,11 +61,16 @@ export default function MeetingList() {
     await PushNotifications.addListener(
       "pushNotificationActionPerformed",
       (notification) => {
-        console.log(
-          "Push notification action performed",
-          notification.actionId,
-          notification.inputValue
-        );
+        if (
+          window.location.toString() !==
+            `/meeting-chat-room/${notification.notification?.data?.groupId}` &&
+          notification.actionId === "tap" &&
+          notification.notification?.data?.groupId
+        ) {
+          navigate(
+            `/meeting-chat-room/${notification.notification?.data?.groupId}`
+          );
+        }
       }
     );
   };
@@ -123,31 +140,47 @@ export default function MeetingList() {
   });
   const [totalPages, setTotalPages] = useState(0);
 
-  useEffect(() => {
-    const fetchMeetings = async () => {
-      try {
-        setLoading(true);
-        const res = await getApi({
-          link: `/groups?page=${page}&size=7&sort=meetDate`,
-        });
-        const data = await res.json();
-        setMeetings(data.content);
-        setTotalPages(data.totalPages);
-      } catch (error) {
-        console.error("미팅 불러오기 실패:", error);
-      } finally {
-        addListeners();
-        registerNotifications();
-        setLoading(false);
+  const { data, refetch } = useQuery(
+    ["group", page],
+    async () => {
+      const res = await getApi({
+        link: `/groups?page=${page}&size=7&sort=meetDate`,
+      });
+      if (res.status === 401) {
+        alert("서버 오류가 발생했어요.");
+        localStorage.removeItem("token");
+        navigate(`${ROUTES.SIGN_IN}`);
+        return;
       }
-    };
+      return res.json();
+    },
+    {
+      keepPreviousData: true, // 이전 페이지 데이터 유지
+      staleTime: 60000, // 1분 동안 새로고침하지 않음
+      onSuccess: () => {
+        // 알림 리스너 1번만 호출
+        if (!isNotificationInitialized) {
+          addListeners();
+          registerNotifications();
+          setNotificationInitialized(true);
+        }
+      },
+      onSettled: () => {
+        setLoading(false);
+      },
+    }
+  );
 
-    fetchMeetings();
-    sessionStorage.setItem("currentPage", page.toString());
-  }, [page]);
+  useEffect(() => {
+    if (data) {
+      setMeetings(data.content);
+      setTotalPages(data.totalPages);
+    }
+  }, [data]);
 
   const loadPage = (pageNumber: number) => {
     setPage(pageNumber);
+    sessionStorage.setItem("currentPage", pageNumber.toString());
   };
 
   const renderPageNumbers = () => {
@@ -173,8 +206,21 @@ export default function MeetingList() {
         }}
       />
       <MeetingListScreen>
+        <RefreshButton
+          as={motion.div}
+          onClick={() => {
+            refetch();
+            hapticsImpactLight();
+          }}
+          whileTap={{ rotate: 360 * 2 }}
+          transition={{ duration: 1.5 }}
+        >
+          <RefreshIcon />
+        </RefreshButton>
+
         <CreateMeetingButton
           onClick={() => {
+            hapticsImpactLight();
             navigate(`${ROUTES.CREATE_MEETING}`);
           }}
         >

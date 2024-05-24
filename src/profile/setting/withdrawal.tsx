@@ -15,6 +15,7 @@ import { useState } from "react";
 import { Overlay } from "../../sign-up/styles/detailComponents";
 import { getHeaders } from "../../components/getHeaders";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
+import { ROUTES } from "../../routes";
 
 export default function Withdrawal() {
   const navigate = useNavigate();
@@ -36,12 +37,12 @@ export default function Withdrawal() {
           navigate("/");
           setShowDialog(false);
         } else {
-          alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+          alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         }
       })
       .catch((error) => {
         console.error("네트워크 에러:", error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
       });
   };
   return (
@@ -64,7 +65,6 @@ export default function Withdrawal() {
           <Overlay>
             <Dialog
               title="탈퇴하기"
-              contents=""
               left="다시 생각하기"
               right="탈퇴"
               onLeftClick={() => {
@@ -79,6 +79,10 @@ export default function Withdrawal() {
         <LongOrangeBtn
           text="탈퇴하기"
           onClick={() => {
+            if (!token) {
+              alert("로그인이 필요해요. 로그인 페이지로 이동합니다.");
+              navigate(ROUTES.SIGN_IN);
+            }
             setShowDialog(true);
           }}
         />

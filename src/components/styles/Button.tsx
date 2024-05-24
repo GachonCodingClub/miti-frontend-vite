@@ -201,7 +201,7 @@ export const DialogContainer = styled.div`
   padding: 24px 16px 16px 16px;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 
   border-radius: 12px;
   background: var(--grey-scale-coolgrey-00, #fff);
@@ -261,7 +261,7 @@ export const DialogLeftText = styled(DialogRightText)`
 
 interface IDialog {
   title: string;
-  contents: string;
+  contents?: string | undefined;
   left?: string;
   right?: string;
   onLeftClick?: () => void;
