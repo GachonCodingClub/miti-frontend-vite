@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { meetingDescAtom, meetingTitleAtom } from "../atoms";
-import { Overlay } from "../sign-up/styles/detailComponents";
+import { CharCount, Overlay } from "../sign-up/styles/detailComponents";
 import { DialogOneBtn } from "../components/styles/Button";
 import { MyInputBox } from "../components/MyInputBox";
 import { getApi } from "../api/getApi";
@@ -49,6 +49,9 @@ export default function CreateMeeting() {
     }
   );
 
+  const [titleCount, setTitleCount] = useState(0);
+  const [descCount, setDescCount] = useState(0);
+
   // 미팅 제목 입력 받기
   const [inputMeetingTitle, setInputMeetingTitle] = useState("");
   const [meetingTitleError, setMeetingTitleError] = useState("");
@@ -56,6 +59,7 @@ export default function CreateMeeting() {
   const onMeetingTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setInputMeetingTitle(newTitle);
+    setTitleCount(newTitle.length);
   };
   // 미팅 제목 recoil에 저장
   const [, setRecoilTitle] = useRecoilState(meetingTitleAtom);
@@ -67,6 +71,7 @@ export default function CreateMeeting() {
   const onMeetingDescChange = (e: { target: { value: string } }) => {
     const newDesc = e.target.value;
     setInputMeetingDesc(newDesc);
+    setDescCount(newDesc.length);
   };
 
   // isUpdate가 true일 경우
@@ -134,25 +139,43 @@ export default function CreateMeeting() {
           <div>
             부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다.
           </div>
-          <MyInputBox
-            label="미팅 제목"
-            placeholder=""
-            type="text"
-            value={inputMeetingTitle}
-            onChange={onMeetingTitleChange}
-            error={meetingTitleError}
-            maxLength={20}
-          />
+          <div className="w-full">
+            <MyInputBox
+              label="미팅 제목"
+              placeholder=""
+              type="text"
+              value={inputMeetingTitle}
+              onChange={onMeetingTitleChange}
+              error={meetingTitleError}
+              maxLength={20}
+            />
+            {titleCount >= 0 && (
+              <div className="flex justify-end">
+                <CharCount>
+                  {titleCount} / {20}
+                </CharCount>
+              </div>
+            )}
+          </div>
           <div className="text-[14px] text-[#767170] tracking-[-0.224px]">
             미팅 설명
           </div>
-          <DescriptionArea
-            placeholder="미팅 설명"
-            onChange={onMeetingDescChange}
-            value={inputMeetingDesc}
-            maxLength={35}
-          />
-          <div className="bg-[#c9c5c5] h-[1px] w-full"></div>
+          <div className="w-full">
+            <DescriptionArea
+              placeholder="미팅 설명"
+              onChange={onMeetingDescChange}
+              value={inputMeetingDesc}
+              maxLength={35}
+            />
+            {descCount >= 0 && (
+              <div className="flex justify-end">
+                <CharCount>
+                  {descCount} / {35}
+                </CharCount>
+              </div>
+            )}
+          </div>
+
           {showDialog && (
             <Overlay>
               <DialogOneBtn
