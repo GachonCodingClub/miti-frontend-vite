@@ -10,16 +10,11 @@ import {
   DetailSetScreen,
   DetailTitle,
   IntroduceFrame,
-  Overlay,
   SelectBtnFrame,
   SelectBtnText,
   SelectButtonContainer,
 } from "./styles/detailComponents";
-import {
-  DialogOneBtn,
-  FixedButtonBox,
-  LongOrangeBtn,
-} from "../components/styles/Button";
+import { FixedButtonBox, LongOrangeBtn } from "../components/styles/Button";
 import { useRecoilState } from "recoil";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
@@ -41,6 +36,15 @@ import { useNavigate } from "react-router-dom";
 import { MyHeightSheet } from "./components/HeightSheet";
 import { MyWeightSheet } from "./components/WeightSheet";
 import { rangeToAlphabet } from "../components/rangeToAlphabet";
+import OneBtnDialog from "../components/Dialog";
+
+const getCurrentDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 export default function SingUpDetail() {
   const navigate = useNavigate();
@@ -52,7 +56,12 @@ export default function SingUpDetail() {
 
   // 닉네임 중복확인 버튼
   const onSubmitNickName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickName = e.target.value;
+    let newNickName = e.target.value;
+
+    // 이모지를 제거하는 정규 표현식
+    const emojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+    newNickName = newNickName.replace(emojiRegex, "");
+
     setUserNickName(newNickName);
 
     if (newNickName === "") {
@@ -142,7 +151,14 @@ export default function SingUpDetail() {
 
   const onSubmitBirth = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newBirth = e.target.value;
-    setUserBirth(newBirth);
+    const todayYYYYMMDD = getCurrentDate();
+    if (newBirth > todayYYYYMMDD) {
+      setBirthError("정확한 생년월일을 입력해주세요.");
+    } else {
+      // 입력이 유효한 경우
+      setBirthError("");
+      setUserBirth(newBirth);
+    }
   };
 
   // 키(cm)
@@ -229,12 +245,11 @@ export default function SingUpDetail() {
         userPassword,
         userIntroduce
       )
-        .then((success) => setSubscription(success))
+        .then(() => setSubscription(true))
         .catch(() => setSubscription(false));
     }
   };
 
-  const customSvg = <ArrowdropIcon />;
   return (
     <>
       <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
@@ -313,26 +328,28 @@ export default function SingUpDetail() {
 
           {/* 키 */}
           <MyInputBoxSVG
-            placeholder="키 선택(10단위)"
+            placeholder="버튼을 눌러 키를 선택해주세요"
             label="키(cm)"
             type="text"
             onClick={onSubmitHeight}
             value={userHeight}
             onChange={() => {}}
             error={heightError}
-            svg={customSvg}
+            svg={<ArrowdropIcon />}
+            disable={true}
           />
 
           {/* 몸무게 */}
           <MyInputBoxSVG
-            placeholder="몸무게 선택(10단위)"
+            placeholder="버튼을 눌러 몸무게를 선택해주세요"
             label="몸무게(kg)"
             type="text"
             onClick={onSubmitWeight}
             value={userWeight}
             onChange={() => {}}
             error={weightError}
-            svg={customSvg}
+            svg={<ArrowdropIcon />}
+            disable={true}
           />
         </DetailFrame>
 
@@ -356,16 +373,12 @@ export default function SingUpDetail() {
         />
 
         {/* 가입 성공 */}
-        {subscription && (
-          <Overlay>
-            <DialogOneBtn
-              title="가입 성공!"
-              contents=""
-              onRightClick={onSubscriptionClick}
-              right="로그인 화면으로 이동"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={subscription}
+          title="가입 성공!"
+          onBtnClick={onSubscriptionClick}
+          buttonText="로그인 화면으로 이동"
+        />
       </DetailSetScreen>
       <FixedButtonBox>
         <LongOrangeBtn text="가입 완료" onClick={completeButton} />

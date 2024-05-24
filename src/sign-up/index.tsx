@@ -1,19 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Screen } from "../components/styles/Screen";
-import {
-  DialogOneBtn,
-  FixedButtonBox,
-  LongOrangeBtn,
-} from "../components/styles/Button";
+import { FixedButtonBox, LongOrangeBtn } from "../components/styles/Button";
 import { useRecoilState } from "recoil";
-import { Overlay } from "./styles/detailComponents";
 import { userEmailAtom } from "../atoms";
 import { MyInputBox, MyInputBoxButton } from "../components/MyInputBox";
 import { ROUTES } from "../routes";
 import { TopBar } from "../components/TopBar";
 import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
+import OneBtnDialog from "../components/Dialog";
 
 const SignUpScreen = styled(Screen)`
   padding-top: 56px;
@@ -56,7 +52,7 @@ export default function SignUp() {
     };
 
     if (!validateEmail(email)) {
-      setError("지원하는 대학교 이메일이 아닙니다.");
+      setError("지원하는 대학교 이메일이 아니에요.");
       return;
     } else {
       setError("");
@@ -98,7 +94,7 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         setError("");
       });
 
@@ -111,6 +107,7 @@ export default function SignUp() {
 
   // 이메일 입력란의 값이 변경될 때 호출되는 함수
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const newEmail = e.target.value;
     setEmail(newEmail);
   };
@@ -157,7 +154,7 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         setCertiError("에러발생");
       });
 
@@ -166,6 +163,7 @@ export default function SignUp() {
 
   // 인증번호 입력란의 값이 변경될 때 호출되는 함수
   const onCertiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const newCertiNum = e.target.value;
     setCertiNumber(newCertiNum);
   };
@@ -176,7 +174,7 @@ export default function SignUp() {
       <SignUpScreen>
         <SignUpTitle>대학교 이메일을 입력해 주세요</SignUpTitle>
         <SignUpFrame>
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             <MyInputBoxButton
               placeholder="miti_001@gachon.ac.kr (@gachon.ac.kr)"
               label="대학교 이메일 (@gachon.ac.kr의 이메일만 가능해요)"
@@ -189,34 +187,31 @@ export default function SignUp() {
               disable={isInputDisabled}
             />
           </form>
-          {overlapError && (
-            <Overlay>
-              <DialogOneBtn
-                title="이미 가입된 이메일입니다."
-                contents=""
-                right="처음으로"
-                onRightClick={() => {
-                  navigate(`${ROUTES.SIGN_IN}`);
-                }}
-              />
-            </Overlay>
-          )}
-          {!overlapError && showDialog && (
-            <Overlay>
-              <DialogOneBtn
-                title="인증 메일이 전송되었습니다."
-                contents=""
-                onRightClick={() => {
-                  setShowDialog(false);
-                  setIsInputDisabled(true);
-                }}
-                right="닫기"
-              />
-            </Overlay>
-          )}
+
+          <OneBtnDialog
+            isOpen={overlapError}
+            title="이미 가입된 이메일이에요."
+            onBtnClick={() => {
+              navigate(`${ROUTES.SIGN_IN}`);
+            }}
+            buttonText="처음으로"
+          />
+          <OneBtnDialog
+            isOpen={!overlapError && showDialog}
+            title="인증 메일이 전송됐어요."
+            contents="@gachon.ac.kr 메일함을 확인해 주세요."
+            onBtnClick={() => {
+              setShowDialog(false);
+              setIsInputDisabled(true);
+            }}
+            buttonText="닫기"
+          />
 
           {!overlapError && !error && showInputBox && (
-            <form className="flex flex-col mt-[25px]">
+            <form
+              className="flex flex-col mt-[25px]"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <MyInputBox
                 placeholder="인증 번호 입력"
                 label="인증 번호"

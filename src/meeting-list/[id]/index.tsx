@@ -1,6 +1,5 @@
 import {
   DialogContainer,
-  DialogOneBtn,
   LongOrangeBtn,
   LongWhiteBtn,
 } from "../../components/styles/Button";
@@ -36,17 +35,20 @@ import { getHeaders } from "../../components/getHeaders";
 import { AddMemberButton } from "../../create-meeting/styles/createMeetingDetailComponents";
 import { MyInputBoxSVG } from "../../components/MyInputBox";
 import AdditionalParticipantsList from "../../create-meeting/components/additionalParticipantsList";
-import useGetGroups from "../../api/useGetGroups";
 import useGetParties from "../../api/useGetParties";
-import useGetMyProfile from "../../api/useGetMyProfile";
+import { useGetMyProfile } from "../../api/profile";
 import { InLoading } from "../../components/InLoading";
+import { useGetBlockList } from "../../api/blockList";
+import OneBtnDialog from "../../components/Dialog";
+import { IUser } from "../../meeting-chat-room/styles/SideMenuComponents";
+import { useGetGroups } from "../../api/useGetGroups";
 
 export default function MeetingDetail() {
   useLoginGuard();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [token, setToken] = useState(""); // 토큰 상태 추가
+  const [token, setToken] = useState("");
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -56,8 +58,13 @@ export default function MeetingDetail() {
     }
   }, []);
 
-  const [showDialog, setShowDialog] = useState(false);
-  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [errorDialog, setErrorDialog] = useState({
+    open: false,
+    contents: "",
+    text: "",
+  });
+
+  const [successDialog, setSuccessDialog] = useState(false);
 
   const {
     data: group,
@@ -73,6 +80,8 @@ export default function MeetingDetail() {
 
   const { data: profile } = useGetMyProfile();
 
+  const { data: blockData } = useGetBlockList();
+
   const meetingDate = group?.meetDate ? new Date(group?.meetDate) : null;
   const formattedDate = meetingDate ? formatDate(group?.meetDate) : "";
 
@@ -81,12 +90,8 @@ export default function MeetingDetail() {
     string[]
   >([]);
   const [inputAddNickname, setInputAddNickname] = useState("");
-  const [nonExistentDialog, setNonExistentDialog] = useState(false);
-  const [addMyNicknameDialog, setAddMyNicknameDialog] = useState(false);
-  const [duplicateOrBlankErrorDialog, setDuplicateOrBlankErrorDialog] =
-    useState(false);
+
   const [showAdd, setShowAdd] = useState(false);
-  const [cantAddDialog, setCantAddDialog] = useState(false);
 
   const nowMember = (parties?.acceptedParties[0]?.users.length ?? 0) + 1;
   const AddMember = additionalParticipants.length + 1;
@@ -108,8 +113,7 @@ export default function MeetingDetail() {
         link: `/auth/check/nickname?nickname=${inputAddNickname}`,
       }); // 존재하는 닉네임인지 체크, 결과를 response에 저장
 
-      // trim()으로 문자열 뒤 공백 제거
-      const trimmedNickname = inputAddNickname.trim();
+      const trimmedNickname = inputAddNickname.trim(); // 문자열 뒤 공백 제거
 
       // 추가된 닉네임 배열에 빈 문자열이 있는지 확인
       if (trimmedNickname === "") {
@@ -118,7 +122,11 @@ export default function MeetingDetail() {
 
       // response의 상태 코드가 409(중복)라면
       if (response.status !== 409) {
-        setNonExistentDialog(true); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
+        setErrorDialog({
+          open: true,
+          text: "존재하지 않는 닉네임이에요",
+          contents: "",
+        }); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
       } else {
         // 미팅에 이미 참여 중인 모든 사용자의 닉네임 목록 생성
         const existingNicknames = parties?.acceptedParties.flatMap((party) =>
@@ -130,24 +138,40 @@ export default function MeetingDetail() {
           trimmedNickname === leaderNickname ||
           existingNicknames?.includes(trimmedNickname)
         ) {
-          setDuplicateOrBlankErrorDialog(true);
+          setErrorDialog({
+            open: true,
+            text: "닉네임을 확인해 주세요",
+            contents: "중복된 닉네임이나 빈칸이 있어요",
+          });
           return;
         }
 
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
         if (additionalParticipants.includes(trimmedNickname)) {
-          setDuplicateOrBlankErrorDialog(true); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
+          setErrorDialog({
+            open: true,
+            text: "닉네임을 확인해 주세요",
+            contents: "중복된 닉네임이나 빈칸이 있어요",
+          }); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
           return;
         }
 
         if (finalMember >= (group?.maxUsers ?? 0)) {
-          setCantAddDialog(true);
+          setErrorDialog({
+            open: true,
+            text: "미팅 정원보다 많이 추가할 수 없어요",
+            contents: "",
+          });
           return;
         }
 
         // 닉네임이 myNickname과 같은지 확인
         if (trimmedNickname === profile?.nickname) {
-          setAddMyNicknameDialog(true); // 본인 닉네임 추가 못하게 막기
+          setErrorDialog({
+            open: true,
+            text: "본인은 추가할 수 없어요",
+            contents: "",
+          }); // 본인 닉네임 추가 못하게 막기
           return;
         }
 
@@ -159,7 +183,7 @@ export default function MeetingDetail() {
       inputRef.current?.focus();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
-      alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
     }
   };
 
@@ -184,16 +208,43 @@ export default function MeetingDetail() {
           console.error(
             `API 오류: ${response.status} - ${response.statusText}`
           );
-          setShowErrorDialog(true);
+          setErrorDialog({
+            open: true,
+            contents: "이미 신청한 미팅방이에요",
+            text: "신청할 수 없어요",
+          });
           return response.json();
         }
-        setShowDialog(true);
+        setSuccessDialog(true);
         return response.json();
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
       });
+  };
+
+  const renderUserProfile = (user: IUser, isUserBlocked: boolean) => {
+    return isUserBlocked ? (
+      <div className="pb-3 text-[#d05438]">차단된 사용자입니다</div>
+    ) : (
+      <>
+        <div className="gap-1">
+          <span>{user?.nickname}</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-sm whitespace-pre-wrap">
+            {user?.description}
+          </span>
+          <MemberDetail>
+            <span>{(user?.age ?? 0) + 1}살</span>
+            <span>{user?.gender === "MALE" ? "남자" : "여자"}</span>
+            <span>{user?.height}cm</span>
+            <span>{user?.weight}kg</span>
+          </MemberDetail>
+        </div>
+      </>
+    );
   };
 
   if (isGroupLoading || isPartiesLoading) return <InLoading />;
@@ -245,29 +296,23 @@ export default function MeetingDetail() {
             </DetailInfoBox>
             <div className="w-full h-[1px] bg-[#EBE8E7]" />
             <DetailMember>
-              <span className="text-sm font-normal text-gray-500 mb-4">
+              <span className="text-sm font-normal text-gray-500 mb-1">
                 참여자
               </span>
               <MemberInfo>
                 {parties?.leaderUserSummaryDto && (
                   <>
-                    <div className="flex items-center gap-1">
-                      {parties?.leaderUserSummaryDto?.nickname}
-                      <OrangeCrownIcon />
+                    <OrangeCrownIcon />
+                    <div className="gap-1">
+                      {renderUserProfile(
+                        parties.leaderUserSummaryDto,
+                        blockData?.blockedUserOutputs?.some(
+                          (blockedUser: { nickname: string | undefined }) =>
+                            blockedUser.nickname ===
+                            parties.leaderUserSummaryDto?.nickname
+                        )
+                      )}
                     </div>
-                    <span className="whitespace-pre-wrap text-sm">
-                      {parties?.leaderUserSummaryDto?.description}
-                    </span>
-                    <MemberDetail>
-                      <span>{parties?.leaderUserSummaryDto?.age}살</span>
-                      <span>
-                        {parties?.leaderUserSummaryDto?.gender === "MALE"
-                          ? "남자"
-                          : "여자"}
-                      </span>
-                      <span>{parties?.leaderUserSummaryDto?.height}cm</span>
-                      <span>{parties?.leaderUserSummaryDto?.weight}kg</span>
-                    </MemberDetail>
                   </>
                 )}
               </MemberInfo>
@@ -275,24 +320,18 @@ export default function MeetingDetail() {
               <MemberInfo>
                 {parties?.acceptedParties?.map((party) => (
                   <div key={party.partyId}>
-                    {party.users.map((user) => (
-                      <div key={user?.userId}>
-                        <div className="flex gap-1 items-center">
-                          <span>{user?.nickname}</span>
+                    {party.users.map((user) => {
+                      // 차단된 사용자인지 확인
+                      const isBlocked = blockData?.blockedUserOutputs?.some(
+                        (blockedUser: { nickname: string | undefined }) =>
+                          blockedUser.nickname === user?.nickname
+                      );
+                      return (
+                        <div key={user?.userId}>
+                          {renderUserProfile(user, isBlocked)}
                         </div>
-                        <span className="text-sm whitespace-pre-wrap">
-                          {user?.description}
-                        </span>
-                        <MemberDetail>
-                          <span>{user?.age}살</span>
-                          <span>
-                            {user?.gender === "MALE" ? "남자" : "여자"}
-                          </span>
-                          <span>{user?.height}cm</span>
-                          <span>{user?.weight}kg</span>
-                        </MemberDetail>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ))}
               </MemberInfo>
@@ -354,83 +393,25 @@ export default function MeetingDetail() {
           )}
         </DetailBox>
 
-        {showDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="참여 신청 완료"
-              contents=""
-              right="닫기"
-              onRightClick={() => {
-                setShowDialog(false);
-                setShowAdd(false);
-              }}
-            />
-          </Overlay>
-        )}
-        {showErrorDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="신청할 수 없어요"
-              contents="이미 신청한 미팅방일 수 있어요"
-              right="닫기"
-              onRightClick={() => {
-                setShowErrorDialog(false);
-              }}
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={successDialog}
+          title="참여 신청 완료"
+          onBtnClick={() => {
+            setSuccessDialog(false);
+            setShowAdd(false);
+          }}
+          buttonText="닫기"
+        />
 
-        {cantAddDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="미팅 정원보다 많이 추가할 수 없어요."
-              contents=""
-              onRightClick={() => {
-                setCantAddDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
-
-        {duplicateOrBlankErrorDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="닉네임을 확인해 주세요."
-              contents="중복된 닉네임이나 빈칸이 있어요."
-              onRightClick={() => {
-                setDuplicateOrBlankErrorDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
-
-        {addMyNicknameDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="본인은 추가할 수 없어요."
-              contents=""
-              onRightClick={() => {
-                setAddMyNicknameDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
-
-        {nonExistentDialog && (
-          <Overlay>
-            <DialogOneBtn
-              title="존재하지 않는 닉네임이에요."
-              contents=""
-              onRightClick={() => {
-                setNonExistentDialog(false);
-              }}
-              right="닫기"
-            />
-          </Overlay>
-        )}
+        <OneBtnDialog
+          isOpen={errorDialog.open}
+          title={errorDialog.text}
+          contents={errorDialog.contents}
+          onBtnClick={() => {
+            setErrorDialog((prev) => ({ ...prev, open: false }));
+          }}
+          buttonText={"닫기"}
+        />
       </DetailScreen>
     </>
   );

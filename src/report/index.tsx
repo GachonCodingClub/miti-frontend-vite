@@ -58,7 +58,7 @@ export default function Report() {
           if (response.status === 404) {
             alert("대상의 닉네임을 다시 확인해주세요.");
           } else {
-            alert("신고 접수에 실패했습니다. 나중에 다시 시도해주세요.");
+            alert("신고 접수에 실패했어요. 나중에 다시 시도해주세요.");
           }
           throw new Error("Response not ok");
         }
@@ -67,7 +67,7 @@ export default function Report() {
       })
       .then((error) => {
         console.error(error);
-        alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        alert("오류가 발생했어요. 나중에 다시 시도해주세요.");
       })
       .finally(() => {
         navigate(-1); // 사용자를 이전 페이지로 이동시키기
@@ -80,19 +80,6 @@ export default function Report() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <WithdrawalScreen>
-        <div className="mt-7">
-          <p className="mt-7">
-            신고가 누적된 사용자는 미티 서비스를 이용하실 수 없습니다.
-          </p>
-          <p className="mt-1">
-            저희는 신고 내용을 최대 24시간 이내에 검토하고 신고 대상에게 적절한
-            제재를 가합니다.
-          </p>
-          <p className="my-7">
-            문의 사항은 설정의 '문의하기'를 이용해 주십시오.
-          </p>
-        </div>
-
         <div className="mt-10">
           <WithdrawalTitle>신고하기</WithdrawalTitle>
         </div>
@@ -106,7 +93,7 @@ export default function Report() {
           />
         </div>
 
-        <div className="gap-5">
+        <div>
           <WithdrawalContents>신고 내용</WithdrawalContents>
           <DescriptionArea
             placeholder="내용 입력"
@@ -114,11 +101,21 @@ export default function Report() {
             value={content}
           />
         </div>
+        <div className="mt-7">
+          <p className="mt-7">
+            신고가 누적된 사용자는 <br /> 미티 서비스를 이용하실 수 없습니다.
+          </p>
+          <p className="mt-1">
+            저희는 신고 내용을 최대 24시간 이내에 검토하고 신고 대상에게 적절한
+            제재를 가합니다.
+          </p>
+        </div>
+
         {showDialog && (
           <Overlay>
             <Dialog
               title="신고하시겠습니까?"
-              contents=""
+              contents="허위 신고는 제재를 당할 수 있어요."
               left="아니요"
               right="예"
               onLeftClick={() => {

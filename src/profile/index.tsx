@@ -18,11 +18,13 @@ import { PaddingScreen } from "../components/styles/Screen";
 import { SmallWhiteBtn } from "../components/styles/Button";
 import { IParties } from "../model/party";
 import { JwtPayload, jwtDecode } from "jwt-decode";
-import useGetMyProfile from "../api/useGetMyProfile";
+import { useGetMyProfile } from "../api/profile";
 import { InLoading } from "../components/InLoading";
 import { ROUTES } from "../routes";
+import { useLoginGuard } from "../hooks/useLoginGuard";
 
 export default function Profile() {
+  useLoginGuard();
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -72,7 +74,7 @@ export default function Profile() {
 
   const handleMeetingBoxClick = (groupId: number) => {
     // 선택된 미팅 ID가 현재 클릭된 것과 같다면, showButton을 토글.
-    // 그렇지 않다면, 새로운 미팅 ID로 setSelectedId를 업데이트하고 showButton을 true로 설정한다.
+    // 그렇지 않다면, 새로운 미팅 ID로 setSelectedId를 업데이트하고 showButton을 true로 설정
     if (selectedId === groupId) {
       setShowButton((prev) => !prev);
     } else {
@@ -108,7 +110,7 @@ export default function Profile() {
                 {profile?.nickname}
               </span>
               <div className="flex gap-2 font-normal text-sm text-gray-500">
-                <span>{profile?.age}살</span>
+                <span>{(profile?.age ?? 0) + 1}살</span>
                 <span>{profile?.gender === "MALE" ? "남자" : "여자"}</span>
                 <span>{profile?.height}cm</span>
                 <span>{profile?.weight}kg</span>

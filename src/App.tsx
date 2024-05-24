@@ -33,16 +33,36 @@ import { Capacitor } from "@capacitor/core";
 import { useEffect, useState } from "react";
 import PersonlaInfo from "./PersonalInfo";
 import { ROUTES } from "./routes";
+import BlockList from "./block/blockList";
+import Block from "./block";
+import GoogleWithdrawal from "./profile/setting/googleWithdrawal";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const [statusBar, setStatusBar] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
   useEffect(() => {
-    if (Capacitor.getPlatform() === "ios") {
-      setStatusBar(true);
-    }
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // 윈도우 크기 변화 감지를 위한 이벤트 리스너 추가
+    window.addEventListener("resize", handleResize);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // 510px 이하일 때 상태 바를 활성화
+  useEffect(() => {
+    if (Capacitor.getPlatform() === "ios" && windowWidth <= 510) {
+      setStatusBar(true);
+    } else {
+      setStatusBar(false);
+    }
+  }, [windowWidth]);
 
   return (
     <RecoilRoot>
@@ -97,7 +117,13 @@ const App = () => {
               />
               <Route path={`${ROUTES.AGREEMENT}`} element={<Agreement />} />
               <Route path={`${ROUTES.NOTICE}`} element={<Notice />} />
+              <Route path={`${ROUTES.BLOCK}`} element={<Block />} />
+              <Route path={`${ROUTES.BLOCKLIST}`} element={<BlockList />} />
               <Route path={`${ROUTES.REPORT}`} element={<Report />} />
+              <Route
+                path={`/google-withdrawal`}
+                element={<GoogleWithdrawal />}
+              />
               {/* 미팅 만들기 */}
               <Route
                 path={`${ROUTES.CREATE_MEETING}`}
@@ -126,7 +152,6 @@ const App = () => {
                 path={`${ROUTES.REQUEST_LIST_ID}`}
                 element={<RequestProfile />}
               />
-
               {/* 개인정보 처리 방침 */}
               <Route
                 path={`${ROUTES.PERSONAL_INFO}`}
@@ -141,5 +166,4 @@ const App = () => {
     </RecoilRoot>
   );
 };
-
 export default App;

@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { fetchProfile } from "../components/fetchProfile";
 import { validateProfile } from "../components/validateProfile";
 import { useNavigate } from "react-router-dom";
 import { getApi } from "../../api/getApi";
-import {
-  DialogOneBtn,
-  FixedButtonBox,
-  LongOrangeBtn,
-} from "../../components/styles/Button";
+import { FixedButtonBox, LongOrangeBtn } from "../../components/styles/Button";
 import { ArrowbackIcon, ArrowdropIcon } from "../../components/styles/Icons";
 import {
   MyInputBoxButton,
@@ -23,7 +19,6 @@ import {
   DetailFrame,
   IntroduceFrame,
   CharCount,
-  Overlay,
 } from "../../sign-up/styles/detailComponents";
 import NickNameCheckModule from "../../sign-up/components/nicknameCheck";
 import { useLocalStorageToken } from "../../hooks/useLocalStorageToken";
@@ -31,36 +26,35 @@ import { MyHeightSheet } from "../../sign-up/components/HeightSheet";
 import { MyWeightSheet } from "../../sign-up/components/WeightSheet";
 import { rangeToAlphabet } from "../../components/rangeToAlphabet";
 import { InLoading } from "../../components/InLoading";
+import { useGetMyProfile } from "../../api/profile";
+import OneBtnDialog from "../../components/Dialog";
 
 export default function EditProfile() {
   const navigate = useNavigate();
   const token = useLocalStorageToken();
 
+  const queryClient = useQueryClient();
+  const { data: profile, isLoading: profileLoading } = useGetMyProfile();
+
   const [editError, setEditError] = useState(false);
-
-  const getUserProfile = async () => {
-    const response = await getApi({ link: `/users/me/profile` });
-    const data = await response.json();
-    return data;
-  };
-
-  const { data: profile, isLoading: profileLoading } = useQuery(
-    ["profile"],
-    getUserProfile
-  );
 
   // 수정 완료 스낵바
   const [subscription, setSubscription] = useState(false);
 
   // 닉네임
-  const [userNickName, setUserNickName] = useState(profile?.nickname); // 입력받은 닉
+  const [userNickName, setUserNickName] = useState(profile?.nickname ?? ""); // 입력받은 닉
   const [nickNameError, setNickNameError] = useState(""); // 닉네임 오류
   const [isCheckNicknameButtonDisabled, setIsCheckNicknameButtonDisabled] =
     useState(true); // 닉네임 버튼 활/비활
 
   // 닉네임 중복확인 버튼
   const onSubmitNickName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickName = e.target.value;
+    let newNickName = e.target.value;
+
+    // 이모지를 제거하는 정규 표현식
+    const emojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+    newNickName = newNickName.replace(emojiRegex, "");
+
     setUserNickName(newNickName);
 
     if (newNickName === "") {
@@ -90,7 +84,9 @@ export default function EditProfile() {
   const checkOverlap = () => {
     setOverlapNickname(false);
   };
-  const { data } = useQuery(["nickname", userNickName], getNickName);
+  const { data } = useQuery(["nickname", userNickName], getNickName, {
+    enabled: !isCheckNicknameButtonDisabled,
+  });
 
   // 닉네임 중복확인 버튼
   const onCheckNicknameBtn = () => {
@@ -106,7 +102,9 @@ export default function EditProfile() {
   };
 
   // 자기소개
-  const [userIntroduce, setUserIntroduce] = useState(profile?.description);
+  const [userIntroduce, setUserIntroduce] = useState(
+    profile?.description ?? ""
+  );
   const [introduceError, setIntroduceError] = useState("");
   const [charCount, setCharCount] = useState(profile?.description?.length);
 
@@ -128,7 +126,9 @@ export default function EditProfile() {
   };
 
   // 키(cm)
-  const [userHeight, setUserHeight] = useState(profile?.height);
+  const [userHeight, setUserHeight] = useState<string>(
+    String(profile?.height ?? "")
+  );
   const [heightError, setHeightError] = useState("");
   const [showHeightSheet, setShowHeightSheet] = useState(false);
 
@@ -143,7 +143,9 @@ export default function EditProfile() {
   };
 
   // 몸무게(kg)
-  const [userWeight, setUserWeight] = useState(profile?.weight);
+  const [userWeight, setUserWeight] = useState<string>(
+    String(profile?.weight ?? "")
+  );
   const [weightError, setWeightError] = useState("");
   const [showWeightSheet, setShowWeightSheet] = useState(false);
 
@@ -198,7 +200,12 @@ export default function EditProfile() {
         setSubscription,
         setEditError
       )
-        .then(() => setSubscription(true))
+        .then((success) => {
+          if (!success) {
+            queryClient.invalidateQueries(["profile"]);
+          }
+          setSubscription(true);
+        })
         .catch(() => setSubscription(false));
     }
   };
@@ -246,7 +253,7 @@ export default function EditProfile() {
                 onChange={onSubmitIntroduce}
                 error={introduceError}
               />
-              {charCount >= 0 && (
+              {charCount != undefined && charCount >= 0 && (
                 <CharCount>
                   {charCount} / {MAX_INTRODUCE_LENGTH}
                 </CharCount>
@@ -254,7 +261,7 @@ export default function EditProfile() {
             </IntroduceFrame>
             {/* 키 */}
             <MyInputBoxSVG
-              placeholder="키 선택(10단위)"
+              placeholder="버튼을 눌러 키를 선택해주세요"
               label="키(cm)"
               type="text"
               onClick={onSubmitHeight}
@@ -262,11 +269,12 @@ export default function EditProfile() {
               onChange={() => {}}
               error={heightError}
               svg={<ArrowdropIcon />}
+              disable={true}
             />
 
             {/* 몸무게 */}
             <MyInputBoxSVG
-              placeholder="몸무게 선택(10단위)"
+              placeholder="버튼을 눌러 몸무게를 선택해주세요"
               label="몸무게(kg)"
               type="text"
               onClick={onSubmitWeight}
@@ -274,6 +282,7 @@ export default function EditProfile() {
               onChange={() => {}}
               error={weightError}
               svg={<ArrowdropIcon />}
+              disable={true}
             />
           </DetailFrame>
           {/* 키 선택시트 */}
@@ -296,30 +305,22 @@ export default function EditProfile() {
           />
 
           {/* 수정 완료 */}
-          {subscription && (
-            <Overlay>
-              <DialogOneBtn
-                title="프로필 수정"
-                contents=""
-                onRightClick={onSubscriptionClick}
-                right="프로필 화면으로 이동"
-              />
-            </Overlay>
-          )}
-
-          {editError && (
-            <Overlay>
-              <DialogOneBtn
-                title="프로필 수정 실패"
-                contents="닉네임을 확인해주세요."
-                onRightClick={() => {
-                  setEditError(false);
-                  navigate(-1);
-                }}
-                right="프로필 화면으로 이동"
-              />
-            </Overlay>
-          )}
+          <OneBtnDialog
+            isOpen={subscription}
+            title="프로필 수정"
+            onBtnClick={onSubscriptionClick}
+            buttonText="프로필 화면으로 이동"
+          />
+          <OneBtnDialog
+            isOpen={editError}
+            title="프로필 수정 실패"
+            contents="닉네임을 확인해주세요."
+            onBtnClick={() => {
+              setEditError(false);
+              navigate(-1);
+            }}
+            buttonText="프로필 화면으로 이동"
+          />
         </DetailSetScreen>
       )}
 
