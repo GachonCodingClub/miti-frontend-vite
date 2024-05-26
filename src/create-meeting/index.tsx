@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { meetingDescAtom, meetingTitleAtom } from "../atoms";
 import { CharCount, Overlay } from "../sign-up/styles/detailComponents";
 import { DialogOneBtn } from "../components/styles/Button";
 import { MyInputBox } from "../components/MyInputBox";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
-import { ArrowbackIcon } from "../components/styles/Icons";
 import { TopBarNextButton } from "../components/TopBar";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -56,37 +53,38 @@ export default function CreateMeeting() {
   const [descCount, setDescCount] = useState(0);
 
   // 미팅 제목 입력 받기
-  const [inputMeetingTitle, setInputMeetingTitle] = useState("");
+  const [inputMeetingTitle, setInputMeetingTitle] = useState(
+    localStorage.getItem("inputMeetingTitle") || ""
+  );
   const [meetingTitleError, setMeetingTitleError] = useState("");
 
   const onMeetingTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
     setInputMeetingTitle(newTitle);
     setTitleCount(newTitle.length);
+    localStorage.setItem("inputMeetingTitle", newTitle);
   };
-  // 미팅 제목 recoil에 저장
-  const [, setRecoilTitle] = useRecoilState(meetingTitleAtom);
 
   // 미팅 설명 입력 받기
-  const [inputMeetingDesc, setInputMeetingDesc] = useState("");
+  const [inputMeetingDesc, setInputMeetingDesc] = useState(
+    localStorage.getItem("inputMeetingDesc") || ""
+  );
   const [meetingDescError, setMeetingDescError] = useState("");
 
   const onMeetingDescChange = (e: { target: { value: string } }) => {
     const newDesc = e.target.value;
     setInputMeetingDesc(newDesc);
     setDescCount(newDesc.length);
+    localStorage.setItem("inputMeetingDesc", newDesc);
   };
 
   // isUpdate가 true일 경우
   useEffect(() => {
     if (isUpdate) {
-      setInputMeetingTitle(group?.title);
-      setInputMeetingDesc(group?.description);
+      setInputMeetingTitle(group?.title || "");
+      setInputMeetingDesc(group?.description || "");
     }
   }, [group?.description, group?.title, isUpdate]);
-
-  // 미팅 설명 recoil에 저장
-  const [, setRecoilDesc] = useRecoilState(meetingDescAtom);
 
   const [showDialog, setShowDialog] = useState(false);
   // 다음 버튼, 제목과 설명을 atom에 저장
@@ -101,9 +99,6 @@ export default function CreateMeeting() {
 
     // 오류가 없다면 Recoil 상태를 업데이트
     if (inputMeetingTitle !== "" && inputMeetingDesc !== "") {
-      // recoil에 제목과 설명 저장
-      setRecoilTitle(inputMeetingTitle);
-      setRecoilDesc(inputMeetingDesc);
       // 여기서 비동기 작업을 수행하고, 작업이 완료된 후에 홈으로 이동
       try {
         // Recoil 상태를 업데이트한 후 링크 이동
@@ -134,7 +129,6 @@ export default function CreateMeeting() {
     <>
       <TopBarNextButton
         title={isUpdate ? "미팅 수정하기" : "미팅 만들기"}
-        leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
         onRightIconClick={nextButton}
       />
       <Screen>
@@ -191,7 +185,6 @@ export default function CreateMeeting() {
               />
             </Overlay>
           )}
-          <div className="bg-[#c9c5c5] h-[1px] w-full"></div>
 
           <OneBtnDialog
             isOpen={showDialog}

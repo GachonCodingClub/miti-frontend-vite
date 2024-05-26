@@ -10,7 +10,6 @@ import { fetchMeeting } from "./components/fetchMeeting";
 import { IValidationProps, validateForm } from "./components/validateInfo";
 import MeetingDetailsInputs from "./components/meetingDetailInput";
 import AdditionalParticipantsList from "./components/additionalParticipantsList";
-import { useRecoilStates } from "./components/useRecoilState";
 import {
   CreateMeetingDetailScreen,
   DatePlaceMemberFrame,
@@ -29,7 +28,8 @@ import OneBtnDialog from "../components/Dialog";
 import { useQuery, useQueryClient } from "react-query";
 
 export default function CreateMeetingDetail() {
-  const { meetingTitle, meetingDesc } = useRecoilStates();
+  const meetingTitle = localStorage.getItem("inputMeetingTitle") || "";
+  const meetingDesc = localStorage.getItem("inputMeetingDesc") || "";
   const token = useLocalStorageToken();
   const { id } = useParams();
 
@@ -143,15 +143,13 @@ export default function CreateMeetingDetail() {
   // =============================================== GrayLine
 
   // 닉네임으로 참여자 추가(선택 입력)
-  const [additionalParticipants, setAdditionalParticipants] = useState<
-    string[]
-  >([]);
+  const [addParticipants, setAddParticipants] = useState<string[]>([]);
 
   // 닉네임 중복, 혹은 빈칸일 때 뜨는 Dialog
   const [duplicateBlankErrorDialog, setDuplicateBlankErrorDialog] =
     useState(false);
   // 현재 추가한 유저 수 몇명인지
-  const currentParticipantsCount = additionalParticipants.length;
+  const currentParticipantsCount = addParticipants.length;
   // 사용자에게 입력 받은 추가 참여자 닉네임
   const [inputAddNickname, setInputAddNickname] = useState("");
 
@@ -187,13 +185,13 @@ export default function CreateMeetingDetail() {
         });
       } else {
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
-        if (additionalParticipants.includes(trimmedNickname)) {
+        if (addParticipants.includes(trimmedNickname)) {
           setDuplicateBlankErrorDialog(true); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
           return;
         }
 
         // 미팅 정원 -1 이랑, 사용자가 추가하려는 인원 수 비교, 사 추 인이 적어야 추가 가능
-        if (additionalParticipants.length >= numericInputMember - 1) {
+        if (addParticipants.length >= numericInputMember - 1) {
           setDialog({
             open: true,
             text: "미팅 인원보다 많이 추가할 수 없어요",
@@ -211,7 +209,7 @@ export default function CreateMeetingDetail() {
         }
 
         // 그렇지 않다면 추가된 닉네임 배열 끝에 inputAddNickname 추가
-        setAdditionalParticipants([...additionalParticipants, trimmedNickname]);
+        setAddParticipants([...addParticipants, trimmedNickname]);
         setInputAddNickname(""); // 추가 후 입력 필드를 지움
       }
     } catch (error) {
@@ -225,15 +223,15 @@ export default function CreateMeetingDetail() {
   const onRemoveNicknameClick = (index: number) => {
     // additionalParticipants배열을 복사하여 updatedParticipants에 저장
     // 직접 상태 수정하지 않고, 새 배열을 생성해 불변성을 유지하기 위해
-    const updatedParticipants = [...additionalParticipants];
+    const updatedParticipants = [...addParticipants];
     /* splice method를 사용하여 updatedParticipants 배열에서 index에 해당하는 
     위치의 닉네임을 1개 제거 */
     updatedParticipants.splice(index, 1);
-    setAdditionalParticipants(updatedParticipants);
+    setAddParticipants(updatedParticipants);
   };
   // 닉네임 입력 전체 삭제
   const onDeleteAllMembersClick = () => {
-    setAdditionalParticipants([]);
+    setAddParticipants([]);
   };
 
   // 등록 완료 스낵바
@@ -266,7 +264,7 @@ export default function CreateMeetingDetail() {
           ? {}
           : {
               maxUsers: numericInputMember,
-              nicknames: additionalParticipants,
+              nicknames: addParticipants,
             }),
       };
       await fetchMeeting({
@@ -278,7 +276,8 @@ export default function CreateMeetingDetail() {
 
       // 요청 성공 후 캐시 무효화
       queryClient.invalidateQueries(["group"]);
-
+      localStorage.removeItem("inputMeetingTitle");
+      localStorage.removeItem("inputMeetingDesc");
       displayEnrollBar();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생:", error);
@@ -292,7 +291,7 @@ export default function CreateMeetingDetail() {
     selectedDate,
     inputPlace,
     numericInputMember,
-    additionalParticipants,
+    addParticipants,
     setDateError,
     setPlaceError,
     setMemberError,
@@ -401,9 +400,9 @@ export default function CreateMeetingDetail() {
         )}
 
         {/* 추가된 닉네임들을 표시 */}
-        {additionalParticipants.length > 0 && (
+        {addParticipants.length > 0 && (
           <AdditionalParticipantsList
-            participants={additionalParticipants}
+            participants={addParticipants}
             onRemoveNicknameClick={onRemoveNicknameClick}
           />
         )}

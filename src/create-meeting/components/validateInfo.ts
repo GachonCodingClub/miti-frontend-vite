@@ -2,7 +2,7 @@ export interface IValidationProps {
   selectedDate: string;
   inputPlace: string;
   numericInputMember: number;
-  additionalParticipants: string[];
+  addParticipants: string[];
   setDateError: React.Dispatch<string>;
   setPlaceError: React.Dispatch<string>;
   setMemberError: React.Dispatch<string>;
@@ -12,7 +12,7 @@ export const validateForm = ({
   selectedDate,
   inputPlace,
   numericInputMember,
-  additionalParticipants,
+  addParticipants,
   setDateError,
   setPlaceError,
   setMemberError,
@@ -52,7 +52,7 @@ export const validateForm = ({
   }
 
   // 배열에 빈 문자열이 있는지 검사.
-  if (additionalParticipants.includes("")) {
+  if (addParticipants.includes("")) {
     setDuplicateBlankErrorDialog(true);
     isValid = false;
   }
@@ -64,6 +64,6 @@ export const validateForm = ({
     inputPlace !== "" &&
     numericInputMember >= 2 &&
     numericInputMember <= 50 &&
-    !additionalParticipants.includes("")
+    !addParticipants.includes("")
   );
 };

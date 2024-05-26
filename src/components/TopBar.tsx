@@ -70,7 +70,13 @@ export const TopBarNextButton = ({ title, onRightIconClick }: ITopBar) => {
   return (
     <Wrapper>
       <div className="p-3 flex items-center">
-        <ArrowbackIcon onClick={() => navigate(-1)} />
+        <ArrowbackIcon
+          onClick={() => {
+            navigate(-1);
+            localStorage.removeItem("inputMeetingTitle");
+            localStorage.removeItem("inputMeetingDesc");
+          }}
+        />
         <TopBarText>{title}</TopBarText>
         <OrangeSmButton text="다음" onClick={onRightIconClick || (() => {})} />
       </div>
