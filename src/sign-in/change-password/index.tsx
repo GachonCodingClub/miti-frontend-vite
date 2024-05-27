@@ -9,7 +9,7 @@ import { MyInputBox, MyInputBoxButton } from "../../components/MyInputBox";
 import { FixedButtonBox, LongOrangeBtn } from "../../components/styles/Button";
 import { PassWordFrame } from "../../sign-up/styles/passwordComponents";
 import { ROUTES } from "../../routes";
-import OneBtnDialog from "../../components/Dialog";
+import { Dialog } from "../../components/Dialog";
 
 export const ChangePWScreen = styled(Screen)`
   padding: 56px 16px 112px 24px;
@@ -221,16 +221,19 @@ export default function ChangePassword() {
             />
           </form>
 
-          <OneBtnDialog
-            isOpen={showDialog}
-            title="인증 메일이 전송됐어요."
-            contents="@gachon.ac.kr 메일함을 확인해 주세요."
-            onBtnClick={() => {
-              setShowDialog(false);
-              setIsInputDisabled(true);
-            }}
-            buttonText="닫기"
-          />
+          {showDialog && (
+            <Dialog
+              isOneBtn
+              title="인증 메일이 전송됐어요."
+              contents="@gachon.ac.kr 메일함을 확인해 주세요."
+              onRightClick={() => {
+                setShowDialog(false);
+                setIsInputDisabled(true);
+              }}
+              right="닫기"
+            />
+          )}
+
           {showInputBox && !error && (
             <form className="flex flex-col mt-[25px]">
               <MyInputBoxButton
@@ -272,15 +275,17 @@ export default function ChangePassword() {
             />
           )}
 
-          <OneBtnDialog
-            isOpen={completeDialog && !certiError}
-            title="변경 완료"
-            onBtnClick={() => {
-              setCompleteDialog(false);
-              navigate(ROUTES.SIGN_IN);
-            }}
-            buttonText="로그인 화면으로"
-          />
+          {completeDialog && !certiError && (
+            <Dialog
+              isOneBtn
+              title="변경 완료"
+              onRightClick={() => {
+                setCompleteDialog(false);
+                navigate(ROUTES.SIGN_IN);
+              }}
+              right="로그인 화면으로"
+            />
+          )}
         </PassWordFrame>
       </ChangePWScreen>
       {showInputBox && !error && (

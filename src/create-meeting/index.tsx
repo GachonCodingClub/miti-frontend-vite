@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { CharCount, Overlay } from "../sign-up/styles/detailComponents";
-import { DialogOneBtn } from "../components/styles/Button";
+import { CharCount } from "../sign-up/styles/detailComponents";
 import { MyInputBox } from "../components/MyInputBox";
 import { getApi } from "../api/getApi";
 import { useQuery } from "react-query";
@@ -11,13 +10,17 @@ import {
   DescriptionArea,
 } from "./styles/createMeetingIndexComponents";
 import { Screen } from "../components/styles/Screen";
-import OneBtnDialog from "../components/Dialog";
+import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
+import { Dialog } from "../components/Dialog";
 
 export default function CreateMeeting() {
   const navigate = useNavigate();
   const { id } = useParams(); // 수정하기를 눌렀을 때. 이 때에는 id를 받음
 
   const isUpdate = !!id; // id가 있으면 isUpdate가 true
+
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   // 원래 방 정보 가져오기
   const getGroup = async () => {
@@ -86,7 +89,6 @@ export default function CreateMeeting() {
     }
   }, [group?.description, group?.title, isUpdate]);
 
-  const [showDialog, setShowDialog] = useState(false);
   // 다음 버튼, 제목과 설명을 atom에 저장
   const nextButton = async () => {
     // 제목과 설명이 공백인지 검사
@@ -108,20 +110,19 @@ export default function CreateMeeting() {
       } catch (error) {
         // 오류 처리
         console.error("비동기 작업 중 오류 발생:", error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
-        setShowDialog(true);
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
       }
     } else {
-      setShowDialog(true);
+      showOneBtnDialog("제목과 설명을 확인해주세요");
     }
   };
   // useEffect를 사용해서 showDialog가 상태에 따라 실시간으로 업데이트 되게 함
   // 그렇지 않으면 다음 버튼 두 번 눌러야 작동함
   useEffect(() => {
     if (meetingTitleError || meetingDescError) {
-      setShowDialog(true);
+      showOneBtnDialog("제목과 설명을 확인해 주세요.");
     } else {
-      setShowDialog(false);
+      hideOneBtnDialog();
     }
   }, [meetingTitleError, meetingDescError]);
 
@@ -173,27 +174,14 @@ export default function CreateMeeting() {
             )}
           </div>
 
-          {showDialog && (
-            <Overlay>
-              <DialogOneBtn
-                title="제목과 설명을 확인해 주세요."
-                contents=""
-                onRightClick={() => {
-                  setShowDialog(false);
-                }}
-                right="닫기"
-              />
-            </Overlay>
+          {oneBtnDialog.open && (
+            <Dialog
+              isOneBtn
+              title="제목과 설명을 확인해 주세요."
+              onRightClick={hideOneBtnDialog}
+              right="닫기"
+            />
           )}
-
-          <OneBtnDialog
-            isOpen={showDialog}
-            title="제목과 설명을 확인해 주세요."
-            onBtnClick={() => {
-              setShowDialog(false);
-            }}
-            buttonText="닫기"
-          />
         </InputWrapper>
       </Screen>
     </>

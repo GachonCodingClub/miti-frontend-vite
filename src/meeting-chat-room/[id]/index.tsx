@@ -17,7 +17,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import SideMenu from "../components/sideMenu";
-import { Dialog } from "../../components/styles/Button";
 import { ROUTES } from "../../routes";
 import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
@@ -34,6 +33,7 @@ import { useGetBlockList } from "../../api/blockList";
 import { App } from "@capacitor/app";
 import { useGetGroups } from "../../api/useGetGroups";
 import { useQueryClient } from "react-query";
+import { Dialog } from "../../components/Dialog";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
