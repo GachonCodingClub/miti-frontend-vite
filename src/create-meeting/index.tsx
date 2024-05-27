@@ -33,7 +33,7 @@ export default function CreateMeeting() {
         return data;
       } catch (error) {
         console.error("Error fetching group data:", error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         throw error; // 에러를 상위로 전파
       }
     }
@@ -177,7 +177,7 @@ export default function CreateMeeting() {
           {oneBtnDialog.open && (
             <Dialog
               isOneBtn
-              title="제목과 설명을 확인해 주세요."
+              title={oneBtnDialog.title}
               onRightClick={hideOneBtnDialog}
               right="닫기"
             />

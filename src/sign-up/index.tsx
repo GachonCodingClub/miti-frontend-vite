@@ -10,6 +10,7 @@ import { TopBar } from "../components/TopBar";
 import { ArrowbackIcon } from "../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "../components/Dialog";
+import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
 
 const SignUpScreen = styled(Screen)`
   padding-top: 56px;
@@ -30,6 +31,9 @@ export const SignUpFrame = styled.div`
 
 export default function SignUp() {
   const navigate = useNavigate();
+
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   // recoil 사용 부분
   const [, setRecoilEmail] = useRecoilState(userEmailAtom);
@@ -94,7 +98,7 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         setError("");
       });
 
@@ -154,7 +158,7 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         setCertiError("에러발생");
       });
 
@@ -228,6 +232,15 @@ export default function SignUp() {
             </form>
           )}
         </SignUpFrame>
+
+        {oneBtnDialog.open && (
+          <Dialog
+            title={oneBtnDialog.title}
+            right="확인"
+            isOneBtn
+            onRightClick={hideOneBtnDialog}
+          />
+        )}
       </SignUpScreen>
       {showInputBox && !error && !overlapError && (
         <FixedButtonBox>
