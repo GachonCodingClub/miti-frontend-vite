@@ -13,12 +13,16 @@ import { DescriptionArea } from "../create-meeting/styles/createMeetingIndexComp
 import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { Dialog } from "../components/Dialog";
+import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
 
 export default function Report() {
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
 
   const token = useLocalStorageToken();
+
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   const [nickname, setNickname] = useState("");
   const onNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,21 +56,26 @@ export default function Report() {
             `API 오류: ${response.status} - ${response.statusText}`
           );
           if (response.status === 404) {
-            alert("대상의 닉네임을 다시 확인해주세요.");
+            setShowDialog(false);
+            showOneBtnDialog("대상의 닉네임을 다시 확인해주세요.");
           } else {
-            alert("신고 접수에 실패했어요. 나중에 다시 시도해주세요.");
+            showOneBtnDialog(
+              "신고 접수에 실패했어요. 나중에 다시 시도해주세요."
+            );
           }
           throw new Error("Response not ok");
         }
-        alert("신고가 접수되었습니다. 검토까지는 최대 24시간이 소요됩니다.");
+        setShowDialog(false);
+        showOneBtnDialog(
+          "신고가 접수되었습니다. 검토까지는 최대 24시간이 소요됩니다."
+        );
+        setNickname("");
+        setContent("");
         return response.json();
       })
       .then((error) => {
         console.error(error);
-        alert("오류가 발생했어요. 나중에 다시 시도해주세요.");
-      })
-      .finally(() => {
-        navigate(-1); // 사용자를 이전 페이지로 이동시키기
+        showOneBtnDialog("오류가 발생했어요. 나중에 다시 시도해주세요.");
       });
   };
   return (
@@ -117,6 +126,15 @@ export default function Report() {
               setShowDialog(false);
             }}
             onRightClick={onReportClick}
+          />
+        )}
+
+        {oneBtnDialog.open && (
+          <Dialog
+            title={oneBtnDialog.title}
+            right="확인"
+            isOneBtn
+            onRightClick={hideOneBtnDialog}
           />
         )}
       </WithdrawalScreen>
