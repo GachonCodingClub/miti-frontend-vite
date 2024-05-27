@@ -57,12 +57,17 @@ import {
   DialogBtnFrame,
   DialogLeftText,
   DialogRightText,
+  Dialog,
 } from "../../components/Dialog";
+import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   const [token, setToken] = useState("");
   const [decodedToken, setDecodedToken] = useState<JwtPayload | null>(null);
@@ -126,13 +131,15 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             `API 오류 : ${response.status} - ${response.statusText}`
           );
           if (response.status === 409) {
-            alert("이미 차단된 유저예요.");
+            showOneBtnDialog("이미 차단된 유저예요");
           } else {
-            alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+            showOneBtnDialog(
+              "서버 오류가 발생했어요. 나중에 다시 시도해주세요"
+            );
           }
           return response.json();
         }
-        alert("해당 유저를 차단했어요.");
+        showOneBtnDialog("해당 유저를 차단했어요");
         queryClient.invalidateQueries(["blocklist"]);
         return response.json();
       })
@@ -351,6 +358,17 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
               </DialogBtnFrame>
             </div>
           </DialogContainer>
+        </Overlay>
+      )}
+
+      {oneBtnDialog.open && (
+        <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+          <Dialog
+            title={oneBtnDialog.title}
+            right="확인"
+            isOneBtn
+            onRightClick={hideOneBtnDialog}
+          />
         </Overlay>
       )}
     </>

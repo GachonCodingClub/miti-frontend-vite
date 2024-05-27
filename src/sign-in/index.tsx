@@ -5,6 +5,8 @@ import { Screen } from "../components/styles/Screen";
 import { ROUTES } from "../routes";
 import { InputElement } from "../components/styles/Input";
 import { Link, useNavigate } from "react-router-dom";
+import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
+import { Dialog } from "../components/Dialog";
 
 // 미티 로고
 const MITI = styled.div`
@@ -41,6 +43,9 @@ const SearchText = styled(Link)`
 
 export default function LogIn() {
   const navigate = useNavigate();
+
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   useEffect(() => {
     const userToken = localStorage.getItem("token");
@@ -93,7 +98,7 @@ export default function LogIn() {
             navigate(`${ROUTES.MEETING_LIST}`);
           }
         } else {
-          alert("아이디 혹은 비밀번호를 확인해주세요.");
+          showOneBtnDialog("아이디 혹은 비밀번호를 확인해주세요.");
         }
       })
       .then((error) => {
@@ -132,6 +137,15 @@ export default function LogIn() {
           <SearchText to={`${ROUTES.AGREEMENTS}`}>회원가입</SearchText>
         </SearchFrame>
       </div>
+
+      {oneBtnDialog.open && (
+        <Dialog
+          title={oneBtnDialog.title}
+          right="확인"
+          isOneBtn
+          onRightClick={hideOneBtnDialog}
+        />
+      )}
     </Screen>
   );
 }
