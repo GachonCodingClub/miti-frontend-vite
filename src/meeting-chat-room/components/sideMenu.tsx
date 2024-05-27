@@ -10,14 +10,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { Overlay } from "../../sign-up/styles/detailComponents";
-import {
-  DialogBtnFrame,
-  DialogContainer,
-  DialogContents,
-  DialogLeftText,
-  DialogRightText,
-  DialogTitle,
-} from "../../components/styles/Button";
+
 import { formatDate } from "../../utils";
 import {
   IUser,
@@ -57,6 +50,14 @@ import { useGetBlockList } from "../../api/blockList";
 import { useQueryClient } from "react-query";
 import { ROUTES } from "../../routes";
 import { useGetGroups } from "../../api/useGetGroups";
+import {
+  DialogContainer,
+  DialogTitle,
+  DialogContents,
+  DialogBtnFrame,
+  DialogLeftText,
+  DialogRightText,
+} from "../../components/Dialog";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();

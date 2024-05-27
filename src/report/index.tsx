@@ -6,17 +6,13 @@ import {
   WithdrawalScreen,
   WithdrawalTitle,
 } from "../profile/styles/withdrawalStyle";
-import {
-  Dialog,
-  FixedButtonBox,
-  LongOrangeBtn,
-} from "../components/styles/Button";
-import { Overlay } from "../sign-up/styles/detailComponents";
+import { FixedButtonBox, LongOrangeBtn } from "../components/styles/Button";
 import { useState } from "react";
 import { MyInputBox } from "../components/MyInputBox";
 import { DescriptionArea } from "../create-meeting/styles/createMeetingIndexComponents";
 import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
+import { Dialog } from "../components/Dialog";
 
 export default function Report() {
   const navigate = useNavigate();
@@ -112,18 +108,16 @@ export default function Report() {
         </div>
 
         {showDialog && (
-          <Overlay>
-            <Dialog
-              title="신고하시겠습니까?"
-              contents="허위 신고는 제재를 당할 수 있어요."
-              left="아니요"
-              right="예"
-              onLeftClick={() => {
-                setShowDialog(false);
-              }}
-              onRightClick={onReportClick}
-            />
-          </Overlay>
+          <Dialog
+            title="신고하시겠습니까?"
+            contents="허위 신고는 제재를 당할 수 있어요."
+            left="아니요"
+            right="예"
+            onLeftClick={() => {
+              setShowDialog(false);
+            }}
+            onRightClick={onReportClick}
+          />
         )}
       </WithdrawalScreen>
       <FixedButtonBox>

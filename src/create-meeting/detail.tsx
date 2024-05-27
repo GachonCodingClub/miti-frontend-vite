@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dialog, LongOrangeBtn } from "../components/styles/Button";
+import { LongOrangeBtn } from "../components/styles/Button";
 import { Overlay } from "../sign-up/styles/detailComponents";
 import { MyInputBoxSVG } from "../components/MyInputBox";
 import { TopBar } from "../components/TopBar";
@@ -24,8 +24,9 @@ import { getHeaders } from "../components/getHeaders";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
 import { useGetMyProfile } from "../api/profile";
 import { Keyboard } from "@capacitor/keyboard";
-import OneBtnDialog from "../components/Dialog";
 import { useQuery, useQueryClient } from "react-query";
+import { Dialog } from "../components/Dialog";
+import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
 
 export default function CreateMeetingDetail() {
   const meetingTitle = localStorage.getItem("inputMeetingTitle") || "";
@@ -35,11 +36,8 @@ export default function CreateMeetingDetail() {
 
   const queryClient = useQueryClient();
 
-  // 에러 다이얼로그
-  const [dialog, setDialog] = useState({
-    open: false,
-    text: "",
-  });
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   // id가 있으면 isUpdate가 true
   const isUpdate = !!id;
@@ -162,10 +160,7 @@ export default function CreateMeetingDetail() {
 
       if (!inputMemberDisabled) {
         // inputMemberDisabled가 false인 경우, 추가할 수 없으므로 confirm 에러를 설정
-        setDialog({
-          open: true,
-          text: "먼저 인원을 확정 지어주세요",
-        });
+        showOneBtnDialog("먼저 인원을 확정 지어주세요");
         return; // 닉네임 추가를 중단
       }
 
@@ -179,10 +174,7 @@ export default function CreateMeetingDetail() {
 
       // response의 상태 코드가 409(중복)라면
       if (response.status !== 409) {
-        setDialog({
-          open: true,
-          text: "존재하지 않는 닉네임이에요",
-        });
+        showOneBtnDialog("존재하지 않는 닉네임이에요");
       } else {
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
         if (addParticipants.includes(trimmedNickname)) {
@@ -192,19 +184,13 @@ export default function CreateMeetingDetail() {
 
         // 미팅 정원 -1 이랑, 사용자가 추가하려는 인원 수 비교, 사 추 인이 적어야 추가 가능
         if (addParticipants.length >= numericInputMember - 1) {
-          setDialog({
-            open: true,
-            text: "미팅 인원보다 많이 추가할 수 없어요",
-          });
+          showOneBtnDialog("미팅 인원보다 많이 추가할 수 없어요");
           return;
         }
 
         // 닉네임이 myNickname과 같은지 확인
         if (trimmedNickname === profile?.nickname) {
-          setDialog({
-            open: true,
-            text: "본인은 추가할 수 없어요",
-          });
+          showOneBtnDialog("본인은 추가할 수 없어요");
           return;
         }
 
@@ -306,10 +292,7 @@ export default function CreateMeetingDetail() {
         submitMeeting();
       } else {
         // currentParticipantsCount가 additionalParticipants의 길이와 같은 경우
-        setDialog({
-          open: true,
-          text: "미팅 정원과 참여자의 수가 같아요",
-        });
+        showOneBtnDialog("미팅 정원과 참여자의 수가 같아요");
       }
     }
   };
@@ -406,32 +389,35 @@ export default function CreateMeetingDetail() {
             onRemoveNicknameClick={onRemoveNicknameClick}
           />
         )}
+        {oneBtnDialog.open && (
+          <Dialog
+            isOneBtn
+            title={oneBtnDialog.title}
+            onRightClick={hideOneBtnDialog}
+            right="닫기"
+          />
+        )}
 
-        <OneBtnDialog
-          isOpen={dialog.open}
-          title={dialog.text}
-          onBtnClick={() => {
-            setDialog((prev) => ({ ...prev, open: false }));
-          }}
-          buttonText={"닫기"}
-        />
+        {duplicateBlankErrorDialog && (
+          <Dialog
+            isOneBtn
+            title="닉네임을 확인해 주세요."
+            contents="중복된 닉네임이나 빈칸이 있어요."
+            onRightClick={() => {
+              setDuplicateBlankErrorDialog(false);
+            }}
+            right="닫기"
+          />
+        )}
 
-        <OneBtnDialog
-          isOpen={duplicateBlankErrorDialog}
-          title="닉네임을 확인해 주세요."
-          contents="중복된 닉네임이나 빈칸이 있어요."
-          onBtnClick={() => {
-            setDuplicateBlankErrorDialog(false);
-          }}
-          buttonText="닫기"
-        />
-
-        <OneBtnDialog
-          isOpen={showEnrollBar}
-          title="등록 완료"
-          onBtnClick={onEnrollClick}
-          buttonText="돌아가기"
-        />
+        {showEnrollBar && (
+          <Dialog
+            isOneBtn
+            title="등록 완료"
+            onRightClick={onEnrollClick}
+            right="돌아가기"
+          />
+        )}
       </CreateMeetingDetailScreen>
       <SubmitButtonFrame>
         <LongOrangeBtn

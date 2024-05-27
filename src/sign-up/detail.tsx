@@ -36,7 +36,7 @@ import { useNavigate } from "react-router-dom";
 import { MyHeightSheet } from "./components/HeightSheet";
 import { MyWeightSheet } from "./components/WeightSheet";
 import { rangeToAlphabet } from "../components/rangeToAlphabet";
-import OneBtnDialog from "../components/Dialog";
+import { Dialog } from "../components/Dialog";
 
 const getCurrentDate = () => {
   const today = new Date();
@@ -373,12 +373,14 @@ export default function SingUpDetail() {
         />
 
         {/* 가입 성공 */}
-        <OneBtnDialog
-          isOpen={subscription}
-          title="가입 성공!"
-          onBtnClick={onSubscriptionClick}
-          buttonText="로그인 화면으로 이동"
-        />
+        {subscription && (
+          <Dialog
+            isOneBtn
+            title="가입 성공!"
+            onRightClick={onSubscriptionClick}
+            right="로그인 화면으로 이동"
+          />
+        )}
       </DetailSetScreen>
       <FixedButtonBox>
         <LongOrangeBtn text="가입 완료" onClick={completeButton} />
