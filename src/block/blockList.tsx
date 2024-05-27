@@ -4,19 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { Key } from "react";
 import { SmallOrangeBtn } from "../components/styles/Button";
 import { useGetBlockList } from "../api/blockList";
-import { BUserBox, BlockListScreen } from "./styles/BlockListComponents";
+import { BlockListScreen } from "./styles/BlockListComponents";
 import { UserName } from "../request-list/components/requestListComponents";
 import { getHeaders } from "../components/getHeaders";
 import { useLocalStorageToken } from "../hooks/useLocalStorageToken";
 import { GrayLine } from "../meeting-chat-room/styles/SideMenuComponents";
+import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
+import { Dialog } from "../components/Dialog";
 
 export default function BlockList() {
   const navigate = useNavigate();
 
-  const { data } = useGetBlockList();
+  const { data, refetch } = useGetBlockList();
   const token = useLocalStorageToken();
 
   const headers = getHeaders(token);
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   const onUnblockClick = (blockTargetNickname: string | undefined) => {
     const PostUrl = `${
@@ -33,11 +37,11 @@ export default function BlockList() {
           console.error(
             `API 오류 : ${response.status} - ${response.statusText}`
           );
-          alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+          showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
           return response.json();
         }
-        alert("해당 유저의 차단을 해제했어요.");
-        navigate(-1);
+        showOneBtnDialog("해당 유저의 차단을 해제했어요.");
+        refetch();
         return response.json();
       })
       .catch((error) => {
@@ -55,7 +59,7 @@ export default function BlockList() {
         {data?.blockedUserOutputs?.map(
           (block: { nickname: string }, index: Key | null | undefined) => (
             <>
-              <BUserBox key={index}>
+              <div className="flex w-full justify-between pt-4 p-0" key={index}>
                 <UserName>{block?.nickname}</UserName>
                 <div>
                   <SmallOrangeBtn
@@ -65,10 +69,19 @@ export default function BlockList() {
                     }}
                   />
                 </div>
-              </BUserBox>
+              </div>
               <GrayLine />
             </>
           )
+        )}
+
+        {oneBtnDialog.open && (
+          <Dialog
+            title={oneBtnDialog.title}
+            right="확인"
+            isOneBtn
+            onRightClick={hideOneBtnDialog}
+          />
         )}
       </BlockListScreen>
     </>
