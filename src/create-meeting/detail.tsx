@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { LongOrangeBtn } from "../components/styles/Button";
-import { Overlay } from "../sign-up/styles/detailComponents";
-import { MyInputBoxSVG } from "../components/MyInputBox";
 import { TopBar } from "../components/TopBar";
 import { getApi } from "../api/getApi";
 import { ArrowbackIcon } from "../components/styles/Icons";
@@ -27,6 +25,7 @@ import { Keyboard } from "@capacitor/keyboard";
 import { useQuery, useQueryClient } from "react-query";
 import { Dialog } from "../components/Dialog";
 import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
+import { InputElement } from "../components/styles/Input";
 
 export default function CreateMeetingDetail() {
   const meetingTitle = localStorage.getItem("inputMeetingTitle") || "";
@@ -340,26 +339,26 @@ export default function CreateMeetingDetail() {
             }
             inputMemberDisabled={isUpdate}
             setInputDisabled={setInputDisabled}
-            setModiSVG={isUpdate ? () => setModiSVG(false) : setModiSVG}
+            setModiSVG={
+              isUpdate ? () => setModiSVG(false) : () => setModiSVG(true)
+            }
           />
 
           {modiSVG && (
-            <Overlay>
-              <Dialog
-                title="미팅 인원을 수정하시겠습니까?"
-                contents="추가 인원 목록이 삭제돼요."
-                left="아니요"
-                onLeftClick={() => {
-                  setInputDisabled(true);
-                  setModiSVG(false);
-                }}
-                right="예"
-                onRightClick={() => {
-                  setModiSVG(false);
-                  onDeleteAllMembersClick();
-                }}
-              />
-            </Overlay>
+            <Dialog
+              title="미팅 인원을 수정하시겠습니까?"
+              contents="추가 인원 목록이 삭제돼요."
+              left="아니요"
+              onLeftClick={() => {
+                setInputDisabled(true);
+                setModiSVG(false);
+              }}
+              right="예"
+              onRightClick={() => {
+                setModiSVG(false);
+                onDeleteAllMembersClick();
+              }}
+            />
           )}
         </DatePlaceMemberFrame>
 
@@ -369,9 +368,7 @@ export default function CreateMeetingDetail() {
           <AddMemberFrame>
             <AddMemberText>닉네임으로 참여자 추가(선택 입력)</AddMemberText>
             <div className="flex items-center">
-              <MyInputBoxSVG
-                onClick={() => {}}
-                label=""
+              <InputElement
                 value={inputAddNickname}
                 onChange={(e) => setInputAddNickname(e.target.value)}
                 placeholder="추가 참여자 닉네임(선택 입력)"
