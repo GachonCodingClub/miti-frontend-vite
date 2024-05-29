@@ -66,3 +66,7 @@ body {
   font-weight: 900;
   font-display: swap;
 }
+
+.flex-center {
+  @apply flex justify-center items-center;
+}
