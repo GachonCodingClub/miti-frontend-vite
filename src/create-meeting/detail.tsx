@@ -67,7 +67,6 @@ export default function CreateMeetingDetail() {
       enabled: !!id, // id가 존재할 때에만 데이터를 가져오도록 설정
     }
   );
-  console.log(group);
   const meetingTitle =
     localStorage.getItem("inputMeetingTitle") || group?.title;
   const meetingDesc =
@@ -119,7 +118,6 @@ export default function CreateMeetingDetail() {
   );
   const inputMemberValue =
     inputMember === undefined ? "" : inputMember.toString();
-
   const onMemberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newMember = event.target.value;
     const newMemberInt = parseInt(newMember, 10); // 입력 값을 숫자로 변환
@@ -137,6 +135,7 @@ export default function CreateMeetingDetail() {
   const [memberError, setMemberError] = useState("");
   // 인원 텍스트를 숫자로 변환
   const numericInputMember = parseInt(inputMemberValue, 10); // 문자열을 10진수 숫자로
+
   const [inputMemberDisabled, setInputDisabled] = useState(false);
   const [modiSVG, setModiSVG] = useState(false);
 
@@ -185,7 +184,7 @@ export default function CreateMeetingDetail() {
         }
 
         // 미팅 정원 -1 이랑, 사용자가 추가하려는 인원 수 비교, 사 추 인이 적어야 추가 가능
-        if (addParticipants.length >= numericInputMember - 1) {
+        if (addParticipants.length >= numericInputMember - 2) {
           showOneBtnDialog("미팅 인원보다 많이 추가할 수 없어요");
           return;
         }
@@ -340,7 +339,7 @@ export default function CreateMeetingDetail() {
             memberError={
               isUpdate ? "미팅 인원은 수정할 수 없어요" : memberError
             }
-            inputMemberDisabled={isUpdate}
+            inputMemberDisabled={isUpdate ? true : inputMemberDisabled}
             setInputDisabled={setInputDisabled}
             setModiSVG={
               isUpdate ? () => setModiSVG(false) : () => setModiSVG(true)
