@@ -3,7 +3,6 @@ import { TopBar } from "../../components/TopBar";
 import { ArrowbackIcon } from "../../components/styles/Icons";
 import {
   AgreementScreen,
-  AgreementTitle,
   CheckText,
   ClosePopUpButtonFrame,
   EachCheckBoxFrame,
@@ -44,9 +43,6 @@ export default function Agreement() {
         leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
       />
       <AgreementScreen>
-        <div className="mb-8">
-          <AgreementTitle>개인정보 처리방침 및 서비스 이용 약관</AgreementTitle>
-        </div>
         <EachCheckBoxFrame>
           <CheckText>개인정보 처리방침</CheckText>
 
