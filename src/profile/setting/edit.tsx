@@ -27,7 +27,7 @@ import { MyWeightSheet } from "../../sign-up/components/WeightSheet";
 import { rangeToAlphabet } from "../../components/rangeToAlphabet";
 import { InLoading } from "../../components/InLoading";
 import { useGetMyProfile } from "../../api/profile";
-import OneBtnDialog from "../../components/Dialog";
+import { Dialog } from "../../components/Dialog";
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -305,22 +305,27 @@ export default function EditProfile() {
           />
 
           {/* 수정 완료 */}
-          <OneBtnDialog
-            isOpen={subscription}
-            title="프로필 수정"
-            onBtnClick={onSubscriptionClick}
-            buttonText="프로필 화면으로 이동"
-          />
-          <OneBtnDialog
-            isOpen={editError}
-            title="프로필 수정 실패"
-            contents="닉네임을 확인해주세요."
-            onBtnClick={() => {
-              setEditError(false);
-              navigate(-1);
-            }}
-            buttonText="프로필 화면으로 이동"
-          />
+          {subscription && (
+            <Dialog
+              isOneBtn
+              title="프로필 수정"
+              onRightClick={onSubscriptionClick}
+              right="프로필 화면으로 이동"
+            />
+          )}
+
+          {editError && (
+            <Dialog
+              isOneBtn
+              title="프로필 수정 실패"
+              contents="닉네임을 확인해주세요."
+              onRightClick={() => {
+                setEditError(false);
+                navigate(-1);
+              }}
+              right="프로필 화면으로 이동"
+            />
+          )}
         </DetailSetScreen>
       )}
 

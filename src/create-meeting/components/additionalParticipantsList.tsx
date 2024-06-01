@@ -6,14 +6,15 @@ import {
   AddMemberList,
 } from "../styles/createMeetingDetailComponents";
 
-interface IAdditionalParticipantsListProps {
+interface AddParticipantsListProps {
   participants: string[];
   onRemoveNicknameClick: (index: number) => void;
 }
 
-export const AdditionalParticipantsList: React.FC<
-  IAdditionalParticipantsListProps
-> = ({ participants, onRemoveNicknameClick }) => (
+export const AdditionalParticipantsList: React.FC<AddParticipantsListProps> = ({
+  participants,
+  onRemoveNicknameClick,
+}) => (
   <AddMemberList>
     <ul>
       {participants.map((nickname, index) => (

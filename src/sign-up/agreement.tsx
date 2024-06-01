@@ -49,7 +49,7 @@ export default function SignUpAgreement() {
   /* state는 비동기로 동작하기 때문에 이벤트핸들러 안에서 setState를 
   호출하게 되면 state값이 즉각적으로 바뀌지 않기 때문에 useEffect안에서 작동되게 함 */
   useEffect(() => {
-    setShowButton(checkList.includes("zero"));
+    setShowButton(checkList.includes("zero") && checkList.includes("first"));
   }, [checkList]);
 
   // 약관 팝업

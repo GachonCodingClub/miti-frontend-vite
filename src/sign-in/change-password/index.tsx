@@ -9,7 +9,8 @@ import { MyInputBox, MyInputBoxButton } from "../../components/MyInputBox";
 import { FixedButtonBox, LongOrangeBtn } from "../../components/styles/Button";
 import { PassWordFrame } from "../../sign-up/styles/passwordComponents";
 import { ROUTES } from "../../routes";
-import OneBtnDialog from "../../components/Dialog";
+import { Dialog } from "../../components/Dialog";
+import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
 
 export const ChangePWScreen = styled(Screen)`
   padding: 56px 16px 112px 24px;
@@ -17,6 +18,9 @@ export const ChangePWScreen = styled(Screen)`
 
 export default function ChangePassword() {
   const navigate = useNavigate();
+
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -60,7 +64,7 @@ export default function ChangePassword() {
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
         setError("");
       });
   };
@@ -99,7 +103,7 @@ export default function ChangePassword() {
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
         setCertiError("에러발생");
       });
 
@@ -155,9 +159,7 @@ export default function ChangePassword() {
     };
 
     if (!isPasswordValid(inputUserPW)) {
-      setInputUserPWError(
-        "영문, 특수문자, 숫자 포함 8자리 이상 입력해 주세요."
-      );
+      setInputUserPWError("영문, 특수문자, 숫자 포함 8자리 이상 입력해 주세요");
       return;
     } else {
       setInputUserPWError("");
@@ -195,7 +197,7 @@ export default function ChangePassword() {
       setCompleteDialog(true);
     } catch (error) {
       console.error(error);
-      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+      showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
       setCertiError("서버 오류 발생");
     }
   };
@@ -221,16 +223,19 @@ export default function ChangePassword() {
             />
           </form>
 
-          <OneBtnDialog
-            isOpen={showDialog}
-            title="인증 메일이 전송됐어요."
-            contents="@gachon.ac.kr 메일함을 확인해 주세요."
-            onBtnClick={() => {
-              setShowDialog(false);
-              setIsInputDisabled(true);
-            }}
-            buttonText="닫기"
-          />
+          {showDialog && (
+            <Dialog
+              isOneBtn
+              title="인증 메일이 전송됐어요"
+              contents="@gachon.ac.kr 메일함을 확인해 주세요"
+              onRightClick={() => {
+                setShowDialog(false);
+                setIsInputDisabled(true);
+              }}
+              right="닫기"
+            />
+          )}
+
           {showInputBox && !error && (
             <form className="flex flex-col mt-[25px]">
               <MyInputBoxButton
@@ -272,16 +277,27 @@ export default function ChangePassword() {
             />
           )}
 
-          <OneBtnDialog
-            isOpen={completeDialog && !certiError}
-            title="변경 완료"
-            onBtnClick={() => {
-              setCompleteDialog(false);
-              navigate(ROUTES.SIGN_IN);
-            }}
-            buttonText="로그인 화면으로"
-          />
+          {completeDialog && !certiError && (
+            <Dialog
+              isOneBtn
+              title="변경 완료"
+              onRightClick={() => {
+                setCompleteDialog(false);
+                navigate(ROUTES.SIGN_IN);
+              }}
+              right="로그인 화면으로"
+            />
+          )}
         </PassWordFrame>
+
+        {oneBtnDialog.open && (
+          <Dialog
+            title={oneBtnDialog.title}
+            right="확인"
+            isOneBtn
+            onRightClick={hideOneBtnDialog}
+          />
+        )}
       </ChangePWScreen>
       {showInputBox && !error && (
         <FixedButtonBox>

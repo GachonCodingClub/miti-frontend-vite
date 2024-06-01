@@ -6,8 +6,8 @@ import { ROUTES } from "./routes";
 export const MITISVG = () => {
   return (
     <svg
-      width="95"
-      height="24"
+      width="150"
+      height="150"
       viewBox="0 0 66 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ export default function MITI() {
 
   return (
     <Screen>
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex-center h-screen">
         <MITISVG />
       </div>
     </Screen>

@@ -6,17 +6,13 @@ import {
   WithdrawalScreen,
   WithdrawalTitle,
 } from "../styles/withdrawalStyle";
-import {
-  Dialog,
-  FixedButtonBox,
-  LongOrangeBtn,
-} from "../../components/styles/Button";
+import { FixedButtonBox, LongOrangeBtn } from "../../components/styles/Button";
 import { useState } from "react";
-import { Overlay } from "../../sign-up/styles/detailComponents";
 import { getHeaders } from "../../components/getHeaders";
 
 import { InputElement } from "../../components/styles/Input";
 import styled from "styled-components";
+import { Dialog } from "../../components/Dialog";
 
 const LoginFrame = styled.div`
   margin-top: 103px;
@@ -135,17 +131,15 @@ export default function GoogleWithdrawal() {
         </form>
 
         {showDialog && (
-          <Overlay>
-            <Dialog
-              title="탈퇴하기"
-              left="다시 생각하기"
-              right="탈퇴"
-              onLeftClick={() => {
-                setShowDialog(false);
-              }}
-              onRightClick={handleWithDrawalUser}
-            />
-          </Overlay>
+          <Dialog
+            title="탈퇴하기"
+            left="다시 생각하기"
+            right="탈퇴"
+            onLeftClick={() => {
+              setShowDialog(false);
+            }}
+            onRightClick={handleWithDrawalUser}
+          />
         )}
       </WithdrawalScreen>
       <FixedButtonBox>

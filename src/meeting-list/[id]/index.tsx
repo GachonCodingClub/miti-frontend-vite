@@ -1,8 +1,4 @@
-import {
-  DialogContainer,
-  LongOrangeBtn,
-  LongWhiteBtn,
-} from "../../components/styles/Button";
+import { LongOrangeBtn, LongWhiteBtn } from "../../components/styles/Button";
 import { useEffect, useRef, useState } from "react";
 import { getApi } from "../../api/getApi";
 import {
@@ -39,9 +35,10 @@ import useGetParties from "../../api/useGetParties";
 import { useGetMyProfile } from "../../api/profile";
 import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
-import OneBtnDialog from "../../components/Dialog";
 import { IUser } from "../../meeting-chat-room/styles/SideMenuComponents";
 import { useGetGroups } from "../../api/useGetGroups";
+import { Dialog, DialogContainer } from "../../components/Dialog";
+import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -58,13 +55,10 @@ export default function MeetingDetail() {
     }
   }, []);
 
-  const [errorDialog, setErrorDialog] = useState({
-    open: false,
-    contents: "",
-    text: "",
-  });
-
   const [successDialog, setSuccessDialog] = useState(false);
+
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
 
   const {
     data: group,
@@ -122,11 +116,7 @@ export default function MeetingDetail() {
 
       // response의 상태 코드가 409(중복)라면
       if (response.status !== 409) {
-        setErrorDialog({
-          open: true,
-          text: "존재하지 않는 닉네임이에요",
-          contents: "",
-        }); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
+        showOneBtnDialog("존재하지 않는 닉네임이에요", ""); // 존재하지 않는 닉네임 추가하려 하면 오류 띄우기
       } else {
         // 미팅에 이미 참여 중인 모든 사용자의 닉네임 목록 생성
         const existingNicknames = parties?.acceptedParties.flatMap((party) =>
@@ -138,40 +128,30 @@ export default function MeetingDetail() {
           trimmedNickname === leaderNickname ||
           existingNicknames?.includes(trimmedNickname)
         ) {
-          setErrorDialog({
-            open: true,
-            text: "닉네임을 확인해 주세요",
-            contents: "중복된 닉네임이나 빈칸이 있어요",
-          });
+          showOneBtnDialog(
+            "닉네임을 확인해 주세요",
+            "중복된 닉네임이나 빈칸이 있어요"
+          );
           return;
         }
 
         // 이미 추가한 닉네임 중 중복된 닉네임이 없으면 추가
         if (additionalParticipants.includes(trimmedNickname)) {
-          setErrorDialog({
-            open: true,
-            text: "닉네임을 확인해 주세요",
-            contents: "중복된 닉네임이나 빈칸이 있어요",
-          }); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
+          showOneBtnDialog(
+            "닉네임을 확인해 주세요",
+            "중복된 닉네임이나 빈칸이 있어요"
+          ); // 이미 추가한 닉네임 추가하려 하면 오류 띄우기
           return;
         }
 
         if (finalMember >= (group?.maxUsers ?? 0)) {
-          setErrorDialog({
-            open: true,
-            text: "미팅 정원보다 많이 추가할 수 없어요",
-            contents: "",
-          });
+          showOneBtnDialog("미팅 정원보다 많이 추가할 수 없어요");
           return;
         }
 
         // 닉네임이 myNickname과 같은지 확인
         if (trimmedNickname === profile?.nickname) {
-          setErrorDialog({
-            open: true,
-            text: "본인은 추가할 수 없어요",
-            contents: "",
-          }); // 본인 닉네임 추가 못하게 막기
+          showOneBtnDialog("본인은 추가할 수 없어요"); // 본인 닉네임 추가 못하게 막기
           return;
         }
 
@@ -183,7 +163,7 @@ export default function MeetingDetail() {
       inputRef.current?.focus();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
-      alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+      showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
     }
   };
 
@@ -208,19 +188,15 @@ export default function MeetingDetail() {
           console.error(
             `API 오류: ${response.status} - ${response.statusText}`
           );
-          setErrorDialog({
-            open: true,
-            contents: "이미 신청한 미팅방이에요",
-            text: "신청할 수 없어요",
-          });
+          showOneBtnDialog("신청할 수 없어요", "이미 신청한 미팅방이에요");
           return response.json();
         }
-        setSuccessDialog(true);
+        showOneBtnDialog("참여 신청 완료");
         return response.json();
       })
       .catch((error) => {
         console.error(error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
       });
   };
 
@@ -393,25 +369,27 @@ export default function MeetingDetail() {
           )}
         </DetailBox>
 
-        <OneBtnDialog
-          isOpen={successDialog}
-          title="참여 신청 완료"
-          onBtnClick={() => {
-            setSuccessDialog(false);
-            setShowAdd(false);
-          }}
-          buttonText="닫기"
-        />
+        {oneBtnDialog.open && successDialog && (
+          <Dialog
+            isOneBtn
+            title="참여 신청 완료"
+            onRightClick={() => {
+              setSuccessDialog(false);
+              setShowAdd(false);
+            }}
+            right="닫기"
+          />
+        )}
 
-        <OneBtnDialog
-          isOpen={errorDialog.open}
-          title={errorDialog.text}
-          contents={errorDialog.contents}
-          onBtnClick={() => {
-            setErrorDialog((prev) => ({ ...prev, open: false }));
-          }}
-          buttonText={"닫기"}
-        />
+        {oneBtnDialog.open && (
+          <Dialog
+            isOneBtn
+            title={oneBtnDialog.title}
+            contents={oneBtnDialog.contents}
+            onRightClick={hideOneBtnDialog}
+            right={"닫기"}
+          />
+        )}
       </DetailScreen>
     </>
   );

@@ -17,7 +17,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import SideMenu from "../components/sideMenu";
-import { Dialog } from "../../components/styles/Button";
 import { ROUTES } from "../../routes";
 import { useSetRecoilState } from "recoil";
 import { SnackBarAtom } from "../../atoms";
@@ -34,6 +33,8 @@ import { useGetBlockList } from "../../api/blockList";
 import { App } from "@capacitor/app";
 import { useGetGroups } from "../../api/useGetGroups";
 import { useQueryClient } from "react-query";
+import { Dialog } from "../../components/Dialog";
+import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
 
 export default function MeetingChatRoom() {
   const navigate = useNavigate();
@@ -54,7 +55,8 @@ export default function MeetingChatRoom() {
     isLoading: isGroupLoading,
     error: groupError,
   } = useGetGroups(id);
-
+  const { oneBtnDialog, showOneBtnDialog, hideOneBtnDialog } =
+    useOneBtnDialog();
   // 로딩 상태
   const loading = profileLoading || isGroupLoading;
 
@@ -220,11 +222,7 @@ export default function MeetingChatRoom() {
     setRoomDelted(true);
     queryClient.invalidateQueries(["group"]);
 
-    alert("미팅을 삭제했어요");
-    navigate(`${ROUTES.MEETING_LIST}`);
-    setTimeout(() => {
-      setRoomDelted(false);
-    }, 3000);
+    showOneBtnDialog("미팅을 삭제했어요");
   };
 
   const ExitUrl = `${import.meta.env.VITE_BASE_URL}/groups/${id}/leave`;
@@ -400,6 +398,23 @@ export default function MeetingChatRoom() {
                   setShowExitDialog(false);
                 }}
                 onRightClick={handleExitRoom}
+              />
+            </Overlay>
+          )}
+
+          {oneBtnDialog.open && (
+            <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+              <Dialog
+                title={oneBtnDialog.title}
+                right="확인"
+                isOneBtn
+                onRightClick={() => {
+                  hideOneBtnDialog;
+                  navigate(`${ROUTES.MEETING_LIST}`);
+                  setTimeout(() => {
+                    setRoomDelted(false);
+                  }, 3000);
+                }}
               />
             </Overlay>
           )}

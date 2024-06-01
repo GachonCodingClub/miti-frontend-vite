@@ -117,6 +117,11 @@ export const InputElement = ({
           value={value}
           onChange={onChange}
           maxLength={maxLength}
+          onFocus={(e) => {
+            if (type === "datetime-local") {
+              e.target.showPicker();
+            }
+          }}
         />
       </StyledContainer>
       {hasCaution && <CautionMessage>{caution}</CautionMessage>}
