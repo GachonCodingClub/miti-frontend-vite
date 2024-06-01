@@ -28,8 +28,6 @@ import { useOneBtnDialog } from "../hooks/useOntBtnDialog";
 import { InputElement } from "../components/styles/Input";
 
 export default function CreateMeetingDetail() {
-  const meetingTitle = localStorage.getItem("inputMeetingTitle") || "";
-  const meetingDesc = localStorage.getItem("inputMeetingDesc") || "";
   const token = useLocalStorageToken();
   const { id } = useParams();
 
@@ -69,6 +67,11 @@ export default function CreateMeetingDetail() {
       enabled: !!id, // id가 존재할 때에만 데이터를 가져오도록 설정
     }
   );
+  console.log(group);
+  const meetingTitle =
+    localStorage.getItem("inputMeetingTitle") || group?.title;
+  const meetingDesc =
+    localStorage.getItem("inputMeetingDesc") || group?.description;
 
   const { data: profile } = useGetMyProfile();
 

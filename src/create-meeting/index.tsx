@@ -84,8 +84,8 @@ export default function CreateMeeting() {
   // isUpdate가 true일 경우
   useEffect(() => {
     if (isUpdate) {
-      setInputMeetingTitle(group?.title || "");
-      setInputMeetingDesc(group?.description || "");
+      setInputMeetingTitle(group?.title);
+      setInputMeetingDesc(group?.description);
     }
   }, [group?.description, group?.title, isUpdate]);
 
