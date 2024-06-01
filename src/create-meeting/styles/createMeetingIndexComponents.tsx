@@ -27,4 +27,5 @@ export const DescriptionArea = styled(TitleArea)`
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.224px;
+  border-bottom: 1px solid #c9c5c5;
 `;

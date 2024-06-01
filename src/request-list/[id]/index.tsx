@@ -15,7 +15,7 @@ import { PaddingScreen } from "../../components/styles/Screen";
 import { GrayLine } from "../../meeting-chat-room/styles/SideMenuComponents";
 import useGetParties from "../../api/useGetParties";
 import { InLoading } from "../../components/InLoading";
-import OneBtnDialog from "../../components/Dialog";
+import { Dialog } from "../../components/Dialog";
 
 interface DialogStates {
   [key: string]: boolean;
@@ -93,24 +93,29 @@ export default function RequestProfile() {
                 </div>
 
                 {/* Dialog 조건부 렌더링 */}
-                <OneBtnDialog
-                  isOpen={dialogStates[`${party.partyId}-accept`]}
-                  title={`${user.nickname}님의 그룹을 수락했어요.`}
-                  onBtnClick={() => {
-                    setDialogState(party.partyId, "accept", false);
-                    navigate(-1);
-                  }}
-                  buttonText="닫기"
-                />
-                <OneBtnDialog
-                  isOpen={dialogStates[`${party.partyId}-reject`]}
-                  title={`${user.nickname}님의 그룹을 거절했어요.`}
-                  onBtnClick={() => {
-                    setDialogState(party.partyId, "reject", false);
-                    navigate(-1);
-                  }}
-                  buttonText="닫기"
-                />
+                {dialogStates[`${party.partyId}-accept`] && (
+                  <Dialog
+                    isOneBtn
+                    title={`${user.nickname}님의 그룹을 수락했어요.`}
+                    onRightClick={() => {
+                      setDialogState(party.partyId, "accept", false);
+                      navigate(-1);
+                    }}
+                    right="닫기"
+                  />
+                )}
+
+                {dialogStates[`${party.partyId}-reject`] && (
+                  <Dialog
+                    isOneBtn
+                    title={`${user.nickname}님의 그룹을 거절했어요.`}
+                    onRightClick={() => {
+                      setDialogState(party.partyId, "reject", false);
+                      navigate(-1);
+                    }}
+                    right="닫기"
+                  />
+                )}
               </UserInfo>
             ))}
             <div className="flex gap-2">

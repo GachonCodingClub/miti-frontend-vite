@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { DialogLeftBtn } from "../../components/styles/Button";
+import { DialogLeftBtn } from "../../components/Dialog";
 
 export interface ISideMenu {
   dialogProps: React.Dispatch<boolean>;
