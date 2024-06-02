@@ -373,11 +373,16 @@ export default function MeetingChatRoom() {
             </>
           )}
           {showDeleteDialog && (
-            <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+            <Overlay
+              onClick={() => {
+                setShowDeleteDialog(false);
+              }}
+              style={{ zIndex: "31", whiteSpace: "pre-line" }}
+            >
               <Dialog
                 title="미팅 삭제하고 나가기"
                 contents={`그동안 나눈 대화 내용이 삭제돼요. 
-                    삭제한 미팅은 복구할 수 없어요.`}
+                    삭제한 미팅은 복구할 수 없어요`}
                 left="취소"
                 right="미팅 삭제"
                 onLeftClick={() => {
@@ -388,10 +393,15 @@ export default function MeetingChatRoom() {
             </Overlay>
           )}
           {showExitDialog && (
-            <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+            <Overlay
+              onClick={() => {
+                setShowExitDialog(false);
+              }}
+              style={{ zIndex: "31", whiteSpace: "pre-line" }}
+            >
               <Dialog
                 title="미팅 나가기"
-                contents={`퇴장한 미팅은 다시 참여할 수 없어요.`}
+                contents={`퇴장한 미팅은 다시 참여할 수 없어요`}
                 left="취소"
                 right="미팅 나가기"
                 onLeftClick={() => {

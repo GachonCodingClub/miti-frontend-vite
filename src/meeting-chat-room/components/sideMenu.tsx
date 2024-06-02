@@ -173,7 +173,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   if (groupError || partiesError) {
     return (
       <div>
-        데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요.
+        데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요
       </div>
     );
   }
@@ -305,7 +305,12 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
 
       {/* 선택한 유저 프로필 다이얼로그 */}
       {selectedUserProfile && (
-        <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+        <Overlay
+          onClick={() => {
+            setSelectedUserProfile(null);
+          }}
+          style={{ zIndex: "31", whiteSpace: "pre-line" }}
+        >
           <DialogContainer>
             <DialogTitle className="p-4 flex items-center">
               {selectedUserProfile?.nickname}
