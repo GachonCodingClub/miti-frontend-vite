@@ -32,7 +32,7 @@ export const MyHeightSheet = ({
     <>
       {show && (
         <>
-          <Overlay />
+          <Overlay onClick={onClose} />
           <HeightSheet
             initial="hidden"
             animate={show ? "visible" : "hidden"}
