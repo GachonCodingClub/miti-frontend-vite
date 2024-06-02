@@ -75,6 +75,7 @@ interface IInputSVGProps extends IInputProps {
   svg?: React.ReactNode;
   disable?: boolean;
   pattern?: string;
+  showSheet?: boolean;
 }
 
 export const MyInputBoxSVG = React.forwardRef<HTMLInputElement, IInputSVGProps>(
@@ -90,6 +91,7 @@ export const MyInputBoxSVG = React.forwardRef<HTMLInputElement, IInputSVGProps>(
       svg,
       disable,
       pattern,
+      showSheet = false,
     },
     ref
   ) => {
@@ -106,6 +108,7 @@ export const MyInputBoxSVG = React.forwardRef<HTMLInputElement, IInputSVGProps>(
         caution={error}
         pattern={pattern}
         ref={ref}
+        showSheet={showSheet}
       />
     );
   }
