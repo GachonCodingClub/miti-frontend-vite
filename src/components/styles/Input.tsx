@@ -217,6 +217,7 @@ interface InputProps extends InputElementProps {
   onClick: () => void;
   svg?: React.ReactNode;
   pattern?: string;
+  showSheet?: boolean;
 }
 
 export const InputBoxWithSVG = React.forwardRef<HTMLInputElement, InputProps>(
@@ -232,15 +233,21 @@ export const InputBoxWithSVG = React.forwardRef<HTMLInputElement, InputProps>(
       caution,
       disable,
       pattern,
+      showSheet = false,
     },
     ref: ForwardedRef<HTMLInputElement> // ref 타입 명시
   ) => {
     const hasCaution = !!caution;
+    const handleClick = () => {
+      if (showSheet) {
+        onClick();
+      }
+    };
 
     return (
       <InputBoxWrapper>
         <InputBoxText>{label}</InputBoxText>
-        <SVGInputContainer error={hasCaution}>
+        <SVGInputContainer error={hasCaution} onClick={handleClick}>
           <SVGInput
             type={type}
             placeholder={placeholder}

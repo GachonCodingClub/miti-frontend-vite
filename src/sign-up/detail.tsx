@@ -336,7 +336,7 @@ export default function SingUpDetail() {
             onChange={() => {}}
             error={heightError}
             svg={<ArrowdropIcon />}
-            disable={true}
+            showSheet={true}
           />
 
           {/* 몸무게 */}
@@ -349,7 +349,7 @@ export default function SingUpDetail() {
             onChange={() => {}}
             error={weightError}
             svg={<ArrowdropIcon />}
-            disable={true}
+            showSheet={true}
           />
         </DetailFrame>
 
