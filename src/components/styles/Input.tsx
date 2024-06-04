@@ -1,5 +1,4 @@
 import React from "react";
-import { ForwardedRef } from "react";
 import styled from "styled-components";
 
 // 작은 인증 오렌지 버튼
@@ -55,7 +54,7 @@ const StyledContainer = styled.div<{ error?: boolean }>`
   border-bottom: 1px solid ${(props) => (props.error ? "#d05438" : "#c9c5c5")};
 `;
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   width: 100%;
   font-size: 14px;
   height: 48px;
@@ -70,7 +69,7 @@ const StyledInput = styled.input`
   }
 `;
 
-const InputBoxWrapper = styled.div`
+export const InputBoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -80,7 +79,7 @@ const InputBoxWrapper = styled.div`
   background: #fff;
 `;
 
-const InputBoxText = styled.span`
+export const InputBoxText = styled.span`
   color: var(--grey-grey-500, #767170);
   font-size: 14px;
   letter-spacing: -0.224px;
@@ -130,59 +129,6 @@ export const InputElement = ({
 };
 
 //
-// 옆에 주황 버튼이 있는 Input
-//
-
-const InputBoxBtnContainer = styled.div<{ error?: boolean }>`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: relative;
-  opacity: 0.9;
-  border-bottom: 1px solid ${(props) => (props.error ? "#d05438" : "#c9c5c5")};
-`;
-
-interface IFirstInputBtn extends InputElementProps {
-  disable?: boolean;
-  onClick: () => void;
-  btnText: string;
-}
-
-export const InputBoxBtn = ({
-  placeholder,
-  label,
-  type,
-  btnText,
-  onClick,
-  value,
-  onChange,
-  caution,
-  disable,
-  maxLength,
-}: IFirstInputBtn) => {
-  const hasLabel = !!label;
-  const hasCaution = !!caution;
-
-  return (
-    <InputBoxWrapper>
-      {hasLabel && <InputBoxText>{label}</InputBoxText>}
-      <InputBoxBtnContainer error={hasCaution}>
-        <StyledInput
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          disabled={disable}
-          maxLength={maxLength}
-        />
-        <OrangeSmButton onClick={onClick} text={btnText} />
-      </InputBoxBtnContainer>
-      {hasCaution && <CautionMessage>{caution}</CautionMessage>}
-    </InputBoxWrapper>
-  );
-};
-
-//
 // SVG 버튼이 끝에 있는 Input
 //
 
@@ -192,7 +138,7 @@ export const SVGBtn = styled.div`
   flex-shrink: 0;
 `;
 
-const SVGInputContainer = styled.div<{ error?: boolean }>`
+export const SVGInputContainer = styled.div<{ error?: boolean }>`
   display: flex;
   width: 100%;
   height: 48px;
@@ -202,7 +148,7 @@ const SVGInputContainer = styled.div<{ error?: boolean }>`
   opacity: 0.9;
 `;
 
-const SVGInput = styled.input`
+export const SVGInput = styled.input`
   flex: 1 0 0;
   color: var(--grey-grey-800, #2f2a28);
   line-height: 20px;
@@ -211,56 +157,3 @@ const SVGInput = styled.input`
   }
   outline: none;
 `;
-
-interface InputProps extends InputElementProps {
-  disable?: boolean;
-  onClick: () => void;
-  svg?: React.ReactNode;
-  pattern?: string;
-  showSheet?: boolean;
-}
-
-export const InputBoxWithSVG = React.forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      placeholder,
-      label,
-      type,
-      onClick,
-      value,
-      onChange,
-      svg,
-      caution,
-      disable,
-      pattern,
-      showSheet = false,
-    },
-    ref: ForwardedRef<HTMLInputElement> // ref 타입 명시
-  ) => {
-    const hasCaution = !!caution;
-    const handleClick = () => {
-      if (showSheet) {
-        onClick();
-      }
-    };
-
-    return (
-      <InputBoxWrapper>
-        <InputBoxText>{label}</InputBoxText>
-        <SVGInputContainer error={hasCaution} onClick={handleClick}>
-          <SVGInput
-            type={type}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            disabled={disable}
-            pattern={pattern}
-            ref={ref}
-          />
-          <SVGBtn onClick={onClick}>{svg}</SVGBtn>
-        </SVGInputContainer>
-        {hasCaution && <CautionMessage>{caution}</CautionMessage>}
-      </InputBoxWrapper>
-    );
-  }
-);
