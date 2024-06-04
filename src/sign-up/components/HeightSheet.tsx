@@ -41,7 +41,7 @@ export const MyHeightSheet = ({
             <SheetTitleFrame>
               <SheetTitle>{title}</SheetTitle>
               <SheetXIcon onClick={onClose}>
-                <XIcon />
+                <XIcon size={24} />
               </SheetXIcon>
             </SheetTitleFrame>
 

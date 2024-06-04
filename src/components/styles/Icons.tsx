@@ -8,6 +8,11 @@ interface IconProps {
   fill?: string;
 }
 
+interface IconSizeClickProps {
+  size?: number;
+  onClick?: () => void;
+}
+
 const Icon = ({
   children,
   width = 24,
@@ -134,7 +139,7 @@ export const LocationIcon = () => {
 };
 
 // 햄버거 아이콘
-export const HamburgerIcon = ({ onClick }: { onClick: () => void }) => {
+export const HamburgerIcon = ({ onClick }: IconSizeClickProps) => {
   return (
     <div onClick={onClick}>
       <svg
@@ -168,7 +173,7 @@ export const HamburgerIcon = ({ onClick }: { onClick: () => void }) => {
 };
 
 // 애로우 백 아이콘
-export const ArrowbackIcon = ({ onClick }: { onClick: () => void }) => {
+export const ArrowbackIcon = ({ onClick }: IconSizeClickProps) => {
   return (
     <div onClick={onClick}>
       <svg
@@ -242,7 +247,7 @@ export const ModifyIcon = () => {
 
 // 옵션 아이콘
 
-export const SettingIcon = ({ onClick }: { onClick: () => void }) => {
+export const SettingIcon = ({ onClick }: IconSizeClickProps) => {
   return (
     <div onClick={onClick}>
       <svg
@@ -318,7 +323,7 @@ export const CheckIcon = () => {
   );
 };
 
-// 주황색 그 뭐냐 저장? 북마크? 아이콘
+// 주황색 북마크 아이콘
 export const FrameIcon = () => {
   return (
     <Icon>
@@ -351,12 +356,12 @@ export const OrangeCrownIcon = () => {
 };
 
 // X 버튼
-export const XIcon = () => {
+export const XIcon = ({ size }: IconSizeClickProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
     >

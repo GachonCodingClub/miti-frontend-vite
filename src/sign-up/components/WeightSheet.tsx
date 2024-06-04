@@ -41,7 +41,7 @@ export const MyWeightSheet = ({
             <SheetTitleFrame>
               <SheetTitle>{title}</SheetTitle>
               <SheetXIcon onClick={onClose}>
-                <XIcon />
+                <XIcon size={24} />
               </SheetXIcon>
             </SheetTitleFrame>
 
