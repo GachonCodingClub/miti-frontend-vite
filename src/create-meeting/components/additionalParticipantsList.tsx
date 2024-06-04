@@ -5,6 +5,7 @@ import {
   AddedNicknameText,
   AddMemberList,
 } from "../styles/createMeetingDetailComponents";
+import { XIcon } from "../../components/styles/Icons";
 
 interface AddParticipantsListProps {
   participants: string[];
@@ -21,7 +22,7 @@ export const AdditionalParticipantsList: React.FC<AddParticipantsListProps> = ({
         <li key={index}>
           <AddMemberContainer>
             <DeleteMemberButton onClick={() => onRemoveNicknameClick(index)}>
-              X
+              <XIcon size={20} />
             </DeleteMemberButton>
             <AddedNicknameText>{nickname}</AddedNicknameText>
           </AddMemberContainer>
