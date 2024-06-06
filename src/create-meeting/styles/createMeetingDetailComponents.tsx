@@ -54,7 +54,7 @@ export const AddMemberText = styled.div`
 
 // 사용자 추가 + 버튼
 export const AddMemberButton = styled.button`
-  margin-top: 10px;
+  margin-top: 24px;
   font-size: 2rem;
   padding: 8px;
   color: var(--Grey-grey500, #767170);

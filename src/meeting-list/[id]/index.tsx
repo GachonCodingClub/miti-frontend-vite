@@ -7,7 +7,7 @@ import {
   LocationIcon,
   OrangeCrownIcon,
   PersonIcon,
-  XIcon,
+  PlusIcon,
 } from "../../components/styles/Icons";
 import { TopBar } from "../../components/TopBar";
 import { useLoginGuard } from "../../hooks/useLoginGuard";
@@ -37,7 +37,15 @@ import { InLoading } from "../../components/InLoading";
 import { useGetBlockList } from "../../api/blockList";
 import { IUser } from "../../meeting-chat-room/styles/SideMenuComponents";
 import { useGetGroups } from "../../api/useGetGroups";
-import { Dialog, DialogContainer } from "../../components/Dialog";
+import {
+  Dialog,
+  DialogBtnFrame,
+  DialogContainer,
+  DialogLeftBtn,
+  DialogLeftText,
+  DialogRightBtn,
+  DialogRightText,
+} from "../../components/Dialog";
 import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
 
 export default function MeetingDetail() {
@@ -331,18 +339,7 @@ export default function MeetingDetail() {
           {showAdd && (
             <Overlay>
               <DialogContainer>
-                <div className="flex">
-                  <div
-                    className="bg-[#f2f0ef] fixed rounded-full p-1 right-4 top-3 "
-                    onClick={() => {
-                      setShowAdd(false);
-                    }}
-                  >
-                    <XIcon />
-                  </div>
-                </div>
-
-                <div className="flex items-center">
+                <div className="flex-center w-full pl-3 pr-1 pb-4">
                   <MyInputBoxSVG
                     ref={inputRef}
                     onClick={() => {}}
@@ -353,7 +350,7 @@ export default function MeetingDetail() {
                     type="text"
                   />
                   <AddMemberButton onClick={onAddNicknameClick}>
-                    +
+                    <PlusIcon />
                   </AddMemberButton>
                 </div>
                 {showAdd && additionalParticipants.length > 0 && (
@@ -362,8 +359,18 @@ export default function MeetingDetail() {
                     onRemoveNicknameClick={onRemoveNicknameClick}
                   />
                 )}
-
-                <LongOrangeBtn text="신청하기" onClick={onSubmitClick} />
+                <DialogBtnFrame>
+                  <DialogLeftBtn
+                    onClick={() => {
+                      setShowAdd(false);
+                    }}
+                  >
+                    <DialogLeftText>취소</DialogLeftText>
+                  </DialogLeftBtn>
+                  <DialogRightBtn onClick={onSubmitClick}>
+                    <DialogRightText>신청하기</DialogRightText>
+                  </DialogRightBtn>
+                </DialogBtnFrame>
               </DialogContainer>
             </Overlay>
           )}

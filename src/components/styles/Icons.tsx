@@ -422,3 +422,24 @@ export const RefreshIcon = () => {
     </svg>
   );
 };
+
+// 플러스 아이콘
+export const PlusIcon = () => {
+  return (
+    <svg
+      fill="none"
+      width="24"
+      height="24"
+      stroke-width="3"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 4.5v15m7.5-7.5h-15"
+      ></path>
+    </svg>
+  );
+};
