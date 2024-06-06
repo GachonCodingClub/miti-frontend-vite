@@ -7,6 +7,40 @@ export interface IChat {
   content: string;
 }
 
+export interface ChatMessage {
+  createdAt: string;
+  nickname: string;
+  content: string;
+}
+
+export interface BlockedUser {
+  nickname: string;
+  userId: string;
+  contents: string;
+}
+
+export interface BlockedUserData {
+  blockedUserOutputs: BlockedUser[];
+}
+
+export interface ChatWindowProps {
+  chatList: ChatMessage[];
+  profileNickname: string | undefined;
+  id: string | undefined;
+  setChatList: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+  keyboardHeight: number;
+  blockData: BlockedUserData;
+}
+
+export interface ChatDisplayOptions {
+  displayTime: boolean;
+  displayNickname: boolean;
+  reduceMargin: boolean;
+  displayDate: boolean;
+  isMITIPresent: boolean;
+  contentWithoutMITI: string;
+}
+
 export const MeetingChatRoomScreen = styled(Screen)`
   padding: 0;
   padding-top: 56px;

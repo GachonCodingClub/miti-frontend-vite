@@ -18,43 +18,12 @@ import {
   OtherChatting,
   ChatWindowContainer,
   ScrollToBottomButton,
+  ChatDisplayOptions,
+  ChatMessage,
+  ChatWindowProps,
 } from "../styles/MeetingChatRoomComponents";
 import { getApi } from "../../api/getApi";
 import { getDate, getTimeString } from "./getTimeDate";
-
-interface ChatMessage {
-  createdAt: string;
-  nickname: string;
-  content: string;
-}
-
-interface BlockedUser {
-  nickname: string;
-  userId: string;
-  contents: string;
-}
-
-interface BlockedUserData {
-  blockedUserOutputs: BlockedUser[];
-}
-
-interface ChatWindowProps {
-  chatList: ChatMessage[];
-  profileNickname: string | undefined;
-  id: string | undefined;
-  setChatList: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
-  keyboardHeight: number;
-  blockData: BlockedUserData;
-}
-
-interface ChatDisplayOptions {
-  displayTime: boolean;
-  displayNickname: boolean;
-  reduceMargin: boolean;
-  displayDate: boolean;
-  isMITIPresent: boolean;
-  contentWithoutMITI: string;
-}
 
 function getChatDisplayOptions(
   chatList: ChatMessage[],
