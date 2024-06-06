@@ -4,7 +4,6 @@ import { ArrowbackIcon } from "../components/styles/Icons";
 import {
   WithdrawalContents,
   WithdrawalScreen,
-  WithdrawalTitle,
 } from "../profile/styles/withdrawalStyle";
 import { FixedButtonBox, LongOrangeBtn } from "../components/styles/Button";
 import { useState } from "react";
@@ -86,9 +85,6 @@ export default function Report() {
       />
       <WithdrawalScreen>
         <div className="mt-10">
-          <WithdrawalTitle>신고하기</WithdrawalTitle>
-        </div>
-        <div className="mt-4">
           <MyInputBox
             label="신고 대상 닉네임"
             value={nickname}
