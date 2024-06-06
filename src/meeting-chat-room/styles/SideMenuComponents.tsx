@@ -185,7 +185,6 @@ export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
 export const MenuUserProfileFrame = styled.div`
   display: flex;
   align-items: flex-start;
-  align-self: stretch;
 `;
 
 // 방장 프레임
@@ -206,8 +205,7 @@ export const MenuUserNickname = styled.span`
 export const MenuUserDetailFrame = styled.div`
   display: flex;
   align-items: flex-start;
-
-  padding-bottom: 8px;
+  padding-bottom: 4px;
 `;
 
 // 유저 디테일 텍스트
