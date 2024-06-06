@@ -173,7 +173,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   if (groupError || partiesError) {
     return (
       <div>
-        데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요.
+        데이터를 불러오는 중 오류가 발생했어요. 나중에 다시 시도해 주세요
       </div>
     );
   }
@@ -222,8 +222,8 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       <MenuSmallGrayLine />
       {/* 참여자 */}
       <MenuMemberAndReqButtonWrapper>
+        <MenuDetailText>참여자 (총 {totalParticipants}명)</MenuDetailText>
         <MenuMemberContainer>
-          <MenuDetailText>참여자 (총 {totalParticipants}명)</MenuDetailText>
           <MenuMemberFrame>
             {/* 방장님 */}
             {parties?.leaderUserSummaryDto && (
@@ -259,6 +259,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             ))}
           </MenuMemberFrame>
         </MenuMemberContainer>
+        {/* 아래 화살표 */}
         <ScrollDownArrow>
           <ScrollDownIcon />
         </ScrollDownArrow>
@@ -305,9 +306,14 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
 
       {/* 선택한 유저 프로필 다이얼로그 */}
       {selectedUserProfile && (
-        <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
+        <Overlay
+          onClick={() => {
+            setSelectedUserProfile(null);
+          }}
+          style={{ zIndex: "31", whiteSpace: "pre-line" }}
+        >
           <DialogContainer>
-            <DialogTitle className="p-4 flex items-center">
+            <DialogTitle className="p-2 flex items-center">
               {selectedUserProfile?.nickname}
               {selectedUserProfile?.userId !== decodedToken?.sub && (
                 <div
@@ -321,21 +327,28 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
               )}
             </DialogTitle>
 
-            <DialogContents>{selectedUserProfile?.description}</DialogContents>
+            <div className="pl-2 font-semibold self-start">
+              {selectedUserProfile?.description}
+            </div>
 
-            <div className="p-2 flex flex-col">
-              <DialogContents className="mr-2">
-                나이: {(selectedUserProfile?.age ?? 0) + 1}살
-              </DialogContents>
-              <DialogContents className="mr-2">
-                성별: {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}
-              </DialogContents>
-              <DialogContents className="mr-2">
-                키: {selectedUserProfile?.height}cm
-              </DialogContents>
-              <DialogContents className="mr-2">
-                몸무게: {selectedUserProfile?.weight}kg
-              </DialogContents>
+            <div className="pl-2 pb-4 flex flex-col self-start">
+              <div>
+                <DialogContents className="mr-2">
+                  나이: {(selectedUserProfile?.age ?? 0) + 1}살
+                </DialogContents>
+                <DialogContents className="mr-2">
+                  성별:{" "}
+                  {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}
+                </DialogContents>
+              </div>
+              <div>
+                <DialogContents className="mr-2">
+                  키: {selectedUserProfile?.height}cm
+                </DialogContents>
+                <DialogContents className="mr-2">
+                  몸무게: {selectedUserProfile?.weight}kg
+                </DialogContents>
+              </div>
             </div>
             <div>
               <DialogBtnFrame>

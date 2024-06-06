@@ -59,7 +59,7 @@ export default function Agreement() {
         </EachCheckBoxFrame>
       </AgreementScreen>
       {showPopUp && (
-        <Overlay>
+        <Overlay onClick={onClosePopUp}>
           <ViewContentsPopUpFrame>
             <ViewContentsTitle>
               {getAgreementDataById(selectedAgreementId)?.title}

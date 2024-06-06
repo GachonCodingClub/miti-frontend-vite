@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   padding: 8px 8px 0px 8px;
 
   align-items: center;
-  gap: 16px;
+
   background: var(--grey-grey-00, #fff);
   z-index: 10;
 `;

@@ -8,6 +8,11 @@ interface IconProps {
   fill?: string;
 }
 
+interface IconSizeClickProps {
+  size?: number;
+  onClick?: () => void;
+}
+
 const Icon = ({
   children,
   width = 24,
@@ -134,7 +139,7 @@ export const LocationIcon = () => {
 };
 
 // 햄버거 아이콘
-export const HamburgerIcon = ({ onClick }: { onClick: () => void }) => {
+export const HamburgerIcon = ({ onClick }: IconSizeClickProps) => {
   return (
     <div onClick={onClick}>
       <svg
@@ -168,7 +173,7 @@ export const HamburgerIcon = ({ onClick }: { onClick: () => void }) => {
 };
 
 // 애로우 백 아이콘
-export const ArrowbackIcon = ({ onClick }: { onClick: () => void }) => {
+export const ArrowbackIcon = ({ onClick }: IconSizeClickProps) => {
   return (
     <div onClick={onClick}>
       <svg
@@ -242,7 +247,7 @@ export const ModifyIcon = () => {
 
 // 옵션 아이콘
 
-export const SettingIcon = ({ onClick }: { onClick: () => void }) => {
+export const SettingIcon = ({ onClick }: IconSizeClickProps) => {
   return (
     <div onClick={onClick}>
       <svg
@@ -318,7 +323,7 @@ export const CheckIcon = () => {
   );
 };
 
-// 주황색 그 뭐냐 저장? 북마크? 아이콘
+// 주황색 북마크 아이콘
 export const FrameIcon = () => {
   return (
     <Icon>
@@ -351,12 +356,12 @@ export const OrangeCrownIcon = () => {
 };
 
 // X 버튼
-export const XIcon = () => {
+export const XIcon = ({ size }: IconSizeClickProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -385,14 +390,18 @@ export const ReportIcon = () => {
   return (
     <svg
       data-slot="icon"
-      width="24"
-      height="24"
       fill="red"
-      viewBox="0 0 16 16"
+      width="18"
+      height="18"
+      viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <path d="M13.407 2.59a.75.75 0 0 0-1.464.326c.365 1.636.557 3.337.557 5.084 0 1.747-.192 3.448-.557 5.084a.75.75 0 0 0 1.464.327c.264-1.185.444-2.402.531-3.644a2 2 0 0 0 0-3.534 24.736 24.736 0 0 0-.531-3.643ZM4.348 11H4a3 3 0 0 1 0-6h2c1.647 0 3.217-.332 4.646-.933C10.878 5.341 11 6.655 11 8c0 1.345-.122 2.659-.354 3.933a11.946 11.946 0 0 0-4.23-.925c.203.718.478 1.407.816 2.057.12.23.057.515-.155.663l-.828.58a.484.484 0 0 1-.707-.16A12.91 12.91 0 0 1 4.348 11Z"></path>
+      <path
+        clipRule="evenodd"
+        fillRule="evenodd"
+        d="M10 2a6 6 0 0 0-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 0 0 .515 1.076 32.91 32.91 0 0 0 3.256.508 3.5 3.5 0 0 0 6.972 0 32.903 32.903 0 0 0 3.256-.508.75.75 0 0 0 .515-1.076A11.448 11.448 0 0 1 16 8a6 6 0 0 0-6-6ZM8.05 14.943a33.54 33.54 0 0 0 3.9 0 2 2 0 0 1-3.9 0Z"
+      />
     </svg>
   );
 };
@@ -413,6 +422,27 @@ export const RefreshIcon = () => {
         clip-rule="evenodd"
         fill-rule="evenodd"
         d="M13.836 2.477a.75.75 0 0 1 .75.75v3.182a.75.75 0 0 1-.75.75h-3.182a.75.75 0 0 1 0-1.5h1.37l-.84-.841a4.5 4.5 0 0 0-7.08.932.75.75 0 0 1-1.3-.75 6 6 0 0 1 9.44-1.242l.842.84V3.227a.75.75 0 0 1 .75-.75Zm-.911 7.5A.75.75 0 0 1 13.199 11a6 6 0 0 1-9.44 1.241l-.84-.84v1.371a.75.75 0 0 1-1.5 0V9.591a.75.75 0 0 1 .75-.75H5.35a.75.75 0 0 1 0 1.5H3.98l.841.841a4.5 4.5 0 0 0 7.08-.932.75.75 0 0 1 1.025-.273Z"
+      ></path>
+    </svg>
+  );
+};
+
+// 플러스 아이콘
+export const PlusIcon = () => {
+  return (
+    <svg
+      fill="none"
+      width="24"
+      height="24"
+      stroke-width="3"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 4.5v15m7.5-7.5h-15"
       ></path>
     </svg>
   );
