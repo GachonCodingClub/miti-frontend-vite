@@ -13,7 +13,6 @@ import {
   OtherChattingFrame,
   OtherUserName,
   OtherChattingBubble,
-  DateAlertFrame,
   DateText,
   MyChatting,
   OtherChatting,
@@ -255,16 +254,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         return (
           <React.Fragment key={index}>
             {isMITIPresent ? (
-              <DateAlertFrame>
-                <ChattingText>{contentWithoutMITI}</ChattingText>
-              </DateAlertFrame>
+              <div className="flex w-full justify-center">
+                <span className="text-sm whitespace-pre-wrap break-words break-all">
+                  {contentWithoutMITI}
+                </span>
+              </div>
             ) : chat.nickname === profileNickname ? (
               <MyChattingFrame>
-                <DateAlertFrame>
+                <div className="flex w-full justify-center">
                   {displayDate && (
                     <DateText>{getDate(chat.createdAt)}</DateText>
                   )}
-                </DateAlertFrame>
+                </div>
                 <MyChatting>
                   {displayTime && (
                     <ChattingTime>{getTimeString(chat.createdAt)}</ChattingTime>
