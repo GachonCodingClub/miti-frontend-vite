@@ -7,6 +7,40 @@ export interface IChat {
   content: string;
 }
 
+export interface ChatMessage {
+  createdAt: string;
+  nickname: string;
+  content: string;
+}
+
+export interface BlockedUser {
+  nickname: string;
+  userId: string;
+  contents: string;
+}
+
+export interface BlockedUserData {
+  blockedUserOutputs: BlockedUser[];
+}
+
+export interface ChatWindowProps {
+  chatList: ChatMessage[];
+  profileNickname: string | undefined;
+  id: string | undefined;
+  setChatList: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+  keyboardHeight: number;
+  blockData: BlockedUserData;
+}
+
+export interface ChatDisplayOptions {
+  displayTime: boolean;
+  displayNickname: boolean;
+  reduceMargin: boolean;
+  displayDate: boolean;
+  isMITIPresent: boolean;
+  contentWithoutMITI: string;
+}
+
 export const MeetingChatRoomScreen = styled(Screen)`
   padding: 0;
   padding-top: 56px;
@@ -27,20 +61,13 @@ export const ChatWindowContainer = styled.div`
   max-height: 80vh;
 `;
 
-// 날짜랑 누구누구 입장/퇴장 프레임
-export const DateAlertFrame = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-`;
-
 // 날짜 텍스트
 export const DateText = styled.span`
   text-align: center;
   font-size: 10px;
   line-height: 12px;
   letter-spacing: -0.1px;
-  padding: 20px 0px;
+  padding: 4px 0px;
 `;
 
 // 누구 입장/퇴장 텍스트

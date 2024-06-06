@@ -269,7 +269,7 @@ export default function EditProfile() {
               onChange={() => {}}
               error={heightError}
               svg={<ArrowdropIcon />}
-              disable={true}
+              showSheet={true}
             />
 
             {/* 몸무게 */}
@@ -282,7 +282,7 @@ export default function EditProfile() {
               onChange={() => {}}
               error={weightError}
               svg={<ArrowdropIcon />}
-              disable={true}
+              showSheet={true}
             />
           </DetailFrame>
           {/* 키 선택시트 */}
@@ -308,7 +308,7 @@ export default function EditProfile() {
           {subscription && (
             <Dialog
               isOneBtn
-              title="프로필 수정"
+              title="수정 완료"
               onRightClick={onSubscriptionClick}
               right="프로필 화면으로 이동"
             />

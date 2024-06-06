@@ -25,17 +25,21 @@ const NickNameCheckModule = ({
       {overlapNickname && (
         <Dialog
           isOneBtn
-          title="이미 사용 중인 닉네임이에요."
+          title="이미 사용 중인 닉네임이에요"
           onRightClick={checkOverlap}
           right="닫기"
         />
       )}
 
       {possibleNickname && !isInputDisabled && (
-        <Overlay>
+        <Overlay
+          onClick={() => {
+            setPossibleNickname(false);
+          }}
+        >
           <Dialog
             title="이 닉네임을 사용하시겠어요?"
-            contents="닉네임은 추후에 다시 변경 가능해요."
+            contents="닉네임은 추후에 다시 변경 가능해요"
             left="아니요"
             onLeftClick={() => {
               setPossibleNickname(false);

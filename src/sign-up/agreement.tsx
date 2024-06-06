@@ -135,7 +135,7 @@ export default function SignUpAgreement() {
       </AgreementScreen>
       {/* 약관 내용 팝업 */}
       {showPopUp && (
-        <Overlay>
+        <Overlay onClick={onClosePopUp}>
           <ViewContentsPopUpFrame>
             <ViewContentsTitle>
               {getAgreementDataById(selectedAgreementId)?.title}

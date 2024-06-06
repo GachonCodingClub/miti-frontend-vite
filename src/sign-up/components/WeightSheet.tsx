@@ -32,7 +32,7 @@ export const MyWeightSheet = ({
     <>
       {show && (
         <>
-          <Overlay />
+          <Overlay onClick={onClose} />
           <HeightSheet
             initial="hidden"
             animate={show ? "visible" : "hidden"}
@@ -41,7 +41,7 @@ export const MyWeightSheet = ({
             <SheetTitleFrame>
               <SheetTitle>{title}</SheetTitle>
               <SheetXIcon onClick={onClose}>
-                <XIcon />
+                <XIcon size={24} />
               </SheetXIcon>
             </SheetTitleFrame>
 
