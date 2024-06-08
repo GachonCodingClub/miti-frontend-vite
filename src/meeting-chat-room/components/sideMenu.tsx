@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DateIcon,
   LocationIcon,
@@ -113,6 +113,11 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       ) || 0;
     setTotalParticipants(total + 1);
   }, [parties?.acceptedParties]);
+
+  const [blockDialog, setBlockDialog] = useState<{
+    open: boolean;
+    user: IUser | null;
+  }>({ open: false, user: null });
 
   const onBlockClick = (blockTargetNickname: string | undefined) => {
     const PostUrl = `${
@@ -362,7 +367,8 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                 {selectedUserProfile?.userId !== decodedToken?.sub && (
                   <ProfileRightButton
                     onClick={() => {
-                      onBlockClick(selectedUserProfile?.nickname);
+                      setBlockDialog({ open: true, user: selectedUserProfile });
+                      setSelectedUserProfile(null);
                     }}
                   >
                     <DialogRightText>차단하기</DialogRightText>
@@ -375,14 +381,28 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       )}
 
       {oneBtnDialog.open && (
-        <Overlay style={{ zIndex: "31", whiteSpace: "pre-line" }}>
-          <Dialog
-            title={oneBtnDialog.title}
-            right="확인"
-            isOneBtn
-            onRightClick={hideOneBtnDialog}
-          />
-        </Overlay>
+        <Dialog
+          title={oneBtnDialog.title}
+          right="확인"
+          isOneBtn
+          onRightClick={hideOneBtnDialog}
+        />
+      )}
+
+      {blockDialog.open && (
+        <Dialog
+          title={`${blockDialog.user?.nickname}님을 차단하시겠어요?`}
+          left="취소"
+          onLeftClick={() => setBlockDialog({ open: false, user: null })}
+          isRed
+          right="예"
+          onRightClick={() => {
+            if (blockDialog.user) {
+              onBlockClick(blockDialog.user.nickname);
+              setBlockDialog({ open: false, user: null });
+            }
+          }}
+        />
       )}
     </>
   );

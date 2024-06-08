@@ -44,7 +44,7 @@ export const DialogBtnFrame = styled.div`
   align-self: stretch;
 `;
 
-export const DialogRightBtn = styled.button`
+export const DialogRightBtn = styled.button<{ isRed?: boolean }>`
   display: flex;
   padding: 16px 12px;
   justify-content: center;
@@ -52,7 +52,10 @@ export const DialogRightBtn = styled.button`
   flex: 1 0 0;
 
   border-radius: 8px;
-  background: var(--gd, linear-gradient(91deg, #ffbf7b 0%, #ff7152 100%));
+  background: ${(props) =>
+    props.isRed
+      ? "var(--gd, linear-gradient(91deg, #d05438 0%, #ff0000 100%))"
+      : "var(--gd, linear-gradient(91deg, #ffbf7b 0%, #ff7152 100%))"};
 `;
 
 export const DialogRightText = styled.span`
@@ -81,6 +84,7 @@ interface IDialog {
   onRightClick?: () => void;
   disable?: boolean;
   isOneBtn?: boolean;
+  isRed?: boolean;
 }
 
 export const Dialog = ({
@@ -91,6 +95,7 @@ export const Dialog = ({
   onLeftClick,
   onRightClick,
   isOneBtn,
+  isRed,
 }: IDialog) => {
   return (
     <Overlay>
@@ -103,7 +108,7 @@ export const Dialog = ({
               <DialogLeftText>{left}</DialogLeftText>
             </DialogLeftBtn>
           )}
-          <DialogRightBtn onClick={onRightClick}>
+          <DialogRightBtn isRed={isRed} onClick={onRightClick}>
             <DialogRightText>{right}</DialogRightText>
           </DialogRightBtn>
         </DialogBtnFrame>

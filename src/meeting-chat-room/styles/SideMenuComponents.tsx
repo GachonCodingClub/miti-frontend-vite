@@ -249,5 +249,5 @@ export const ProfileLeftButton = styled(DialogLeftBtn)`
 `;
 
 export const ProfileRightButton = styled(ProfileLeftButton)`
-  background: #d05438;
+  background: var(--gd, linear-gradient(91deg, #d05438 0%, #ff0000 100%));
 `;
