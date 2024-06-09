@@ -4,7 +4,7 @@ import { Screen } from "../../components/styles/Screen";
 import { ArrowbackIcon } from "../../components/styles/Icons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { SignUpFrame, SignUpTitle } from "../../sign-up";
+import { SignUpFrame } from "../../sign-up";
 import { MyInputBox, MyInputBoxButton } from "../../components/MyInputBox";
 import { FixedButtonBox, LongOrangeBtn } from "../../components/styles/Button";
 import { PassWordFrame } from "../../sign-up/styles/passwordComponents";
@@ -204,10 +204,11 @@ export default function ChangePassword() {
 
   return (
     <>
-      <TopBar leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />} />
+      <TopBar
+        leftIcon={<ArrowbackIcon onClick={() => navigate(-1)} />}
+        title="비밀번호 변경"
+      />
       <ChangePWScreen>
-        <SignUpTitle>비밀번호 변경</SignUpTitle>
-
         <SignUpFrame>
           <form>
             <MyInputBoxButton
