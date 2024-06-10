@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   DateIcon,
   LocationIcon,
@@ -60,6 +60,7 @@ import {
   Dialog,
 } from "../../components/Dialog";
 import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
+import { linkify } from "../../utils/linkify";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
@@ -333,7 +334,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             </DialogTitle>
 
             <div className="pl-2 font-semibold self-start">
-              {selectedUserProfile?.description}
+              {linkify(selectedUserProfile?.description || "")}
             </div>
 
             <div className="pl-2 pb-4 flex flex-col self-start">
