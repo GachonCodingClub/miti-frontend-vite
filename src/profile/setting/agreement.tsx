@@ -45,14 +45,13 @@ export default function Agreement() {
       <AgreementScreen>
         <EachCheckBoxFrame>
           <CheckText>개인정보 처리방침</CheckText>
-
           <ViewContentsButton onClick={() => onOpenPopUp(0)}>
             내용보기
           </ViewContentsButton>
         </EachCheckBoxFrame>
+
         <EachCheckBoxFrame>
           <CheckText>서비스 이용 약관</CheckText>
-
           <ViewContentsButton onClick={() => onOpenPopUp(1)}>
             내용보기
           </ViewContentsButton>
