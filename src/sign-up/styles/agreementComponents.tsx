@@ -37,7 +37,7 @@ export const CheckBoxContainer = styled.div`
 // 체크박스 input 하나씩 담은 프레임
 export const EachCheckBoxFrame = styled.div`
   display: flex;
-  padding: 16px;
+  padding: 20px 16px 16px 0px;
   width: 100%;
   justify-content: space-between;
 `;
@@ -79,13 +79,16 @@ export const ViewContentsButton = styled.button`
 // 팝업창 프레임
 export const ViewContentsPopUpFrame = styled.div`
   display: flex;
-  max-width: 24rem;
+  width: 352px;
+  max-width: 36rem;
   padding: 24px 16px 24px 16px;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  margin: auto;
-  top: 10%;
+  z-index: 30;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 12px;
   background: white;
 `;
