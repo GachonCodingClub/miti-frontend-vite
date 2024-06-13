@@ -5,14 +5,18 @@ export const linkify = (text: string): (string | JSX.Element)[] => {
     if (urlPattern.test(part)) {
       const url = part.startsWith("http") ? part : `https://${part}`;
       return (
-        <div className="flex gap-2 items-center">
-          <a key={index} href={url} target="_blank" rel="noopener noreferrer">
-            {part}
-          </a>
-          <div className="bg-[#EBE8E7] px-[6px] py-[1px] text-sm rounded-3xl font-bold">
+        <a
+          className="flex gap-2 items-center"
+          key={index}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {part}
+          <p className="bg-[#EBE8E7] px-[6px] py-[1px] text-sm rounded-3xl font-bold">
             이동
-          </div>
-        </div>
+          </p>
+        </a>
       );
     }
     return part;
