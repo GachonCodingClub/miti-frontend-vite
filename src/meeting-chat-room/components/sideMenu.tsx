@@ -60,7 +60,7 @@ import {
   Dialog,
 } from "../../components/Dialog";
 import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
-import { linkify } from "../../utils/linkify";
+import { Linkify } from "../../utils/linkify";
 
 export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
   const { id } = useParams();
@@ -114,6 +114,16 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       ) || 0;
     setTotalParticipants(total + 1);
   }, [parties?.acceptedParties]);
+
+  // 외부 링크 이동 다이얼로그
+  const [linkDialog, setLinkDialog] = useState<{
+    open: boolean;
+    url: string | null;
+  }>({ open: false, url: null });
+
+  const handleLinkClick = (url: string) => {
+    setLinkDialog({ open: true, url });
+  };
 
   const [blockDialog, setBlockDialog] = useState<{
     open: boolean;
@@ -312,12 +322,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
 
       {/* 선택한 유저 프로필 다이얼로그 */}
       {selectedUserProfile && (
-        <Overlay
-          onClick={() => {
-            setSelectedUserProfile(null);
-          }}
-          style={{ zIndex: "31", whiteSpace: "pre-line" }}
-        >
+        <Overlay style={{ whiteSpace: "pre-line" }}>
           <DialogContainer>
             <DialogTitle className="p-2 flex items-center">
               {selectedUserProfile?.nickname}
@@ -334,7 +339,10 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             </DialogTitle>
 
             <div className="pl-2 font-semibold self-start">
-              {linkify(selectedUserProfile?.description || "")}
+              <Linkify
+                text={selectedUserProfile?.description || ""}
+                onLinkClick={handleLinkClick}
+              />
             </div>
 
             <div className="pl-2 pb-4 flex flex-col self-start">
@@ -343,7 +351,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                   나이: {(selectedUserProfile?.age ?? 0) + 1}살
                 </DialogContents>
                 <DialogContents className="mr-2">
-                  성별:{" "}
+                  성별:
                   {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}
                 </DialogContents>
               </div>
@@ -401,6 +409,22 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
             if (blockDialog.user) {
               onBlockClick(blockDialog.user.nickname);
               setBlockDialog({ open: false, user: null });
+            }
+          }}
+        />
+      )}
+
+      {linkDialog.open && (
+        <Dialog
+          title="외부 링크로 이동하시겠어요?"
+          left="취소"
+          onLeftClick={() => setLinkDialog({ open: false, url: null })}
+          right="예"
+          onRightClick={() => {
+            if (linkDialog.url) {
+              window.open(linkDialog.url, "_blank"); // 새 탭에서 url 열기
+              setLinkDialog({ open: false, url: null });
+              setSelectedUserProfile(null);
             }
           }}
         />
