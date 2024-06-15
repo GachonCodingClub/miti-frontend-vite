@@ -173,12 +173,6 @@ export const ScrollDownArrow = styled.div`
   }
 `;
 
-// 유저 프로필 프레임
-export const MenuUserProfileFrame = styled.div`
-  display: flex;
-  align-items: flex-start;
-`;
-
 // 방장 프레임
 export const MenuMasterFrame = styled.div`
   display: flex;
