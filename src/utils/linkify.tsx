@@ -16,11 +16,11 @@ export const Linkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
           return (
             <a
               key={index}
-              className="flex gap-2 items-center"
+              className="flex gap-2 items-center break-all break-words whitespace-pre-wrap"
               onClick={() => onLinkClick(url)}
             >
               {part}
-              <p className="bg-[#EBE8E7] px-[6px] py-[1px] text-sm rounded-3xl font-bold">
+              <p className="bg-[#EBE8E7] px-[6px] py-[1px] text-sm rounded-3xl font-bold whitespace-nowrap">
                 이동
               </p>
             </a>
