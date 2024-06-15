@@ -20,16 +20,13 @@ import {
   GrayLine,
   MenuDetailAndMemberWrapper,
   MenuDetailAndButtonContainer,
-  MenuDetailFrame,
   MenuDetailText,
-  MenuDateLocationMemberContainer,
   MenuDateLocationFrame,
   MenuDateLocationText,
   MenuModifyMeetingButton,
   MenuSmallGrayLine,
   MenuMemberAndReqButtonWrapper,
   MenuMemberContainer,
-  MenuMemberFrame,
   MenuUserProfileFrame,
   MenuMasterFrame,
   MenuUserNickname,
@@ -205,9 +202,9 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       <MenuDetailAndMemberWrapper>
         {/* 미팅 디테일 */}
         <MenuDetailAndButtonContainer>
-          <MenuDetailFrame>
+          <div className="flex flex-col items-start gap-4">
             <MenuDetailText>세부 정보</MenuDetailText>
-            <MenuDateLocationMemberContainer>
+            <div className="flex flex-col items-start gap-2">
               <MenuDateLocationFrame>
                 <DateIcon />
                 <MenuDateLocationText>{formattedDate}</MenuDateLocationText>
@@ -222,8 +219,8 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                   최대 인원 {group?.maxUsers}명
                 </MenuDateLocationText>
               </MenuDateLocationFrame>
-            </MenuDateLocationMemberContainer>
-          </MenuDetailFrame>
+            </div>
+          </div>
           {isGroupLeader && (
             <MenuModifyMeetingButton
               onClick={() => {
@@ -240,7 +237,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       <MenuMemberAndReqButtonWrapper>
         <MenuDetailText>참여자 (총 {totalParticipants}명)</MenuDetailText>
         <MenuMemberContainer>
-          <MenuMemberFrame>
+          <div className="flex flex-col items-start gap-2">
             {/* 방장님 */}
             {parties?.leaderUserSummaryDto && (
               <MenuUserProfileFrame>
@@ -256,24 +253,29 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
               </MenuUserProfileFrame>
             )}
             {/* 일반 참여자 */}
-            {parties?.acceptedParties?.map((party) => (
-              <div key={party.partyId}>
-                {party?.users.map((user) => {
-                  // 차단된 사용자인지 확인
-                  const isUserBlocked = blockData?.blockedUserOutputs?.some(
-                    (blockedUser: { nickname: string | undefined }) =>
-                      blockedUser.nickname === user?.nickname
-                  );
+            {parties?.acceptedParties?.map(
+              (party) =>
+                party &&
+                party.users &&
+                party.users.length > 0 && (
+                  <div key={party.partyId}>
+                    {party?.users.map((user) => {
+                      // 차단된 사용자인지 확인
+                      const isUserBlocked = blockData?.blockedUserOutputs?.some(
+                        (blockedUser: { nickname: string | undefined }) =>
+                          blockedUser.nickname === user?.nickname
+                      );
 
-                  return (
-                    <MenuUserProfileFrame key={user?.userId}>
-                      {renderUserProfile(user, isUserBlocked)}
-                    </MenuUserProfileFrame>
-                  );
-                })}
-              </div>
-            ))}
-          </MenuMemberFrame>
+                      return (
+                        <MenuUserProfileFrame key={user?.userId}>
+                          {renderUserProfile(user, isUserBlocked)}
+                        </MenuUserProfileFrame>
+                      );
+                    })}
+                  </div>
+                )
+            )}
+          </div>
         </MenuMemberContainer>
         {/* 아래 화살표 */}
         <ScrollDownArrow>
