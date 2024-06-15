@@ -212,6 +212,7 @@ export const ParticipationReqButton = styled(MenuModifyMeetingButton)`
 
 // 미팅 삭제하고 나가기
 export const MenuDeleteMeetingAndRunButton = styled.button`
+  padding-top: 24px;
   color: var(--Grey-grey500, #767170);
   font-size: 12px;
   line-height: 14px;
