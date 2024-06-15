@@ -2,7 +2,7 @@ import React from "react";
 import { InstaIcon } from "../components/styles/Icons";
 
 interface LinkifyProps {
-  text: string;
+  text: string | undefined;
   onLinkClick: (url: string) => void;
 }
 
@@ -11,7 +11,7 @@ export const Linkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
 
   return (
     <span>
-      {text.split(urlPattern).map((part, index) => {
+      {text?.split(urlPattern).map((part, index) => {
         if (urlPattern.test(part)) {
           const url = part.startsWith("http") ? part : `https://${part}`;
           const isInstagram = url.includes("instagram.com");
@@ -31,7 +31,7 @@ export const Linkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
               {isInstagram ? (
                 <InstaIcon />
               ) : (
-                <p className="bg-[#EBE8E7] px-[6px] py-[1px] text-sm rounded-3xl font-bold whitespace-nowrap">
+                <p className="bg-[#EBE8E7] px-[6px] py-[1px] text-xs rounded-3xl font-bold whitespace-nowrap">
                   이동
                 </p>
               )}
