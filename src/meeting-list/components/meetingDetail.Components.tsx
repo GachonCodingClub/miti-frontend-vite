@@ -54,12 +54,15 @@ export const MemberInfo = styled(DetailMember)``;
 export const MemberDetail = styled.div`
   display: flex;
   margin-bottom: 16px;
+  padding-bottom: 8px;
   gap: 8px;
   span {
     font-size: 14px;
     font-weight: 400;
     color: #767170;
   }
+  border-bottom: 1px solid #f2f0ef;
+  white-space: nowrap;
 `;
 
 export const JoinButtonBox = styled(FixedButtonBox)`
