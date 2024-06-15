@@ -47,6 +47,7 @@ import {
   DialogRightText,
 } from "../../components/Dialog";
 import { useOneBtnDialog } from "../../hooks/useOntBtnDialog";
+import { Linkify } from "../../utils/linkify";
 
 export default function MeetingDetail() {
   useLoginGuard();
@@ -208,6 +209,15 @@ export default function MeetingDetail() {
       });
   };
 
+  // 외부 링크 이동 다이얼로그
+  const [linkDialog, setLinkDialog] = useState<{
+    open: boolean;
+    url: string | null;
+  }>({ open: false, url: null });
+  const handleLinkClick = (url: string) => {
+    setLinkDialog({ open: true, url });
+  };
+
   const renderUserProfile = (user: IUser, isUserBlocked: boolean) => {
     return isUserBlocked ? (
       <div className="pb-3 text-[#d05438]">차단된 사용자입니다</div>
@@ -218,7 +228,7 @@ export default function MeetingDetail() {
         </div>
         <div className="flex flex-col">
           <span className="text-sm whitespace-pre-wrap">
-            {user?.description}
+            <Linkify text={user?.description} onLinkClick={handleLinkClick} />
           </span>
           <MemberDetail>
             <span>{(user?.age ?? 0) + 1}살</span>
@@ -395,6 +405,21 @@ export default function MeetingDetail() {
             contents={oneBtnDialog.contents}
             onRightClick={hideOneBtnDialog}
             right={"닫기"}
+          />
+        )}
+
+        {linkDialog.open && (
+          <Dialog
+            title="외부 링크로 이동하시겠어요?"
+            left="취소"
+            onLeftClick={() => setLinkDialog({ open: false, url: null })}
+            right="예"
+            onRightClick={() => {
+              if (linkDialog.url) {
+                window.open(linkDialog.url, "_blank"); // 새 탭에서 url 열기
+                setLinkDialog({ open: false, url: null });
+              }
+            }}
           />
         )}
       </DetailScreen>
