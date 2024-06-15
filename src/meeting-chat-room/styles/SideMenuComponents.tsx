@@ -103,11 +103,6 @@ export const MenuDetailText = styled.span`
   letter-spacing: -0.224px;
 `;
 
-// 날짜 장소 인원 컨테이너
-export const MenuDateLocationMemberContainer = styled(MenuDetailFrame)`
-  gap: 8px;
-`;
-
 // 날짜 장소 인원 프레임
 export const MenuDateLocationFrame = styled.div`
   display: flex;
@@ -177,9 +172,6 @@ export const ScrollDownArrow = styled.div`
     fill: #000;
   }
 `;
-
-// 참여자 프레임
-export const MenuMemberFrame = styled(MenuDateLocationMemberContainer)``;
 
 // 유저 프로필 프레임
 export const MenuUserProfileFrame = styled.div`
