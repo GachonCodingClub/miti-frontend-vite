@@ -8,22 +8,22 @@ export const validateProfile = (
 
   // 닉네임 검증
   if (userNickName === "") {
-    errors.nickNameError = "닉네임을 확인해 주세요.";
+    errors.nickNameError = "닉네임을 확인해 주세요";
   }
 
   // 자기소개 검증
   if (userIntroduce === "") {
-    errors.introduceError = "자기소개를 입력해 주세요.";
+    errors.introduceError = "자기소개 또는 인스타 주소를 적어주세요";
   }
 
   // 키 검증
   if (userHeight === "") {
-    errors.heightError = "키(cm)를 선택해 주세요.";
+    errors.heightError = "키(cm)를 선택해 주세요";
   }
 
   // 몸무게 검증
   if (userWeight === "") {
-    errors.weightError = "몸무게(kg)를 선택해 주세요.";
+    errors.weightError = "몸무게(kg)를 선택해 주세요";
   }
 
   return errors;

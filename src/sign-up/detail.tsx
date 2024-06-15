@@ -112,7 +112,7 @@ export default function SingUpDetail() {
       if (data?.status === 409) {
         setOverlapNickname(true);
         setSubscription(false);
-        setNickNameError("닉네임을 확인해 주세요.");
+        setNickNameError("닉네임을 확인해 주세요");
       } else {
         setPossibleNickname(true);
       }
@@ -132,7 +132,7 @@ export default function SingUpDetail() {
 
     if (currentCharCount > MAX_INTRODUCE_LENGTH) {
       setIntroduceError(
-        `자기소개는 ${MAX_INTRODUCE_LENGTH}자 이하로 입력해주세요.`
+        `자기소개는 ${MAX_INTRODUCE_LENGTH}자 이하로 입력해주세요`
       );
     } else {
       setIntroduceError("");
@@ -284,7 +284,7 @@ export default function SingUpDetail() {
           />
           <IntroduceFrame>
             <MyInputBox
-              placeholder="자기소개를 적어주세요."
+              placeholder="자기소개 또는 인스타 주소를 적어주세요"
               label="한줄소개"
               type="text"
               value={userIntroduce}
