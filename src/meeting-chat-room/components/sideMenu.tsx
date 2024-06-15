@@ -27,7 +27,6 @@ import {
   MenuSmallGrayLine,
   MenuMemberAndReqButtonWrapper,
   MenuMemberContainer,
-  MenuUserProfileFrame,
   MenuMasterFrame,
   MenuUserNickname,
   MenuUserDetailText,
@@ -240,7 +239,8 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
           <div className="flex flex-col items-start gap-2">
             {/* 방장님 */}
             {parties?.leaderUserSummaryDto && (
-              <MenuUserProfileFrame>
+              <div>
+                <OrangeCrownIcon />
                 {renderUserProfile(
                   parties.leaderUserSummaryDto,
                   blockData?.blockedUserOutputs?.some(
@@ -249,8 +249,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                       parties.leaderUserSummaryDto?.nickname
                   )
                 )}
-                <OrangeCrownIcon />
-              </MenuUserProfileFrame>
+              </div>
             )}
             {/* 일반 참여자 */}
             {parties?.acceptedParties?.map(
@@ -267,9 +266,9 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                       );
 
                       return (
-                        <MenuUserProfileFrame key={user?.userId}>
+                        <div key={user?.userId}>
                           {renderUserProfile(user, isUserBlocked)}
-                        </MenuUserProfileFrame>
+                        </div>
                       );
                     })}
                   </div>
