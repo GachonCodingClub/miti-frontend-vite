@@ -353,7 +353,7 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
                   나이: {(selectedUserProfile?.age ?? 0) + 1}살
                 </DialogContents>
                 <DialogContents className="mr-2">
-                  성별:
+                  성별:{" "}
                   {selectedUserProfile?.gender === "MALE" ? "남자" : "여자"}
                 </DialogContents>
               </div>
