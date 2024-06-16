@@ -24,6 +24,7 @@ import {
 } from "../styles/MeetingChatRoomComponents";
 import { getApi } from "../../api/getApi";
 import { getDate, getTimeString } from "./getTimeDate";
+import { ArrowdropIcon } from "../../components/styles/Icons";
 
 function getChatDisplayOptions(
   chatList: ChatMessage[],
@@ -265,7 +266,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             )}
             {showScrollButton && (
               <ScrollToBottomButton onClick={scrollToBottom}>
-                ↓
+                <ArrowdropIcon size={16} isChat />
               </ScrollToBottomButton>
             )}
           </React.Fragment>
