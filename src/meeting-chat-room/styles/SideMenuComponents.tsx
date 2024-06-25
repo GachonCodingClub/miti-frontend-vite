@@ -58,6 +58,8 @@ export const MenuMeetingDesc = styled(MenuMeetingTitle)`
   color: var(--Grey-grey700, #56504f);
   font-size: 14px;
   letter-spacing: -0.224px;
+  white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 // 회색 가로 선

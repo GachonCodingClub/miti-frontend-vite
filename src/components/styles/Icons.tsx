@@ -11,6 +11,7 @@ interface IconProps {
 interface IconSizeClickProps {
   size?: number;
   onClick?: () => void;
+  isChat?: boolean;
 }
 
 const Icon = ({
@@ -295,13 +296,13 @@ export const SearchIcon = () => {
 };
 
 // 아래 화살표 아이콘
-export const ArrowdropIcon = () => {
+export const ArrowdropIcon = ({ size, isChat }: IconSizeClickProps) => {
   return (
-    <Icon>
+    <Icon width={size} height={size}>
       <path
         d="M5 9L11.2929 15.2929C11.6834 15.6834 12.3166 15.6834 12.7071 15.2929L19 9"
-        stroke="#2F2A28"
-        strokeWidth="1.5"
+        stroke={isChat ? "#ffffff" : "#2F2A28"}
+        strokeWidth={isChat ? 3 : 1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

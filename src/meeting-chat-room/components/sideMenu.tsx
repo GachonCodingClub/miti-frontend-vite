@@ -195,7 +195,9 @@ export default function SideMenu({ dialogProps, exitProps }: ISideMenu) {
       {/* 제목과 설명 */}
       <MenuMeetingTitleAndDescFrame>
         <MenuMeetingTitle>{group?.title}</MenuMeetingTitle>
-        <MenuMeetingDesc>{group?.description}</MenuMeetingDesc>
+        <MenuMeetingDesc>
+          <Linkify text={group?.description} onLinkClick={handleLinkClick} />
+        </MenuMeetingDesc>
       </MenuMeetingTitleAndDescFrame>
       <GrayLine />
       <MenuDetailAndMemberWrapper>
