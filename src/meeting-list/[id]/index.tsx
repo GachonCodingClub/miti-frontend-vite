@@ -262,7 +262,10 @@ export default function MeetingDetail() {
               {group?.title}
             </span>
             <span className="text-sm font-normal text-gray-500">
-              {group?.description}
+              <Linkify
+                text={group?.description}
+                onLinkClick={handleLinkClick}
+              />
             </span>
           </DetailTitle>
           <div className="w-full h-2 bg-[#F2F0EF]" />
