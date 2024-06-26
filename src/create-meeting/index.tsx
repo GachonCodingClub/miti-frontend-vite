@@ -140,7 +140,7 @@ export default function CreateMeeting() {
           <div className="w-full">
             <MyInputBox
               label="미팅 제목"
-              placeholder=""
+              placeholder="미팅 제목을 적어주세요"
               type="text"
               value={inputMeetingTitle}
               onChange={onMeetingTitleChange}
@@ -160,7 +160,7 @@ export default function CreateMeeting() {
           </div>
           <div className="w-full">
             <DescriptionArea
-              placeholder="미팅 설명"
+              placeholder="미팅 설명(어떤 사람 환영, 어떤 주제 환영, 소개글 등을 적어주세요)"
               onChange={onMeetingDescChange}
               value={inputMeetingDesc}
               maxLength={50}
