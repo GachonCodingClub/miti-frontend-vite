@@ -1,26 +1,32 @@
 # 가천대생을 위한 모임 어플 MITI
 
 
-![Group 4 (1)](https://github.com/GachonCodingClub/miti-frontend-vite/assets/128457944/b06d8f80-4a7b-4af5-818d-372df7cea19c)
+<p align="center">
+  <img src="https://github.com/GachonCodingClub/miti-frontend-vite/assets/128457944/b06d8f80-4a7b-4af5-818d-372df7cea19c" alt="MITI 로고" />
+</p>
+
 #### 미티에서 원하는 시간, 원하는 장소의 모임을 선택하고 다양한 미티친구들과 실시간으로 채팅을 나눠봐요!
 
 <br />
 
-### 프로젝트 정보
+### 🧡 프로젝트 정보
 ---
 - 가천대학교 학생들을 위한 모임 플랫폼 애플리케이션입니다.
 - 가입한 사용자는 미팅방을 개설하거나 개설된 미팅방에 가입 신청을 하고, 다른 사용자와 함께 실시간으로 채팅을 나눕니다.
 
-### 개발 기간
+### ⏰ 개발 기간
 ---
 - 2023.03 ~
 
-### 멤버
+### 😊 멤버
 ---
+|<img src="https://avatars.githubusercontent.com/u/128457944?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/56068392?v=4" width="150" height="150"/>|
+|:-:|:-:|
+|프론트엔드<br/>김현중<br/>[@kimgorok](https://github.com/kimgorok)|백엔드<br/>JeongHyeon Song<br/>[@jeonghyeon00](https://github.com/jeonghyeon00)|
 
 <br />
 
-### 기술 스택
+### 🛠 기술 스택
 ---
 
 ## 환경 (Environment)
@@ -42,7 +48,7 @@
 
 <br />
 
-### 주요 기능
+### 🧡 주요 기능
 ---
 ## 회원 가입
 - 오직 가천대학교의 이메일주소인 @gachon.ac.kr를 사용해 가입이 가능합니다.
@@ -76,7 +82,7 @@
 
 <br />
 
-### 소개 이미지
+### 📺 화면 구성
 ---
 |미팅 둘러보기|미팅 참여하기|
 |---|---|
@@ -92,7 +98,7 @@
 
 <br />
 
-#### 미티 다운로드 주소
+#### 🧡 미티 다운로드 주소
 플레이스토어 : https://play.google.com/store/apps/details?id=com.gcc.miti
 
-앱스토어https://apps.apple.com/kr/app/%EB%AF%B8%ED%8B%B0/id6478576518
+앱스토어 : https://apps.apple.com/kr/app/%EB%AF%B8%ED%8B%B0/id6478576518
