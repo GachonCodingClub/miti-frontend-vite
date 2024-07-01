@@ -6,9 +6,9 @@ interface LinkifyProps {
   onLinkClick: (url: string) => void;
 }
 
-export const Linkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
-  const urlPattern = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+const urlPattern = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
 
+export const Linkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
   return (
     <span>
       {text?.split(urlPattern).map((part, index) => {
@@ -25,7 +25,10 @@ export const Linkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
             <a
               key={index}
               className="flex gap-2 items-center break-all break-words whitespace-pre-wrap"
-              onClick={() => onLinkClick(url)}
+              onClick={(e) => {
+                e.preventDefault();
+                onLinkClick(url);
+              }}
             >
               {isInstagram ? instagramId : part}
               {isInstagram ? (
@@ -39,6 +42,31 @@ export const Linkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
           );
         }
         return part; // url 패턴과 일치하지 않은 경우 그냥 반환
+      })}
+    </span>
+  );
+};
+
+export const ChatLinkify: React.FC<LinkifyProps> = ({ text, onLinkClick }) => {
+  return (
+    <span>
+      {text?.split(urlPattern).map((part, index) => {
+        if (urlPattern.test(part)) {
+          const url = part.startsWith("http") ? part : `https://${part}`;
+          return (
+            <a
+              key={index}
+              onClick={(e) => {
+                e.preventDefault();
+                onLinkClick(url);
+              }}
+              className="underline"
+            >
+              {part}
+            </a>
+          );
+        }
+        return part;
       })}
     </span>
   );

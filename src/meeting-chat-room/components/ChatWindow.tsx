@@ -25,6 +25,8 @@ import {
 import { getApi } from "../../api/getApi";
 import { getDate, getTimeString } from "./getTimeDate";
 import { ArrowdropIcon } from "../../components/styles/Icons";
+import { ChatLinkify } from "../../utils/linkify";
+import { Dialog } from "../../components/Dialog";
 
 function getChatDisplayOptions(
   chatList: ChatMessage[],
@@ -204,6 +206,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     return new Set(blockData?.blockedUserOutputs.map((user) => user?.nickname));
   }, [blockData]);
 
+  const [linkDialog, setLinkDialog] = useState<{
+    open: boolean;
+    url: string | null;
+  }>({ open: false, url: null });
+
+  const handleLinkClick = (url: string) => {
+    setLinkDialog({ open: true, url });
+  };
+
   return (
     <ChatWindowContainer style={containerStyle} ref={chatContainerRef}>
       {chatList.map((chat, index) => {
@@ -243,7 +254,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   <MyChattingBubble
                     style={reduceMargin ? { marginBottom: -10 } : {}}
                   >
-                    <ChattingText>{chatContent}</ChattingText>
+                    <ChattingText>
+                      <ChatLinkify
+                        text={chatContent}
+                        onLinkClick={handleLinkClick}
+                      />
+                    </ChattingText>
                   </MyChattingBubble>
                 </MyChatting>
               </MyChattingFrame>
@@ -259,7 +275,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   <OtherChattingBubble
                     style={reduceMargin ? { marginBottom: -10 } : {}}
                   >
-                    <ChattingText>{chatContent}</ChattingText>
+                    <ChattingText>
+                      <ChatLinkify
+                        text={chatContent}
+                        onLinkClick={handleLinkClick}
+                      />
+                    </ChattingText>
                   </OtherChattingBubble>
                 </OtherChatting>
               </OtherChattingFrame>
@@ -272,6 +293,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </React.Fragment>
         );
       })}
+      {linkDialog.open && (
+        <Dialog
+          title="외부 링크로 이동하시겠어요?"
+          left="취소"
+          onLeftClick={() => setLinkDialog({ open: false, url: null })}
+          right="예"
+          onRightClick={() => {
+            if (linkDialog.url) {
+              window.open(linkDialog.url, "_blank"); // 새 탭에서 url 열기
+              setLinkDialog({ open: false, url: null });
+            }
+          }}
+        />
+      )}
       <div className="pt-12" id="chatEnd" ref={chatEndRef}></div>
     </ChatWindowContainer>
   );
