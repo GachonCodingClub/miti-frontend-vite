@@ -41,7 +41,13 @@ export default function Notice() {
         </div>
         <div className="mt-7 px-6">
           <div className="font-bold text-lg">인스타그램</div>
-          <p className="mt-7">가천대_미티(gachon_miti)</p>
+          <p className="mt-7 flex gap-2">
+            가천대_미티(gachon_miti)
+            <Linkify
+              text="https://www.instagram.com/gachon_miti"
+              onLinkClick={handleLinkClick}
+            />
+          </p>
         </div>
 
         {linkDialog.open && (
