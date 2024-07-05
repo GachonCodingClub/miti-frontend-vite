@@ -56,7 +56,7 @@ export default function SignUp() {
     };
 
     if (!validateEmail(email)) {
-      setError("지원하는 대학교 이메일이 아니에요.");
+      setError("지원하는 대학교 이메일이 아니에요");
       return;
     } else {
       setError("");
@@ -98,7 +98,7 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.error(error);
-        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
         setError("");
       });
 
@@ -149,7 +149,7 @@ export default function SignUp() {
       })
       .then((data) => {
         if (data === false) {
-          setCertiError("인증 번호를 다시 확인해 주세요.");
+          setCertiError("인증 번호를 다시 확인해 주세요");
         } else {
           setCertiError("");
           setRecoilEmail(email);
@@ -158,7 +158,7 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.error(error);
-        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
         setCertiError("에러발생");
       });
 
@@ -195,7 +195,7 @@ export default function SignUp() {
           {overlapError && (
             <Dialog
               isOneBtn
-              title="이미 가입된 이메일이에요."
+              title="이미 가입된 이메일이에요"
               onRightClick={() => {
                 navigate(`${ROUTES.SIGN_IN}`);
               }}
@@ -206,8 +206,8 @@ export default function SignUp() {
           {!overlapError && showDialog && (
             <Dialog
               isOneBtn
-              title="인증 메일이 전송됐어요."
-              contents="@gachon.ac.kr 메일함을 확인해 주세요."
+              title="인증 메일이 전송됐어요"
+              contents="@gachon.ac.kr 메일함을 확인해 주세요"
               onRightClick={() => {
                 setShowDialog(false);
                 setIsInputDisabled(true);
