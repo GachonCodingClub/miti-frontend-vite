@@ -18,6 +18,9 @@ jobs:
           node-version: "20"
           cache: "npm"
 
+      - name: Create .env file from secret
+        run: echo ${{ secrets.BASE64_ENV }} | base64 -d > .env
+
       - name: Install dependencies
         run: npm install
 
