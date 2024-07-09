@@ -49,7 +49,7 @@ export default function CreateMeetingDetail() {
         return data;
       } catch (error) {
         console.error("Error fetching group data:", error);
-        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
         throw error; // 에러를 상위로 전파
       }
     }
@@ -123,9 +123,9 @@ export default function CreateMeetingDetail() {
     const newMemberInt = parseInt(newMember, 10); // 입력 값을 숫자로 변환
 
     if (newMemberInt < 2) {
-      setMemberError("인원은 2명 이상이어야 해요.");
+      setMemberError("인원은 2명 이상이어야 해요");
     } else if (newMemberInt > 50) {
-      setMemberError("최대 50명을 초과할 수 없어요.");
+      setMemberError("최대 50명을 초과할 수 없어요");
     } else {
       setMemberError("");
     }
@@ -201,7 +201,7 @@ export default function CreateMeetingDetail() {
       }
     } catch (error) {
       console.error("비동기 작업 중 오류 발생!!!!", error);
-      showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+      showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
     }
   };
 
@@ -268,7 +268,7 @@ export default function CreateMeetingDetail() {
       displayEnrollBar();
     } catch (error) {
       console.error("비동기 작업 중 오류 발생:", error);
-      showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+      showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
 
       closeEnrollBar();
     }
@@ -349,7 +349,7 @@ export default function CreateMeetingDetail() {
           {modiSVG && (
             <Dialog
               title="미팅 인원을 수정하시겠습니까?"
-              contents="추가 인원 목록이 삭제돼요."
+              contents="추가 인원 목록이 삭제돼요"
               left="아니요"
               onLeftClick={() => {
                 setInputDisabled(true);
@@ -400,8 +400,8 @@ export default function CreateMeetingDetail() {
         {duplicateBlankErrorDialog && (
           <Dialog
             isOneBtn
-            title="닉네임을 확인해 주세요."
-            contents="중복된 닉네임이나 빈칸이 있어요."
+            title="닉네임을 확인해 주세요"
+            contents="중복된 닉네임이나 빈칸이 있어요"
             onRightClick={() => {
               setDuplicateBlankErrorDialog(false);
             }}

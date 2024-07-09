@@ -98,7 +98,7 @@ export default function LogIn() {
             navigate(`${ROUTES.MEETING_LIST}`);
           }
         } else {
-          showOneBtnDialog("아이디 혹은 비밀번호를 확인해주세요.");
+          showOneBtnDialog("아이디 혹은 비밀번호를 확인해주세요");
         }
       })
       .then((error) => {

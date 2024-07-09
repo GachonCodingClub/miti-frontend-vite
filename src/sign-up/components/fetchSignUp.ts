@@ -48,9 +48,9 @@ export const fetchSignUp = async (
     if (!response.ok) {
       console.error(`API 오류: ${response.status} - ${response.statusText}`);
       if (response.status === 500) {
-        alert("닉네임을 확인해주세요.");
+        alert("닉네임을 확인해주세요");
       } else if (response.status === 400) {
-        alert("생년월일을 확인해주세요.");
+        alert("생년월일을 확인해주세요");
       } else {
         alert(`오류가 발생했어요 : ${response.status}`);
       }
@@ -61,7 +61,7 @@ export const fetchSignUp = async (
     return data === true;
   } catch (error) {
     console.error(error);
-    alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+    alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
     return false;
   }
 };

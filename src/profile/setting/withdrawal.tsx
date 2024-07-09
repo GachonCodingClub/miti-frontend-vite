@@ -33,12 +33,12 @@ export default function Withdrawal() {
           navigate("/");
           setShowDialog(false);
         } else {
-          alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+          alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
         }
       })
       .catch((error) => {
         console.error("네트워크 에러:", error);
-        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
       });
   };
   return (
@@ -74,7 +74,7 @@ export default function Withdrawal() {
           text="탈퇴하기"
           onClick={() => {
             if (!token) {
-              alert("로그인이 필요해요. 로그인 페이지로 이동합니다.");
+              alert("로그인이 필요해요. 로그인 페이지로 이동합니다");
               navigate(ROUTES.SIGN_IN);
             }
             setShowDialog(true);

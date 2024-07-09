@@ -221,7 +221,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         const isUserBlocked = blockedUserNicknames.has(chat.nickname);
 
         const chatContent = isUserBlocked
-          ? "차단된 메시지입니다."
+          ? "차단된 메시지입니다"
           : chat.content;
 
         const {

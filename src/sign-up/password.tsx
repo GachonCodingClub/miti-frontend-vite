@@ -50,9 +50,7 @@ export default function PasswordSetting() {
     setRecoilPassword(veriUserPW);
 
     if (!isPasswordValid(inputUserPW)) {
-      setInputUserPWError(
-        "영문, 특수문자, 숫자 포함 8자리 이상 입력해 주세요."
-      );
+      setInputUserPWError("영문, 특수문자, 숫자 포함 8자리 이상 입력해 주세요");
       return;
     } else {
       setInputUserPWError("");

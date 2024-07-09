@@ -153,7 +153,7 @@ export default function SingUpDetail() {
     const newBirth = e.target.value;
     const todayYYYYMMDD = getCurrentDate();
     if (newBirth > todayYYYYMMDD) {
-      setBirthError("정확한 생년월일을 입력해주세요.");
+      setBirthError("정확한 생년월일을 입력해주세요");
     } else {
       // 입력이 유효한 경우
       setBirthError("");

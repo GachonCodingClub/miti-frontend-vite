@@ -56,17 +56,17 @@ export default function Report() {
           );
           if (response.status === 404) {
             setShowDialog(false);
-            showOneBtnDialog("대상의 닉네임을 다시 확인해주세요.");
+            showOneBtnDialog("대상의 닉네임을 다시 확인해주세요");
           } else {
             showOneBtnDialog(
-              "신고 접수에 실패했어요. 나중에 다시 시도해주세요."
+              "신고 접수에 실패했어요. 나중에 다시 시도해주세요"
             );
           }
           throw new Error("Response not ok");
         }
         setShowDialog(false);
         showOneBtnDialog(
-          "신고가 접수되었습니다. 검토까지는 최대 24시간이 소요됩니다."
+          "신고가 접수되었습니다. 검토까지는 최대 24시간이 소요됩니다"
         );
         setNickname("");
         setContent("");
@@ -74,7 +74,7 @@ export default function Report() {
       })
       .then((error) => {
         console.error(error);
-        showOneBtnDialog("오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("오류가 발생했어요. 나중에 다시 시도해주세요");
       });
   };
   return (
@@ -89,7 +89,7 @@ export default function Report() {
             label="신고 대상 닉네임"
             value={nickname}
             onChange={onNicknameChange}
-            placeholder="신고할 대상의 닉네임을 정확히 입력해주세요."
+            placeholder="신고할 대상의 닉네임을 정확히 입력해주세요"
             type="text"
           />
         </div>
@@ -115,7 +115,7 @@ export default function Report() {
         {showDialog && (
           <Dialog
             title="신고하시겠습니까?"
-            contents="허위 신고는 제재를 당할 수 있어요."
+            contents="허위 신고는 제재를 당할 수 있어요"
             left="아니요"
             right="예"
             onLeftClick={() => {

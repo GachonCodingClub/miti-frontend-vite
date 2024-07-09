@@ -37,10 +37,10 @@ export default function BlockList() {
           console.error(
             `API 오류 : ${response.status} - ${response.statusText}`
           );
-          showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+          showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
           return response.json();
         }
-        showOneBtnDialog("해당 유저의 차단을 해제했어요.");
+        showOneBtnDialog("해당 유저의 차단을 해제했어요");
         refetch();
         return response.json();
       })

@@ -93,7 +93,7 @@ export default function ChattingList() {
       return data;
     } catch (error) {
       console.error("알림 호출 오류:", error);
-      setAlertError("데이터를 불러오는데 실패했어요.");
+      setAlertError("데이터를 불러오는데 실패했어요");
       throw error;
     }
   };

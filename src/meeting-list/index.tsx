@@ -147,7 +147,7 @@ export default function MeetingList() {
         link: `/groups?page=${page}&size=7&sort=meetDate`,
       });
       if (res.status === 401) {
-        alert("서버 오류가 발생했어요.");
+        alert("서버 오류가 발생했어요");
         localStorage.removeItem("token");
         navigate(`${ROUTES.SIGN_IN}`);
         return;
@@ -245,7 +245,7 @@ export default function MeetingList() {
         {loading && <InLoading />}
         {/* 미팅 삭제하기를 통해 미팅리스트로 이동했을 경우 */}
         {isRoomDeleted && (
-          <SnackBar text="미팅을 나왔어요." onClick={() => {}} />
+          <SnackBar text="미팅을 나왔어요" onClick={() => {}} />
         )}
 
         {/* 페이징 버튼 */}

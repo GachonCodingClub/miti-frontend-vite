@@ -95,7 +95,7 @@ export default function ChangePassword() {
       })
       .then((data) => {
         if (data === false) {
-          setCertiError("인증 번호를 다시 확인해 주세요.");
+          setCertiError("인증 번호를 다시 확인해 주세요");
         } else {
           setCertiError("");
           setIsCertiDisabled(true);
@@ -103,7 +103,7 @@ export default function ChangePassword() {
       })
       .catch((error) => {
         console.error(error);
-        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
         setCertiError("에러발생");
       });
 

@@ -77,17 +77,17 @@ export default function GoogleWithdrawal() {
               if (response.ok) {
                 localStorage.removeItem("token");
                 setShowDialog(false);
-                alert("탈퇴가 완료됐어요.");
+                alert("탈퇴가 완료됐어요");
               } else {
-                alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.!!!!");
+                alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요!!!!");
               }
             })
             .catch((error) => {
               console.error("네트워크 에러:", error);
-              alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+              alert("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
             });
         } else {
-          alert("아이디 혹은 비밀번호를 확인해주세요.");
+          alert("아이디 혹은 비밀번호를 확인해주세요");
         }
       })
       .then((error) => {

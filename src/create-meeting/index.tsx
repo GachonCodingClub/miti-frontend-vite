@@ -33,7 +33,7 @@ export default function CreateMeeting() {
         return data;
       } catch (error) {
         console.error("Error fetching group data:", error);
-        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
         throw error; // 에러를 상위로 전파
       }
     }
@@ -110,7 +110,7 @@ export default function CreateMeeting() {
       } catch (error) {
         // 오류 처리
         console.error("비동기 작업 중 오류 발생:", error);
-        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요.");
+        showOneBtnDialog("서버 오류가 발생했어요. 나중에 다시 시도해주세요");
       }
     } else {
       showOneBtnDialog("제목과 설명을 확인해주세요");
@@ -120,7 +120,7 @@ export default function CreateMeeting() {
   // 그렇지 않으면 다음 버튼 두 번 눌러야 작동함
   useEffect(() => {
     if (meetingTitleError || meetingDescError) {
-      showOneBtnDialog("제목과 설명을 확인해 주세요.");
+      showOneBtnDialog("제목과 설명을 확인해 주세요");
     } else {
       hideOneBtnDialog();
     }
