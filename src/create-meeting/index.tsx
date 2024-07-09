@@ -163,12 +163,12 @@ export default function CreateMeeting() {
               placeholder="미팅 설명(어떤 사람 환영, 어떤 주제 환영, 소개글 등을 적어주세요)"
               onChange={onMeetingDescChange}
               value={inputMeetingDesc}
-              maxLength={50}
+              maxLength={100}
             />
             {descCount >= 0 && (
               <div className="flex justify-end">
                 <CharCount>
-                  {descCount} / {50}
+                  {descCount} / {100}
                 </CharCount>
               </div>
             )}

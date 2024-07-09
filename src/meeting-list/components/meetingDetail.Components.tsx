@@ -20,6 +20,10 @@ export const DetailTitle = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 0 24px;
+
+  span:last-of-type {
+    white-space: break-spaces;
+  }
 `;
 
 export const DetailContents = styled.div`
