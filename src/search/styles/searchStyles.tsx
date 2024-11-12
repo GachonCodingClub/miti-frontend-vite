@@ -17,4 +17,7 @@ export const SearchInput = styled.input`
   padding: 8px;
   border-bottom: 1px solid var(--Grey-grey40, #f2f0ef);
   background-color: white;
+  :focus {
+    outline: none;
+  }
 `;
