@@ -12,11 +12,11 @@
 ### 🧡 프로젝트 정보
 ---
 - 가천대학교 학생들을 위한 모임 플랫폼 애플리케이션입니다.
-- 가입한 사용자는 미팅방을 개설하거나 개설된 미팅방에 가입 신청을 하고, 다른 사용자와 함께 실시간으로 채팅을 나눕니다.
+- 미팅 검색, 참여 요청, 실시간 채팅 등의 핵심 기능을 제공하며, iOS와 Android 플랫폼에 모두 출시되었습니다.
 
 ### ⏰ 개발 기간
 ---
-- 2023.03 ~
+- 2023.09 ~ 2024.11
 
 ### 😊 멤버
 ---
@@ -29,19 +29,34 @@
 ### 🛠 기술 스택
 ---
 
-## 환경 (Environment)
+## 환경
 <img src="https://img.shields.io/badge/VISUAL STUDIO CODE-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">  <img src="https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=git&logoColor=white">  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
 
 
-## 개발 (Development)
-<img src="https://img.shields.io/badge/REACT-61DAFB?style=for-the-badge&logo=react&logoColor=white">  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"> <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
+## 프레임워크 및 언어어
+<img src="https://img.shields.io/badge/REACT-61DAFB?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
 
-<img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=React Router&logoColor=white">  <img src="https://img.shields.io/badge/REACT HOOK FORM-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white">  <img src="https://img.shields.io/badge/REACT QUERY-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">  <img src="https://img.shields.io/badge/RECOIL-3578E5?style=for-the-badge&logo=recoil&logoColor=white">
+## 빌드 도구
+<img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white">
 
+## 라이브러리
+- Recoil: 애플리케이션의 상태 관리
+- React Query: 서버 상태 관리 및 데이터 페칭
+- React Router DOM: 애플리케이션의 페이지 라우팅 도구
+- React Hook Form: 폼 상태 관리 및 유효성 검사
+- SockJS-client: WebSocket 대체 라이브러리
+- StompJS: STOMP 프로토콜 클라이언트
+- jwt-decode: JWT 토큰 디코딩
 
-## 스타일 및 애니메이션 (Style and Animation)
-<img src="https://img.shields.io/badge/TAILWIND CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">  <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">  <img src="https://img.shields.io/badge/FRAMER MOTION-0055FF?style=for-the-badge&logo=framer&logoColor=white">  <img src="https://img.shields.io/badge/PostCSS-DD3A0A?style=for-the-badge&logo=postcss&logoColor=white"> 
+## 스타일 및 애니메이션
+- TailwindCSS: 유틸리티 기반 CSS 프레임워크
+- Styled Components: CSS-in-JS 라이브러리
+- PostCSS: CSS 전처리기
+- Framer Motion: React 애니메이션 라이브러리
 
+## 빌드 도구 및 개발 도구
+- Vite: 빠른 개발 서버 및 빌드 도구
+- ESLint: 코드 품질 및 스타일 검사 도구
 
 ## 하이브리드 플랫폼 (Hybrid platform)
 <img src="https://img.shields.io/badge/CAPACITOR-119EFF?style=for-the-badge&logo=capacitor&logoColor=white">
