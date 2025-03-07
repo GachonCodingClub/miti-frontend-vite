@@ -44,7 +44,6 @@
 - React Query: 서버 상태 관리 및 데이터 페칭
 - React Router DOM: 애플리케이션의 페이지 라우팅 도구
 - React Hook Form: 폼 상태 관리 및 유효성 검사
-- SockJS-client: WebSocket 대체 라이브러리
 - StompJS: STOMP 프로토콜 클라이언트
 - jwt-decode: JWT 토큰 디코딩
 
